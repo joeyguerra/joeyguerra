@@ -1,6 +1,6 @@
 # Hi there 👋 I'm Joey Guerra
 
-- 🔭 I’m currently working on ... startup business, workflow software for fixed appliance patients (Dental industry) & migrating off of Mulesoft
+- 🔭 I’m currently working on ... startup business, workflow software for fixed appliance patients (Dental industry) & modernizing [Hubot](https://github.com/hubotio)
 - 🌱 I’m currently learning ... Entrepreneurship
 - 👯 I’m looking to collaborate on ... Growing software engineers
 - 🤔 I’m looking for help with ... Finding problems I love
