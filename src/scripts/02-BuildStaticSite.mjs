@@ -32,8 +32,18 @@ const THIS_FILE_NAME = fileURLToPath(import.meta.url)
 const TEMPLATES_FOLDER = `${path.resolve(DIR_NAME, './templates')}/`
 const WWW_FOLDER = `${path.resolve(DIR_NAME, './www')}/`
 const PUBLIC_FOLDER = (process.env.PUBLIC_FOLDER ?? `${path.resolve(DIR_NAME, './_site')}`).replace(/\/$/, '') + '/'
+const BASE_HREF = (process.env.BASE_HREF ?? '').replace(/\/$/, '')
 
 let posts = []
+
+const topLevelMeta = {
+    baseHref () {
+        if (!this.uri) return `/${BASE_HREF}/`
+        const parts = this.uri.split('/')
+        parts.pop()
+        return parts.reduce((a, b) => a + '../', `/${BASE_HREF}/`)
+    }
+}
 
 let touch = async (filePath, logger = () => {}) => {
     try {
@@ -92,7 +102,7 @@ export default async robot => {
         if(filename.includes('blog/') && props.should_publish == 'yes' && props.title) {
             posts.push(props)
         }
-        
+        props = {...props, ...topLevelMeta}
         let template = new Template(html, {meta: props, ...options, posts}, partials, functions)
         cb(null, await template.render())
     })
@@ -123,6 +133,8 @@ export default async robot => {
                 posts.push(markdown.meta)
             }
             output = output.replace(/`/g, '<replaced-backtick>')
+            markdown.meta = {...markdown.meta, ...topLevelMeta}
+
             let template = new Template(output, {meta: markdown.meta, ...options}, partials, functions)
             callback(null, (await template.render()).replace(/<replaced-backtick>/g, '`'))
         }catch(e){
@@ -216,7 +228,8 @@ export default async robot => {
         return a.published > b.published ? -1 : 1
     })
     let blogIndex = await File.readFile(`${WWW_FOLDER}blog/index.html`, 'utf-8')
-    let template = new Template(blogIndex, {posts}, partials, functions)
+
+    let template = new Template(blogIndex, {meta: topLevelMeta, posts}, partials, functions)
     let blogIndexHtml = await template.render()
     await File.writeFile(`${PUBLIC_FOLDER}blog/index.html`, blogIndexHtml, 'utf-8')
 
