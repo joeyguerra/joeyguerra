@@ -41,7 +41,7 @@ const topLevelMeta = {
         if (!this.uri) return `/${BASE_HREF}/`
         const parts = this.uri.split('/')
         parts.pop()
-        return parts.reduce((a, b) => a + '../', `/${BASE_HREF}/`)
+        return parts.reduce((a, b) => a + '../', `${BASE_HREF}/`)
     }
 }
 
