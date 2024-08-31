@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/joeyguerra
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://www.joeyguerra.com
+  * I am joeyguerra (https://keybase.io/joeyguerra) on keybase.
+  * I have a public key ASBDxkxeKV2rhI1xg9U9HoLNphwjWh_qk2Sj5V969ys6fAo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "012043c64c5e295dab848d7183d53d1e82cda61c235a1fea9364a3e55f7af72b3a7c0a",
+      "host": "keybase.io",
+      "kid": "012043c64c5e295dab848d7183d53d1e82cda61c235a1fea9364a3e55f7af72b3a7c0a",
+      "uid": "e7e69cc7e7a9dca6c12ec72c578f0919",
+      "username": "joeyguerra"
+    },
+    "merkle_root": {
+      "ctime": 1546917660,
+      "hash": "bab7a49214570396a37ef8b3e753bd6eb6bda4bfccac02b162cb1761d88e3bb32bc015b49db7de5ea6e35d4a24e1fc2d1a1832d2921c5ba3b41a99de6a35697c",
+      "hash_meta": "a012ce31f574bc10201c96fc92e22e3faeffd3588d3f55973984c5d51b903597",
+      "seqno": 4249474
+    },
+    "service": {
+      "entropy": "Od1hvg05bt5IkFGXL4LQE8VK",
+      "hostname": "www.joeyguerra.com",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "2.12.6"
+  },
+  "ctime": 1546917694,
+  "expire_in": 504576000,
+  "prev": "7a8ee23555dbd04fb455146775e67646d35300c9691f03e77e80461d4e16b602",
+  "seqno": 8,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgQ8ZMXildq4SNcYPVPR6CzaYcI1of6pNko+VfevcrOnwKp3BheWxvYWTESpcCCMQgeo7iNVXb0E+0VRRndeZ2RtNTAMlpHwPnfoBGHU4WtgLEIP7xXVl/wYZbf1tw32GUy1oSiOKnSPuvxvmi4A+izIYUAgHCo3NpZ8RAvHtQorg5aD2jLBzp79erSBIam2ocO8VGY85y9Q+SbvqrqRSyu2p5c/EZ7k/Idn6IPUvFTp80mi9uLsBRAOYkAqhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIDj6mM+u1+d7LbJAWBDbwJnSKByvLorHv30cqHG0Wh1Wo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/joeyguerra
+
+==================================================================

@@ -1,0 +1,6 @@
+@namespace "http://www.joeyguerra.com";
+@namespace joeyapp "http://www.joeyguerra.com/app";
+
+joeyapp|p {
+    font-size: 10em;
+}

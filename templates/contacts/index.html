@@ -1,0 +1,125 @@
+{{#> layouts/index.html}}
+
+<h1>Contacts</h1>
+<form action="/contacts" method="get">
+    <label for="term">Search Term</label>
+    <input id="search" type="search" name="q" value="{{term}}" />
+    <button type="submit">Find</button>
+</form>
+{{#each flash}}
+<span>{{type}}</span> <span>{{message}}</span>
+{{/each}}
+<table id="contactsView">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="template" style="display: none;">
+            <td>${name}</td>
+            <td>${email}</td>
+            <td>${phone}</td>
+            <td>
+                <menu>
+                    <li><a href="/contacts/${id}">View</a></li>
+                    <li><a href="/contact/${id}">Edit</a></li>
+                    <li>
+                        <form action="/contact/${id}" method="post">
+                            <input type="hidden" name="_method" value="delete">
+                            <input type="hidden" name="_csrf" value="${csrf}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </li>
+                </menu>
+            </td>
+        </tr>
+        {{#each contacts}}
+        <tr id="contact-{{id}}">
+            <td>{{name}}</td>
+            <td>{{email}}</td>
+            <td>{{phone}}</td>
+            <td>
+                <menu>
+                    <li><a href="/contacts/{{id}}">View</a></li>
+                    <li><a href="/contact/{{id}}">Edit</a></li>
+                    <li>
+                        <form action="/contact/{{id}}" method="post">
+                            <input type="hidden" name="_method" value="delete">
+                            <input type="hidden" name="_csrf" value="{{csrf}}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </li>
+                </menu>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="3"></th>
+            <th>
+                <menu>
+                    <li><a href="/contact">Add</a></li>
+                </menu>
+            </th>
+        </tr>
+    </tfoot>
+</table>
+<script type="module">
+    import MakeObservableList from './webapp/MakeObservableList.mjs'
+    import MakeKeyValueObservable from './webapp/MakeKeyValueObservable.mjs'
+    window.app.model.contacts = MakeObservableList(...Array.from(contactsView.querySelectorAll('tbody tr:not(.template)')).map((row) => {
+        const id = row.id.replace('contact-', '')
+        const [name, email, phone] = Array.from(row.querySelectorAll('td')).map(td => td.textContent)
+        return MakeKeyValueObservable({ id, name, email, phone})
+    }))
+    class SearchView {
+        constructor(container, model, delegate){
+            this.container = container
+            this.model = model
+            this.delegate = delegate
+            this.model.observe('term', this)
+            this.container.addEventListener('keyup', (event) => {
+                this.model.term = event.target.value
+            })
+        }
+        update (key, old, value) {
+
+        }
+    }
+    class ContactView {
+        #template = null
+        constructor(container, model, delegate){
+            this.container = container
+            this.model = model
+            this.delegate = delegate
+            this.model.observe('push', this)
+            this.model.observe('remove', this)
+            this.#template = this.container.querySelector('.template').cloneNode(true)
+            this.#template.style.display = null
+        }
+        update (key, old, value) {
+            if(this[key]) this[key](old, value)
+        }
+        push (old, value) {
+            const elem = this.#template.cloneNode(true)
+            elem.id = `contact-${value.id}`
+
+            elem.innerHTML = elem.innerHTML.replace(/\$\{(\w+)\}/g, (match, key) => value[key])
+            this.container.querySelector('tbody').appendChild(elem)
+        }
+        remove (old, value) {
+            const elem = this.container.querySelector(`#contact-${old.id}`)
+            elem?.parentNode?.removeChild(elem)
+        }
+    }
+    const contactView = new ContactView(window.contactsView, window.app.model.contacts, window.app)
+    const searchView = new SearchView(window.search, window.app.model, window.app)
+    window.app.views.push(contactView)
+    window.app.views.push(searchView)
+</script>
+{{/layouts/index.html}}

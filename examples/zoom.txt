@@ -1,0 +1,1 @@
+[0:v]zoompan=z='zoom+0.001':x=0:y=ih-(ih/zoom):d=2*60:fps=60[out]

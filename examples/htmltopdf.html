@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Gatlin PDFs</title>
+        <meta name="twitter:image:src" content="https://htmltopdf.gokaizen.io/images/pdfslogo.png"/>
+        <meta name="twitter:site" content="@kaizeniopdfs"/>
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:title" content="Kaizenio - Generate a ton of PDFs"/>
+        <meta name="twitter:description" content="Purchase orders, invoices, whatever else you can think of, from a Docker container side car in k8s."/>
+        <meta property="og:image" content="https://htmltopdf.gokaizen.io/images/pdfslogo.png"/>
+        <meta property="og:image:alt" content="Purchase orders, invoices, whatever else you can think of, from a Docker container side car in k8s."/>
+        <meta property="og:image:width" content="676"/>
+        <meta property="og:image:height" content="213"/>
+        <meta property="og:site_name" content="htmltopdf"/>
+        <meta property="og:type" content="object"/>
+        <meta property="og:title" content="Kaizenio - Generate a ton of PDFs"/>
+        <meta property="og:url" content="https://htmltopdf.gokaizen.io"/>
+        <meta property="og:description" content="Purchase orders, invoices, whatever else you can think of, from a Docker container side car in k8s."/>
+        <style>
+            /*** The new CSS Reset - version 1.2.0 (last updated 23.7.2021) ***/
+
+            /* Remove all the styles of the "User-Agent-Stylesheet", except for the 'display' property */
+            *:where(:not(iframe, canvas, img, svg, video):not(svg *)) {
+                all: unset;
+                display: revert;
+            }
+
+            /* Preferred box-sizing value */
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+
+            /* Remove list styles (bullets/numbers) */
+            ol, ul {
+                list-style: none;
+            }
+
+            /* For images to not be able to exceed their container */
+            img {
+                max-width: 100%;
+            }
+
+            /* removes spacing between cells in tables */
+            table {
+                border-collapse: collapse;
+            }
+
+            /* revert the 'white-space' property for textarea elements on Safari */
+            textarea {
+                white-space: revert;
+            }
+
+            html, body {
+                font-size: 17px;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            }
+            body {
+                padding: 2em;
+                background-color: tomato;
+            }
+            h1 {
+                font-size: 3rem;
+                font-weight: bold;
+                margin-bottom: .3em;
+            }
+            h2 {
+                font-size: 2rem;
+                font-weight: bold;
+            }
+            p {
+                margin-bottom: 2em;
+            }
+            a {
+                text-decoration: underline;
+            }
+            #pdf {
+                display: block;
+                font-size: 15rem;
+                font-weight: bold;
+                position: absolute;
+                transform: translate(-50%, -50%);
+                bottom: 0;
+                bottom: 0;
+                left: 50%;
+                z-index: -1;
+                color: deeppink;
+                text-shadow: 5px 5px black;
+            }
+            form {
+                position: relative;
+                padding-bottom: 3em;
+            }
+            fieldset{
+                margin-bottom: 1em;
+                border: solid 1px black;
+                box-shadow: 5px 5px black;
+                padding: 1em;
+            }
+            fieldset label {
+                display: block;
+                border: solid 1px;
+                background-color: black;
+                color: white;
+                padding: .3em;
+            }
+            button {
+                border: solid 1px black;
+                box-shadow: 5px 5px black;
+                background-color: rgb(4, 228, 4);
+                color: white;
+                font-size: 2em;
+                position: absolute;
+                bottom: 0;
+                right: 0;
+            }
+            textarea {
+                resize: both;
+                width: 100%;
+                padding: .5em;
+                border: solid 1px gray;
+            }
+            dl {
+                margin-right: 1em;
+                margin-bottom: 1em;
+            }
+        </style>
+    </head>
+    <body>
+        <head>
+            <h1>Generate a ton of PDFs super fast</h1>
+            <p>Purchase orders, invoices, whatever else you can think of, from a Docker container side car in k8s.</p>
+        </head>
+        <main>
+            <aside>
+                <head>
+                    <h2>Pricing</h2>
+                </head>
+                <section>
+                    <dl>
+                        <dt>$500.00 USD / year</dt>
+                        <dd>Synchronous HTTP POST calls</dd>
+                    </dl>
+                    <dl>
+                        <dt>$1,000.00 USD / year</dt>
+                        <dd>Run as a Docker container</dd>
+                    </dl>
+                </section>
+                <section>
+                    <head>
+                        <h2>Get a License</h2>
+                    </head>
+                    <p><a href="mailto:info@kaizen.io?subject=Get%20a%20htmltopdf%20license">Email</a> us for a license.</p>
+                </section>
+            </aside>
+        </main>
+        <footer>
+            <span id="pdf">PDFs</span>
+        </footer>
+    </body>
+</html>

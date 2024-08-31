@@ -1,0 +1,315 @@
+${hasLayout('layouts/carousel.html')}
+<meta itemprop="title" content="Carousel Example 1">
+<meta itemprop="image" content="/imgs/pushups-screenshot.jpg">
+<meta itemprop="touchStartupImage" content="/imgs/daily-pushups-splash-screen.png">
+<meta itemprop="summary" content="LinkedIn carousel template.">
+<meta itemprop="should_publish" content="yes">
+<meta itemprop="canonical" content="https://www.joeyguerra.com/linkedincarousel.html">
+<style>
+    header {
+        text-align: center;
+        padding: 0;
+        width: 100%;
+    }
+    header h1 {
+        font-size: 3em;
+    }
+    .slider {
+        width: var(--slide-width);
+        height: var(--slide-height);
+        margin: var(--slide-padding) auto;
+        position: relative;
+        padding: 0;
+        overflow: hidden;
+        box-shadow: 0 0 var(--slide-padding) rgba(0, 0, 0, 0.5);
+    }
+
+    .slider > ul {
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        overflow: auto;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        height: 100%;
+    }
+    
+    .slider > .slides > li {
+        scroll-snap-align: center;
+        height: 100%;
+        width: 100%;
+        flex-shrink: 0;
+    }
+    .slider .toolbar {
+        position: absolute;
+        bottom: calc(var(--toolbar-height) * -2);
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: var(--toolbar-height);
+        transition: bottom 0.2s ease-in-out;
+        background: rgba(77, 70, 62, 0.5);
+        border-radius: calc(var(--toolbar-height) * 1);
+    }
+    .slider:hover .toolbar {
+        bottom: 0;
+    }
+    .slider .toolbar a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        padding: 0;
+        height: 100%;
+        text-align: center;
+        line-height: calc(var(--toolbar-height)*.8);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        width: calc(var(--toolbar-height) * 0.7);
+        height: calc(var(--toolbar-height) * 0.7);
+        margin: 0;
+        font-size: calc(var(--toolbar-height) * 0.5);   
+    }
+    .slider .toolbar nav {
+        display: flex;
+        justify-content: space-between;
+        width: var(--slide-width);
+        align-items: center;
+        height: 100%;
+        padding: 0 var(--slide-padding);
+    }
+    .slides {
+        color: white;
+    }
+    .slides header::before {
+        content: '';
+        display: block;
+        padding-bottom: 220px;
+        background: url('/imgs/reverse-kaizen-logo.png') no-repeat center center;
+    }
+    .slides li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-content: center;
+        background: var(--slide-background);
+        padding: 3em;
+    }
+    .slides p {
+        font-size: 2.5em;
+        text-align: center;
+    }
+    .slides img {
+        margin: 3em auto;
+        width: 40%;
+        border-radius: 5%;
+    }
+    #slide-5 figure {
+        margin-top: 5em;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        gap: 1em;
+    }
+    #slide-5 figure img {
+        width: 20%;
+        margin: 0;
+        border-radius: 1%;
+    }
+    #slide-5 figure img:first-child
+    {
+        width: 56%;
+    }
+    .circled::before {
+        background-image: url(/imgs/circle.svg);
+        background-repeat: no-repeat;
+        content: "";
+        position: absolute;
+        pointer-events: none;
+        width: 110%;
+        height: 50%;
+    }
+
+    .underlined {
+        background-image: url(/imgs/underline.svg);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        content: "";
+        pointer-events: none;
+        display: block;
+        width: 100%;
+        height: 20px;
+    }
+    .slides ol {
+        font-size: 2.5em;
+        text-align: left;
+        padding-left: 2em;
+        list-style: decimal;
+        width: 90%;
+        margin: 3em auto;
+    }
+    .slides ol li {
+        margin: 0;
+        padding: 0 0 1em 0;
+        display: list-item;
+    }
+    @media print {
+        .slider {
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            align-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        .slider > ul {
+            display: block;
+            overflow: auto;
+            box-shadow: none;
+        }
+        body>header {
+            display: none;
+        }
+        .slider .toolbar {
+            display: none;
+        }
+        .slider > .slides > li {
+            page-break-inside: avoid;
+            flex-shrink: 1;
+            display: block;
+            text-align: center;
+        }
+    }
+
+</style>
+<button id="generate-pdf">Generate PDF</button>
+<section id="carousel" class="slider">
+    <ul class="slides">
+        <li>
+            <header>
+                <h1>Tech Talk: What is an Event?</h1>
+            </header>
+            <img src="/imgs/radio-tower.webp" alt="Radio Tower Broadcasting Events" title="Radio Tower Broadcasting Events" />
+            <p>Understand what we mean when we say "event".</p>
+        </li>
+        <li>
+            <header>
+                <h1>What is an Event?</h1>
+            </header>
+            <p>There's 2 contexts to consider when thinknig about the term "event".</p>
+            <ol>
+                <li>When computer programs talk to each other.</li>
+                <li>When a person is executing a business process.</li>
+            </ol>
+        </li>
+        <li>
+            <header>
+                <h1>Programs Coordinate By Sending Events To Each Other</h1>
+            </header>
+            <p>Imagine a new order is placed in an online store. The order details are published as an event, triggering other programs to execute processes like inventory updates, payment processing, and shipping.</p>
+        </li>
+        <li>
+            <header>
+                <h1>Why Do We Use Events?</h1>
+            </header>
+            <p>When an event is published, it's made available to any program that wants to get it, ensuring all necessary components are informed and can act accordingly. This enables a flexible system where each program can be managed and operated separately from all the others.</p>
+        </li>
+        <li>
+            <header>
+                <h1>Event is also a Business Fact</h1>
+            </header>
+            <p>An event is also a fact that occurred in a process or within a business context.</p>
+            <p>e.g. A customer's payment is received—this is an event that represents a factual update to the business process, such as updating the customer's account balance or triggering order fulfillment.</p>
+        </li>
+        <li>
+            <header>
+                <h1>Why Events Matter</h1>
+            </header>
+            <p>Efficiency: Events drive real-time processing, ensuring systems react immediately to changes.</p>
+            <p>Scalability: By decoupling programs, event-driven systems can scale separately, meaning computer resources can be allocated to each capability per their own workloads.</p>
+        </li>
+        <li>
+            <header>
+                <h1>Harnessing the Power of Events</h1>
+            </header>
+            <p>Understanding events as both messages and business facts is key to leveraging Event-Driven Architecture for responsive, scalable, flexible, and efficient systems.</p>
+            <p>When we collaborate about the events that happen in the business, we can also build higher-quality software that really meets the needs of it's users.</p>
+        </li>
+        <li>
+            <header>
+                <h1>Ready to implement an Event-Driven Architecture? Let's talk about how to make your systems flexible, responsive and scalable.</h1>
+            </header>
+            <p>Contact us at https://www.kaizen.io or connect with us here on LinkedIn.</p>
+        </li>
+        <li>
+            <header>
+                <h1>Follow me for more insights on modern architecture practices and how to solve high-leverage problems in your business.</h1>
+            </header>
+            <a href="https://calendly.com/joey-joeyguerra/30min" title="Follow Joey Guerra on LinkedIn">Follow Joey Guerra on LinkedIn</a>
+        </li>
+    </ul>
+    <footer class="toolbar">
+        <nav></nav>
+    </footer>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+
+    function setIdsOnSlides (elements) {
+        elements.forEach((element, i) => {
+            element.id = 'slide-' + parseInt(i + 1)
+        })
+    }
+    function buildNav (nav, elements) {
+        elements.forEach((element, i) => {
+            const a = document.createElement('a')
+            a.href = window.location.pathname + '#slide-' + parseInt(i + 1)
+            a.textContent = i + 1
+            nav.appendChild(a)
+        })
+        return nav
+    }
+    let slides = Array.from(document.querySelectorAll('.slides>li'))
+    let nav = document.querySelector('.slider .toolbar nav')
+    setIdsOnSlides(slides)
+    buildNav(nav, slides)
+
+    document.getElementById('generate-pdf').addEventListener('click', async function() {
+        const { jsPDF } = window.jspdf;
+        const slides = Array.from(document.querySelectorAll('.slides li')); // Adjust the selector to match your slides
+        const options = {
+            margin: 1,
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: { scale: 1 }
+        };
+        let pdf;
+        let i = 0;
+        for await (let slide of slides) {
+            let canvas = await html2canvas(slide, options.html2canvas)
+            const imgData = canvas.toDataURL('image/jpeg', options.image.quality);
+            const imgProps = pdf ? pdf.getImageProperties(imgData) : { width: canvas.width, height: canvas.height };
+            const pdfWidth = imgProps.width / 96;
+            const pdfHeight = imgProps.height / 96;
+            if (i === 0) {
+                pdf = new jsPDF({
+                    unit: 'in',
+                    format: [pdfWidth, pdfHeight],
+                    orientation: 'portrait'});
+            } else {
+                pdf.addPage([pdfWidth, pdfHeight]);
+            }
+            pdf.addImage(imgData, 'JPEG',0, 0, pdfWidth, pdfHeight);
+            i++;
+        }
+        pdf.save('carousel.pdf');
+    });
+
+</script>

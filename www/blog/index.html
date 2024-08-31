@@ -1,0 +1,13 @@
+${hasLayout('layouts/blog.html')}
+${posts.map((post, index) => `
+<meta itemprop="should_publish" content="yes">
+<article>
+    <header>
+        <h2><a title="${post.title}" href="${post.uri}">${post.title}</a></h2>
+        <time>${post.displayDate}</time>
+    </header>
+    <p>${post.summary}</p>
+    <footer>
+        <small>${posts.length - index - 1}</small>
+    </footer>
+</article>`).join('\n')}

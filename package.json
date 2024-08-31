@@ -1,0 +1,61 @@
+{
+  "name": "jbot-website",
+  "version": "2.0.27",
+  "description": "Personal website and bot for Joey Guerra",
+  "main": "index.mjs",
+  "dependencies": {
+    "@hubot-friends/hubot-discord": "^4.0.0",
+    "ansi-escapes": "^6.2.0",
+    "body-parser": "^1.20.2",
+    "cheerio": "^1.0.0-rc.12",
+    "discord.js": "^14.11.0",
+    "express-session": "^1.17.3",
+    "formidable": "^3.5.0",
+    "html-to-pdfmake": "^2.5.1",
+    "hubot": "^11.3.0",
+    "jose": "^4.14.4",
+    "markdown-it": "^14.0.0",
+    "markdown-it-meta": "^0.0.1",
+    "method-override": "^3.0.0",
+    "openai": "^4.23.0",
+    "ora": "^6.3.1",
+    "pdfmake": "^0.2.9",
+    "socket.io": "^4.7.5",
+    "tedious": "^18.6.1"
+  },
+  "devDependencies": {
+    "jsdom": "^22.1.0",
+    "pino-pretty": "^11.0.0"
+  },
+  "engines": {
+    "node": "^22.x.x"
+  },
+  "scripts": {
+    "test": "node --test --experimental-vm-modules",
+    "test:local": "node --watch --experimental-vm-modules",
+    "start:env": "env $(cat .env | grep -v \"#\" | xargs -0) hubot -a @hubot-friends/hubot-discord -n jbot",
+    "start": "NODE_ENV=production node ./node_modules/hubot/bin/Hubot.mjs -a @hubot-friends/hubot-discord -n jbot",
+    "start:local": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs -a @hubot-friends/hubot-discord --name jbot",
+    "start:shell": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs --name jbot",
+    "docker-build": "./docker-build.sh",
+    "local-deploy": "kubectl config use-context docker-desktop && kubectl apply -f charts/web/deployment.yaml -n default",
+    "publish": "node --run docker-build && node --run local-deploy",
+    "build": "hubot --execute pages"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joeyguerra/joeyguerra"
+  },
+  "keywords": [
+    "joey",
+    "guerra",
+    "personal",
+    "site"
+  ],
+  "author": "Joey Guerra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joeyguerra/joeyguerra/issues"
+  },
+  "homepage": "https://github.com/joeyguerra/joeyguerra#readme"
+}

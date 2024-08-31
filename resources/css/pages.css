@@ -1,0 +1,16 @@
+body {
+  background-size: 100%;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-color: #201e2a;
+  color: white;
+  font-size: 17px;
+  line-height: 1.3em;
+}
+body main section {
+  padding: 1.5em 1.5em;
+  position: relative;
+}
+a{
+  color: #82bad5;
+}

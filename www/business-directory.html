@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Directory</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background-color: #333;
+        color: #fff;
+        padding: 1rem;
+        text-align: center;
+      }
+      footer {
+        text-align: center;
+        padding: 25px auto;
+        line-height: 1em;
+        margin-top: 3em;
+        margin-bottom: 3em;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 25px;
+        justify-content: center;
+      }
+      footer small {
+        display: block;
+        font-size: .7em;
+        width: 50%;
+      }
+      footer img {
+        border-radius: 100%;
+        width: 75px;
+      }
+      aside { 
+        margin: 0 auto;
+        text-align: center;
+      }
+      iframe {
+        border: 0;
+        height: 215px;
+      }
+      textarea {
+        width: 100%;
+        height: 100%;
+      }
+      aside nav {
+        display: flex;
+        flex-direction: column;
+        gap: .5em;
+        margin-bottom: 1em;
+      }
+      aside nav a {
+        width: 100%;
+        display: block;
+        text-align: center;
+        padding: 1em;
+        border: 1px solid #000;
+        text-decoration: none;
+        color: #000;
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+    <h1>Business Directory</h1>
+    </header>
+    <main role="main">
+        <section>
+            <header>
+                <h2>Construction</h2>
+            </header>
+            <article itemscope itemtype="https://schema.org/Organization">
+                <h3 itemprop="name">Raider Construction Services LLC</h3>
+                <p itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+                    <span itemprop="addressLocality">Celina</span>
+                    <span itemprop="addressRegion">TX</span>
+                </p>
+                <p itemprop="telephone">(214) 636-8860</p>
+                <a itemprop="email" href="mailto:Tyler@constructionraider.com">Tyler@constructionraider.com</a>
+                <ul>
+                    <li><a itemprop="url" href="https://www.facebook.com/RaiderConstruction/" title="Facebook page for Raider Construction">Raider Construction</a></li>
+                    <li><a itemprop="url" href="https://www.linkedin.com/in/tyler-ashworth-a9606053/" title="LinkedIn page for Raider Construction">Raider Construction</a></li>
+                </ul>
+                <aside itemscope itemprop="employee" itemtype="https://schema.org/Person">
+                    <h4 itemprop="name">Tyler Ashworth</h4>
+                    <p itemprop="jobTitle">Owner</p>
+                </aside>
+                <meta itempprop="keywords" context="erosion control, earthwork, small concrete, landscaping">
+            </article>
+            <article itemscope itemtype="https://schema.org/Organization">
+                <h3 itemprop="name">Valentine Premier Construction</h3>
+                <p itemprop="founder">Krisit Valentine</p>
+                <p itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+                    <span itemprop="strettAddress">598 S. Denton Tap Rd #104</span>
+                    <span itemprop="addressLocality">Coppell</span>
+                    <span itemprop="addressRegion">TX</span>
+                    <span itemprop="postalCode">75019</span>
+                </p>
+                <p itemprop="telephone">(972) 538-4400</p>
+                <a itemprop="email" href="mailto:admin@valentinepremierconstruction.com">admin@valentinepremierconstruction.com</a>
+                <ul>
+                    <li><a itemprop="url" href="https://valentinepremierconstruction.com" title="Valentine Premier Construction Website">Valentine Premier Construction</a></li>
+                </ul>
+                <aside itemscope itemprop="employee" itemtype="https://schema.org/Person">
+                    <h4 itemprop="name">Kristi Valentine</h4>
+                    <p itemprop="jobTitle">Owner</p>
+                    <a itemprop="url" href="https://www.linkedin.com/in/kristivalentine/" title="LinkedIn page for Kristi Valentine">Kristi Valentine</a>
+                </aside>
+                <meta itempprop="keywords" context="construction, rennovations">
+            </article>
+            <article itemscope itemtype="https://schema.org/Organization">
+                <h3 itemprop="name">High Impact Restorations + Exteriors</h3>
+                <p itemprop="founder">Scott Cummings</p>
+                <p itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+                    <span itemprop="strettAddress">3245 Main St Suite 235</span>
+                    <span itemprop="addressLocality">Frisco</span>
+                    <span itemprop="addressRegion">TX</span>
+                    <span itemprop="postalCode">75034</span>
+                </p>
+                <p itemprop="telephone">(214) 906-4585</p>
+                <ul>
+                    <li><a itemprop="url" href="https://www.high-impact-exteriors.com" title="High Impact Restorations + Exteriors">High Impact Restorations + Exteriors</a></li>
+                </ul>
+                <aside itemscope itemprop="employee" itemtype="https://schema.org/Person">
+                    <h4 itemprop="name">Scott Cummings</h4>
+                    <p itemprop="jobTitle">Owner</p>
+                    <a itemprop="url" href="https://www.linkedin.com/in/scott-cummings-8821112/" title="LinkedIn page for Scott Cummings">Scott Cummings</a>
+                </aside>
+                <meta itempprop="keywords" context="roofing, siding, gutters, windows">
+            </article>
+        </section>
+    </main>
+    <footer>
+      <small>&copy; 2024 Business Directory</small>
+    </footer>
+    </body>
+</html>

@@ -1,0 +1,226 @@
+{{#> LayoutMain.html}}
+<meta name="title" content="Hubot is your friendly robot sidekick. Install him in your company to dramatically improve employee efficiency."/>
+<meta name="canonical" content="https://hubot.gokaizen.io/"/>
+<section class="main">
+    <div class="insides clearfix">
+        <a href="/docs" class="button"><strong>View Hubot's Documentation</strong>
+            <span>(Learn about getting started, etc.)</span>
+        </a>
+        <a href="https://github.com/joeyguerra/hubot/" class="button">
+            <strong>View Hubot's Source Code</strong><span>(via https://github.com/joeyguerra/hubot/.)</span>
+        </a>
+    </div>
+    <div class="schematics">
+        <div class="schematic">
+            <img src="/assets/images/layout/schematic.svg" alt="hubot schematic" width="960" class="schematic-img" />
+            <p><b>Fig. 1</b> &mdash; Hubot Schematics</p>
+        </div>
+    </div>
+    <section class="about" contenteditable="true">
+    </section>
+    <div class="letter">
+        <p>I didn't invent Hubot as much as he spawned into our existence and invented himself. He began as a coding assistant. No one expected him to evolve beyond a helper bot and understand us better than we could ever understand ourselves. No one expected him to learn. He is indeed a curious, spectacular, and, dare I say, frightening machine.</p>
+    </div>
+    <div class="screenshot">
+        <img src="/assets/images/screenshots/dangerroom-full.png" alt="Example of Hubot in action" />
+    </div>
+</section>
+<script type="module">
+    import { makeKeyValueObservable, ObservableArray } from '/lib/Observable.mjs'
+    const commands = new ObservableArray()
+    const parsers = {
+
+    }
+    const patterns = {
+        commands: new RegExp(`webtodos (?<commandName>${Object.keys(parsers).join('|')})`, 'i')
+    }
+
+    const handle = function* (command, delegate) {
+        let commandName = patterns.commands.exec(command.text)?.groups.commandName
+        if(parsers[commandName]){
+            yield parsers[commandName](command, delegate)
+        }
+        return []
+    }
+
+    const createWebSocket = (ws)=>{
+        ws = new WebSocket(`${location.protocol.indexOf('https') > -1 ? 'wss' : 'ws'}://${location.host}${location.pathname}${location.search}`)
+        let reconnectInterval = null
+        ws.addEventListener('error', e => {
+            console.error('error from ws', e)
+            ws.close()
+            reconnectInterval = setInterval(()=>{
+                ws = createWebSocket(ws)
+                clearInterval(reconnectInterval)
+            }, 2000)
+        })
+        ws.addEventListener('open', e => {
+            ws.send('hi')
+        })
+        ws.addEventListener('close', e => {
+        })
+        ws.addEventListener('message', async e => {
+            const command = {
+                text: e.data.replace(/\"/g, '')
+            }
+            console.log(e, e.data)
+            console.log(command)
+            for await(let g of handle(command)){
+                for await (let e of g){
+                    console.log('handled', e)
+                }
+            }
+        })
+        commands.observe('push', (key, previous, value)=>{
+            if(ws.readyState != WebSocket.OPEN) return
+            console.log(key, value)
+            ws.send(JSON.stringify(value))
+        })
+        return ws
+    }
+
+    window.addEventListener('load', e => {
+        const ws = createWebSocket({})
+    })
+</script>
+<script type="module">
+    import { makeKeyValueObservable, ObservableArray } from '/lib/Observable.mjs'
+    class View {
+        #keyIsPressed = false
+        constructor(container, model, delegate){
+            this.container = container
+            this.model = model
+            this.delegate = delegate
+            ;['keydown', 'keyup', 'click'].forEach(e => {
+                this.container.addEventListener(e, this, true)
+            })
+        }
+        handleEvent(e){
+            if(this[e.type]) this[e.type](e)
+        }
+        keydown(e){
+            this.#keyIsPressed = true
+        }
+        keyup(e){
+            this.#keyIsPressed = false
+            this.model.text = this.container.textContent
+        }
+        click(e){
+            console.log('clicked', e)
+        }
+        release(){
+            ;['keydown', 'keyup', 'click'].forEach(e => {
+                this.container.removeEventListener(e, this, true)
+            })
+            if(this.model.release) this.model.release()
+            this.delegate?.released(this)
+        }
+    }
+    const views = new ObservableArray()
+    window.views = views
+    const editable = document.querySelector('.about')
+    const callback = async function(mutationsList, observer) {
+        console.log(mutationsList)
+        for(let mutation of mutationsList) {
+            if(mutation.removedNodes.length > 0){
+                for(let node of mutation.removedNodes){
+                    if(node.nodeType != Node.ELEMENT_NODE) continue
+                    const v = await views.remove(v => v.container == node)
+                    console.log('removed', v)
+                    v?.release()
+                }
+            }
+            if(mutation.target == editable && mutation?.addNodes?.length > 0){
+                for(let node of mutation.addNodes){
+                    if(node.nodeType != Node.ELEMENT_NODE) continue
+                    if(node.nodeName.toLowerCase() != 'div') continue
+                    node = replaceNodeWithP(node)
+                    node = putCursorBackToNewP(node)
+                }
+            }
+        }
+    }
+    const observer = new MutationObserver(callback)
+    observer.observe(editable, {attributes: true, childList: true, subtree: true})
+
+    const addToViewsIfNotExists = (node)=>{
+        const existingView = views.find(v => v.container == node)
+        // console.log('existingView', existingView)
+        if(existingView) return
+        const obj = makeKeyValueObservable({
+            text: node.textContent.toString()
+        })
+        obj.observe('text', app)
+        const view = new View(node, obj, app)
+        console.log('new view', view)
+        views.push(view)
+    }
+    const editor = {
+        insertText(e){
+            const selection = window.getSelection()
+            let node = selection.focusNode
+            if(selection.focusNode.parentNode == editable){
+                node = replaceNodeWithP(selection.focusNode)
+                node = putCursorBackToNewP(node)
+                console.log('replaced', node)
+            }
+            if(node.parentNode !== editable){
+                node = node.parentNode
+            }
+            addToViewsIfNotExists(node)
+            node.dispatchEvent(new KeyboardEvent('keyup', {key: e.key}))
+        },
+        deleteContentBackward(e){
+            const selection = window.getSelection()
+            let node = selection.focusNode
+            node.dispatchEvent(new KeyboardEvent('keyup', {key: e.key}))
+            console.log(e)
+        }
+    }
+    const app = {
+        update(key, old, value){
+            if(value.indexOf('# ') == 0){
+                const selection = window.getSelection()
+                let node = selection.focusNode.parentNode
+                const h1 = document.createElement('h1')
+                h1.textContent = value.replace('# ', '')
+                node.parentNode.replaceChild(h1, node)
+                putCursorBackToNewP(h1)
+            }
+            console.log(`${new Date()} update: ${key}, ${old}, ${value}`)
+        },
+        released(view){
+
+        }
+    }
+    const replaceNodeWithP = (node)=>{
+        const p = document.createElement('p')
+        p.textContent = node.textContent
+        node.parentNode.replaceChild(p, node)
+        return p
+    }
+    const putCursorBackToNewP = (node)=>{
+        const range = node.ownerDocument.createRange()
+        range.setStart(node, 1)
+        range.collapse(true)
+        const selection = node.ownerDocument.getSelection()
+        selection.removeAllRanges()
+        selection.addRange(range)
+        return node
+    }
+    const findNodeThatWasSelected = (node)=>{
+        const selection = node.ownerDocument.getSelection()
+        console.log(selection.anchorNode.parentNode)
+        return selection.anchorNode.parentNode
+    }
+    document.addEventListener('selectionchange', e => {
+        const selection = window.getSelection()
+        const range = selection.getRangeAt(0)
+    }, true)
+    editable.addEventListener('input', e => {
+        if(editor[e.inputType]){
+            editor[e.inputType](e)
+        }
+    }, true)
+</script>
+{{/LayoutMain.html}}
