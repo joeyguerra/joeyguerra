@@ -34,7 +34,7 @@ jobs:
         with:
           node-version: latest
       - run: npm install
-      - run: npm run build
+      - run: BASE_HREF=joeyguerra/testing npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
