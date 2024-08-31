@@ -19,8 +19,14 @@ node --run start:local
 
 # Deploy To Local K8s
 
+## First Time K8s Needs Some Secrets
+
 ```sh
-docker build . -t local/jbot-website:1.0.2
 kubectl create secret generic discord-token --from-literal=HUBOT_DISCORD_TOKEN=<replace with token>
-kubectl apply -f charts/web/deployment.yml -n default
+```
+
+## Local Build and Deploy
+
+```sh
+node --run publish
 ```
