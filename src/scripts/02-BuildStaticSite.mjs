@@ -39,9 +39,10 @@ let posts = []
 const topLevelMeta = {
     baseHref () {
         if (!this.uri) return `${BASE_HREF}/`
-        const parts = this.uri.split('/')
+        const parts = `${BASE_HREF}/${this.uri}`.split('/')
+        parts.shift()
         parts.pop()
-        return parts.reduce((a, b) => a + '../', `${BASE_HREF}/`)
+        return parts.reduce((a, b) => a + '../', `/`)
     }
 }
 
