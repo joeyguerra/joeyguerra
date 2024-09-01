@@ -9,7 +9,7 @@ image: /imgs/tacocat.jpeg
 
 # Tactical suggestions for developing non-coding skills
 
-<img class="full-width" src="/imgs/tacocat.jpeg" alt="Tacocat" />
+<img class="full-width" src="../../imgs/tacocat.jpeg" alt="Tacocat" />
 
 ## Facilitate a meeting
 

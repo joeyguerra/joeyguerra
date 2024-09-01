@@ -16,7 +16,7 @@ image: /imgs/851718f4-f56e-4784-a911-a8f15a71b0c5.webp
 # Strategic Planning: A Lesson from Kent Beck
 
 <figure>
-    <img class="full-width" src="/imgs/851718f4-f56e-4784-a911-a8f15a71b0c5.webp" alt="Strategic Planning" />
+    <img class="full-width" src="../../imgs/851718f4-f56e-4784-a911-a8f15a71b0c5.webp" alt="Strategic Planning" />
     <figcaption>
         Open AI generated hero image for this blog post.
     </figcaption>

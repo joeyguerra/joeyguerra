@@ -9,7 +9,7 @@ image: /imgs/iu-2.jpeg
 
 # Stop Being Held Hostage By Legacy Code
 
-<img class="full-width" src="/imgs/iu-2.jpeg" alt="Android" />
+<img class="full-width" src="../../imgs/iu-2.jpeg" alt="Android" />
 
 You're about to learn the real reason why your organization is held hostage by legacy code.
 

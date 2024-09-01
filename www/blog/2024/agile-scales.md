@@ -13,7 +13,7 @@ image: /imgs/6958430407_12683c821f_w.jpg
 # Does Agile Software Development Scale?
 
 <figure>
-    <img class="full-width" src="/imgs/6958430407_12683c821f_w.jpg" alt="The Big Bang Theory Case - Wallpaper by Mistic Soul" />
+    <img class="full-width" src="../../imgs/6958430407_12683c821f_w.jpg" alt="The Big Bang Theory Case - Wallpaper by Mistic Soul" />
     <figcaption>
         <a href="https://www.flickr.com/photos/66062500@N07/6958430407/" nofollow>The Big Bang Theory Cast - Wallpaper by Mystic Soul</a>
     </figcaption>

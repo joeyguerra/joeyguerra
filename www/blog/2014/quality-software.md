@@ -1,5 +1,5 @@
 ---
-layout: post.html
+layout: layouts/post.html
 title: Definition of Quality in Software
 summary: Has your boss ever asked you to increase your code quality? How did you do that?
 should_publish: yes

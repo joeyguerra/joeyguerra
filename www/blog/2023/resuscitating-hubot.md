@@ -13,7 +13,7 @@ image: /imgs/meandhubot.jpg
 
 # Resuscitating Hubot
 
-<img class="full-width" src="/imgs/meandhubot.jpg" alt="Photo of me sipping coffee from a white cup, and Hubot with a chat bubble that says, I have found the things" />
+<img class="full-width" src="../../imgs/meandhubot.jpg" alt="Photo of me sipping coffee from a white cup, and Hubot with a chat bubble that says, I have found the things" />
 
 I'm resuscitating [Hubot](https://hubotio.github.io/hubot/).
 
