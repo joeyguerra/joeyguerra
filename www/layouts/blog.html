@@ -25,7 +25,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes"/>
 
     <script type="module">
-      import App from "../webapp/App.mjs"
+      import App from "${meta.baseHref()}webapp/App.mjs"
       const io = options => {
         return {
           emit(event, message){console.log("socket.emit", event, message)},
