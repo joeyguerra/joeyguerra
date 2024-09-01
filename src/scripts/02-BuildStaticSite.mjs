@@ -26,6 +26,7 @@ import MarkdownIt from "markdown-it"
 import Meta from "markdown-it-meta"
 import {load as cheerio} from 'cheerio'
 import { Template } from '../../lib/Template.mjs'
+import { BaseHref } from '../../lib/BaseHref.mjs'
 
 const DIR_NAME = fileURLToPath(new URL('.', import.meta.url)).replace('/src/scripts/', '')
 const THIS_FILE_NAME = fileURLToPath(import.meta.url)
@@ -38,11 +39,7 @@ let posts = []
 
 const topLevelMeta = {
     baseHref () {
-        if (!this.uri) return `${BASE_HREF}/`
-        const parts = `${BASE_HREF}/${this.uri}`.split('/')
-        parts.shift()
-        parts.pop()
-        return parts.reduce((a, b) => a + '../', `/`)
+        return new BaseHref(this.uri, BASE_HREF).href
     }
 }
 

@@ -12,4 +12,4 @@ This has been a long time coming. I've preached about blogging for years and yet
 
 What got me to start writing a blog again, was when my friend and colleague Kijana started his own and [coded it himself](http://kijanawoodard.com/building-a-blog-engine) and Zach, one of my old co-workers from my time at Gamestop, picked up Moonscript and [built a blog engine](http://www.throw-up.com/building-openresty); so it's about time I try it for myself.
 
-I decided to use Javascript. [So I've built a static site generator in Javascript using Node JS](https://gitlab.com/joey/joey.gitlab.io). Now enough exposition, let's begin.
+I decided to use Javascript. [So I've built a static site generator in Javascript using Node JS](https://github.com/joeyguerra/joeyguerra). Now enough exposition, let's begin.
