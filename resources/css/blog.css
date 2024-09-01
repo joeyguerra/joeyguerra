@@ -110,7 +110,6 @@ code {
     color: white;
 }
 #repo-link{
-    background: url("/imgs/gitlab-icon-rgb.svg") top left no-repeat;
     text-indent: 45px;
     display: inline-block;
 }
