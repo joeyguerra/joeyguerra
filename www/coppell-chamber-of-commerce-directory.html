@@ -70,7 +70,7 @@ ${hasLayout('layouts/app.html')}
     </li>
 </ol>
 <script type="module">
-    let data = await (await fetch('/coppell-chamber-of-commerce-directory.json')).json()
+    let data = await (await fetch('coppell-chamber-of-commerce-directory.json')).json()
     let template = window.directory.querySelector('li')
     let container = template.cloneNode(true)
     template.remove()
