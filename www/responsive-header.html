@@ -1,0 +1,216 @@
+${hasLayout('layouts/default.html')}
+<meta itemprop="title" content="Responsive Header">
+<meta itemprop="summary" content="This is a responsive header with a mobile navigation.">
+<meta itemprop="canonical" content="https://www.joeyguerra.com/responsive-header.html">
+<meta itemprop="should_publish" content="yes">
+<style>
+    :root {
+        --nav-border: 1px solid white;
+        --nav-background: rgba(0, 0, 0, 0.9);
+        --nav-font-color: white;
+        --header-background: #333;
+        --header-font-color: white;
+        --header-font: Arial, sans-serif;
+        --hamburger-height: 50px;
+    }
+    body {
+        font-family: var(--header-font);
+        margin: 0;
+        padding: 0;
+    }
+    body>header {
+        position: fixed;
+        width: 100%;
+        top: 0;
+    }
+    body>main {
+        margin-top: var(--hamburger-height);
+    }
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background: var(--header-background);
+        color: var(--header-font-color);        
+    }
+
+    header h1 {
+        margin: 0;
+    }
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    nav ul li a {
+        color: var(--nav-font-color);
+        text-decoration: none;
+    }
+
+    .hamburger {
+        display: block;
+        cursor: pointer;
+        z-index: 1001;
+        position: absolute;
+        top: 15px;
+        right: var(--hamburger-height);
+    }
+
+    .hamburger div {
+        width: 25px;
+        height: 3px;
+        background-color: var(--nav-font-color);
+        margin: 5px 0;
+        transition: 0.4s;
+    }
+
+    nav {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: var(--nav-background);
+        display: flex;
+        justify-content: center;
+        transition: left 0.4s ease;
+        z-index: 1000;
+    }
+
+    nav.active {
+        left: 0;
+    }
+
+    .hamburger.active div:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .hamburger.active div:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active div:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+    nav ul {
+        width: 100%;
+        margin-top: var(--hamburger-height);
+    }
+    nav ul li {
+        border-bottom: var(--nav-border);
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    nav ul li:first-child {
+        border-top: var(--nav-border);
+    }
+    nav ul li a {
+        display: block;
+        width: 100%;
+        cursor: pointer;
+        padding: 10px 0;
+        text-align: center;
+    }
+
+    @media(min-width: 768px) {
+        nav {
+            position: static;
+            width: auto;
+            height: auto;
+            background-color: transparent;
+            flex-direction: row;
+            justify-content: flex-end;
+            transition: none;
+            margin-right: 30px;
+        }
+
+        .hamburger {
+            display: none;
+            position: relative;
+        }
+
+        nav ul {
+            flex-direction: row;
+        }
+        nav ul li:first-child {
+            border-top: none;
+        }
+        nav ul li {
+            margin: 0 10px;
+            border-bottom: none;
+        }
+    }
+</style>
+<header>
+    <h1>Joey Guerra</h1>
+    <div class="hamburger">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="responsive-header.html">Home</a></li>
+            <li><a href="responsive-header.html#about">About</a></li>
+            <li><a href="responsive-header.html#contact">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <header>
+        <h1>Responsive Header</h1>
+    </header>
+    <p>This is a responsive header with a mobile navigation.</p>
+    <section id="about">
+        <article>
+            <header>
+                <h1>About Joey Guerra</h1>
+            </header>
+            <p>I am Joey Guerra, the VP of Engineering at Kaizen I/O, a software development company based in the Dallas-Fort Worth Metroplex. In this role, I am responsible for designing and implementing solutions that integrate with the existing world, eliminate overburden and inconsistency, and automate with a human touch. My focus areas include Microsoft Office integration, software deployment pipelines, Kubernetes training and enablement, and Tuckman training for software engineering teams. I also specialize in distributed systems design, architecture, training, and implementation, leveraging the concept of a Ledger (Redis Streams) to solve various business challenges.</p>
+            <p>Prior to my current role, I have held various positions in the tech industry, honing my skills and expertise in software development and engineering. I have experience in inventory management, supply chain modernization, and business observability, and have a passion for leveraging technology to solve complex problems and improve processes. I am also a strong believer in the power of mentorship and have actively mentored and trained engineers throughout my career.</p>
+            <p>Outside of work, I enjoy spending time with my family and indulging in my hobbies, which include hiking, reading, and playing chess. I am also an advocate for Plato's philosophy of continuous learning and strive to constantly improve and grow in my personal and professional life. With my experience, knowledge, and passion for mentorship, I am always looking for opportunities to make a positive impact and help others reach their full potential.</p>
+    
+        </article>
+    </section>
+    <section id="contact">
+        <article>
+            <header>
+                <h1>Contact Us</h1>
+            </header>
+            <form>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email">
+                <label for="message">Message</label>
+                <textarea id="message" name="message"></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </article>
+    </section>
+</main>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const hamburger = document.querySelector('.hamburger');
+        const nav = document.querySelector('nav');
+
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+        nav.addEventListener('click', function() {
+            hamburger.classList.remove('active');
+            nav.classList.remove('active');
+        });
+    });
+</script>
