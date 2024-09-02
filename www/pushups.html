@@ -1,6 +1,6 @@
 ${hasLayout('layouts/app.html')}
 <meta itemprop="title" content="Daily Pushups">
-<meta itemprop="image" content="/imgs/pushups-screenshot.jpg">
+<meta itemprop="image" content="imgs/pushups-screenshot.jpg">
 <meta itemprop="touchStartupImage" content="/imgs/daily-pushups-splash-screen.png">
 <meta itemprop="summary" content="An app to record your daily pushups.">
 <meta itemprop="should_publish" content="yes">
@@ -215,9 +215,9 @@ ${hasLayout('layouts/app.html')}
     <button onclick="localStorage.clear()">Clear Local Storage</button>
 </debug>
 <script type="module">
-    import MakeKeyValueObservable from '/webapp/MakeKeyValueObservable.mjs'
-    import MakeObservableList from '/webapp/MakeObservableList.mjs'
-    import { SwipeToDelete } from '/webapp/SwipeToDelete.mjs'
+    import MakeKeyValueObservable from './webapp/MakeKeyValueObservable.mjs'
+    import MakeObservableList from './webapp/MakeObservableList.mjs'
+    import { SwipeToDelete } from './webapp/SwipeToDelete.mjs'
 
     let events = []
     let streamOfEvents = []
