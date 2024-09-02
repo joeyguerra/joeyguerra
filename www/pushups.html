@@ -682,7 +682,7 @@ ${hasLayout('layouts/app.html')}
             if (old && (this.#isSameDate(formatDateToKey(old), newFormated))) return
             // if (this.#isSameDate(newFormated, formatDateToKey(new Date()))) return
             let params = new URLSearchParams(window.location.search)
-            window.history.pushState({date: newFormated}, '', '/pushups.html?date=' + newFormated +
+            window.history.pushState({date: newFormated}, '', 'pushups.html?date=' + newFormated +
                 (window.location.search.includes('debug') ? '&debug=true' : '') +
                 (window.location.search.includes('screen') ? '&screen=' +  params.get('screen') : ''))
         }
