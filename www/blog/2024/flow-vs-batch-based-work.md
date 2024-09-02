@@ -17,7 +17,7 @@ image: /imgs/flow-vs-batch-based-work.webp
 # Embracing Flow-Based Work: A Path to Greater Flexibility and Efficiency
 
 <figure>
-    <img class="full-width" src="../../imgs/flow-vs-batch-based-work.webp" alt="AI generated image of a girl carrying a basket, wearing a backpack, dressed in a monks long dress, walking down a curing path." />
+    <img class="full-width" src="imgs/flow-vs-batch-based-work.webp" alt="AI generated image of a girl carrying a basket, wearing a backpack, dressed in a monks long dress, walking down a curing path." />
 </figure>
 
 In software development, the common approach often involves large batches of work, where teams are heads down for months and new features or changes have to wait in line. This approach can lead to long lead times (the duration between when an idea is conceived and when it's delivered), significant delays, and a constant need for re-prioritization, often involving time consuming discussions with stakeholders. Ever heard someone say they want to "get in the flow"? There's a way of working to do just that, which is more flexible and more efficient than the common approach.
