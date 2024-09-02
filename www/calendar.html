@@ -91,7 +91,7 @@ ${hasLayout('layouts/app.html')}
 </header>
 <table></table>
 <script type="module">
-    import MakeKeyValueObservable from '/webapp/MakeKeyValueObservable.mjs'
+    import MakeKeyValueObservable from './webapp/MakeKeyValueObservable.mjs'
     class PageTitle {
         constructor(container, model, delegate) {
             this.container = container || document.body
@@ -199,9 +199,9 @@ ${hasLayout('layouts/app.html')}
         update (key, old, value) {
             if (old && value.getFullYear() === old.getFullYear()) return
             if (value.getFullYear() !== new Date().getFullYear()) {
-                window.history.pushState({year: value.getFullYear()}, '', '/calendar.html?year=' + value.getFullYear())
+                window.history.pushState({year: value.getFullYear()}, '', 'calendar.html?year=' + value.getFullYear())
             } else {
-                window.history.pushState({}, '', '/calendar.html')
+                window.history.pushState({}, '', 'calendar.html')
             }
         }
     }
