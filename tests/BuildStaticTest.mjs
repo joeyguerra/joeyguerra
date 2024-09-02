@@ -17,7 +17,7 @@ test('Base Href', async (t) => {
         const home = new BaseHref('calendar.html')
         assert.equal(blogPost.href, '/blog/2024/')
         assert.equal(blogIndex.href, '/blog/')
-        assert.equal(home.href, '/')
+        assert.equal(home.href, './')
     })
     await t.test('should handle root base href', (t) => {
         const blogPost = new BaseHref('blog/2024/strategic-planning.html', '/')

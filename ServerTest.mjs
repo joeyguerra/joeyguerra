@@ -163,7 +163,7 @@ describe('Test Template Rendering', () => {
 
     it('Render a template with data', async () => {
         app.get('/', async (req, stream) => {
-            const template = await app.render('./www/index.html', {title: 'Hello, World!', meta: {uri: 'index.html'}})
+            const template = await app.render('./www/index.html', {title: 'Hello, World!', meta: {uri: 'index.html', baseHref() { return './' }}})
             const html = await template.render()
             stream.respond({'content-type': 'text/html; charset=utf-8', ':status': 200})
             stream.end(html)
@@ -171,7 +171,7 @@ describe('Test Template Rendering', () => {
         const {data, headers, flags} = await client.get('/')
         assert.equal(headers[':status'], 200)
         assert.equal(headers['content-type'], 'text/html; charset=utf-8')
-        assert.match(data, /<title>Hello, World!<\/title>/)
+        assert.match(data, /<title>Joey Guerra<\/title>/)
         app.remove('/', app.get)
     })
 })
