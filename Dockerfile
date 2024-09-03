@@ -1,4 +1,4 @@
-FROM node:20-alpine3.17 AS build
+FROM node:22-alpine3.19 AS build
 WORKDIR /app
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 RUN apk add --update --no-cache \
@@ -16,6 +16,7 @@ RUN apk add --update --no-cache \
     ttf-font-awesome \
     font-noto-extra
 COPY --chown=appuser:appgroup . .
+RUN npm i
 USER appuser
 
-ENTRYPOINT ["npm", "start"]
+ENTRYPOINT ["node", "--run", "start"]

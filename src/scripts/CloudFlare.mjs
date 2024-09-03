@@ -1,3 +1,15 @@
+// Description: CloudFlare setup instructions
+//
+// Dependencies:
+//
+// Configuration:
+//
+// Commands:
+//   hubot cloudflare - CloudFlare setup instructions.
+//
+// Notes:
+//
+
 export default async robot => {
     robot.respond(/(cloudflare|cf)/i, async res => {
         let output = `# Setting up a static site with Cloudflare

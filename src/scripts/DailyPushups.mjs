@@ -6,6 +6,7 @@
 // Commands:
 //  hubot pushups <number> - Record your daily pushups
 //  hubot pushups - Get the total pushups for the day.
+//
 // Configuration:
 //
 // Notes:

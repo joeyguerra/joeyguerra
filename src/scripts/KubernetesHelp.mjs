@@ -1,3 +1,19 @@
+// Description:
+// Kubernetes help.
+//
+// Dependencies:
+//
+// Commands:
+//   hubot kubernetes|k8s help - Get help with Kubernetes. #kubernetes
+//
+// Configuration:
+//
+// Notes:
+//
+// Author:
+//   Joey Guerra
+
+
 function formatForCodeBlock(text, language = 'sh') {
     return `\`\`\`${language}\n${text}\n\`\`\``
 }
