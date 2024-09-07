@@ -42,10 +42,19 @@
       --slide-width: 1080px;
       --slide-height: 1080px;
       --slide-padding: 0;
-      --slide-background: #F93610;
+      --slide-background: #244F52;
       --slide-padding: 5px;
       --toolbar-height: 50px;
-    }
+
+      --kaizen-orange-gradient-start: #FF4D21;
+      --kaizen-orange-gradient-end: #EC1C24;
+      --kaizen-gray-gradient-start: #C0D4D3;
+      --kaizen-gray: #92A1A0;
+      --kaizen-orange: #F93610;
+      --logo: url(/images/solid.png);
+      --font-color: #384A56;
+      --font-family: 'Hubot Sans', sans-serif;
+  }
 
     @font-face {
       font-family: 'Hubot Sans';
@@ -64,12 +73,12 @@
     html, body {
       /* font-family: "Hubot Sans","Hubot Sans Header Fallback",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"; */
       /* font-family: 'Libre Baskerville', serif; */
-      font-family: 'Poppins', sans-serif;
+      /* font-family: 'Poppins', sans-serif; */
+      font-family: var(--font-family);
       font-weight: 300;
       font-style: normal;
     }
     h1, h2, h3, h4, h5, h6 {
-      font-family: 'Libre Baskerville', serif;
     }
   </style>
   <body>
