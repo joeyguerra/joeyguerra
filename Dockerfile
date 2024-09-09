@@ -16,7 +16,7 @@ RUN apk add --update --no-cache \
     ttf-font-awesome \
     font-noto-extra
 COPY --chown=appuser:appgroup . .
-RUN npm i
+RUN npm ci
 USER appuser
 
 ENTRYPOINT ["node", "--run", "start"]

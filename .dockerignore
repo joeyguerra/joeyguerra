@@ -19,5 +19,4 @@ contacts.json
 ChatCompletionRequestMessageRoleEnum
 Dockerfile
 text2image.mjs
-package-lock.json
 node_modules
