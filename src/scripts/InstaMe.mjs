@@ -39,10 +39,10 @@ export default robot => {
                 rows: 4
             })
             for await (const slot of slots) {
-                const { format, size, width, height } = await slot.metadata()
+                const { format, size, width, height } = slot.bitmap
                 files.push({
-                    file: await slot.toBuffer(),
-                    name: `slot-${slots.indexOf(slot)+1}.${format}`,
+                    file: await slot.getBuffer('image/png'),
+                    name: `slot-${slots.indexOf(slot)+1}.png`,
                     description: `slot-${slots.indexOf(slot)+1}`
                 })
             }
