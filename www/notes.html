@@ -6,6 +6,20 @@ ${hasLayout('layouts/index.html')}
 </header>
 <section>
     <header>
+        <h3>Nomad</h3>
+    </header>
+    <p>
+        Docker wasn't showing up in the Driver status. Only `java,qemu,raw_exec` was listed.
+    </p>
+    <p>
+        The problem is that on Mac, Docker Desktop doesn't create the `/var/run/docker.sock` file because it's running in a VM. It tries to create a symlink, but it must have failed when trying on my mac mini. The solution is to create a sym link to the docker.sock file located in the users `~/.docker` folder.
+    </p>
+    <pre class="sh">
+        sudo ln -s -f /Users/<user>/.docker/run/docker.sock /var/run/docker.sock
+    </pre>
+</section>
+<section>
+    <header>
         <h3>DotNet</h3>
     </header>
     <article>
