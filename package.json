@@ -10,7 +10,7 @@
     "cheerio": "^1.0.0-rc.12",
     "dijkstrajs": "^1.0.3",
     "discord.js": "^14.11.0",
-    "express-session": "^1.17.3",
+    "express-session": "^1.18.1",
     "formidable": "^3.5.0",
     "html-to-pdfmake": "^2.5.13",
     "hubot": "^11.3.0",
@@ -23,7 +23,7 @@
     "ora": "^6.3.1",
     "pdfmake": "^0.2.9",
     "pngjs": "^7.0.0",
-    "socket.io": "^4.7.5",
+    "socket.io": "^4.8.0",
     "tedious": "^18.6.1"
   },
   "devDependencies": {
