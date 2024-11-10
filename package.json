@@ -45,7 +45,7 @@
     "docker-build": "./docker-build.sh",
     "local-deploy": "kubectl config use-context docker-desktop && kubectl apply -f charts/web/deployment.yaml -n default",
     "publish": "node --run docker-build && node --run local-deploy",
-    "build": "node --env-file=.env --experimental-vm-modules Server.mjs --execute build"
+    "build": "node --experimental-vm-modules Server.mjs --execute build"
   },
   "repository": {
     "type": "git",
