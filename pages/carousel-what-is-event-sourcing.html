@@ -1,0 +1,333 @@
+
+<style>
+    
+    header {
+        text-align: center;
+        padding: 0;
+        width: 100%;
+        margin-bottom: 1em;
+    }
+    header h1 {
+        font-size: 3em;
+    }
+    .slider {
+        width: var(--slide-width);
+        height: var(--slide-height);
+        margin: var(--slide-padding) auto;
+        position: relative;
+        padding: 0;
+        overflow: hidden;
+        box-shadow: 0 0 var(--slide-padding) rgba(0, 0, 0, 0.5);
+    }
+
+    .slider > .slides {
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        overflow: auto;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        height: 100%;
+    }
+    section>div {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1em;
+        align-items: center;
+    }
+    figure img {
+        width: 100%;
+    }
+    .slider > .slides > section {
+        scroll-snap-align: center;
+        height: 100%;
+        width: 100%;
+        flex-shrink: 0;
+    }
+    .slider .toolbar {
+        position: absolute;
+        bottom: calc(var(--toolbar-height) * -2);
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: var(--toolbar-height);
+        transition: bottom 0.2s ease-in-out;
+        background: rgba(77, 70, 62, 0.5);
+        border-radius: calc(var(--toolbar-height) * 1);
+    }
+    .slider:hover .toolbar {
+        bottom: 0;
+    }
+    .slider .toolbar a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        padding: 0;
+        height: 100%;
+        text-align: center;
+        line-height: calc(var(--toolbar-height)*.8);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        width: calc(var(--toolbar-height) * 0.7);
+        height: calc(var(--toolbar-height) * 0.7);
+        margin: 0;
+        font-size: calc(var(--toolbar-height) * 0.5);   
+    }
+    .slider .toolbar nav {
+        display: flex;
+        justify-content: space-between;
+        width: var(--slide-width);
+        align-items: center;
+        height: 100%;
+        padding: 0 var(--slide-padding);
+    }
+    .slides {
+        color: var(--theme-1-color);
+    }
+    .slides header::before {
+        content: '';
+        display: block;
+        padding-bottom: 220px;
+        background: url('/reverse-kaizen-logo.png') no-repeat center center;
+    }
+    .slides section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-content: center;
+        background: var(--theme-1-background-color);
+        padding: 3em;
+    }
+    .slides p {
+        font-size: 2.5em;
+        text-align: center;
+        margin-bottom: 1em;
+    }
+
+    #slide-5 figure {
+        margin-top: 5em;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        gap: 1em;
+    }
+    #slide-5 figure img {
+        width: 20%;
+        margin: 0;
+        border-radius: 1%;
+    }
+    #slide-5 figure img:first-child
+    {
+        width: 56%;
+    }
+    .circled::before {
+        background-image: url(/circle.svg);
+        background-repeat: no-repeat;
+        content: "";
+        position: absolute;
+        pointer-events: none;
+        width: 110%;
+        height: 50%;
+    }
+
+    .underlined {
+        background-image: url(/imgs/underline.svg);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        content: "";
+        pointer-events: none;
+        display: block;
+        width: 100%;
+        height: 20px;
+    }
+    .slides ol {
+        font-size: 2.5em;
+        text-align: left;
+        padding-left: 2em;
+        list-style: decimal;
+        width: 90%;
+        margin: 3em auto;
+    }
+    .slides ol li {
+        margin: 0;
+        padding: 0 0 1em 0;
+        display: list-item;
+    }
+    @media print {
+        .slider {
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            align-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        .slider > .slides {
+            display: block;
+            overflow: auto;
+            box-shadow: none;
+        }
+        body>header {
+            display: none;
+        }
+        .slider .toolbar {
+            display: none;
+        }
+        .slider > .slides > section {
+            page-break-inside: avoid;
+            flex-shrink: 1;
+            display: block;
+            text-align: center;
+        }
+    }
+</style>
+<button id="generate-pdf">Generate PDF</button>
+<article id="carousel" class="slider">
+    <div class="slides">
+        <section>
+            <header>
+                <h1>What Does an Event Look Like To a Computer Program?</h1>
+            </header>
+            <h2>i.e. Texas vs. OU Game (Game is the Aggregate here)</h2>
+            <dl>
+                <dt>Event: Touchdown</dt>
+                <dd>Game: Texas vs. OU</dd>
+                <dd>Date: 10/9/2021</dd>
+                <dd>Team: Texas</dd>
+                <dd>Player: Bijan Robinson</dd>
+                <dd>Yards: 75</dd>
+                <dd>Time: 2:30</dd>
+            </dl>
+            <dl>
+                <dt>Event: Field Goal</dt>
+                <dd>Game: Texas vs. OU</dd>
+                <dd>Date: 10/9/2021</dd>
+                <dd>Team: Texas</dd>
+                <dd>Player: Cameron Dicker</dd>
+                <dd>Yards: 45</dd>
+                <dd>Time: 0:00</dd>
+            </dl>
+            <dl>
+                <dt>Event: Interception</dt>
+                <dd>Game: Texas vs. OU</dd>
+                <dd>Date: 10/9/2021</dd>
+                <dd>Team: Texas</dd>
+                <dd>Player: Josh Thompson</dd>
+                <dd>Yards: 0</dd>
+                <dd>Time: 0:00</dd>
+            </dl>
+            <dl>
+                <dt>Event: Touchdown</dt>
+                <dd>Game: Texas vs. OU</dd>
+                <dd>Date: 10/9/2021</dd>
+                <dd>Team: Texas</dd>
+                <dd>Player: Bijan Robinson</dd>
+                <dd>Yards: 75</dd>
+                <dd>Time: 2:30</dd>
+            </dl>
+            <p>These are a series of events that happen in chronological order. Data elements of these events are stored somewhere, typically a database.</p>
+        </section>
+        <section>
+            <header>
+                <h1>A Program Reads all the Events for a Particular Game to Answer Questions (The answers are Projections)</h1>
+            </header>
+            <p>What was the score at the end of the game?</p>
+            <p>Who scored the most points?</p>
+            <p>How many turn-overs were there?</p>
+        </section>
+        <section>
+            <header>
+                <h1>Interested in an auditable-by-default system?</h1>
+            </header>
+            <p>Contact us at https://kaizen.io or connect with us here on LinkedIn.</p>
+        </section>
+        <section>
+            <header>
+                <h1>I'm Joey Guerra</h1>
+            </header>
+            <p>Senior Software Engineer 🐦‍🔥 30 Years in Diverse Industries 🚀🔧 Building Software to help Businesses Scale Operations, Enhance Efficiency, and Ensure Compliance</p>
+            <p>Let's chat</p>
+            <p>joeyguerra.com</p>
+        </section>
+    </div>
+    <footer class="toolbar">
+        <nav></nav>
+    </footer>
+</article>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+
+    function setIdsOnSlides (elements) {
+        elements.forEach((element, i) => {
+            element.id = 'slide-' + parseInt(i + 1)
+        })
+    }
+    function buildNav (nav, elements) {
+        elements.forEach((element, i) => {
+            const a = document.createElement('a')
+            a.href = window.location.pathname + '#slide-' + parseInt(i + 1)
+            a.textContent = i + 1
+            nav.appendChild(a)
+        })
+        return nav
+    }
+    let slides = Array.from(document.querySelectorAll('.slides>section'))
+    let nav = document.querySelector('.slider .toolbar nav')
+    setIdsOnSlides(slides)
+    buildNav(nav, slides)
+
+    document.getElementById('generate-pdf').addEventListener('click', async function() {
+        const { jsPDF } = window.jspdf;
+        const slides = Array.from(document.querySelectorAll('.slides section')); // Adjust the selector to match your slides
+        const options = {
+            margin: 1,
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: { scale: 1 }
+        };
+        let pdf;
+        let i = 0;
+        for await (let slide of slides) {
+            let canvas = await html2canvas(slide, options.html2canvas)
+            const imgData = canvas.toDataURL('image/jpeg', options.image.quality);
+            const imgProps = pdf ? pdf.getImageProperties(imgData) : { width: canvas.width, height: canvas.height };
+            const pdfWidth = imgProps.width / 96;
+            const pdfHeight = imgProps.height / 96;
+            if (i === 0) {
+                pdf = new jsPDF({
+                    unit: 'in',
+                    format: [pdfWidth, pdfHeight],
+                    orientation: 'portrait'});
+            } else {
+                pdf.addPage([pdfWidth, pdfHeight]);
+            }
+            pdf.addImage(imgData, 'JPEG',0, 0, pdfWidth, pdfHeight);
+            i++;
+        }
+        pdf.save('carousel.pdf');
+    });
+
+</script>
+<script server>
+    export default {
+        layout: './layouts/carousel.html',
+        title: 'What is Event Sourcing?',
+        canonical: 'https://www.joeyguerra.com/carousel-what-is-event-sourcing.html',
+        excerpt: 'Event Sourcing is a data persistence strategy that enables us to, at any time, visualize the state of our system at any point in time, past, present and future.',
+        shouldPublish: true,
+        uri: '/carousel-what-is-event-sourcing.html',
+        touchStartupImage: '/imgs/carousel.png',
+        image: '/imgs/carousel-screenshot.jpg',
+        touchIcon180: '',
+        touchIcon32: '',
+        touchIcon16: ''
+    }
+</script>

@@ -166,13 +166,13 @@ export default async robot => {
             files.push(info.fileName)
         }
     })
-    await readFiles(await File.readdir(`${DIR_NAME}/resources/`, {withFileTypes: true}), `${DIR_NAME}/resources/`, {
+    await readFiles(await File.readdir(`${DIR_NAME}/`, {withFileTypes: true}), `${DIR_NAME}/`, {
         async directoryWasFound(info){
-            try{await File.mkdir(info.fileName.replace(`${DIR_NAME}/resources/`, PUBLIC_FOLDER))}catch(e){robot.logger.warn(e.message)}
+            try{await File.mkdir(info.fileName.replace(`${DIR_NAME}/`, PUBLIC_FOLDER))}catch(e){robot.logger.warn(e.message)}
             await readFiles(await File.readdir(info.fileName, {withFileTypes: true}), info.fileName, this)
         },
         async fileWasFound(info){
-            createReadStream(info.fileName).pipe(createWriteStream(info.fileName.replace(`${DIR_NAME}/resources/`, PUBLIC_FOLDER)))
+            createReadStream(info.fileName).pipe(createWriteStream(info.fileName.replace(`${DIR_NAME}/`, PUBLIC_FOLDER)))
         }
     })
 

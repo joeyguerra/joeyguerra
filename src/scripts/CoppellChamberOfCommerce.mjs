@@ -125,7 +125,7 @@ export default async robot => {
     robot.respond(/chamber [update|u]/i, async res => {
         cache.data = []
         await processQueue(delay, cache)
-        await fs.promises.writeFile(`${ROOT_DIR}/resources/coppell-chamber-of-commerce-directory.json`, JSON.stringify(cache.data, null, 2))
+        await fs.promises.writeFile(`${ROOT_DIR}/coppell-chamber-of-commerce-directory.json`, JSON.stringify(cache.data, null, 2))
         await res.reply('Updated.')
     })
     

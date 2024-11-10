@@ -1,0 +1,99 @@
+<style>
+    body {
+        padding: 1.5rem;
+    }
+    h1 {
+        margin-bottom: 1.5rem;
+    }
+    #directory {
+        counter-reset: directory-counter;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 0;
+        list-style-type: none;
+    }
+
+    #directory li {
+        width: 45%;
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        position: relative;
+    }
+
+    #directory li::before {
+        counter-increment: directory-counter;
+        content: counter(directory-counter);
+        margin-right: 0.5rem;
+        position: absolute;
+        top: 30%;
+        right: 10px;
+        opacity: 0.4;
+        font-size: 2rem;
+    }
+
+    #directory li dl {
+        margin: 0;
+        padding: 0;
+    }
+
+    #directory li dd {
+        margin: 0;
+        padding: 5px 0;
+    }
+
+    
+    @media (max-width: 768px) {
+        #directory li {
+            width: 100%;
+        }
+    }
+</style>
+<h1>Coppell Texas Chamber of Commerce Directory</h1>
+<ol id="directory">
+    <li>
+        <dl>
+            <dd itemprop="name"></dd>
+            <dd itemprop="address"></dd>
+            <dd itemprop="phone"></dd>
+            <dd itemprop="website">
+                <a href="" target="_blank"></a>
+            </dd>
+        </dl>
+    </li>
+</ol>
+<script type="module">
+    let data = await (await fetch('coppell-chamber-of-commerce-directory.json')).json()
+    let template = window.directory.querySelector('li')
+    let container = template.cloneNode(true)
+    template.remove()
+    for (let item of data) {
+        let entry = container.cloneNode(true)
+        entry.querySelector('[itemprop="name"]').textContent = item.name
+        entry.querySelector('[itemprop="address"]').textContent = item.address
+        entry.querySelector('[itemprop="phone"]').textContent = item.phone
+        let a = entry.querySelector('[itemprop="website"] a')
+        a.href = item.website
+        a.innerHTML = item.website
+        a.title = item.name
+        window.directory.appendChild(entry)
+    }
+</script>
+
+<script server>
+    export default {
+        title: 'Coppell Texas Chamber of Commerce Directory',
+        layout: './layouts/app.html',
+        canonical: 'https://www.joeyguerra.com/coppell-chamber-of-commerce-directory.html',
+        excerpt: 'Single page of the Coppell Texas Chamber of Commerce Directory.',
+        shouldPublish: true,
+        uri: '/coppell-chamber-of-commerce-directory.html',
+        image: '',
+        touchStartupImage: '',
+        touchIcon180: '',
+        touchIcon32: '',
+        touchIcon16: ''
+    }
+</script>

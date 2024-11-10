@@ -1,0 +1,81 @@
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        overflow-y: hidden;
+    }
+    body>main {
+        font-family: sans-serif;
+        scroll-snap-type: x mandatory;	
+        display: flex;
+        -webkit-overflow-scrolling: touch;
+        overflow-x: scroll;
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+    header {
+        position: fixed;
+        top: 0;
+        height: 50px;
+        background-color: black;
+        width: 100%;
+    }
+    footer {
+        position: fixed;
+        bottom: 0;
+        height: 50px;
+        background-color: black;
+        width: 100%;
+    }
+    section {
+        border-right: 1px solid white;
+        padding: 1rem;
+        min-width: 100vw;
+        height: 100vh;
+        scroll-snap-align: start;
+        text-align: center;
+        position: relative;
+    }
+    h1	{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        text-align: center;
+        color: white;
+        width: 100%;
+        left: 0;
+        font-size: calc(1rem + 3vw);
+    }
+</style>
+<header>
+    <h1>${title ?? 'App'}</h1>
+</header>
+<main role="main">
+    <section>
+        <p>Main section</p>
+    </section>
+    <section>
+        <p>2nd section</p>
+    </section>
+    <section>
+        <p>3rd section</p>
+    </section>
+</main>
+<footer>
+    <p>the footer</p>
+</footer>
+<script server>
+    export default {
+        title: "iPhone CSS Layout",
+        layout: './layouts/index.html',
+        canonical: 'https://www.joeyguerra.com/iphone.html',
+        excerpt: 'iPhone CSS Layout.',
+        shouldPublish: true,
+        uri: '/iphone.html',
+        touchStartupImage: '/imgs/daily-pushups-splash-screen.png',
+        image: '/imgs/pushups-screenshot.jpg'
+    }
+</script>

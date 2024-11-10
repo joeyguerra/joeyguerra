@@ -1,0 +1,73 @@
+<form action="/contact.html" id="newMessageForm" method="post">
+    <legend>Contact Form</legend>
+    <fieldset>
+        <input type="email" name="email" placeholder="Email" />
+    </fieldset>
+    <fieldset>
+        <textarea name="message" placeholder="Send a message"></textarea>
+    </fieldset>
+    <button name="button" type="submit">Send</button>
+</form>
+<p style="display: none;" id="contactFormMessage">You're message has been sent. I will get back to you soon. Thank you.</p>
+<script src="/socket.io/socket.io.js"></script>
+<script type="module">
+    if(window.location.hostname.indexOf('joeyguerra.com') > -1) {
+        document.domain = 'joeyguerra.com'
+    }
+    let socket = io()
+    let messages = []
+    socket.on('connect_error', err => console.log(err))
+    socket.on('connect', () => {
+        console.log('connected')
+    })
+    socket.on('message', message => {
+        console.log(message)
+    })
+    socket.emit('chat message', 'hi. I am a client')
+    socket.on('chat message:response', message => {
+        console.log(message.substring(0, 10))
+    })
+    console.log('emitted')
+    let { newMessageForm, email } = window
+    newMessageForm.addEventListener('submit', e => {
+        e.preventDefault()
+        let body = newMessageForm.message.value.trim()
+        let email = newMessageForm.email.value.trim()
+        if (body.length == 0) {
+            return
+        }
+        let form = new FormData(newMessageForm)
+        let formData = new URLSearchParams(new FormData(newMessageForm)).toString()
+        let message = 'from=' + email + '&' + 'body=' +  body + '\\n\\n'
+        socket.emit('chat message', formData)
+        e.target.reset()
+        // newMessageForm.email.disabled = true
+        // newMessageForm.message.disabled = true
+        // newMessageForm.button.disabled = true
+        // newMessageForm.disabled = true
+        // newMessageForm.style.opacity = 0.5
+        // contactFormMessage.style.display = 'block'
+    })
+</script>
+
+<script server>
+    import fs from 'node:fs/promises'
+    if (context.req.body) {
+        console.log(context.req.body.email, context.req.body.message)
+        const id = Date.now()
+        await fs.appendFile('messages.txt', `${id}:email:${context.req.body.email}\n`)
+        await fs.appendFile('messages.txt', `${id}:message:${context.req.body.message}\n\n`)
+    }
+    export default {
+        layout: './layouts/post.html',
+        title: 'Contact Form',
+        canonical: 'https://www.joeyguerra.com/contact.html',
+        excerpt: 'Manage your contacts.',
+        shouldPublish: true,
+        image: '',
+        tags: ['contact', 'form'],
+        published: new Date('2024-09-01'),
+        uri: '/contact.html',
+        route: new RegExp('^/contact.html$'),
+    }
+</script>

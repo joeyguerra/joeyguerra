@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="css/ratings.css">
+<section>
+  <h1>Ratings</h1>
+  <h2>Clickable Rating<span id='clickable-rating'></span></h2>
+  <div id='fundooRating'>
+    <ul class='rating'>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+    </ul>
+  </div>
+  <h2>Readonly rating</h2>
+  <div id='readonlyRating'>
+    <ul class='rating'>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+      <li>★</li>
+    </ul>
+  </div>
+</section>
+  
+<script type="module" src="webapp/ratings.mjs"></script>
+
+<script server>
+  export default {
+    title: "Ratings",
+    layout: './layouts/app.html',
+    canonical: 'https://www.joeyguerra.com/ratings.html',
+    excerpt: 'Ratings example with MVC.',
+    shouldPublish: true,
+    image: '/imgs/pushups-screenshot.jpg',
+    touchStartupImage: '',
+    touchIcon180: '',
+    touchIcon32: '',
+    touchIcon16: ''
+  }
+</script>

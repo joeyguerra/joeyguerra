@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Board</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .board {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .column {
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            width: 200px;
+            min-height: 300px;
+        }
+
+        .sticky {
+            background-color: #ffeb3b;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: grab;
+        }
+        #container {
+            display: flex;
+            gap: 10px;
+            position: relative;
+        }
+        #testing {
+            width: 500px;
+            height: 100px;
+            border: solid 1px blue;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0;
+        }
+        #rendering {
+            width: 500px;
+            height: 100px;
+            border: solid 1px red;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+    </style>
+    <script src="/js/marked.min.js"></script>
+</head>
+<body>
+    <header>
+        <h2>
+            <button id="fullScreenButton"></button><span>2024</span> <span>Calendar</span>
+        </h2>
+    </header>
+    <div id="container">
+        <div id="testing" contenteditable></div>
+        <div id="rendering"></div>
+    </div>
+    <button id="addColumnButton">Add Column</button>
+    <div id="board" class="board"></div>
+    <script>
+        class BoardModel {
+            constructor() {
+                this.columns = [];
+                this.listeners = [];
+            }
+
+            addColumn() {
+                const column = { id: 'column-' + Date.now(), stickies: [] };
+                this.columns.push(column);
+                this.notify();
+            }
+
+            addSticky(columnId, content = 'New Sticky', color = '#ffeb3b') {
+                const column = this.columns.find(col => col.id === columnId);
+                if (column) {
+                    const sticky = { id: 'sticky-' + Date.now(), content, color };
+                    column.stickies.push(sticky);
+                    this.notify();
+                }
+            }
+
+            moveSticky(stickyId, targetColumnId) {
+                let sticky;
+                this.columns.forEach(column => {
+                    const index = column.stickies.findIndex(st => st.id === stickyId);
+                    if (index !== -1) {
+                        sticky = column.stickies.splice(index, 1)[0];
+                    }
+                });
+                if (sticky) {
+                    const targetColumn = this.columns.find(col => col.id === targetColumnId);
+                    targetColumn.stickies.push(sticky);
+                    this.notify();
+                }
+            }
+
+            addListener(listener) {
+                this.listeners.push(listener);
+            }
+
+            notify() {
+                this.listeners.forEach(listener => listener());
+            }
+        }
+
+        class BoardView {
+            constructor(model, controller) {
+                this.model = model;
+                this.controller = controller;
+                this.boardElement = document.getElementById('board');
+                this.addColumnButton = document.getElementById('addColumnButton');
+
+                this.addColumnButton.addEventListener('click', () => this.controller.addColumn());
+
+                this.model.addListener(() => this.render());
+            }
+
+            render() {
+                this.boardElement.innerHTML = '';
+                this.model.columns.forEach(column => {
+                    const columnElement = document.createElement('div');
+                    columnElement.className = 'column';
+                    columnElement.id = column.id;
+                    columnElement.innerHTML = '<h3>Column</h3><button class="addStickyButton">Add Sticky</button>';
+
+                    columnElement.querySelector('.addStickyButton').addEventListener('click', () => {
+                        this.controller.addSticky(column.id);
+                    });
+
+                    columnElement.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = 'move';
+                    });
+
+                    columnElement.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        const stickyId = e.dataTransfer.getData('text/plain');
+                        this.controller.moveSticky(stickyId, column.id);
+                    });
+
+                    column.stickies.forEach(sticky => {
+                        const stickyElement = document.createElement('div');
+                        stickyElement.className = 'sticky';
+                        stickyElement.id = sticky.id;
+                        stickyElement.setAttribute('draggable', 'true');
+                        stickyElement.style.backgroundColor = sticky.color;
+                        stickyElement.innerHTML = '<div class="sticky-content">' + marked.parse(sticky.content) + '</div>';
+
+                        stickyElement.addEventListener('dragstart', (e) => {
+                            e.dataTransfer.setData('text/plain', sticky.id);
+                            e.dataTransfer.effectAllowed = 'move';
+                        });
+
+                        stickyElement.addEventListener('dblclick', () => {
+                            const currentContent = sticky.content;
+                            const currentColor = sticky.color || '#ffeb3b'; // Default color if not set
+                            const textarea = document.createElement('textarea');
+                            textarea.value = currentContent;
+                            stickyElement.innerHTML = '';
+                            stickyElement.appendChild(textarea);
+                            
+                            const colorPicker = document.createElement('input');
+                            colorPicker.type = 'color';
+                            colorPicker.value = currentColor;
+                            stickyElement.appendChild(colorPicker);
+                        
+                            colorPicker.addEventListener('input', () => {
+                                stickyElement.style.backgroundColor = colorPicker.value;
+                            });
+                        
+                            textarea.addEventListener('input', () => {
+                                let preview = stickyElement.querySelector('.sticky-content');
+                                if (!preview) {
+                                    preview = document.createElement('div');
+                                    preview.className = 'sticky-content';
+                                    console.log(stickyElement)
+                                    stickyElement.insertBefore(preview, textarea.parentNode);
+                                    // stickyElement.appendChild(preview);
+                                }
+                                preview.innerHTML = marked.parse(textarea.value);
+                            });
+                        
+                            const container = document.createElement('div');
+                            container.appendChild(colorPicker);
+                            container.appendChild(textarea);
+                            stickyElement.innerHTML = '';
+                            stickyElement.appendChild(container);
+                        
+                            container.addEventListener('focusout', (e) => {
+                                if (!container.contains(e.relatedTarget)) {
+                                    sticky.content = textarea.value;
+                                    sticky.color = colorPicker.value;
+                                    this.model.notify();
+                                }
+                            });
+                        
+                            textarea.focus();
+                        });
+                        columnElement.appendChild(stickyElement);
+                    });
+
+                    this.boardElement.appendChild(columnElement);
+                });
+            }
+        }
+
+        class BoardController {
+            constructor(model) {
+                this.model = model;
+            }
+
+            addColumn() {
+                this.model.addColumn();
+            }
+
+            addSticky(columnId) {
+                this.model.addSticky(columnId);
+            }
+
+            moveSticky(stickyId, targetColumnId) {
+                this.model.moveSticky(stickyId, targetColumnId);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const model = new BoardModel();
+            const controller = new BoardController(model);
+            const view = new BoardView(model, controller);
+
+            // Initial render
+            view.render();
+        });
+    </script>
+    <script type="module">
+        let container = window.container;
+        let testing = window.testing;
+        let rendering = window.rendering;
+        rendering.addEventListener('click', () => {
+            testing.focus();
+        })
+        testing.addEventListener('input', () => {
+            let cursorPosition = testing.selectionStart;
+            let old = testing.innerHTML;
+            let stripped = testing.innerHTML.split('\\n').map(line => line.replace(/<[^>]*>?/gm, '\\n')).join('\\n');
+            rendering.innerHTML = marked.parse(stripped);
+
+            // Mirror the cursor position
+            if (cursorPosition <= stripped.length) {
+                let renderedText = rendering.textContent;
+                let renderedCursorPosition = 0;
+                let renderedIndex = 0;
+
+                while (renderedCursorPosition < cursorPosition && renderedIndex < renderedText.length) {
+                    if (renderedText[renderedIndex] === '\\n') {
+                        renderedCursorPosition++;
+                    }
+                    renderedCursorPosition++;
+                    renderedIndex++;
+                }
+
+                let range = document.createRange();
+                let sel = window.getSelection();
+                range.setStart(rendering.firstChild, renderedIndex);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+
+                // Create a blinking cursor
+                const cursorElement = document.createElement('span');
+                cursorElement.className = 'cursor';
+                cursorElement.style.animation = 'blink 1s infinite';
+                rendering.appendChild(cursorElement);
+            }
+        });
+
+
+    </script>
+</body>
+</html>

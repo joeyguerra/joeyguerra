@@ -1,9 +1,9 @@
 # Hi there 👋 I'm Joey Guerra
 
-- 🔭 I’m currently working on ... startup business, a custom billing platform & maintaing [Hubot](https://github.com/hubotio)
-- 🌱 I’m currently learning ... Entrepreneurship and Marketing
-- 👯 I’m looking to collaborate on ... scaling businesses with tech
-- 🤔 I’m looking for help with ... Finding problems I love
+- 🔭 I'm currently working on ... startup business, a custom billing platform & maintaing [Hubot](https://github.com/hubotio)
+- 🌱 I'm currently learning ... Entrepreneurship and Marketing
+- 👯 I'm looking to collaborate on ... scaling businesses with tech
+- 🤔 I'm looking for help with ... Finding problems I love
 - 💬 Ask me about ... event sourcing, modeling, engineering and business
 - 📫 How to reach me: ... [@joeyguerra@mastodon.social](https://mastodon.social/@joeyguerra), [in:joeyguerra](https://www.linkedin.com/in/joeyguerra/)
 - 😄 Pronouns: ... he/him

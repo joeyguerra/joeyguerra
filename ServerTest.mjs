@@ -127,7 +127,7 @@ describe.skip('Test Basic Server', () => {
         }, {
             name: 'css/todos.css',
             contentType: 'text/css; charset=utf-8',
-            fullPath: './resources/css/todos.css'
+            fullPath: './css/todos.css'
         }, {
             name: 'webapp/todos.mjs',
             contentType: 'application/javascript; charset=utf-8',

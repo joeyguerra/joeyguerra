@@ -1,0 +1,279 @@
+<style>
+    header {
+        text-align: center;
+        padding: 0;
+        width: 100%;
+    }
+    header h1 {
+        font-size: 3em;
+    }
+    .slider {
+        width: var(--slide-width);
+        height: var(--slide-height);
+        margin: var(--slide-padding) auto;
+        position: relative;
+        padding: 0;
+        overflow: hidden;
+        box-shadow: 0 0 var(--slide-padding) rgba(0, 0, 0, 0.5);
+    }
+
+    .slider > ul {
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        overflow: auto;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        height: 100%;
+    }
+    
+    .slider > .slides > li {
+        scroll-snap-align: center;
+        height: 100%;
+        width: 100%;
+        flex-shrink: 0;
+    }
+    .slider .toolbar {
+        position: absolute;
+        bottom: calc(var(--toolbar-height) * -2);
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: var(--toolbar-height);
+        transition: bottom 0.2s ease-in-out;
+        background: rgba(77, 70, 62, 0.5);
+        border-radius: calc(var(--toolbar-height) * 1);
+    }
+    .slider:hover .toolbar {
+        bottom: 0;
+    }
+    .slider .toolbar a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        padding: 0;
+        height: 100%;
+        text-align: center;
+        line-height: calc(var(--toolbar-height)*.8);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        width: calc(var(--toolbar-height) * 0.7);
+        height: calc(var(--toolbar-height) * 0.7);
+        margin: 0;
+        font-size: calc(var(--toolbar-height) * 0.5);   
+    }
+    .slider .toolbar nav {
+        display: flex;
+        justify-content: space-between;
+        width: var(--slide-width);
+        align-items: center;
+        height: 100%;
+        padding: 0 var(--slide-padding);
+    }
+    .slides {
+        color: white;
+    }
+    .slides header::before {
+        content: '';
+        display: block;
+        padding-bottom: 220px;
+        background: url('/imgs/reverse-kaizen-logo.png') no-repeat center center;
+    }
+    .slides li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-content: center;
+        background: var(--slide-background);
+        padding: 3em;
+    }
+    .slides p {
+        font-size: 2.5em;
+        text-align: center;
+    }
+    .slides img {
+        margin: 3em auto;
+        width: 40%;
+        border-radius: 5%;
+    }
+    #slide-5 figure {
+        margin-top: 5em;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        gap: 1em;
+    }
+    #slide-5 figure img {
+        width: 20%;
+        margin: 0;
+        border-radius: 1%;
+    }
+    #slide-5 figure img:first-child
+    {
+        width: 56%;
+    }
+    .circled::before {
+        background-image: url(/imgs/circle.svg);
+        background-repeat: no-repeat;
+        content: "";
+        position: absolute;
+        pointer-events: none;
+        width: 110%;
+        height: 50%;
+    }
+
+    .underlined {
+        background-image: url(/imgs/underline.svg);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        content: "";
+        pointer-events: none;
+        display: block;
+        width: 100%;
+        height: 20px;
+    }
+    
+    @media print {
+        .slider {
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            align-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        .slider > ul {
+            display: block;
+            overflow: auto;
+            box-shadow: none;
+        }
+        body>header {
+            display: none;
+        }
+        .slider .toolbar {
+            display: none;
+        }
+        .slider > .slides > li {
+            page-break-inside: avoid;
+            flex-shrink: 1;
+            display: block;
+            text-align: center;
+        }
+    }
+
+</style>
+<button id="generate-pdf">Generate PDF</button>
+<section id="carousel" class="slider">
+    <ul class="slides">
+        <li id="slide-1">
+            <header>
+                <!-- <h1>How Kaizen.io Helped an Erosion Control Company Streamline Their Operations</h1> -->
+                <h1>Scaling Work In The Real World, With The Virtual</h1>
+            </header>
+            <img src="/imgs/workers-laying-wattle.webp" alt="Construction Workers" title="Workers laying wattle at a work site." />
+            <p>We solve high-leverage problems for business owners. Hire us to transform your Field Operations with custom software.</p>
+        </li>
+        <li id="slide-2">
+            <header>
+                <h1>Calm The Chaos</h1>
+            </header>
+            <img src="/imgs/man-at-desk-with-papers.webp" alt="Man at Desk" title="Overworked supervisor getting crew work list ready." />
+            <p>We feel your pain because we come and see for ourselves. It enables us to build software that actually meets your needs.</p>
+        </li>
+        <li id="slide-3">
+            <header>
+                <h1>Crew Work Lists and Fleet Management</h1>
+            </header>
+            <img src="/imgs/busy-tablet.webp" alt="Hand holding small tablet with a dashboard" title="Tablet showing field operations dashboard." />
+            <p>Custom software empowers you to manage crew work lists & crew leaders to track supply usage.</p>
+        </li>
+        <li id="slide-4">
+            <header>
+                <h1>Bring Order To The Day</h1>
+            </header>
+            <img src="/imgs/before-and-after.webp" alt="Before and after" title="A side-by-side comparison of before our software and after." />
+            <p>Our software streamlines operations, so your team is ready to go each morning with everything they need.</p>
+        </li>
+        <li id="slide-5">
+            <header>
+                <h1>Is This Resonating?</h1>
+            </header>
+            <img src="/imgs/field-operations-planning.webp" alt="Field Operations Planning" title="Field operations planning." />
+            <p>We'd love to discuss how we can help streamline your operations.</p>
+        </li>
+        <li id="slide-6">
+            <header>
+                <h1>Ready to solve high-leverage problems in your business?</h1>
+            </header>
+            <p>Contact us at https://www.kaizen.io or connect with us here on LinkedIn.</p>
+        </li>
+    </ul>
+    <footer class="toolbar">
+        <nav>
+            <a href="/carousel-1.html#slide-1">1</a>
+            <a href="/carousel-1.html#slide-2">2</a>
+            <a href="/carousel-1.html#slide-3">3</a>
+            <a href="/carousel-1.html#slide-4">4</a>
+            <a href="/carousel-1.html#slide-5">5</a>
+            <a href="/carousel-1.html#slide-6">6</a>
+        </nav>
+    </footer>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+ document.getElementById('generate-pdf').addEventListener('click', async function() {
+    const { jsPDF } = window.jspdf;
+    const slides = Array.from(document.querySelectorAll('.slides li')); // Adjust the selector to match your slides
+    const options = {
+        margin: 1,
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 1 }
+    };
+    let pdf;
+    let i = 0;
+    for await (let slide of slides) {
+        let canvas = await html2canvas(slide, options.html2canvas)
+        const imgData = canvas.toDataURL('image/jpeg', options.image.quality);
+        const imgProps = pdf ? pdf.getImageProperties(imgData) : { width: canvas.width, height: canvas.height };
+        const pdfWidth = imgProps.width / 96;
+        const pdfHeight = imgProps.height / 96;
+        if (i === 0) {
+            pdf = new jsPDF({
+                unit: 'in',
+                format: [pdfWidth, pdfHeight],
+                orientation: 'portrait'});
+        } else {
+            pdf.addPage([pdfWidth, pdfHeight]);
+        }
+        pdf.addImage(imgData, 'JPEG',0, 0, pdfWidth, pdfHeight);
+        i++;
+    }
+    pdf.save('carousel.pdf');
+});
+
+</script>
+<script server>
+    export default {
+        layout: './layouts/carousel.html',
+        title: 'Carousel Example 1',
+        canonical: 'https://www.joeyguerra.com/carousel-1.html',
+        excerpt: 'LinkedIn carousel template.',
+        uri: '/carousel-1.html',
+        shouldPublish: true,
+        touchStartupImage: '/imgs/carousel.png',
+        image: '/imgs/carousel.png',
+        touchStartupImage: '',
+        touchIcon180: '',
+        touchIcon32: '',
+        touchIcon16: ''
+    }
+</script>

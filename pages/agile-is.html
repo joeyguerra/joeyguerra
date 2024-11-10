@@ -1,0 +1,394 @@
+
+<style>
+    
+    header {
+        text-align: center;
+        padding: 0;
+        width: 100%;
+        margin-bottom: 1em;
+    }
+    header h1 {
+        font-size: 3em;
+    }
+    .slider {
+        width: var(--slide-width);
+        height: var(--slide-height);
+        margin: var(--slide-padding) auto;
+        position: relative;
+        padding: 0;
+        overflow: hidden;
+        box-shadow: 0 0 var(--slide-padding) rgba(0, 0, 0, 0.5);
+    }
+
+    .slider > .slides {
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        overflow: auto;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        height: 100%;
+    }
+    section>div {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1em;
+        align-items: center;
+    }
+    figure img {
+        width: 100%;
+    }
+    .slider > .slides > section {
+        scroll-snap-align: center;
+        height: 100%;
+        width: 100%;
+        flex-shrink: 0;
+    }
+    .slider .toolbar {
+        position: absolute;
+        bottom: calc(var(--toolbar-height) * -2);
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: var(--toolbar-height);
+        transition: bottom 0.2s ease-in-out;
+        background: rgba(77, 70, 62, 0.5);
+        border-radius: calc(var(--toolbar-height) * 1);
+    }
+    .slider:hover .toolbar {
+        bottom: 0;
+    }
+    .slider .toolbar a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        padding: 0;
+        height: 100%;
+        text-align: center;
+        line-height: calc(var(--toolbar-height)*.8);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        width: calc(var(--toolbar-height) * 0.7);
+        height: calc(var(--toolbar-height) * 0.7);
+        margin: 0;
+        font-size: calc(var(--toolbar-height) * 0.5);   
+    }
+    .slider .toolbar nav {
+        display: flex;
+        justify-content: space-between;
+        width: var(--slide-width);
+        align-items: center;
+        height: 100%;
+        padding: 0 var(--slide-padding);
+    }
+    .slides {
+        color: var(--theme-agile-teams-reloaded-color);
+    }
+    .slides header::before {
+        content: '';
+        display: block;
+    }
+    .slides section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-content: center;
+        background: var(--theme-agile-teams-reloaded-background-color) url('/imgs/agile-teams-reloaded-logo.png') no-repeat center top;
+        background-size: cover;
+        padding: 0;
+    }
+    .slides section:last-child {
+        background: var(--theme-agile-teams-reloaded-background-color);
+        padding-top: 5em;
+    }
+    .slides p {
+        font-size: 2.5em;
+        text-align: center;
+        margin-bottom: 1em;
+    }
+
+    #slide-5 figure {
+        margin-top: 5em;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        gap: 1em;
+    }
+    #slide-5 figure img {
+        width: 20%;
+        margin: 0;
+        border-radius: 1%;
+    }
+    #slide-5 figure img:first-child
+    {
+        width: 56%;
+    }
+    .circled::before {
+        background-image: url(/imgs/circle.svg);
+        background-repeat: no-repeat;
+        content: "";
+        position: absolute;
+        pointer-events: none;
+        width: 110%;
+        height: 50%;
+    }
+
+    .underlined {
+        background-image: url(/imgs/underline.svg);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        content: "";
+        pointer-events: none;
+        display: block;
+        width: 100%;
+        height: 20px;
+    }
+    .slides ol {
+        font-size: 2.5em;
+        text-align: left;
+        padding-left: 2em;
+        list-style: decimal;
+        width: 90%;
+        margin: 3em auto;
+    }
+    .slides ol li {
+        margin: 0;
+        padding: 0 0 1em 0;
+        display: list-item;
+    }
+
+    .sticky-notes {
+        position: relative;
+        width: 400px;
+        height: 400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        gap: 1em;
+    }
+
+    .sticky-notes header h1 {
+        position: absolute;
+        top: 49%;
+        left: 50%;
+        width: 200px;
+        height: 200px;
+        transform: translate(-50%, -50%);
+        background-color: rgb(0, 208, 255);
+        padding: 10px;
+        border: 1px solid #ccc;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5em;
+    }
+
+    .sticky-notes p {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        background-color: rgb(255, 208, 0);
+        padding: 10px;
+        border: 1px solid #ccc;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5em;
+    }
+    .sticky-notes:nth-child(2) {
+        color: white;
+    }
+    .sticky-notes:nth-child(2) header h1 {
+        background-color: rgb(99, 140, 111);
+    }
+    .sticky-notes:nth-child(2) p {
+        background-color: #EBE4C9;
+    }
+
+    .sticky-notes p:nth-child(2) {
+        top: 20%;
+        left: 21%;
+    }
+
+    .sticky-notes p:nth-child(3) {
+        top: 20%;
+        right: 41%;
+    }
+
+    .sticky-notes p:nth-child(4) {
+        bottom: 59.3%;
+        left: 60%;
+    }
+
+    .sticky-notes p:nth-child(5) {
+        bottom: 39.5%;
+        right: 21%;
+    }
+    .sticky-notes p:nth-child(6) {
+        bottom: 20%;
+        right: 21%;
+    }
+    .sticky-notes p:nth-child(7) {
+        bottom: 20%;
+        left: 41%;
+    }
+    .sticky-notes p:nth-child(8) {
+        bottom: 20%;
+        left: 21%;
+    }
+    .sticky-notes p:nth-child(9) {
+        bottom: 39.5%;
+        left: 21%;
+    }
+
+    @media print {
+        .slider {
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            align-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        .slider > .slides {
+            display: block;
+            overflow: auto;
+            box-shadow: none;
+        }
+        body>header {
+            display: none;
+        }
+        .slider .toolbar {
+            display: none;
+        }
+        .slider > .slides > section {
+            page-break-inside: avoid;
+            flex-shrink: 1;
+            display: block;
+            text-align: center;
+        }
+    }
+</style>
+<button id="generate-pdf">Generate PDF</button>
+<article id="carousel" class="slider">
+    <div class="slides">
+        <section class="sticky-notes">
+            <header>
+                <h1>This is what you think Agile is</h1>
+            </header>
+            <p>Scrum</p>
+            <p>Real-time collaboration</p>
+            <p>Kanban boards</p>
+            <p>Visual dashboards</p>
+            <p>Task management</p>
+            <p>Sprint planning</p>
+            <p>File sharing</p>
+            <p>Communication</p>
+        </section>
+        <section class="sticky-notes">
+            <header>
+                <h1>This is what Agile is</h1>
+            </header>
+            <p>An engaged and aligned team</p>
+            <p>Knowing precisely what to code</p>
+            <p>Knowing when you're done</p>
+            <p>Effective division of work</p>
+            <p>Contributing to the team mission</p>
+            <p>Working on the right thing</p>
+            <p>Being on the same page</p>
+            <p>Not stepping on each other's toes</p>
+        </section>
+        <section>
+            <header>
+                <h1>Agile Teams Reloaded</h1>
+            </header>
+            <p>Join the Agile Teams Reloaded Group at https://www.linkedin.com/groups/14539965/</p>
+        </section>
+    </div>
+    <footer class="toolbar">
+        <nav></nav>
+    </footer>
+</article>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+
+    function setIdsOnSlides (elements) {
+        elements.forEach((element, i) => {
+            element.id = 'slide-' + parseInt(i + 1)
+        })
+    }
+    function buildNav (nav, elements) {
+        elements.forEach((element, i) => {
+            const a = document.createElement('a')
+            a.href = window.location.pathname + '#slide-' + parseInt(i + 1)
+            a.textContent = i + 1
+            nav.appendChild(a)
+        })
+        return nav
+    }
+    let slides = Array.from(document.querySelectorAll('.slides>section'))
+    let nav = document.querySelector('.slider .toolbar nav')
+    setIdsOnSlides(slides)
+    buildNav(nav, slides)
+
+    document.getElementById('generate-pdf').addEventListener('click', async function() {
+        const { jsPDF } = window.jspdf;
+        const slides = Array.from(document.querySelectorAll('.slides section')); // Adjust the selector to match your slides
+        const options = {
+            margin: 1,
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: { scale: 1 }
+        };
+        let pdf;
+        let i = 0;
+        for await (let slide of slides) {
+            let canvas = await html2canvas(slide, options.html2canvas)
+            const imgData = canvas.toDataURL('image/jpeg', options.image.quality);
+            const imgProps = pdf ? pdf.getImageProperties(imgData) : { width: canvas.width, height: canvas.height };
+            const pdfWidth = imgProps.width / 96;
+            const pdfHeight = imgProps.height / 96;
+            if (i === 0) {
+                pdf = new jsPDF({
+                    unit: 'in',
+                    format: [pdfWidth, pdfHeight],
+                    orientation: 'portrait'});
+            } else {
+                pdf.addPage([pdfWidth, pdfHeight]);
+            }
+            pdf.addImage(imgData, 'JPEG',0, 0, pdfWidth, pdfHeight);
+            i++;
+        }
+        pdf.save('carousel.pdf');
+    });
+
+</script>
+<script server>
+    export default {
+        layout: './layouts/carousel.html',
+        title: '360 Feedback Loop is Non-Existent with Customers',
+        canonical: 'https://www.joeyguerra.com/carousel-k-marketing.html',
+        excerpt: 'LinkedIn carousel template.',
+        shouldPublish: true,
+        uri: '/carousel-k-marketing.html',
+        touchStartupImage: '/imgs/carousel.png',
+        image: '/imgs/carousel-screenshot.jpg',
+        touchStartupImage: '',
+        touchIcon180: '',
+        touchIcon32: '',
+        touchIcon16: ''
+    }
+</script>

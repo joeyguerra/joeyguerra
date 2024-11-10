@@ -1,0 +1,68 @@
+
+<div class="slide cover-slide">
+    <h1>Engaging Headline Here</h1>
+    <p>Subtitle or brief description</p>
+</div>
+
+<div class="slide content-slide">
+    <h2>Slide Title 1</h2>
+    <p>Point 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    <p>Point 2: Vivamus lacinia odio vitae vestibulum vestibulum.</p>
+    <p>Point 3: Cras venenatis euismod malesuada.</p>
+</div>
+
+<div class="slide content-slide">
+    <h2>Slide Title 2</h2>
+    <p>Point 1: Etiam nec odio vestibulum est mattis.</p>
+    <p>Point 2: Suspendisse potenti.</p>
+    <p>Point 3: In faucibus massa arcu, ut ullamcorper dui pretium a.</p>
+</div>
+
+<div class="slide content-slide">
+    <h2>Slide Title 3</h2>
+    <p>Point 1: Praesent venenatis metus at tortor pulvinar varius.</p>
+    <p>Point 2: Nulla facilisi.</p>
+    <p>Point 3: Sed nisi lacus, sodales sit amet ultricies non, vehicula a nulla.</p>
+</div>
+
+<div class="slide cta-slide">
+    <h2>Call to Action</h2>
+    <p>Contact us at <a href="mailto:example@example.com">example@example.com</a> for more information.</p>
+</div>
+<script type="module">
+    class CarouselView {
+        constructor() {
+            this.slides = document.querySelectorAll('.slide')
+            this.currentSlide = 0
+            this.showSlide()
+        }
+
+        showSlide() {
+            this.slides.forEach((slide, index) => {
+                if (index === this.currentSlide) {
+                    slide.style.display = 'block'
+                } else {
+                    slide.style.display = 'none'
+                }
+            })
+        }
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+        window.app.views.push(new CarouselView())
+    })
+</script>
+<script server>
+    export default {
+        title: "LinkedIn Carousel Builder",
+        layout: './layouts/carousel.html',
+        canonical: 'https://www.joeyguerra.com/linkedincarousel.html',
+        excerpt: 'Build PDF documents for LinkedIn Carousel Posts.',
+        shouldPublish: true,
+        uri: '/linkedincarousel.html',
+        touchStartupImage: '/imgs/daily-pushups-splash-screen.png',
+        image: '/imgs/pushups-screenshot.jpg',
+        touchIcon180: '',
+        touchIcon32: '',
+        touchIcon16: ''
+    }
+</script>

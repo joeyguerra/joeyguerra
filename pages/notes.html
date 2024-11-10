@@ -1,0 +1,200 @@
+<header>
+    <h2>My Notes of Daily Lessons in Software Engineering</h2>
+</header>
+<section>
+    <header>
+        <h3>Nomad</h3>
+    </header>
+    <p>
+        Docker wasn't showing up in the Driver status. Only java,qemu,raw_exec was listed.
+    </p>
+    <p>
+        The problem is that on Mac, Docker Desktop doesn't create the /var/run/docker.sock file because it's running in a VM. It tries to create a symlink, but it must have failed when trying on my mac mini. The solution is to create a sym link to the docker.sock file located in the users ~/.docker folder.
+    </p>
+    <pre class="sh">
+        sudo ln -s -f /Users/<user>/.docker/run/docker.sock /var/run/docker.sock
+    </pre>
+</section>
+<section>
+    <header>
+        <h3>DotNet</h3>
+    </header>
+    <article>
+        <p>Output generated SQL from Entity Framework to the console</p>
+        <pre class="bash">
+            dotnet add [project_file.csproj] package Microsoft.Extensions.Logging.Console
+        </pre>
+        <pre class="c#">
+            public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => {builder.AddConsole();});
+            ...
+            services.AddDbContext<ContextName>(o => {
+                o.UseSqlServer(connection, options => options.EnableRetryOnFailure())
+                    .UseLoggerFactory(MyLoggerFactory);    
+            })
+            ...
+        </pre>
+        <h2>DB Context is null when being injected into a Repository class</h2>
+        <p>
+            Fields in appsettings.json must have a correspdoning property in AppSettings.cs in order to be available in code.
+        </p>
+    </article>
+    <article>
+        <h4>Unit Testing Entity Framework connected to SQL Server</h4>
+        <pre class="c#">
+            var configurationBuilder = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDOmain.BaseDirectory)
+                .AddJsonFile($"appSettings.json", optional: false, reloadOnChange: false)
+                .AddEnvironmentVariables().Build();
+            var services = new ServiceCollection()
+                .Configure<AppSettings>(configurationBuilder)
+                .AddSingleton(resolver => resolver.GetRequiredService<IOptions<AppSettings>>().Value)
+
+            services.AddTransient<IContextRepo, ContextRepo>()
+            services.AddDbContext<Context>(o => {
+                o.UseSqlServer(contextInstance);
+            });
+        </pre>
+        <p>From the Unit Test, get the service by calling a method on the fixture after everything has started up.</p>
+        <pre class="c#">
+            public T GetService<T>(){
+                return _provider.GetServices<T>().FirstOrDefault();
+            }
+        </pre>
+    </article>
+    <article>
+        <h4>Elasticsearch</h4>
+        <p>If you want to change/map how property names get serialized to Elasticsearch document, use [DataMember(Name="")] from System.Runtime.Serialization</p>
+    </article>
+</section>
+<section>
+    <header><h3>PowerShell</h3></header>
+    <article>
+        <pre class="powershell">
+            
+        </pre>
+    </article>
+</section>
+<section>
+    <header>
+        <h3>SQL</h3>
+    </header>
+    <article>
+        <pre class="sql">
+            select * from sys.columns c
+            inner join sys.tables t on c.object_id = t.object_id
+            where c.name like '%%'
+        </pre>
+    </article>
+</section>
+<section>
+    <header>
+        <h3>Redis</h3>
+    </header>
+    <article>
+        <p>Create a replica. Copy PROD data to QA.</p>
+        <pre class="redis">
+            REPLICAOF host port
+        </pre>
+    </article>
+</section>
+<section>
+    <header>
+        <h3>Javascript</h3>
+    </header>
+    <article>
+        <pre class="javascript">
+            Tagged Templates https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
+        </pre>
+    </article>
+</section>
+<section>
+    <header>
+        <h3>Website Marketing</h3>
+    </header>
+    <article>
+        <ul>
+            <li>Setup Google Analytics</li>
+            <li>Google Search - https://search.google.com/ Verify domain with DNS TXT record</li>
+            <li>Optimize page speed with https://developers.google.com/speed/pagespeed/insights</li>
+        </ul>
+    </article>
+</section>
+<section>
+    <header>
+        <h3>Multiple Gitlab Accounts</h3>
+    </header>
+    <artcle>
+        <pre class="shell">
+            # ~/.gitconfig             
+            # This is Git's per-user configuration file.
+            [user]
+            # Please adapt and uncomment the following lines:
+                name = Joey Guerra
+                email = {email address}
+            [pull]
+                rebase = false
+            [init]
+                defaultBranch = main
+            
+            [includeIf "gitdir/i:~/src/{project folder for code}/"]
+                path = ~/src/{project folder for code}/.gitconfig
+        </pre>
+    </artcle>
+</section>
+<section>
+    <header>
+        <h1>e2e integration tests with Gitlab pipeline</h1>
+    </header>
+    <article>
+        <pre class="yaml">
+integration:
+  image: mcr.microsoft.com/playwright:focal
+  services:
+    - redis
+  variables:
+    APP_NAME: PdfGenerator
+  script:
+    - curl https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb --output packages-microsoft-prod.deb
+    - dpkg -i packages-microsoft-prod.deb
+    - rm packages-microsoft-prod.deb
+    - apt-get update
+    - apt-get install -y apt-transport-https
+    - apt-get install -y dotnet-sdk-5.0
+    - cd $APP_NAME.Tests
+    - pwd
+    - dotnet build
+    - dotnet tool install --global Microsoft.Playwright.CLI
+    - export PATH="$PATH:/root/.dotnet/tools"
+    - playwright install
+    - cd ../
+    - make integration
+  artifacts:
+    name: '$CI_JOB_NAME_$CI_COMMIT_REF_NAME'
+    paths:
+      - $APP_NAME.Tests/IntegrationTests_*.xml
+
+        </pre>
+    </article>
+</section>
+<section>
+
+    <header>
+        <h1>Kubernetes</h1>
+    </header>
+    <article>
+        <pre class="bash">
+            kubectl create secret generic {name of secret} -n {namespace name} --dry-run=client --from-literal {key}={password} --from-literal {key}={password} --from-literal {key}={password} -o yaml | kubeseal --format yaml | tee sealed-secret.yaml
+        </pre>
+</section>
+<script server>
+    export default {
+        title: "Notes",
+        layout: './layouts/index.html',
+        canonical: 'https://www.joeyguerra.com/notes.html',
+        excerpt: 'Notes',
+        shouldPublish: false,
+        published: new Date('2024-09-01'),
+        uri: '/notes.html',
+        tags: ['notes']
+    }
+</script>

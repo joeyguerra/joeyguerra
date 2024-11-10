@@ -1,0 +1,779 @@
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow-y: hidden;
+    }
+    body>main {
+        display: flex;
+        font-family: sans-serif;
+        height: 100vh;
+        overflow-x: scroll;
+        margin-bottom: 50px;
+        margin-top: 70px;
+        scroll-snap-type: x mandatory;	
+        -webkit-overflow-scrolling: touch;
+    }
+    header {
+        background-color: black;
+        height: 50px;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+    }
+    footer {
+        bottom: 0;
+        position: fixed;
+        width: 100%;
+        z-index: 2;
+    }
+    section {
+        border-right: 1px solid white;
+        height: calc(100vh - 245px);
+        min-width: 100vw;
+        overflow-y: auto;
+        position: relative;
+        scroll-snap-align: start;
+        scroll-margin-top: 50px;
+        text-align: center;
+    }
+
+    calendar {
+        display: block;
+    }
+    debug {
+        display: none;
+    }
+
+    h1 {
+        color: white;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+    td[data-count]:not([data-count="0"]) .day {
+        background-color: red;
+        color: white;
+    }
+    td.today[data-count]:not([data-count="0"]) .day {
+        border-color: darkred;
+    }
+    table {
+        color: darkgray;
+        margin-bottom: 20px;
+    }
+    th {
+        font-weight: normal;
+    }
+    td {
+        height: 30px;
+        padding: 9px 7px;
+        text-align: center;
+        vertical-align: bottom;
+    }
+    td:empty {
+        background-color: white;
+    }
+    td label {
+        background-color: white;
+        display: block;
+        font-size: 0.7em;
+        text-transform: uppercase;
+    }
+    .day {
+        background-color: lightgray;
+        border: 2px solid transparent;
+        border-radius: 25%;
+        color: inherit;
+        display: block;
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        text-decoration: none;
+        width: 25px;
+    }
+    
+    .today .day {
+        border-color: darkgray;
+    }
+    
+    dt, h3 {
+        text-align: center;
+        font-size: 1.2em;
+        font-weight: normal;
+    }
+    dd {
+        align-items: center;
+        border-bottom: 1px solid lightgray;
+        box-sizing: border-box;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+        margin: 0;
+        transform: translateX(0);
+        transition: transform 0.3s ease;
+        width: 100%;
+    }
+
+    .row-content {
+        transition: transform 0.3s ease;
+    }
+
+    .delete-label {
+        appearance: none;
+        background-color: red;
+        border-radius: 0;
+        border: solid 1px red;
+        color: white;
+        font-size: 1em;
+        height: 100%;
+        padding: 5px;
+        margin-left: 20px;
+    }
+
+    footer {
+        background-color: #f2f2f2;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        justify-content: center;
+        align-items: center;
+        height: 70px;
+    }
+    footer:empty {
+        display: none;
+    }
+    footer button {
+        appearance: none;
+        background-color: #f2f2f2;
+        border: none;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        color: #333;
+        cursor: pointer;
+        font-size: 1em;
+        height: 40px;
+        margin-bottom: 5px;
+        outline: none;
+        width: 40px;
+    }
+
+    #calendarView calendar {
+        display: flex;
+        gap: 0;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+    }
+</style>
+<header>
+    <h1>${title ?? 'App'}</h1>
+</header>
+<main role="main">
+    <section id="calendarView">
+        <calendar id="calendar"></calendar>
+    </section>
+    <section id="pushupView">
+        <dl id="pushupSetsView">
+            <dt>Sets</dt>
+        </dl>
+        <h3>Running Count: <b id="pushupCount">0</b></h3>
+    </section>
+    <footer id="pushupRepButtons">
+        <button>5</button>
+        <button>10</button>
+        <button>20</button>
+        <button>30</button>
+        <button>40</button>
+        <button>50</button>
+        <button>60</button>
+        <button>70</button>
+        <button>80</button>
+        <button>90</button>
+        <button>100</button>
+    </footer>
+</main>
+<debug id="debug">
+    <h2>Debugging</h2>
+    <button onclick="localStorage.clear()">Clear Local Storage</button>
+</debug>
+<script type="module">
+    import MakeKeyValueObservable from './webapp/MakeKeyValueObservable.mjs'
+    import MakeObservableList from './webapp/MakeObservableList.mjs'
+    import { SwipeToDelete } from './webapp/SwipeToDelete.mjs'
+
+    let events = []
+    let streamOfEvents = []
+
+    let lastId = null
+    let lastStreamId = null
+
+    function apply (event) {
+        if (lastStreamId !== null && event.id <= lastStreamId) return
+        app.views.forEach(view => {
+            if (view.applyEvent) {
+                view.applyEvent(event)
+            }
+        })
+    }
+
+    function process (timeStamp) {
+        let event = null
+        while (event = streamOfEvents.shift()) {
+            apply(event)
+            lastStreamId = event.id
+        }
+        window.requestAnimationFrame(process)
+    }
+
+    class View {
+        constructor (container, model, delegate) {
+            this.container = container
+            this.model = model
+            this.delegate = delegate
+            this.views = []
+        }
+        applyEvent (event) {
+            this.views.forEach(view => {
+                if (view.applyEvent) {
+                    view.applyEvent(event)
+                }
+            })
+        }
+        apply (events) {
+            this.views.forEach(view => {
+                if (view.apply) {
+                    view.apply(events)
+                }
+            })
+        }
+        reset () {
+            this.views.forEach(view => {
+                if (view.reset) {
+                    view.reset()
+                }
+            })
+        }
+    }
+
+    class Event {
+        constructor (id) {
+            this.id = id
+            this.occurredAt = new Date()
+            this.recorded = new Date()
+            this.kind = this.constructor.name
+        }
+    }
+    class PushupAdded extends Event {
+        constructor (id, count) {
+            super(id)
+            this.count = count
+        }
+    }
+    class PushupRemoved extends Event {
+        constructor (id, count, elemId) {
+            super(id)
+            this.count = count
+            this.elemId = elemId
+        }
+    }
+    class Pushup {
+        constructor (dateUtc, count) {
+            if (!(dateUtc instanceof Date)) {
+                let [year, month, day] = dateUtc.split('-')
+                dateUtc = new Date(year, parseInt(month) - 1, parseInt(day), 0, 0, 0, 0)
+            }
+            this.dateUtc = dateUtc
+            this.count = count
+        }
+    }
+
+    class Calendar {
+        constructor(container, model, delegate) {
+            this.container = container
+            this.model = model
+            this.delegate = delegate
+            this.container.addEventListener('click', this.#click.bind(this))
+        }
+        applyEvent (event) {
+            this.apply([event])
+        }
+        apply (events) {
+            if (events.length === 0) return
+            let sorted = events.sort((a, b) => a.occurredAt - b.occurredAt)
+            let firstEvent = sorted[0].occurredAt
+            let lastEvent = sorted[sorted.length - 1].occurredAt
+            let currentDate = new Date(firstEvent.getFullYear(), 0, 1)
+            while (currentDate <= lastEvent) {
+                let existing = this.container.querySelector('#month_' + currentDate.getMonth())
+                if (!existing) {
+                    this.renderNewMonthAndInsertItInTheCorrectOrder(currentDate)
+                }
+                currentDate.setMonth(currentDate.getMonth() + 1)
+            }
+
+            for (let i in events) {
+                let event = events[i]
+                let startOfYear = new Date(Date.UTC(event.occurredAt.getFullYear(), 0, 0))
+                let occurredAtUTC = new Date(Date.UTC(event.occurredAt.getFullYear(), event.occurredAt.getMonth(), event.occurredAt.getDate()))
+                let dayOfYear = Math.floor((occurredAtUTC - startOfYear) / (1000 * 60 * 60 * 24))
+                let dayCell = this.container.querySelector('#day_' + event.occurredAt.getFullYear() + '_' + dayOfYear )
+                let totalCount = parseInt(dayCell.getAttribute('data-count') ?? 0)
+                totalCount +=  event instanceof PushupAdded ? event.count : -1 * event.count
+                dayCell.setAttribute('data-count', totalCount)
+                if (totalCount > 0) {
+                    dayCell.classList.add('hasPushups')
+                }
+            }
+        }
+        scrollTo(date) {
+            let month = date.getMonth()
+            let monthElement = document.getElementById('month_' + month)
+            if (monthElement) {
+                monthElement.scrollIntoView()
+            }
+        }
+        renderEmptyMonth(date) {
+            let monthElement = this.renderNewMonth(date)
+            this.container.appendChild(monthElement)
+        }
+        renderNewMonthAndInsertItInTheCorrectOrder(date) {
+            let monthElement = this.renderNewMonth(date)
+            let month = date.getMonth()
+            let months = this.container.querySelectorAll('table')
+            let inserted = false
+            for (let i = 0; i < months.length; i++) {
+                let currentMonth = months[i]
+                if (currentMonth.id > monthElement.id) {
+                    this.container.insertBefore(monthElement, currentMonth)
+                    inserted = true
+                    break
+                }
+            }
+            if (!inserted) {
+                this.container.appendChild(monthElement)
+            }
+        }
+        renderNewMonth(date) {
+            let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+            let dayNames = ["S", "M", "T", "W", "T", "F", "S"]
+            let year = date.getFullYear()
+            let month = date.getMonth()
+            let firstDay = new Date(year, month, 1).getDay()
+            let numberOfDays = new Date(year, month + 1, 0).getDate()            
+            let calendarHtml = '<table id="month_' + month + '">'
+            calendarHtml += '<caption>' + monthNames[month] + ' ' +  year.toString() + '</caption>'
+            calendarHtml += '<tr>'
+            for (let dayName of dayNames) {
+                calendarHtml += '<th>' + dayName + '</th>'
+            }
+            calendarHtml += '</tr><tr>'
+
+            for (let i = 0; i < firstDay; i++) {
+                calendarHtml += '<td></td>'
+            }
+
+            for (let day = 1; day <= numberOfDays; day++) {
+                let currentDate = new Date(year, month, day)
+                let startOfYear = new Date(Date.UTC(currentDate.getFullYear(), 0, 0))
+                let occurredAtUTC = new Date(Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()))
+                let dayOfYear = Math.floor((currentDate - startOfYear) / (1000 * 60 * 60 * 24))
+                let className = []
+                if (year === new Date().getFullYear() && month === new Date().getMonth() && day === new Date().getDate()) {
+                    className.push('today')
+                }
+                if ((day + firstDay - 1) % 7 === 0 && day > 1) {
+                    calendarHtml += '</tr><tr>'
+                }
+                let monthLabel = ''
+                if (day === 1) {
+                    monthLabel = '<label>' + monthNames[month] + '</label>'
+                }
+                let link = '<a class="day" href="pushups.html?date=' + formatDateToKey(currentDate) + '">' + day + '</a>'
+                if (currentDate > new Date()) {
+                    link = '<span class="day">' + day + '</span>'
+                }
+                calendarHtml += '<td class="' + className.join(' ') + '" id="day_' + year + '_' + dayOfYear + '" data-count="0">' + monthLabel + link + '</td>'
+            }
+
+            calendarHtml += '</tr></table>'
+            return new DOMParser().parseFromString(calendarHtml, 'text/html').body.firstChild
+        }
+        #click (e) {
+            let target = e.target
+            if (target.tagName === 'A') {
+                e.preventDefault()
+                let date = new URLSearchParams((new URL(target.href)).search).get('date')
+                this.model.date = formatKeyToDate(date)
+                this.delegate.dateWasSelected(this.model.date)
+            }
+        }
+    }
+
+    class RepButtonView {
+        constructor(container, model, delegate) {
+            this.container = container
+            this.model = model
+            this.delegate = delegate
+            this.container.addEventListener('click', this.#click.bind(this), true)
+        }
+        #click (e) {
+            let target = e.target
+            if (target.tagName === 'BUTTON') {
+                let numberOfPushups = parseInt(target.textContent)
+                if (isNaN(numberOfPushups)) {
+                    return
+                }
+                if (numberOfPushups < 0) {
+                    return
+                }
+                if (numberOfPushups === 0) {
+                    return
+                }
+                e.preventDefault()
+                let date = new Date(this.model.date.getFullYear(), this.model.date.getMonth(), this.model.date.getDate(), new Date().getHours(), new Date().getMinutes(), new Date().getSeconds())
+                let pushup = new PushupAdded(Date.now(), numberOfPushups)
+                pushup.occurredAt = date
+                this.delegate.events.push(pushup)
+            }
+        }
+    }
+
+    function getDayOfTheYear (date) {
+        let startOfYear = new Date(Date.UTC(date.getFullYear(), 0, 0))
+        let occurredAtUTC = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+        return Math.floor((occurredAtUTC - startOfYear) / (1000 * 60 * 60 * 24))
+    }
+    class PushupSetsView {
+        constructor(container, model, delegate) {
+            this.container = container || document.body
+            this.model = model
+            this.delegate = delegate
+            this.model.observe('date', this)
+            Array.from(['touchend', 'click']).forEach(event => {
+                this.container.addEventListener(event, this.#touch.bind(this))
+            })
+        }
+        #touch (e) {
+            if (e.target.tagName === 'BUTTON') {
+                this.delete(e.target.parentElement)
+            }
+        }
+        update (key, old , value) {
+            this.container.querySelector('dt').textContent = 'Sets for ' + ' ' + formatDateToKey(value)
+        }
+        shouldRemove (elem, e) {
+            if (e.target.tagName === 'BUTTON') {
+                return
+            }
+            elem.remove()
+            this.delete(elem)
+        }
+        applyEvent (event) {
+            this.apply([event])
+        }
+        reset () {
+            Array.from(this.container.querySelectorAll('dd')).forEach(elem => elem.remove())
+        }
+        apply (events) {
+            events.forEach(event => {
+                if (getDayOfTheYear(event.occurredAt) === getDayOfTheYear(this.model.date)) {
+                    if (event instanceof PushupAdded) {
+                        this.add(event)
+                    }
+
+                    if (event instanceof PushupRemoved) {
+                        let elem = this.container.querySelector('#' + event.elemId)
+                        if (elem) {
+                            elem.remove()
+                        }
+                    }
+                }
+            })
+        }
+        delete (elem) {
+            let date = new Date(this.model.date.getFullYear(), this.model.date.getMonth(), this.model.date.getDate(), new Date().getHours(), new Date().getMinutes(), new Date().getSeconds())
+            let pushup = new PushupRemoved(Date.now(), parseInt(elem.getAttribute('data-count')), elem.id)
+            pushup.occurredAt = date
+            this.delegate.events.push(pushup)
+        }
+        add (event) {
+            let dd = this.delegate.createElement('dd')
+            dd.className = 'row'
+            new SwipeToDelete(dd, this.model, { threshold: 0.2 }, this)
+            dd.id = 'pushup-' + event.id
+            dd.setAttribute('data-count', event.count)
+            let span = this.delegate.createElement('span')
+            span.className = 'row-content'
+            span.textContent = event.count
+            dd.appendChild(span)
+
+            let deleteButton = this.delegate.createElement('button')
+            deleteButton.textContent = 'Delete'
+            deleteButton.className = 'delete-label'
+            dd.appendChild(deleteButton)
+
+            this.container.appendChild(dd)
+            this.delegate.pushupWasAdded(this, dd, event)
+        }
+    }
+
+    class LocalStorageSyncher {
+        #isRunning = true
+        constructor (key, model) {
+            this.key = key
+            this.model = model
+            this.model.observe('date', this)
+        }
+        static get keyPrefix () {
+            return window.location.hostname + ':events:'
+        }
+        update (key, old, value) {
+            this.stop()
+            this.key = window.location.hostname + ':events:' + formatDateToKey(value)
+            this.start()
+        }
+        stop () {
+            this.#isRunning = false
+        }
+        start () {
+            this.#isRunning = true
+        }
+        applyEvent (event) {
+            this.apply([event])
+        }
+        apply (events) {
+            if (!this.#isRunning) return
+            events.forEach(event => {
+                if (this.key.split(':')[2] === formatDateToKey(event.occurredAt)) {
+                    let stream = JSON.parse(localStorage.getItem(LocalStorageSyncher.keyPrefix + formatDateToKey(event.occurredAt))) ?? []
+                    stream.push(event)
+                    localStorage.setItem(LocalStorageSyncher.keyPrefix + formatDateToKey(event.occurredAt), JSON.stringify(stream))
+                }
+            })
+        }
+        getStream (date) {
+            let stream = JSON.parse(localStorage.getItem(LocalStorageSyncher.keyPrefix + formatDateToKey(date)) ?? '[]')
+            return stream.map(s => {
+                let parsedEvent = null
+                if (s.kind === 'PushupAdded') {
+                    parsedEvent = new PushupAdded(s.id, s.count)
+                }
+                if (s.kind === 'PushupRemoved') {
+                    parsedEvent = new PushupRemoved(s.id, s.count, s.elemId)
+                }
+                parsedEvent.occurredAt = new Date(s.occurredAt)
+                parsedEvent.recorded = new Date(s.recorded)
+                return parsedEvent
+            })
+        }
+        getAllEventKeys () {
+            const keys = []
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i)
+                if (key.startsWith(LocalStorageSyncher.keyPrefix)) {
+                    keys.push(key)
+                }
+            }
+            return keys
+        }
+    }
+    class PushupCount {
+        constructor (container, model, delegate) {
+            this.container = container
+            this.model = model
+            this.delegate = delegate
+        }
+        reset () {
+            this.container.textContent = '0'
+        }
+        applyEvent (event) {
+            this.apply([event])
+        }
+        apply (events) {
+            events.forEach(event => {
+                if (formatDateToKey(event.occurredAt) === formatDateToKey(this.model.date)) {
+                    if (event instanceof PushupRemoved) {
+                        let count = parseInt(this.container.textContent)
+                        count -= event.count
+                        this.container.textContent = count
+                    }
+                    if (event instanceof PushupAdded) {
+                        let count = parseInt(this.container.textContent)
+                        count += event.count
+                        this.container.textContent = count
+                    }
+                }
+            })
+        }
+    }
+    function formatDateToKey (value) {
+        let date = value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate()
+        return formatKeyToDate(date).toISOString().slice(0,10)
+    }
+    function formatKeyToDate (key) {
+        let [year, month, day] = key.split('-')
+        return new Date(year, month - 1, day)
+    }
+
+    class App {
+        #activeView = null
+        constructor (model, persistance = {}) {
+            this.views = []
+            this.model = model
+            this.persistance = persistance
+            window.addEventListener('popstate', e => {
+                let date = e.state?.date ?? formatDateToKey(new Date())
+                model.stopObserving('date', this)
+                model.date = formatKeyToDate(date)
+                model.observe('date', this)
+            })
+            model.observe('date', this)
+        }
+        get events () {
+            return streamOfEvents
+        }
+        set activeView (view) {
+            this.#activeView = view
+        }
+        get activeView () {
+            return this.#activeView
+        }
+        #isSameDate (date1, date2) {
+            return date1 === date2
+        }
+        dateWasSelected (date) {
+            let view = this.views.find(v => v.container && v.container.id === 'pushupView')
+            if (view) {
+                view.container.scrollIntoView({
+                    block: 'start',
+                    behavior: 'smooth',
+                    inline: 'nearest'
+                })
+            }
+        }
+        update (key, old, value) {
+            if (this.persistance.getStream) {
+                this.views.filter(v => v.container).forEach(v => {
+                    if (v.apply) {
+                        if (v.reset) v.reset()
+                        v.apply(this.persistance.getStream(value))
+                    }
+                })
+            }
+            let newFormated = formatDateToKey(value)
+            if (old && (this.#isSameDate(formatDateToKey(old), newFormated))) return
+            // if (this.#isSameDate(newFormated, formatDateToKey(new Date()))) return
+            let params = new URLSearchParams(window.location.search)
+            window.history.pushState({date: newFormated}, '', 'pushups.html?date=' + newFormated +
+                (window.location.search.includes('debug') ? '&debug=true' : '') +
+                (window.location.search.includes('screen') ? '&screen=' +  params.get('screen') : ''))
+        }
+        createElement(tag) {
+            return document.createElement(tag)
+        }
+        pushupWasAdded (view, elem, event) {
+            let v = this.views.find(v => v.views.find(v => v instanceof PushupCount))
+            if (v) {
+                v.views.find(i => i instanceof PushupCount).container.scrollIntoView({
+                    block: 'end',
+                    behavior: 'smooth',
+                    inline: 'nearest'
+                })
+            }
+        }
+    }
+
+    let model = MakeKeyValueObservable({date: null})
+    let app = new App(model)
+
+    let calendarView = new View(window.calendarView, model, app)
+    let setsView = new View(window.pushupView, model, app)
+
+    app.views.push(calendarView)
+    app.views.push(setsView)
+    app.activeView = calendarView
+
+    let pushupSets = new PushupSetsView(window.pushupSetsView, model, app)
+    let pushupCounter = new PushupCount(window.pushupCount, model, app)
+    
+    setsView.views.push(pushupSets)
+    setsView.views.push(pushupCounter)
+    setsView.views.push(new RepButtonView(window.pushupRepButtons, model, app))
+
+    let calendar = new Calendar(window.calendar, model, app)
+    calendarView.views.push(calendar)
+
+    let dateFromQueryString = new URLSearchParams(window.location.search).get('date')
+    let landingScreen = new URLSearchParams(window.location.search).get('screen')
+
+    model.date = dateFromQueryString ? formatKeyToDate(dateFromQueryString) : new Date()
+    let syncher = new LocalStorageSyncher(window.location.hostname + ':events:' + formatDateToKey(model.date), model)
+    app.persistance = syncher
+    app.views.push(syncher)
+    syncher.stop()
+    let i = 0 // to make sure the event ids are different.
+    syncher.getAllEventKeys().forEach(key => {
+        let storedEvents = JSON.parse(localStorage.getItem(key))
+        let date = key.split(':')[2]
+        storedEvents.forEach(e => {
+            let id = e.id
+            let parsedEvent = null
+            if (e.kind === 'PushupAdded') {
+                parsedEvent = new PushupAdded(id, e.count)
+            }
+            if (e.kind === 'PushupRemoved') {
+                parsedEvent = new PushupRemoved(id, e.count, e.elemId)
+            }
+            if (parsedEvent) {
+                parsedEvent.occurredAt = new Date(e.occurredAt)
+                parsedEvent.recorded = new Date(e.recorded)
+                streamOfEvents.push(parsedEvent)
+            }
+        })
+    })
+    window.model = model
+    window.app = app
+    if (streamOfEvents.length === 0) {
+        calendar.renderEmptyMonth(new Date())
+    }
+    window.requestAnimationFrame(timeStamp => {
+        process(timeStamp)
+        syncher.start()
+    })
+    let debug = new URLSearchParams(window.location.search).get('debug')
+    if (debug) {
+        console.log('debugging enabled')
+        window.debug.style.display = 'block'
+    }
+    if (landingScreen > 0) {
+        app.dateWasSelected(model.date)
+    }
+</script>
+
+<script server>
+    export default {
+        title: "Daily Pushups",
+        layout: './layouts/app.html',
+        canonical: 'https://www.joeyguerra.com/pushups.html',
+        excerpt: 'An app to record your daily pushups.',
+        shouldPublish: false,
+        touchStartupImage: '/imgs/daily-pushups-splash-screen.png',
+        image: '/imgs/pushups-screenshot.jpg',
+        touchStartupImage: '',
+        touchIcon180: '',
+        touchIcon32: '',
+        touchIcon16: ''
+    }
+</script>

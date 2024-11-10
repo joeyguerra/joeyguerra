@@ -1,0 +1,167 @@
+<style>
+    @import url("../../css/bubbles.css");
+    section.tldr {
+        padding: 0 2em;
+        font-style: italic;
+    }
+    .comic-strip{
+        display: grid;
+        grid-template-areas:
+            "header header"
+            "col1 col2"
+    }
+    .comic-strip header {
+        grid-area: header;
+    }
+    .comic-strip ul li {
+        line-height: 1.5em;
+        padding: .5em;
+    }
+    em.strike-through{
+        text-decoration: line-through;
+    }
+</style>
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        <h1 itemprop="headline">Why Is Test Driven Development (TDD) So Hard: Revisited</h1>
+        <time itemprop="published" datetime="3/20/2020 5:49:48 PM UTC">Posted Friday, March 20, 2020 5:49 PM CST</time>
+    </header>
+    <section itemprop="articleBody">
+        <section class="tldr">
+            <p itemprop="tldr">
+                TLDR; It is <strong>lack of knowledge</strong> and <strong>competing priorites</strong>. Since the first rule of TDD is to write a failing test, we're writing code at the point of least knowledge. We often don't fully understand the problem. We don't know how to solve the problem. We don't yet know how to use the technology to solve the problem. The list goes on and on. You have to <strong>train</strong> with the tooling and <strong>practice</strong> writing testable code if you want it to become easier.
+            </p>
+        </section>
+        <section>
+            <header>
+                <h2>
+                    Benefits from practicing TDD
+                </h2>
+            </header>
+            <p>
+                Practicing TDD builds up a suite of tests that can be used as guardrails when changing code. We dread the scenario where changing one area of the code, only to later find out in production that it broke another part of the application. That's super frustrating for everyone involved. The developer feels like a jack ass, the other stake holders question the proffesionallism of the developers, even though EVERYONE contributed to the outcome.
+            </p>
+            <section class="comic-strip">
+                <section>
+                    <ul>
+                        <li>Quick feedback - Speed, Correctness</li>
+                        <li>Less Bugs - Quality, Correctness</li>
+                        <li>Proof of functionality - Quality</li>
+                        <li>Confidence to fearlessly refactor - Quality</li>
+                        <li>Examples of how to use the software for onboarding and understanding the code - Speed, Morale</li>
+                        <li>A thinking tool to develop solutions faster - Design</li>
+                        <li>Saved time with automated deployment validation - Responsive, Speed</li>
+                        <li>Safety net when making changes - Quality, Responsive</li>
+                    </ul>    
+                </section>
+                <aside>
+                    <h3 class="bubble left">Why is TDD important?</h3>
+                    <h3 class="bubble left">Why should more people practice TDD?</h3>
+                </aside>
+            </section>
+        </section>
+        <section>
+            <header>
+                <h2>
+                    We don't have time
+                </h2>        
+            </header>
+            <blockquote>
+                <p>
+                    For me I get the sense that I'm wasting time when I should be exploring the capabilities of the technology (which is different from exploring the domain).
+                </p>
+            </blockquote>
+            <p>
+                The idea of not having time came up throughout the conversations in different variations. Some felt like they were wasting time when they should be exploring the capabilities of technologies. While others mentioned pressure from deadlines and conflicting messages from managers like dictating that "you must do TDD" while at the same time asking "why aren't you done yet?". Even though there seems to be agreement with the benefits listed above, it is very apparent that practicing the TDD process is not easy and there's many contributing factors. Alas, the struggle is real.
+            </p>
+        </section>
+        <section>
+            <header>
+                <h2>
+                    It's the wrong time
+                </h2>
+            </header>
+            <blockquote>
+                We're writing tests at the point of least knowledge.
+            </blockquote>
+            <p>
+                The first rule of TDD is to write a failing test. So right off the bat, we're writing code and tests at the point where we're having to guess the most. Left uncheck by other practices, it results in creating barriers to change, not helping us change faster.
+            </p>
+            <p>
+                What you have to do is come in with the mindset that you'll delete tests too. Don't just write them and expect that they'll live forever. Use the tooling to explore the problem and technology at the same time. The key here is short red-green-refactoring cycles. Which reminds me, <a href="https://www.jamesshore.com/Blog/Microsoft-Gets-TDD-Completely-Wrong.html" title="Microsoft Gets TDD Completely Wrong">Microsoft got TDD completely wrong too at some point</a>. They left out the refactoring step as part of the TDD process. This includes deleteting and changing tests as the design evolves, as you begin to acquire more knowledge. So remember, TDD is a process that helps you think by answering questions with working software. Practice <a href="https://www.jamesshore.com/Blog/Red-Green-Refactor.html" title="Red Green Refactor">Red->Green->Refactoring</a>. Better yet, double down and make refactoring part of your culture. It'll help keep your code clean.
+            </p>
+            <section class="comic-strip">
+                <header>
+                    <h2>
+                        Tight coupling
+                    </h2>
+                </header>
+                <section>
+                    <ul>
+                        <li>Objects that initiate network calls: Pass them in via the constructor or method/function arguments so that you can write simple test doubles</li>
+                        <li>Dependencies being set as properties: If you do this, combine it with passing in dependencies via the constructor</li>
+                        <li>Imported libraries that cross boundaries directly referenced in classes and modules whos purpose is to model domain or business processes and logic: Don't do that, pass them in via function or constructor arguments</li>
+                        <li>Directly referencing the object that crosses boundaries: Try utilizing message based integrations like pub/sub, observer pattern, event driven, delegation patterns</li>
+                    </ul>    
+                </section>
+                <aside>
+                    <h3 class="bubble left">How do we write testable software?</h3>
+                    <h3 class="bubble left">What does Software Design look like?</h3>
+                </aside>
+            </section>
+            <p>
+                Tight coupling makes things hard to test. Instead, consider designing the software so you can write simple test doubles. Classes and modules that don't exhibit a <strong>recognizable pattern</strong> or <strong>design</strong> are an indication of tight coupling. Dependencies that cross <strong>process boundaries</strong> litter the codebase with different <strong>communication patterns</strong>. One class just references an HTTPClient library, importing it directly, making it hard to test without initiating a network request. The class has multiple <strong>collaborating objects</strong>, some passed in via the <strong>constructor</strong>, some just referenced as <strong>instance properties</strong>. There's no discernable <strong>object communication strategy or pattern</strong>. In order for you to realistically practice TDD in this codebase, you'd have to be one of the people who created it in the first place (i.e. knows it really well) AND good at the TDD toolchain (i.e. knows TDD tooling for the given ecosystem). And therein lies the problem.
+            </p>
+        </section>
+        <section>
+            <header>
+                <h2>
+                    Lots of tests tightly coupled to low-level implementation
+                </h2>
+            </header>
+            <blockquote>
+                Generating lots of tests creates a trend where the overall codebase is harder to change because now we have 3 to 4 times more code impacted by a single change.
+            </blockquote>
+            <p>
+                <strong>What would happen if everyone practiced TDD?</strong> There would be more tests, for sure. In conjuction with the fact that we're writing these tests at the point of least knowledge, often times creating tightly coupled test code to production code, results in a fragile design. Just changing one thing can require having to update many tests. This is the area where I think having <strong>software design skills</strong> can help. But it requires experience, which requires practice. However, even if you have people with software design skills who keep the software <strong>soft</strong>, what happens when you have new people join the team? Especially with varying skill levels? It takes effort to onboard them to the point where they also have software design skills. It ends up feeling like a constant battle with <strong>entropy</strong>. This is another reason why I think TDD is so hard. Note, not so much TDD itself, but rather it's externalities.
+            </p>
+        </section>
+        <section>
+            <header>
+                <h2>
+                    Forget it, just don't do TDD
+                </h2>
+            </header>
+            <p>
+                Alas, I'm no help to you, am I? You probably came here for answers and all I've provided are validations as to why TDD is hard. Well, I take that back. You could read between the lines, pick up on certain clues that could be answers to some of the questions you have about how to start practicing TDD. I mean, I tried to be direct with the TLDR; up above. I bolded some things that I thought were important. And really, I think when it comes down to it, you just gotta <strong>train</strong>, <strong>practice</strong>, and <strong>get good</strong>. I'd start with the tooling.
+            </p>
+            <p>
+                I'd avoid including a mocking framework and design the code to allow you to build your own <a href="https://www.martinfowler.com/bliki/TestDouble.html" title="Test Doubles">Test Doubles</a>. Setup a pipeline that continuously runs tests and notifies you of failures. Get proficient with containers. Find a web service test double like <a href="https://github.com/WireMock-Net/WireMock.Net" title="WireMock for .Net">WireMock-Net</a>, <a href="http://wiremock.org" title="WireMock">WireMock (Java)</a>, and <a href="http://www.mbtest.org/docs/gettingStarted" title="Mountebank">Mountebank</a>. Try to isolate the application process under test, but in a way where you can run it normally. That way you can start testing your existing apps from the outside in. Build up your toolbox so that you can apply your skills in a surgical way, solving each problem as it rears it's ugly head. I know you can do it. I have faith in you.
+            </p>
+        </section>
+    </section>
+</article>
+<aside>
+    <h3>UPDATED: List of related articles</h3>
+    <ul>
+        <li>
+            <a href="https://martinfowler.com/articles/class-too-large.html" title="Article about refactoring a class that is too large">
+                Class Too Large
+            </a>
+        </li>
+    </ul>
+</aside>
+
+<script server>
+    export default {
+        title: "Why Is Test Driven Development (TDD) So Hard: Revisited",
+        layout: './layouts/post.html',
+        canonical: 'https://www.joeyguerra.com/blog/2020/why-is-tdd-so-hard.html',
+        excerpt: "I wrote about TDD in 2016. Since then, I feel like I've gotten better at it and have seen people use it less. So I'm revisiting the question, why is TDD so hard. I started a few conversations about it over Slack and LinkedIn. Here's my summary.",
+        shouldPublish: true,
+        published: new Date('2020-03-20'),
+        tags: ['tdd', 'software design', 'software architecture'],
+        image: '',
+        uri: '/blog/2020/why-is-tdd-so-hard.html'
+    }
+</script>

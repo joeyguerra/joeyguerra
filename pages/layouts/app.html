@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <base href="./"/>
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src https:"/>-->
+    <title>${title ?? 'App'}</title>
+    <meta name="author" content="Joey Guerra"/>
+    <meta name="description" content="${excerpt ?? 'Coding examples using what I\'ve learned.'}"/>
+    <meta property="og:title" content="${title ?? 'Coding Examples'}"/>
+    <meta property="og:description" content="${excerpt ?? 'Coding examples using what I\'ve learned.'}"/>
+    <meta property="og:image" content="${image ?? 'imgs/joey-g-boss-pic.jpg'}"/>
+    <meta property="og:site_name" content="${title ?? 'Coding Examples'}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="apple-touch-icon" href="favicon_package_v0/apple-touch-icon.png"/>
+    <meta name="msapplication-TileColor" content="#da532c"/>
+    <meta name="theme-color" content="#ffffff"/>
+    <meta name="apple-mobile-web-app-title" content="${title ?? 'Coding Examples'}"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="${touchIcon180 ?? 'favicon_package_v0/apple-touch-icon.png'}"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="${touchIcon32 ?? 'favicon_package_v0/favicon-32x32.png'}"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="${touchIcon16 ?? 'favicon_package_v0/favicon-16x16.png'}"/>
+    <link rel="manifest" href="favicon_package_v0/site.webmanifest"/>
+    <link rel="mask-icon" href="favicon_package_v0/safari-pinned-tab.svg" color="#5bbad5"/>
+    <link rel="shortcut icon" href="favicon_package_v0/favicon.ico"/>
+    <link rel="apple-touch-startup-image" href="${touchStartupImage ?? 'imgs/me.jpg'}"/>
+    <link rel="canonical" href="${canonical}"/>
+    <link rel="preload" href="HubotSans/Hubot-Sans.woff2" as="font" type="font/woff2" crossorigin>
+  </head>
+  <style>
+    @font-face {
+      font-family: 'Hubot Sans';
+      src:
+        url('HubotSans/Hubot-Sans.woff2') format('woff2 supports variations'),
+        url('HubotSans/Hubot-Sans.woff2') format('woff2-variations');
+      font-weight: 200 900;
+      font-stretch: 75% 125%;
+    }
+    * { 
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    html, body {
+      font-family: "Hubot Sans","Hubot Sans Header Fallback",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    }
+
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body>header {
+      margin-bottom: 10px;
+    }
+  </style>
+  <body>
+      ${body}
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" id="HotReloader">
+      import { HotReloader } from '/js/HotReloader.mjs'
+      const hotReloader = new HotReloader(window, io('/hot-reload'))
+  </script>
+
+  <script type="module">
+    import App from "./webapp/App.mjs"
+    const io = options => {
+      return {
+        emit(event, message){
+          console.log("socket.emit", event, message)
+        },
+        on(event, callback){
+          console.log("socket.on", event, callback)
+        }
+      }
+    }
+    function main(){
+      window.addEventListener("load", e => {
+        window.app = new App(window, io({
+          reconnectionAttempts: 5
+        }), {}, {})
+      }, true)
+    }
+    if('io' in window) main()
+  </script>
+</html>

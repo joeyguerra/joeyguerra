@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <base href="./"/>
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src https:"/>-->
+    <title>${ title ?? 'Joey Guerra' }</title>
+    <meta name="author" content="Joey Guerra"/>
+    <meta name="description" content="Joey Guerra's personal site"/>
+    <meta property="og:title" content="Joey Guerra's personal site"/>
+    <meta property="og:description" content="Programmer, engineer, inclusive, wanna be included, has opinions on strategy, leadership, high functioning organizations and how to build valuable software"/>
+    <meta property="og:image" content="imgs/joey-g-boss-pic.jpg"/>
+    <meta property="og:site_name" content="It's Joey Guerra's personal site"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <link rel="apple-touch-icon" href="/favicon_package_v0/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_package_v0/apple-touch-icon.png"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon_package_v0/favicon-32x32.png"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon_package_v0/favicon-16x16.png"/>
+    <link rel="manifest" href="/favicon_package_v0/site.webmanifest"/>
+    <link rel="mask-icon" href="/favicon_package_v0/safari-pinned-tab.svg" color="#5bbad5"/>
+    <meta name="msapplication-TileColor" content="#da532c"/>
+    <meta name="theme-color" content="#ffffff"/>
+    <link rel="shortcut icon" href="/favicon_package_v0/favicon.ico"/>
+    <link rel="apple-touch-startup-image" href="imgs/me.jpg">
+
+    <meta name="apple-mobile-web-app-title" content="Joey Guerra"/>
+    <link href="https://mastodon.social/@joeyguerra" rel="me">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+    </style>
+    <link rel="canonical" href="${canonical}"/>
+    <link rel="preload" href="HubotSans/Hubot-Sans.woff2" as="font" type="font/woff2" crossorigin>
+    <style>
+      @font-face {
+        font-family: 'Hubot Sans';
+        src:
+          url('HubotSans/Hubot-Sans.woff2') format('woff2 supports variations'),
+          url('HubotSans/Hubot-Sans.woff2') format('woff2-variations');
+        font-weight: 200 900;
+        font-stretch: 75% 125%;
+      }
+      html, body {
+        font-family: "Hubot Sans","Hubot Sans Header Fallback",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+      }
+      body {
+        max-width: 800px;
+        margin: 1rem auto;
+      }
+      main {
+        padding: 1rem;
+      }
+      footer {
+        text-align: center;
+        padding: 25px auto;
+        line-height: 1em;
+        margin-top: 3em;
+        margin-bottom: 3em;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 25px;
+        justify-content: center;
+      }
+      footer small {
+        display: block;
+        font-size: .7em;
+        width: 50%;
+      }
+      footer img {
+        border-radius: 100%;
+        width: 75px;
+      }
+      aside { 
+        margin: 0 auto;
+        text-align: center;
+      }
+      iframe {
+        border: 0;
+        height: 215px;
+      }
+      textarea {
+        width: 100%;
+        height: 100%;
+      }
+      aside nav {
+        display: flex;
+        flex-direction: column;
+        gap: .5em;
+        margin-bottom: 1em;
+      }
+      aside nav a {
+        width: 100%;
+        display: block;
+        text-align: center;
+        padding: 1em;
+        border: 1px solid #000;
+        text-decoration: none;
+        color: #000;
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <main role="main">
+      ${body}
+      <aside>
+        <nav>
+          <a href="/blog/" title="Joey Guerra's Blog">Blog</a>
+          <a href="/pushups.html" title="A daily pushup recorder">Pushups</a>
+          <a href="/calendar.html" title="A big ass digital calendar">Big Ass Digital Calendar</a>
+          <a href="/linkedincarousel.html" title="A LinkedIn Carousel Builder">LinkedIn Carousel Builder</a>
+          <a href="/todos.html" title="Stuff todos app">Todos</a>
+          <a href="/ratings.html" title="A ratings component built with MVC">Ratings Component</a>
+          <a href="/coppell-chamber-of-commerce-directory.html" title="Coppell Texas Chamber of Commerce Directory">Coppell Chamber of Commerce Directory</a>
+        </nav>
+      </aside>
+    </main>
+    <footer>
+      <small>This is my personal site. It's a playground I use to explore my own opinions and they are very dynamic. Please keep it in mind as you read through. I hope this site makes you happy.</small>
+      <img src="/imgs/joeysgotwings.jpeg" alt="Joey's got wings" />
+    </footer>
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" id="HotReloader">
+      import { HotReloader } from '/js/HotReloader.mjs'
+      const hotReloader = new HotReloader(window, io('/hot-reload'))
+  </script>
+  
+</html>
