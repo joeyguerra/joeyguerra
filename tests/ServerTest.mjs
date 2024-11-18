@@ -6,7 +6,7 @@ import fs, { promises as File } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { FileRequestListener } from '../src/FileRequestListener.mjs'
 import { EmptyRequestListener } from '../src/EmptyRequestListener.mjs'
-import CookieManager from '../src/CookieManager.mjs'
+import { CookieManager, Cookie } from '../src/CookieManager.mjs'
 
 
 const __dirname = new URL('.', import.meta.url).pathname
@@ -61,10 +61,10 @@ class Server extends EventEmitter {
 class CookieRequestListener {
     constructor(server) {
         this.server = server
-        this.cookieManager = new CookieManager('super secret secrets')
+        this.cookieManager = new CookieManager(['super secret secrets', 'and another secret to rotate to'])
     }
     async onRequest(req, res) {
-        const cookies = this.cookieManager.parseCookies(req.headers.cookie)
+        const cookies = this.cookieManager.deserialize(req.headers.cookie)
         console.log(cookies)
         res.setHeader('Set-Cookie', req.headers.cookie)
     }
