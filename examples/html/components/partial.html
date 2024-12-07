@@ -1,3 +1,10 @@
 <main>
     <h1>Partial HTML</h1>
+    <aside>
+        ${await context.include('../component1/index.html')}
+    </aside>
 </main>
+
+<script>
+    let obj = ${JSON.stringify(obj)}
+</script>

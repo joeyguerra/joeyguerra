@@ -46,7 +46,7 @@
         title: 'How to Get Rich (without getting lucky) by Naval Ravikant',
         excerpt: "Naval Ravikant's tweetstorm of principals on how to get rich.",
         shouldPublish: true,
-        uri: '/blug/2019/how-to-get-rich.html',
+        uri: '/blog/2019/how-to-get-rich.html',
         published: new Date('2019-12-31T16:43:08.111Z'),
         tags: []
     }

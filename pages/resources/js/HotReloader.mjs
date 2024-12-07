@@ -41,36 +41,7 @@ class HotReloader {
         this.window = window
         this.socket = socket
         socket.on('file changed', msg => {
-            console.log(msg.fileThatTriggeredIt)            
-            const domFromData = new DOMParser().parseFromString(msg.data, 'text/html')
-            morphdom(document.head, domFromData.head, morphdomOptions)
-            morphdom(document.body, domFromData.body, morphdomOptions)
-            if (msg.fileThatTriggeredIt.endsWith('.js') || msg.fileThatTriggeredIt.endsWith('.mjs')) {
-                const scriptElements = document.querySelectorAll('script');
-                scriptElements.forEach(script => {
-                    if (script.src && script.src.includes(msg.fileThatTriggeredIt)) {
-                        const newScript = document.createElement('script')
-                        if (msg.fileThatTriggeredIt.endsWith('.mjs')) {
-                            newScript.type = 'module'
-                        }
-                        newScript.src = `${script.src}?t=${new Date().getTime()}`
-                        script.replaceWith(newScript)
-                    }
-                })
-            }
-
-            if (msg.fileThatTriggeredIt.endsWith('.css')) {
-                const linkElements = document.querySelectorAll('link[rel="stylesheet"]');
-                linkElements.forEach(link => {
-                    if (link.href && link.href.includes(msg.fileThatTriggeredIt)) {
-                        const newLink = document.createElement('link')
-                        newLink.rel = 'stylesheet'
-                        newLink.href = `${link.href.split('?')[0]}?t=${new Date().getTime()}`;
-                        link.replaceWith(newLink)
-                    }
-                })
-            }
-            console.info('morphed', new Date())
+            this.update(msg)
         })
         socket.on('disconnect', reason => {
             console.error('Disconnected:', reason)
@@ -81,6 +52,39 @@ class HotReloader {
         window.addEventListener('unload', e =>{
             socket.close()
         })    
+    }
+
+    update(msg) {
+        console.log('updating', msg)
+        const domFromData = new DOMParser().parseFromString(msg.data, 'text/html')
+        morphdom(document.head, domFromData.head, morphdomOptions)
+        morphdom(document.body, domFromData.body, morphdomOptions)
+        if (msg.fileThatTriggeredIt.endsWith('.js') || msg.fileThatTriggeredIt.endsWith('.mjs')) {
+            const scriptElements = document.querySelectorAll('script');
+            scriptElements.forEach(script => {
+                if (script.src && script.src.includes(msg.fileThatTriggeredIt)) {
+                    const newScript = document.createElement('script')
+                    if (msg.fileThatTriggeredIt.endsWith('.mjs')) {
+                        newScript.type = 'module'
+                    }
+                    newScript.src = `${script.src}?t=${new Date().getTime()}`
+                    script.replaceWith(newScript)
+                }
+            })
+        }
+
+        if (msg.fileThatTriggeredIt.endsWith('.css')) {
+            const linkElements = document.querySelectorAll('link[rel="stylesheet"]');
+            linkElements.forEach(link => {
+                if (link.href && link.href.includes(msg.fileThatTriggeredIt)) {
+                    const newLink = document.createElement('link')
+                    newLink.rel = 'stylesheet'
+                    newLink.href = `${link.href.split('?')[0]}?t=${new Date().getTime()}`;
+                    link.replaceWith(newLink)
+                }
+            })
+        }
+        console.info('morphed', new Date()) 
     }
 }
 export { HotReloader }

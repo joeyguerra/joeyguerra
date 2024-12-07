@@ -4,8 +4,8 @@ export default () => {
             throw new Error('FlashMessage middleware requires session middleware')
         }
         req.session.flash = []
-        req.flash = res.flash = (type, message)=>{
+        req.flash = res.flash =(type, message)=>{
             req.session.flash.push({type, message})
-        } 
+        }
     }
 }

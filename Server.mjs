@@ -35,6 +35,7 @@ class IncomingMessageOnSocket extends IncomingMessage {
     constructor(socket, urlParsed) {
         super(socket)
         this.urlParsed = urlParsed
+        this.res = new ServerResponse(this)
     }
 }
 
@@ -169,7 +170,9 @@ async function genFile(file, renderTemplate, routes, layouts, localImports) {
     req.params = new RequestParams(new URL(req.url), null)
 
     const { output, template } = await renderTemplate(file, routes, layouts, { req, res })
-
+    if (template.context.shouldPublish === false && process.env.NODE_ENV === 'production') {
+        return {routes, layouts, localImports}
+    }
     const importRegex = /import\s+{[^}]+}\s+from\s+['"]([^'"]+\.mjs)['"]/g
     if (output.includes('import') || output.includes('require')) {
         let match = null
@@ -188,7 +191,7 @@ async function genFile(file, renderTemplate, routes, layouts, localImports) {
     if (output.includes('<link')) {
         let match = null
         while ((match = cssRegex.exec(output)) !== null) {
-            let keyName = resolve(PAGES, match[1].replace(/^\//, ''))
+            let keyName = resolve(PAGES, RESOURCES, match[1].replace(/^\//, ''))
             let key = localImports.get(keyName)
             if (!key) {
                 localImports.set(keyName, new Set())
@@ -202,7 +205,7 @@ async function genFile(file, renderTemplate, routes, layouts, localImports) {
     if (output.includes('<script')) {    
         let match = null
         while ((match = scriptRegex.exec(output)) !== null) {    
-            let keyName = resolve(PAGES, match[1].replace(/^\//, ''))
+            let keyName = resolve(PAGES, RESOURCES, match[1].replace(/^\//, ''))
             let key = localImports.get(keyName)
             if (!key) {
                 localImports.set(keyName, new Set())
@@ -221,6 +224,7 @@ async function broadcast(filePath, relativePath, hotReloadNamespace, routes, lay
     if (filePath.includes(join(PAGES, RESOURCES))) {
         await copyFileFrom(filePath, join(SITE_FOLDER, relativePath.replace(`${RESOURCES}/`, '')))
     }
+
     for (const [socketId, context] of clients.entries()) {
         debug('filepath', filePath)
         const route = routes.values().find(route => route.match(context.url.pathname))
@@ -230,6 +234,7 @@ async function broadcast(filePath, relativePath, hotReloadNamespace, routes, lay
             const { output, template } = await renderTemplate(filePath, routes, layouts, {req: context.req, res: context.res})
             hotReloadNamespace.to(socketId).emit('file changed', {fileThatTriggeredIt: relativePath, fileName: relativePath, data: output })
         }
+
         if (localImports.get(filePath)) {
             for (const file of localImports.get(filePath)) {
                 const relativeFileIncludes = relative(PAGES, file)
@@ -262,6 +267,7 @@ async function main (server) {
     const io = new SocketServer(server)
     const clients = new Map()
     const hotReloadNamespace = io.of('/hot-reload')
+
     const chokidar = new ChokidarWannabee(PAGES, async (folder, event, filePath, absolutePath) => {
         let key = layouts.get(absolutePath)
         if (!key) return false
@@ -273,7 +279,7 @@ async function main (server) {
 
     hotReloadNamespace.on('connection', socket => {
         debug('connected to hot reloading %s', socket.id)
-        const url = new URL(socket.handshake.headers.referer)
+        const url = new URL(socket.handshake.headers.referer ?? 'http://localhost/')
         url.pathname = ifSlashAddIndex(url.pathname)
         const req = new IncomingMessageOnSocket(socket, url)
         req.method = 'GET'
@@ -309,16 +315,29 @@ async function main (server) {
             if (msg.headers) {
                 req.headers = msg.headers
             }
+            const params = new URLSearchParams(msg)
+            const obj = {}
+            for (const [key, value] of params.entries()) {
+                obj[key] = value
+            }
+            req.body = obj
+    
             for await (const middleware of middlewares.values()) {
                 await middleware(req, res)
             }
             const ext = extname(url.pathname).substring(1)
             const { output, template } = await renderTemplate(route.filePath, routes, layouts, {req, res })
-            socket.emit('chat message:response', output)
+            const relativePath = relative(PAGES, route.filePath)
+            socket.emit('chat message:response', {fileThatTriggeredIt: route.filePath, fileName: relativePath, data: output })
         })
     })
     
-    server.on('request', async (req, res) => {        
+    server.on('request', async (req, res) => {
+        if (req.url === '/favicon.ico') {
+            fs.createReadStream(join(SITE_FOLDER, 'favicon_package_v0/favicon.ico')).pipe(res)
+            return
+        }
+
         const url = new URL(req.url, `http://${req.headers.host}`)
         if (url.pathname.indexOf('socket.io') > -1) return
         if (url.pathname.indexOf('morphdom-esm.js') > -1) {
@@ -335,12 +354,16 @@ async function main (server) {
         req.urlParsed = new URL(req.url ?? '/', `http://${req.headers?.host ?? 'localhost'}`)
         url.pathname = ifSlashAddIndex(url.pathname)
         const route = routes.values().find(route => route.match(url.pathname))
+
         if (route) {
             const ext = extname(req.url).substring(1)
             req.params = new RequestParams(req.urlParsed, route.regex)
-            debug('handling route', req.url, req.params)
+            debug('handling route', req.url)
             const { output, template } = await renderTemplate(route.filePath, routes, layouts, {req, res })
             if (res.headersSent) return
+            if (template.context[req.method.toLowerCase()]) {
+                return await template.context[req.method.toLowerCase()](req, res)
+            }
             res.setHeader('Content-Type', CONTENT_TYPE[ext] ?? 'text/html')
             return res.end(output)
         }

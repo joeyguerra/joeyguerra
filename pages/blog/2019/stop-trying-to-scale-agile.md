@@ -39,7 +39,7 @@ An organization is not a human body. It's made up of disconnected, individual, p
         title: 'Stop Trying to Scale Agile',
         excerpt: 'STOP. TRYING. TO. SCALE. AGILE.',
         shouldPublish: true,
-        uri: '/blug/2019/stop-trying-to-scale-agile.html',
+        uri: '/blog/2019/stop-trying-to-scale-agile.html',
         published: new Date('2019-07-01T16:43:08.111Z'),
         tags: ['agile', 'scale', 'organizational']
     }

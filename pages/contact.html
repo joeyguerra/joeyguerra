@@ -1,3 +1,6 @@
+<div id="response">
+    ${getResponse()}
+</div>
 <form action="/contact.html" id="newMessageForm" method="post">
     <legend>Contact Form</legend>
     <fieldset>
@@ -9,8 +12,8 @@
     <button name="button" type="submit">Send</button>
 </form>
 <p style="display: none;" id="contactFormMessage">You're message has been sent. I will get back to you soon. Thank you.</p>
-<script src="/socket.io/socket.io.js"></script>
 <script type="module">
+
     if(window.location.hostname.indexOf('joeyguerra.com') > -1) {
         document.domain = 'joeyguerra.com'
     }
@@ -21,11 +24,13 @@
         console.log('connected')
     })
     socket.on('message', message => {
-        console.log(message)
+        console.log('got a message', message)
     })
-    socket.emit('chat message', 'hi. I am a client')
     socket.on('chat message:response', message => {
-        console.log(message.substring(0, 10))
+        const domFromData = new DOMParser().parseFromString(message.data, 'text/html')
+        const messageElement = domFromData.getElementById('response')
+        document.getElementById('response').innerHTML = messageElement.innerHTML
+        window.newMessageForm.style.display = 'none'
     })
     console.log('emitted')
     let { newMessageForm, email } = window
@@ -51,15 +56,26 @@
 </script>
 
 <script server>
-    import fs from 'node:fs/promises'
-    if (context.req.body) {
-        console.log(context.req.body.email, context.req.body.message)
+    import { promises as File } from 'node:fs'
+    import { dirname } from 'node:path'
+
+    let response = ''
+    if (context.req.body && context.req.body.email) {
         const id = Date.now()
-        await fs.appendFile('messages.txt', `${id}:email:${context.req.body.email}\n`)
-        await fs.appendFile('messages.txt', `${id}:message:${context.req.body.message}\n\n`)
+        await File.appendFile('.data/messages.md', `# [${context.req.body.email}](mailto:${context.req.body.email})
+
+    new Date('${id}').toISOString()
+
+${context.req.body.message}
+
+`)
+        response = 'Your message has been sent. I will get back to you soon. Thank you.'
     }
     export default {
         layout: './layouts/post.html',
+        getResponse() {
+            return response
+        },
         title: 'Contact Form',
         canonical: 'https://www.joeyguerra.com/contact.html',
         excerpt: 'Manage your contacts.',

@@ -43,7 +43,7 @@ And that's where I'm at right now. I want to learn how to guide a team of develo
         title: "I Want to Increase My Output by 10, 100, 1000",
         excerpt: 'I want to capture and share my journey about how I increase my work output as a software engineer by multiples of 10, 100, 1000.',
         shouldPublish: true,
-        uri: '/blug/2014/increase-my-output.html',
+        uri: '/blog/2014/increase-my-output.html',
         published: new Date('2014-01-01T17:43:08.111Z'),
         tags: ['career']
     }

@@ -39,7 +39,7 @@ One of my goals with this post is to discourage you from creating a team called 
     title: 'Steps to Creating a DevOps Culture in an Organization',
     excerpt: "I started out writing a verbose post about how to create a DevOps culture in an enterprise. After sleeping on it, I realized that people really need tactical suggestions on how to create a DevOps culture, not just a description. So here's a DevOps Culture todo list.",
     shouldPublish: true,
-    uri: '/blug/2014/devops.html',
+    uri: '/blog/2014/devops.html',
     published: new Date('2014-05-01T16:43:08.111Z'),
     tags: ['devops'],
     image: ''

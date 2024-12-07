@@ -87,7 +87,7 @@ nomad agent -config $config_file_path
         title: 'I have 2 Mac Minis',
         excerpt: 'And I want to create a cluster so that I can deploy some apps to them.',
         shouldPublish: true,
-        uri: '/blug/2018/i-have-2-mac-minis.html',
+        uri: '/blog/2018/i-have-2-mac-minis.html',
         published: new Date('2018-02-01T16:43:08.111Z'),
         tags: ['experimenting', 'local']
     }

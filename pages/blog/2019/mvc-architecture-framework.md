@@ -17,7 +17,7 @@ With these definitions, reconsider the question. Would you use MVC, a pattern fo
         title: 'Is MVC an architecture or a framework?',
         excerpt: "There's a lot of ideas about what MVC is and isn't. Here's my take.",
         shouldPublish: true,
-        uri: '/blug/2019/mvc-architecture-framework.html',
+        uri: '/blog/2019/mvc-architecture-framework.html',
         published: new Date('2019-08-01T16:43:08.111Z'),
         tags: ['mvc', 'architecture']
     }

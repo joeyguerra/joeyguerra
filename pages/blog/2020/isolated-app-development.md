@@ -11,7 +11,7 @@
         title: 'Isolated Application Development',
         excerpt: "Application dependencies can slow down development because you're waiting for them to add a field to their API or update their module with the feature you need.",
         shouldPublish: true,
-        uri: '/blug/2019/isolated-app-development.html',
+        uri: '/blog/2019/isolated-app-development.html',
         published: new Date('2020-04-29T17:59:00.000Z'),
         tags: ['isolated']
     }

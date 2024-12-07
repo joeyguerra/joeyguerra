@@ -35,7 +35,7 @@ So while I agree with the general sentiment of that post, that story points repr
         title: 'Story Points, So Many Questions',
         excerpt: "Tony likes to push my buttons sometimes. He knows what my opinion is about how and why teams should estimate stories. So I get a text from him today, asking me what I think about Do Story Points Relate to Complexity or Time?. I'm compelled to bite. I can help it, but meh, it's easy to post things to the internets.",
         shouldPublish: true,
-        uri: '/blug/2016/storypoints-so-many-questions.html',
+        uri: '/blog/2016/storypoints-so-many-questions.html',
         tags: ['story', 'points', 'scrum'],
         published: new Date('2016-08-01T16:43:08.111Z')
     }

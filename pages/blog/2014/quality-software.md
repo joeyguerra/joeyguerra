@@ -17,7 +17,7 @@ Now that I have a definition to work with, I can now set out on the journey to m
         title: 'Definition of Quality in Software',
         excerpt: 'Has your boss ever asked you to increase your code quality? How did you do that?',
         shouldPublish: true,
-        uri: '/blug/2014/quality-software.html',
+        uri: '/blog/2014/quality-software.html',
         published: new Date('2014-02-01T16:43:08.111Z'),
         tags: ['quality', 'software']
     }

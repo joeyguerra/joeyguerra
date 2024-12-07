@@ -216,6 +216,40 @@ class Cookie {
     }
 }
 
+class CookieHeader {
+    constructor(name, value, options = {}) {
+        this.name = name
+        this.value = value
+        this.options = options
+    }
+    serialize() {
+        let serialized = `${this.name}=${this.value}`
+        if (this.options.path) {
+            serialized += `; Path=${this.options.path}`
+        }
+        if (this.options.maxAge) {
+            serialized += `; Max-Age=${this.options.maxAge}`
+        }
+        if (!this.options.maxAge && this.options.expires) {
+            serialized += `; Expires=${this.options.expires.toUTCString()}`
+        }
+        if (this.options.domain) {
+            serialized += `; Domain=${this.options.domain}`
+        }
+        if (this.options.secure) {
+            serialized += `; Secure`
+        }
+        if (this.options.httpOnly) {
+            serialized += `; HttpOnly`
+        }
+        if (this.options.ArraysameSite) {
+            serialized += `; SameSite=${this.options.ArraysameSite}`
+        }
+        return serialized
+    }
+}
+
 export {
-    Cookie
+    Cookie,
+    CookieHeader
 }

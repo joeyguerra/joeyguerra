@@ -79,7 +79,7 @@ cat .ssh/id_rsa.pub | ssh pi@raspberrypi.local 'cat >> .ssh/authorized_keys'
         title: 'Setup a Raspberry Pi',
         excerpt: 'Ready to talk.',
         shouldPublish: true,
-        uri: '/blug/2018/setup-raspberrypi.html',
+        uri: '/blog/2018/setup-raspberrypi.html',
         published: new Date('2018-03-01T16:43:08.111Z'),
         tags: ['experimenting'],
         uri: '/blog/2018/setup-raspberrypi.html'

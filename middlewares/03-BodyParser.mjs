@@ -1,3 +1,6 @@
+import createDebug from 'debug'
+const debug = createDebug('body-parser')
+
 const parsers = {
     'application/x-www-form-urlencoded': (body) => {
         const params = new URLSearchParams(body)
@@ -39,7 +42,7 @@ async function parseBody(req) {
     })
 }
 
-export default () => {
+export default async () => {
     return async (req, res) => {
         if (!['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method)) {
             return

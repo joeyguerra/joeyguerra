@@ -1,0 +1,99 @@
+<style>
+    body {
+        background: black;
+        padding: 60px;
+        margin: 0;
+    }
+
+    div[contentEditable="true"] {
+        text-transform: uppercase;
+        font-family: sans-serif;
+        font-size: 120px;
+        line-height: 120px;
+        margin-bottom: 60px;
+        color: rgba(255, 255, 255, 0.9);
+        font-family: ratio, sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        transition: all 0.4s;
+        &:focus {
+            outline: none;
+        }
+    }
+</style>
+<div contentEditable="true">
+    This is a teleprompter. Press option (⌥) + space bar to start and stop the scrolling.
+    You can edit this text to use as a teleprompter.
+</div>
+<p>END</p>
+
+<script type="module">
+    window.scrollTo(0, 0)
+
+    var play = true
+    var currentScroll = 0
+    var speed = 10
+    var scroller = setInterval(scroll, speed)
+
+    function scroll() {
+        if (play == true) {
+            currentScroll = window.scrollY
+            if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+                play = false
+            } else {
+                window.scrollTo(0, currentScroll + 1)
+            }
+        }
+    }
+
+    function speedUp() {
+        speed = speed + 20
+        clearInterval(scroller)
+        scroller = setInterval(scroll, speed)
+    }
+
+    function slowDown() {
+        speed = speed - 20
+        clearInterval(scroller)
+        scroller = setInterval(scroll, speed)
+    }
+
+    function keyDownTextField(e) {
+        if (e.altKey && e.keyCode === 40) {
+            event.preventDefault()
+            speedUp()
+            return
+        }
+
+        if (e.altKey && e.keyCode === 38) {
+            event.preventDefault()
+            slowDown()
+            return
+        }
+        if (e.altKey && e.keyCode === 32) {
+            event.preventDefault()
+            play = !play
+            return false
+        }
+
+    }
+    document.addEventListener('keydown', keyDownTextField, false)
+
+</script>
+
+<script server>
+    export default {
+        title: "Teleprompter",
+        layout: './layouts/app.html',
+        canonical: 'https://www.joeyguerra.com/teleprompter.html',
+        excerpt: 'Web teleprompter.',
+        shouldPublish: false,
+        uri: '/teleprompter.html',
+        image: null,
+        touchIcon180: null,
+        touchIcon32: null,
+        touchIcon16: null,
+        touchStartupImage: null,
+
+    }
+</script>

@@ -25,7 +25,7 @@
         title: 'What is Architecture',
         excerpt: 'Domain boundaries, Component responsibilities ...',
         shouldPublish: true,
-        uri: '/blug/2019/what-is-architecture.html',
+        uri: '/blog/2019/what-is-architecture.html',
         published: new Date('2019-07-01T16:43:08.111Z'),
         tags: ['architecture']
     }

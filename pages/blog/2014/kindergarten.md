@@ -25,7 +25,7 @@ What if every [office] was like kindergarten classrooms?
         title: 'How can we all keep the kindergarten spirit [at work]?',
         excerpt: "I thought it would be interesting to post a version of Amber's article that changes the context from school to work.",
         shouldPublish: true,
-        uri: '/blug/2014/kindergarten.html',
+        uri: '/blog/2014/kindergarten.html',
         published: new Date('2014-02-15T16:43:08.111Z'),
         tags: ['psycology']
     }

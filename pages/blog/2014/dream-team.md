@@ -61,7 +61,7 @@ What's really going to increase revenue, sticking with the plan that was develop
         title: 'Dream Team',
         excerpt: "I want to work on a team who's culture has these characteristics.",
         shouldPublish: true,
-        uri: '/blug/2014/dream-team.html',
+        uri: '/blog/2014/dream-team.html',
         published: new Date('2014-04-01T16:43:08.111Z'),
         tags: ['team']
     }
