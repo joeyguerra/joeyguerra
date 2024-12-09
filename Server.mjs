@@ -90,6 +90,8 @@ function getTemplate(ext) {
             return new TemplateMarkdown(readFile, PAGES)
         case '.html':
             return new Template(readFile, PAGES)
+        case '.xml':
+            return new Template(readFile, PAGES)
         default:
             return null
     }
@@ -160,7 +162,7 @@ async function genFile(file, renderTemplate, routes, layouts, localImports) {
     // TODO: This strategy is not robust. It should be improved.
     if (file.includes('layout')) return
     let ext = extname(file)
-    if (!['.md', '.html'].includes(ext)) return
+    if (!['.md', '.html', '.xml'].includes(ext)) return
     let newFileName = file.replace('.md', '.html').replace(PAGES, SITE_FOLDER)
     await mkdir(dirname(newFileName), { recursive: true })
     const req = new IncomingMessage()
@@ -354,7 +356,7 @@ async function main (server) {
         req.urlParsed = new URL(req.url ?? '/', `http://${req.headers?.host ?? 'localhost'}`)
         url.pathname = ifSlashAddIndex(url.pathname)
         const route = routes.values().find(route => route.match(url.pathname))
-
+        console.info(JSON.stringify({time: new Date(), url: req.urlParsed, headers: req.headers}))
         if (route) {
             const ext = extname(req.url).substring(1)
             req.params = new RequestParams(req.urlParsed, route.regex)
@@ -377,7 +379,7 @@ async function main (server) {
                 return fs.createReadStream(join(SITE_FOLDER, url.pathname)).pipe(res)
             }
         } catch (e) {
-            debug('File not found', e)
+            console.error(e, req.headers)
         }
     
         res.statusCode = 404

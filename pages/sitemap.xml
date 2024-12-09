@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    ${urls.map(url => '<url><loc>' + url + '</loc></url>').join('\n')}
+    ${Array.from(urls).map(link => '<url><loc>' + link.url + '</loc><lastmod>' + link.published + '</lastmod></url>').join('\n')}
 </urlset>
+<script server>
+  export default {
+    shouldPublish: true
+  }
+</script>

@@ -1,6 +1,6 @@
 {
   "name": "jbot-website",
-  "version": "2.0.64",
+  "version": "2.0.78",
   "description": "Personal website and bot for Joey Guerra",
   "main": "Server.mjs",
   "dependencies": {
@@ -41,7 +41,7 @@
     "start:shell": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs --name jbot",
     "docker-build": "./docker-build.sh",
     "local-deploy": "kubectl config use-context docker-desktop && kubectl apply -f charts/web/deployment.yaml -n default",
-    "push": "node --run docker-build && node --run local-deploy",
+    "push": "node --run build && node --run docker-build && node --run local-deploy",
     "build": "node --experimental-vm-modules Server.mjs --execute build"
   },
   "repository": {

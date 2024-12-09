@@ -8,10 +8,14 @@ class Post {
         this.excerpt = excerpt
         this.slug = slug
         this.uri = uri
+        this.host = 'https://joeyguerra.com'
         this.published = published
         this.tags = tags
         this.image = image
         this.shouldPublish = shouldPublish
+    }
+    get url() {
+        return `${this.host}${this.uri}`
     }
 }
 
@@ -41,7 +45,10 @@ export default async () => {
     })
 
     process.on(EVENTS.PRE_TEMPLATE_RENDER, async (filePath, initialContext, content) => {
-        if (filePath.includes('/blog/index.html')) {
+        const filesToInclude = [
+            '/blog/index.html'
+        ]
+        if (filesToInclude.some(file => filePath.includes(file))) {
             var sortedPosts = Array.from(posts).sort((a, b) => b.published - a.published)
             initialContext.postsSet = new Set(sortedPosts)
         }
