@@ -5,14 +5,34 @@ import fs from 'node:fs'
 import { opendir, mkdir, readFile, writeFile, cp } from 'node:fs/promises'
 import EventEmitter from 'node:events'
 import { Server as SocketServer } from 'socket.io'
-import createDebug from 'debug'
 import pkg from './package.json' with {type: 'json'}
 import { Template, EVENTS } from './src/Template.mjs'
 import { TemplateMarkdown } from './src/TemplateMarkdown.mjs'
 import { RequestParams } from './src/RequestParams.mjs'
 import { ChokidarWannabee } from './src/ChokidarWannabee.mjs'
 import { UriToStaticFileRoute } from './src/UriToStaticFileRoute.mjs'
+import { Writable } from 'node:stream'
+import honeypoturls from './honeypoturls.mjs'
 
+class Logger extends Writable {
+    constructor(name, options = {}) {
+        super({...options, objectMode: true})
+        this.name = name
+    }
+    _write(chunk, encoding, callback) {
+        process.stdout.write(chunk + '\n', callback)
+    }
+    log(message) {
+        if (typeof message === 'object') {
+            message = { ...message, time: new Date(), name: this.name }
+        } else {
+            message = { message, time: new Date() }
+        }
+        message = JSON.stringify(message)
+        this.write(message)
+    }
+}
+const logger = new Logger(pkg.name)
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const PAGES = join(__dirname, 'pages')
 const RESOURCES = 'resources'
@@ -46,7 +66,6 @@ class IncomingMessageOnRequest extends IncomingMessage {
 }
 
 const PACKAGE_NAME = `${pkg.name}:server`
-const debug = createDebug(PACKAGE_NAME)
 
 async function* readAllFiles(folder) {
     const dir = await opendir(folder)
@@ -106,7 +125,7 @@ async function renderTemplate(filePath, routes, layouts, initialContext = {}) {
     try {
         output = await template.render(content, initialContext)
     } catch(e){
-        console.log('error rendering', filePath)
+        console.error(JSON.stringify({error: e, time: new Date(), filePath}))
         throw e
     }
     if (template.context.route) {
@@ -134,7 +153,7 @@ async function copyFoldersFrom(root, destination) {
         try {
             await copyFileFrom(join(folder.parentPath, folder.name), join(destination, folder.name))
         } catch (e) {
-            debug('error copying', e)
+            logger.log({error: e, message: 'error copying folders from'})
         }
     }
 }
@@ -143,7 +162,7 @@ async function copyFileFrom(file, destination) {
     try {
         await cp(file, destination, { recursive: true })
     } catch (e) {
-        debug('error copying', e)
+        logger.log({error: e, message: 'error copying file from'})
     }
 }
 async function generateStaticSite(renderTemplate) {
@@ -228,9 +247,9 @@ async function broadcast(filePath, relativePath, hotReloadNamespace, routes, lay
     }
 
     for (const [socketId, context] of clients.entries()) {
-        debug('filepath', filePath)
+        logger.log({filePath})
         const route = routes.values().find(route => route.match(context.url.pathname))
-        debug('broadcasting', context.url.pathname, filePath, relativePath)
+        logger.log({message: 'broadcasting', uri: context.url.pathname, filePath, relativePath})
         if (context.url.pathname.replace(ext, '').includes(relativePath.replace(ext, '')) || route) {
             filePath = route ? route.filePath : filePath
             const { output, template } = await renderTemplate(filePath, routes, layouts, {req: context.req, res: context.res})
@@ -280,24 +299,23 @@ async function main (server) {
     })
 
     hotReloadNamespace.on('connection', socket => {
-        debug('connected to hot reloading %s', socket.id)
+        logger.log({message: 'connected to hot reloading %s', id: socket.id})
         const url = new URL(socket.handshake.headers.referer ?? 'http://localhost/')
         url.pathname = ifSlashAddIndex(url.pathname)
         const req = new IncomingMessageOnSocket(socket, url)
         req.method = 'GET'
         req.url = url.pathname
         req.headers = socket.handshake.headers
-        debug('connecting to the hot-reload namespace', url.pathname)
+        logger.log({message: 'connecting to the hot-reload namespace', uri: url.pathname})
         clients.set(socket.id, {url, req, res: null})
         socket.on('disconnect', () => {
             clients.delete(socket.id)
-            debug('/hot-reload user disconnected %s', socket.id)
+            logger.log({message: '/hot-reload user disconnected %s', id: socket.id})
         })
     })
 
     io.on('connection', socket => {
-        debug('connected %s', socket.id)
-        debug('referer', socket.handshake.headers.referer)
+        logger.log({message: `connected ${socket.id}`, referer: socket.handshake.headers.referer})
         const url = new URL(socket.handshake.headers.referer)
         url.pathname = ifSlashAddIndex(url.pathname)
         const req = new IncomingMessageOnSocket(socket, url)
@@ -310,7 +328,7 @@ async function main (server) {
         }
         const res = req.res
         socket.on('chat message', async msg => {
-            debug('message is %s', msg)
+            logger.log({message: 'chat message', msg})
             if (msg.method) {
                 req.method = msg.method
             }
@@ -356,11 +374,11 @@ async function main (server) {
         req.urlParsed = new URL(req.url ?? '/', `http://${req.headers?.host ?? 'localhost'}`)
         url.pathname = ifSlashAddIndex(url.pathname)
         const route = routes.values().find(route => route.match(url.pathname))
-        console.info(JSON.stringify({time: new Date(), url: req.urlParsed, headers: req.headers}))
+        logger.log({url: req.urlParsed, headers: req.headers})
         if (route) {
             const ext = extname(req.url).substring(1)
             req.params = new RequestParams(req.urlParsed, route.regex)
-            debug('handling route', req.url)
+            logger.log({message: 'handling route', url: req.url})
             const { output, template } = await renderTemplate(route.filePath, routes, layouts, {req, res })
             if (res.headersSent) return
             if (template.context[req.method.toLowerCase()]) {
@@ -373,13 +391,20 @@ async function main (server) {
         req.params = new RequestParams(req.urlParsed, null)
         try {
             const ext = extname(url.pathname).substring(1)
+            const isHoneypot = honeypoturls.includes(join(SITE_FOLDER, url.pathname))
+            if (isHoneypot) {
+                logger.log({message: 'honeypot', url: url.pathname, status: 404})
+                res.statusCode = 404
+                return res.end('Not found')
+            }
+
             if (ext) {
                 await fs.promises.access(join(SITE_FOLDER, url.pathname), fs.constants.F_OK)
                 res.setHeader('Content-Type', CONTENT_TYPE[ext] ?? 'application/octet-stream')
                 return fs.createReadStream(join(SITE_FOLDER, url.pathname)).pipe(res)
             }
         } catch (e) {
-            console.error(e, req.headers)
+            console.error(JSON.stringify({error: e, time: new Date(), url: req.urlParsed, headers: req.headers}))
         }
     
         res.statusCode = 404
@@ -394,7 +419,7 @@ async function main (server) {
     })
 
     server.listen(process.env.PORT ?? 3000, () => {
-        createDebug.log(`Server running at http://localhost:${server.address().port}/`)
+        logger.log({message: `Server running at http://localhost:${server.address().port}/`})
     })
 }
 

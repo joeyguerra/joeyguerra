@@ -1,6 +1,6 @@
 {
   "name": "jbot-website",
-  "version": "2.0.78",
+  "version": "2.0.83",
   "description": "Personal website and bot for Joey Guerra",
   "main": "Server.mjs",
   "dependencies": {
@@ -36,8 +36,8 @@
     "test": "node --test --experimental-vm-modules",
     "test:local": "node --watch --experimental-vm-modules",
     "start:env": "env $(cat .env | grep -v \"#\" | xargs -0) hubot -a @hubot-friends/hubot-discord -n jbot",
-    "start": "DEBUG=jbot-website* node --experimental-vm-modules --watch Server.mjs",
-    "start:local": "node --env-file=.env --experimental-vm-modules --watch Server.mjs",
+    "start": "node --experimental-vm-modules --watch Server.mjs",
+    "start:local": "DEBUG=jbot-website* node --env-file=.env --experimental-vm-modules --watch Server.mjs",
     "start:shell": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs --name jbot",
     "docker-build": "./docker-build.sh",
     "local-deploy": "kubectl config use-context docker-desktop && kubectl apply -f charts/web/deployment.yaml -n default",
