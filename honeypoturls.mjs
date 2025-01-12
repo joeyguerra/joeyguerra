@@ -18,6 +18,5 @@ export default [
     '_site/web/wp-includes/wlwmanifest.xml',
     '_site/blog/wp-includes/wlwmanifest.xml',
     '_site/wp-content/plugins/wp-conflg.php',
-    '_site/xmlrpc.php',
-    '_site/favicon.ico'
+    '_site/xmlrpc.php'
 ]

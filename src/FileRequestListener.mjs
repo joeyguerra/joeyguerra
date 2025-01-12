@@ -9,6 +9,7 @@ class FileRequestListener {
     static getContentType (ext) {
         return {
             '.html': 'text/html',
+            '.ico': 'image/x-icon',
             '.txt': 'text/plain',
             '.css': 'text/css',
             '.js': 'text/javascript',

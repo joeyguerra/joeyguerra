@@ -39,6 +39,7 @@ const RESOURCES = 'resources'
 const SITE_FOLDER = '_site'
 const CONTENT_TYPE = {
     css: 'text/css',
+    ico: 'image/x-icon',
     html: 'text/html',
     txt: 'text/plain',
     js: 'text/javascript',
@@ -353,11 +354,6 @@ async function main (server) {
     })
     
     server.on('request', async (req, res) => {
-        if (req.url === '/favicon.ico') {
-            fs.createReadStream(join(SITE_FOLDER, 'favicon_package_v0/favicon.ico')).pipe(res)
-            return
-        }
-
         const url = new URL(req.url, `http://${req.headers.host}`)
         if (url.pathname.indexOf('socket.io') > -1) return
         if (url.pathname.indexOf('morphdom-esm.js') > -1) {

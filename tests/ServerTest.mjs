@@ -6,7 +6,7 @@ import fs, { promises as File } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { FileRequestListener } from '../src/FileRequestListener.mjs'
 import { EmptyRequestListener } from '../src/EmptyRequestListener.mjs'
-import { CookieManager, Cookie } from '../src/CookieManager.mjs'
+import { Cookie, CookieHeader } from '../src/Cookie.mjs'
 
 
 const __dirname = new URL('.', import.meta.url).pathname
@@ -33,7 +33,7 @@ class Server extends EventEmitter {
     off (...args) {
         this.server.off(...args)
     }
-    async listen(port, ) {
+    async listen(port) {
         this.port = port
         this.server = this.http.createServer()
         let args = null
@@ -41,48 +41,56 @@ class Server extends EventEmitter {
             this.on(...args)
         }
         this.server.on('request', async (req, res) => {
-            for (const listener of this.requestListeners) {
+            for await (const listener of this.requestListeners) {
                 if (res.handled) {
                     break
                 }
                 await listener.onRequest(req, res)
             }
         })
-        await new Promise((resolve) => {
+        return new Promise((resolve) => {
             this.server.listen(port, resolve)
         })
     }
-    close () {
+    async close () {
         this.server.removeAllListeners()
-        this.server.close()
+        await new Promise((resolve) => {
+            this.server.close(resolve)
+        })
     }
 }
 
 class CookieRequestListener {
     constructor(server) {
         this.server = server
-        this.cookieManager = new CookieManager(['super secret secrets', 'and another secret to rotate to'])
     }
     async onRequest(req, res) {
-        const cookies = this.cookieManager.deserialize(req.headers.cookie)
-        console.log(cookies)
+        if (!req.headers.cookie) return
+        const cookies = Cookie.deserialize(req.headers.cookie)
         res.setHeader('Set-Cookie', req.headers.cookie)
     }
 }
 
+class CookieSetterListener {
+    constructor(server) {
+        this.server = server
+    }
+    async onRequest(req, res) {
+        const cookie = new CookieHeader('test', 123)
+        res.setHeader('Set-Cookie', cookie.serialize())
+    }
+}
+
 await test('ServerTeset', async (t) => {
-    const server = new Server(http)
+    let server = null
     
-    await t.before(async () => {
+    t.beforeEach(async () => {
+        server = new Server(http)
         await server.listen(0)
     })
 
-    t.after(() => {
-        server.close()
-    })
-
-    await t.afterEach(async (t) => {
-        server.removeAllListeners()
+    t.afterEach(async () => {
+        await server.close()
     })
     
     await t.test('should serve static pages', async () => {
@@ -123,25 +131,34 @@ await test('ServerTeset', async (t) => {
     })
     
     await t.test('should load request listeners from a folder add them to the server request pipeline', async () => {
-        for await (const file of await File.opendir(`${__dirname}/dummies/routes`, { recursive: true })) {
+        const folder = await File.opendir(`${__dirname}/dummies/routes`, { recursive: true })
+        for await (const file of folder) {
             if (file.isDirectory()) {
                 continue
             }
             const route = (await import(`${file.parentPath}/${file.name}`)).default
-            await route(server)
+            server.requestListeners.push(await route(server))
         }
-        const response = await fetch(`http://localhost:${server.address.port}/route-test.html`)
+        const response = await fetch(`http://localhost:${server.address.port}/dummy/route/123`)
         assert.deepEqual(response.status, 200)
     })
 
-    await t.test('should retrun cookies that sent', async () => {
-        server.requestListeners.push(new FileRequestListener(server, HTML_FOLDER))
+    await t.test('should set request cookies on the response', async () => {
         server.requestListeners.push(new CookieRequestListener(server))
+        server.requestListeners.push(new FileRequestListener(server, HTML_FOLDER))
         const response = await fetch(`http://localhost:${server.address.port}/index.html`, {
             headers: {
                 'Cookie': 'test=123'
             }
         })
+        assert.deepEqual(response.headers.get('set-cookie'), 'test=123')
+    })
+
+    await t.test('can set a cookie from the server', async () => {
+        server.requestListeners.push(new CookieRequestListener(server))
+        server.requestListeners.push(new CookieSetterListener(server))
+        server.requestListeners.push(new EmptyRequestListener(server, /^\/index\.html/))
+        const response = await fetch(`http://localhost:${server.address.port}/index.html?cookie=test`)
         assert.deepEqual(response.headers.get('set-cookie'), 'test=123')
     })
 

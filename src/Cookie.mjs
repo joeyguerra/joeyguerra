@@ -6,6 +6,9 @@ class Cookie {
     #sameSite = null
     #secrets = []
     constructor(rawHeader, secrets = []) {
+        if (!rawHeader) {
+            return
+        }
         Object.assign(this, Cookie.deserialize(rawHeader))
         this.#secrets = secrets
         if (this.Encrypted) {
@@ -155,6 +158,8 @@ class Cookie {
     }
     static metaProperties = ['Path', 'Expires', 'HttpOnly', 'Secure', 'Domain', 'SameSite', 'Partitioned', 'MaxAge']
     static deserialize(header) {
+        if (!header || header.length === 0) return null
+
         const cookie = header.split('; ').map(part => part.replace(/;$/, '').trim())
             .reduce((acc, current) => {
                 let [name, ...valueParts] = current.split('=')

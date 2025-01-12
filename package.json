@@ -1,6 +1,6 @@
 {
   "name": "jbot-website",
-  "version": "2.0.83",
+  "version": "2.0.86",
   "description": "Personal website and bot for Joey Guerra",
   "main": "Server.mjs",
   "dependencies": {
@@ -41,8 +41,10 @@
     "start:shell": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs --name jbot",
     "docker-build": "./docker-build.sh",
     "local-deploy": "kubectl config use-context docker-desktop && kubectl apply -f charts/web/deployment.yaml -n default",
-    "push": "node --run build && node --run docker-build && node --run local-deploy",
-    "build": "node --experimental-vm-modules Server.mjs --execute build"
+    "push": "node --run build && node --run docker-build-k3d && node --run k3d-deploy",
+    "build": "node --experimental-vm-modules Server.mjs --execute build",
+    "docker-build-k3d": "./docker-build-k3d.sh",
+    "k3d-deploy": "kubectl config use-context k3d-local && kubectl apply -f charts/web/deployment.yaml -n default"
   },
   "repository": {
     "type": "git",
