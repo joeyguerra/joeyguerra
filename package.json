@@ -1,6 +1,6 @@
 {
   "name": "jbot-website",
-  "version": "2.0.86",
+  "version": "2.0.87",
   "description": "Personal website and bot for Joey Guerra",
   "main": "Server.mjs",
   "dependencies": {
@@ -39,6 +39,7 @@
     "start": "node --experimental-vm-modules --watch Server.mjs",
     "start:local": "DEBUG=jbot-website* node --env-file=.env --experimental-vm-modules --watch Server.mjs",
     "start:shell": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs --name jbot",
+    "start:bot": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs -a @hubot-friends/hubot-discord -n jbot",
     "docker-build": "./docker-build.sh",
     "local-deploy": "kubectl config use-context docker-desktop && kubectl apply -f charts/web/deployment.yaml -n default",
     "push": "node --run build && node --run docker-build-k3d && node --run k3d-deploy",
