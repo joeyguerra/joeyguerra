@@ -1,6 +1,6 @@
 {
   "name": "jbot-website",
-  "version": "2.0.88",
+  "version": "2.0.89",
   "description": "Personal website and bot for Joey Guerra",
   "main": "Server.mjs",
   "dependencies": {
@@ -37,7 +37,7 @@
     "test": "node --test",
     "test:local": "node --watch",
     "start:env": "env $(cat .env | grep -v \"#\" | xargs -0) hubot -a @hubot-friends/hubot-discord -n jbot",
-    "start": "node --watch Server.mjs",
+    "start": "DEBUG=debug node Server.mjs",
     "start:local": "node --env-file=.env --watch Server.mjs",
     "start:shell": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs --name jbot",
     "start:bot": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs -a @hubot-friends/hubot-discord -n jbot",
