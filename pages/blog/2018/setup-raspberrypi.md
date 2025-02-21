@@ -1,3 +1,16 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'Setup a Raspberry Pi',
+    excerpt: 'Ready to talk.',
+    shouldPublish: true,
+    uri: '/blog/2018/setup-raspberrypi.html',
+    published: new Date('2018-03-01T16:43:08.111Z'),
+    tags: ['experimenting'],
+    uri: '/blog/2018/setup-raspberrypi.html'
+}
+---
 # I want a Raspberry Pi ready to talk to other machines
 
 Create a Rasbperian Pi image. Raspbian Stretch Lite
@@ -71,17 +84,3 @@ ssh-keygen -t rsa
 ssh pi@raspberrypi.local mkdir -p .ssh
 cat .ssh/id_rsa.pub | ssh pi@raspberrypi.local 'cat >> .ssh/authorized_keys'
 ```
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'Setup a Raspberry Pi',
-        excerpt: 'Ready to talk.',
-        shouldPublish: true,
-        uri: '/blog/2018/setup-raspberrypi.html',
-        published: new Date('2018-03-01T16:43:08.111Z'),
-        tags: ['experimenting'],
-        uri: '/blog/2018/setup-raspberrypi.html'
-    }
-</script>

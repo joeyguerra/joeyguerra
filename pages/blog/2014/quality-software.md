@@ -1,3 +1,15 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'Definition of Quality in Software',
+    excerpt: 'Has your boss ever asked you to increase your code quality? How did you do that?',
+    shouldPublish: true,
+    uri: '/blog/2014/quality-software.html',
+    published: new Date('2014-02-01T16:43:08.111Z'),
+    tags: ['quality', 'software']
+}
+---
 # Definition of Quality in Software
 
 Has your boss ever asked you to increase your code quality? How do you even do that?
@@ -9,16 +21,3 @@ First, I thought about auser's perspective. As a user of the software, quality i
 As a developer of the software, quality is the standard of readability, discoverability and leverage of existing code as measured against the previous version's characteristics.
 
 Now that I have a definition to work with, I can now set out on the journey to measure it.
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'Definition of Quality in Software',
-        excerpt: 'Has your boss ever asked you to increase your code quality? How did you do that?',
-        shouldPublish: true,
-        uri: '/blog/2014/quality-software.html',
-        published: new Date('2014-02-01T16:43:08.111Z'),
-        tags: ['quality', 'software']
-    }
-</script>

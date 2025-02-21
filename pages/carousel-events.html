@@ -126,7 +126,7 @@
         width: 56%;
     }
     .circled::before {
-        background-image: url(/imgs/circle.svg);
+        background-image: url(/images/circle.svg);
         background-repeat: no-repeat;
         content: "";
         position: absolute;
@@ -136,7 +136,7 @@
     }
 
     .underlined {
-        background-image: url(/imgs/underline.svg);
+        background-image: url(/images/underline.svg);
         background-repeat: no-repeat;
         background-size: 100% 100%;
         content: "";
@@ -197,7 +197,7 @@
             <div>
                 <p>Understand what we mean when we say "event".</p>
                 <figure>
-                    <img src="/imgs/radio-tower.webp" alt="Radio Tower Broadcasting Events" title="Radio Tower Broadcasting Events" />
+                    <img src="/images/radio-tower.webp" alt="Radio Tower Broadcasting Events" title="Radio Tower Broadcasting Events" />
                 </figure>
             </div>
         </section>
@@ -318,22 +318,4 @@
         pdf.save('carousel.pdf');
     });
 
-</script>
-
-<script server>
-    export default {
-        layout: './layouts/carousel.html',
-        title: 'Carousel Example 1',
-        canonical: 'https://www.joeyguerra.com/linkedincarousel.html',
-        excerpt: 'LinkedIn carousel template.',
-        shouldPublish: true,
-        published: new Date('2024-10-05'),
-        uri: '/linkedincarousel.html',
-        touchStartupImage: '/imgs/daily-pushups-splash-screen.png',
-        image: '/imgs/pushups-screenshot.jpg',
-        touchStartupImage: '',
-        touchIcon180: '',
-        touchIcon32: '',
-        touchIcon16: ''
-    }
 </script>

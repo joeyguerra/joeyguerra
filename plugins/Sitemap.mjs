@@ -1,5 +1,5 @@
 
-import { Template, EVENTS } from '../src/Template.mjs'
+import { EVENTS } from 'juphjacs/src/Page.mjs'
 import { promises as File } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -16,7 +16,7 @@ class Link {
         this.uri = uri
         this.host = 'https://joeyguerra.com'
         this.shouldPublish = shouldPublish
-        this.published = published ?? new Date()
+        this.published = published?.toISOString() ?? (new Date()).toISOString()
     }
     get url() {
         return `${this.host}${this.uri}`
@@ -30,25 +30,29 @@ export default async () => {
         filePath: '',
         context: {urls: []}
     }
-    process.on(EVENTS.TEMPLATE_RENDERED, async (filePath, context, output) => {
+    process.on(EVENTS.TEMPLATE_RENDERED, async (filePath, page) => {
+        if(page.filePath.includes('layouts')) {
+            return
+        }
         if (filePath.includes('/sitemap.xml')) {
             sitemapIndex.filePath = filePath
-            sitemapIndex.context = context
+            sitemapIndex.context = page
         }
-        const slug = context.req.urlParsed.pathname
+        const match = page.route.match(page.route.filePath.replace(page.pagesFolder, ''))
+        const slug = match ? match[0] : page.route.filePath.replace(page.pagesFolder, '')
         const uri = `${slug}`
-        const link = new Link(context.title, slug, uri, context.shouldPublish, context.published)
+        const link = new Link(page.title, slug, uri, page.shouldPublish, page.published)
         if (link.shouldPublish === true) {
             urls.add(link)
         }
     })
 
-    process.on(EVENTS.PRE_TEMPLATE_RENDER, async (filePath, initialContext, content) => {
+    process.on(EVENTS.PRE_TEMPLATE_RENDER, async (filePath, page) => {
         const filesToInclude = [
             '/sitemap.xml'
         ]
         if (filesToInclude.some(file => filePath.includes(file))) {
-            initialContext.urls = new Set(Array.from(urls).sort((a, b) => a.slug.localeCompare(b.slug)))
+            page.urls = new Set(Array.from(urls).sort((a, b) => a.slug.localeCompare(b.slug)))
         }
     })
 

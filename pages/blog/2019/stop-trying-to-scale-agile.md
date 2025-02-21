@@ -1,3 +1,15 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'Stop Trying to Scale Agile',
+    excerpt: 'STOP. TRYING. TO. SCALE. AGILE.',
+    shouldPublish: true,
+    uri: '/blog/2019/stop-trying-to-scale-agile.html',
+    published: new Date('2019-07-01T16:43:08.111Z'),
+    tags: ['agile', 'scale', 'organizational']
+}
+---
 # Stop trying to scale Agile
 
 This is a hasty post. A rant. Please forgive me if it's incoherent, and agressively opinionated. If it resonates with you, then nevermind with the upfront apology.
@@ -31,16 +43,3 @@ Here's something else to consider. A person's body can be thought of as differen
 # The crux of the problem
 
 An organization is not a human body. It's made up of disconnected, individual, people with minds of their own. Getting a group of people to be agile is not as easy as an athlete being agile. It's not impossible. It just takes effort, time, thoughtfullness. Consider how to collaborate better before trying to "scale Agile". Please.
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'Stop Trying to Scale Agile',
-        excerpt: 'STOP. TRYING. TO. SCALE. AGILE.',
-        shouldPublish: true,
-        uri: '/blog/2019/stop-trying-to-scale-agile.html',
-        published: new Date('2019-07-01T16:43:08.111Z'),
-        tags: ['agile', 'scale', 'organizational']
-    }
-</script>

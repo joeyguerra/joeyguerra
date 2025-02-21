@@ -1,3 +1,16 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'Story Points, So Many Questions',
+    excerpt: "Tony likes to push my buttons sometimes. He knows what my opinion is about how and why teams should estimate stories. So I get a text from him today, asking me what I think about Do Story Points Relate to Complexity or Time?. I'm compelled to bite. I can help it, but meh, it's easy to post things to the internets.",
+    shouldPublish: true,
+    uri: '/blog/2016/storypoints-so-many-questions.html',
+    tags: ['story', 'points', 'scrum'],
+    published: new Date('2016-08-01T16:43:08.111Z')
+}
+---
+
 # Story Points, So Many Questions
 
 [@tonfrazi54](https://twitter.com/tonfrazi54) likes to push my buttons sometimes. He knows what my opinion is about how and why teams should estimate stories. So I get a text from him today, asking me what I think about [Do Story Points Relate to Complexity or Time?](https://www.infoq.com/news/2010/07/story-points-complexity-effort). I'm compelled to bite. I can help it, but meh, it's easy to post things to the internets.
@@ -27,16 +40,3 @@ Gonna say it again. It provides a forum for collaboration. A mechanism for us to
 ## Story Points Represent Level of Effort
 
 So while I agree with the general sentiment of that post, that story points represent effort; I feel like we can't just stop there. People need more than just "it's not time based" or "it represents effort + risk + complexity". Yes, yes, yes, to all those things. You should talk about how much time you think developing that story will take. You should talk about the complexity, the risk, dependencies. That's WHY we practice the Level of Effort discussion when planning. So that we can root out, as a team, in public, with everyone, the complexity, the risk, dependencies, and yes, even the amount of time that it might take. I guess in summary, I'm saying that story points represent ALL of those things and anything else that the team discovers when they are discussing Level of Effort. And that is it's purpose.
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'Story Points, So Many Questions',
-        excerpt: "Tony likes to push my buttons sometimes. He knows what my opinion is about how and why teams should estimate stories. So I get a text from him today, asking me what I think about Do Story Points Relate to Complexity or Time?. I'm compelled to bite. I can help it, but meh, it's easy to post things to the internets.",
-        shouldPublish: true,
-        uri: '/blog/2016/storypoints-so-many-questions.html',
-        tags: ['story', 'points', 'scrum'],
-        published: new Date('2016-08-01T16:43:08.111Z')
-    }
-</script>

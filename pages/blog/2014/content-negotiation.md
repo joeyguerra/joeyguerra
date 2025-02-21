@@ -1,3 +1,16 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'Content Negotiation in Node JS, augmenting Express JS',
+    excerpt: "tldr; Building websites with content negotiation in mind gives you flexibility.",
+    shouldPublish: true,
+    uri: '/blog/2014/content-negotiation.html',
+    published: new Date('2014-07-01T16:43:08.111Z'),
+    tags: ['rest']
+}
+---
+
 # Content Negotiation in Node JS, augmenting Express JS
 
 [Others](http://stackoverflow.com/questions/10958063/set-up-rest-routes-in-express-js-for-ajax-only-to-use-with-backbone) [have](https://github.com/visionmedia/express/blob/master/examples/content-negotiation/index.js) [written](http://kijanawoodard.com/asp-net-mvc-content-negotiation) about [content negotiation](http://en.wikipedia.org/wiki/Content_negotiation). It's use, implementation, purpose. I think they are all valid. But I feel like I'm alone when it comes to an idea that seems so simple and powerful to me. I'm quite surprised that others aren't in alignment with me on this, or if they are, I haven't connected with them. I feel like every web site should be built to negotiate content and respond with the requested representation for a resource. I picked those words carefully. So I'm going to write it again in a block quote.
@@ -70,16 +83,3 @@ The code base is made up of resources and views. There's a resources folder that
 I hope this idea rings true to you. I'd love feedback, good and bad. I want to take this idea and make it better. So head on over to the repo, fork it, take a look, use it, yell at it. It's all good.
 
 Thanks for reading.
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'Content Negotiation in Node JS, augmenting Express JS',
-        excerpt: "tldr; Building websites with content negotiation in mind gives you flexibility.",
-        shouldPublish: true,
-        uri: '/blog/2014/content-negotiation.html',
-        published: new Date('2014-07-01T16:43:08.111Z'),
-        tags: ['rest']
-    }
-</script>

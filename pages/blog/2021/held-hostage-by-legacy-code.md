@@ -1,3 +1,16 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'Stop Being Held Hostage By Legacy Code',
+    excerpt: 'Your developers and their code have an antibiosis relationship.',
+    shouldPublish: true,
+    published: new Date('2021-09-21T12:08:00.000Z'),
+    image: '/iu-2.jpeg',
+    tags: ['legacy', 'advice'],
+    uri: '/blog/2021/held-hostage-by-legacy-code.html'
+}
+---
 # Stop Being Held Hostage By Legacy Code
 
 <img class="full-width" src="../../iu-2.jpeg" alt="Android" />
@@ -21,17 +34,3 @@ Embrace the idea of code personification and imagine a world where a developer l
 Now the new developer learns by writing the program according to their understanding. If there was a comprehensive test suite, the risk of having someone "rewrite the application as part of their onboarding process" would be low. The organization maintains the test suite, not the code.
 
 The shackles would come off and you'd be free.
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'Stop Being Held Hostage By Legacy Code',
-        excerpt: 'Your developers and their code have an antibiosis relationship.',
-        shouldPublish: true,
-        published: new Date('2021-09-21T12:08:00.000Z'),
-        image: '/iu-2.jpeg',
-        tags: ['legacy', 'advice'],
-        uri: '/blog/2021/held-hostage-by-legacy-code.html'
-    }
-</script>

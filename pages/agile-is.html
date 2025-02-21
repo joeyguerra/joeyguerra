@@ -96,7 +96,7 @@
         flex-direction: column;
         align-items: center;
         align-content: center;
-        background: var(--theme-agile-teams-reloaded-background-color) url('/imgs/agile-teams-reloaded-logo.png') no-repeat center top;
+        background: var(--theme-agile-teams-reloaded-background-color) url('/images/agile-teams-reloaded-logo.png') no-repeat center top;
         background-size: cover;
         padding: 0;
     }
@@ -129,7 +129,7 @@
         width: 56%;
     }
     .circled::before {
-        background-image: url(/imgs/circle.svg);
+        background-image: url(/images/circle.svg);
         background-repeat: no-repeat;
         content: "";
         position: absolute;
@@ -139,7 +139,7 @@
     }
 
     .underlined {
-        background-image: url(/imgs/underline.svg);
+        background-image: url(/images/underline.svg);
         background-repeat: no-repeat;
         background-size: 100% 100%;
         content: "";
@@ -375,21 +375,4 @@
         pdf.save('carousel.pdf');
     });
 
-</script>
-<script server>
-    export default {
-        layout: './layouts/carousel.html',
-        title: '360 Feedback Loop is Non-Existent with Customers',
-        canonical: 'https://www.joeyguerra.com/carousel-k-marketing.html',
-        excerpt: 'LinkedIn carousel template.',
-        shouldPublish: true,
-        published: new Date('2024-10-07'),
-        uri: '/carousel-k-marketing.html',
-        touchStartupImage: '/imgs/carousel.png',
-        image: '/imgs/carousel-screenshot.jpg',
-        touchStartupImage: '',
-        touchIcon180: '',
-        touchIcon32: '',
-        touchIcon16: ''
-    }
 </script>

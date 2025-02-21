@@ -1,3 +1,15 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'The Difference between Scrum and Agile',
+    excerpt: 'The way I see it, on one hand, there is no difference.',
+    shouldPublish: true,
+    uri: '/blog/2019/difference-scrum-agile.html',
+    published: new Date('2019-08-01T16:43:08.111Z'),
+    tags: ['agile', 'scrum']
+}
+---
 # The Difference between Scrum and Agile
 
 The way I see it, on one hand, there is no difference.
@@ -22,15 +34,3 @@ At some point, a Scrum Framework was developed and iterated on within the Softwa
 
 So it's funny to me because the history of the two terms are so intertwined. In my current understanding, the development of the Scrum Framework lead up to the creation of Agile Software Development described in the Agile Manifesto. But as always, it's hard for a group of humans to get aligned on the meaning of terms. Hopefully, this answer will contribute to more alignment, not less ;)
 
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'The Difference between Scrum and Agile',
-        excerpt: 'The way I see it, on one hand, there is no difference.',
-        shouldPublish: true,
-        uri: '/blog/2019/difference-scrum-agile.html',
-        published: new Date('2019-08-01T16:43:08.111Z'),
-        tags: ['agile', 'scrum']
-    }
-</script>

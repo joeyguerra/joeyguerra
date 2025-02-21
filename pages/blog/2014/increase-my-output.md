@@ -1,3 +1,15 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: "I Want to Increase My Output by 10, 100, 1000",
+    excerpt: 'I want to capture and share my journey about how I increase my work output as a software engineer by multiples of 10, 100, 1000.',
+    shouldPublish: true,
+    uri: '/blog/2014/increase-my-output.html',
+    published: new Date('2014-01-01T17:43:08.111Z'),
+    tags: ['career']
+}
+---
 # I Want to Increase My Output by 10, 100, 1000
 
 I want to capture and share my journey about how I increase my work output as a software engineer by multiples of 10, 100, 1000.
@@ -35,16 +47,3 @@ Validation data point: Git is an awesome solution for source control management 
 Validation data point: Writing good code is fun and satisfying. Guiding, training, and watching a team writing good code is 10, 100, 1000 times more fun and satisfying.
 
 And that's where I'm at right now. I want to learn how to guide a team of developers to write good code as my strategy to increasing my output by 10, 100, 1000 times.
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: "I Want to Increase My Output by 10, 100, 1000",
-        excerpt: 'I want to capture and share my journey about how I increase my work output as a software engineer by multiples of 10, 100, 1000.',
-        shouldPublish: true,
-        uri: '/blog/2014/increase-my-output.html',
-        published: new Date('2014-01-01T17:43:08.111Z'),
-        tags: ['career']
-    }
-</script>

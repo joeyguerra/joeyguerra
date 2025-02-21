@@ -1,6 +1,19 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'Tactical suggestions for developing non-coding skills',
+    excerpt: 'As software engineers, we focus our time and attention on learning how to write flexible software; one aspect to building great systems. We often neglect non-coding, communication aspects of building great systems.',
+    shouldPublish: true,
+    published: new Date('2021-06-13T20:00:00.000Z'),
+    image: '/images/tacocat.jpeg',
+    tags: ['skills'],
+    uri: '/blog/2021/senior-engineer-skills.html'
+}
+---
 # Tactical suggestions for developing non-coding skills
 
-<img class="full-width" src="../../imgs/tacocat.jpeg" alt="Tacocat" />
+<img class="full-width" src="../../images/tacocat.jpeg" alt="Tacocat" />
 
 ## Facilitate a meeting
 
@@ -79,17 +92,3 @@ My last point is to learn how to be optimistic, not pessimistic. Now I do not me
 We can communicate risks while being hopeful we can mitigate them. So learn to be optimistic. It is infectious and if we believe the [Law of Attraction](https://en.wikipedia.org/wiki/Law_of_attraction_(New_Thought)), it will lead to a happier you and a happier others.
 
 Inspired by [An incomplete list of skills senior engineers need beyond coding.](https://skamille.medium.com/an-incomplete-list-of-skills-senior-engineers-need-beyond-coding-8ed4a521b29f)
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'Tactical suggestions for developing non-coding skills',
-        excerpt: 'As software engineers, we focus our time and attention on learning how to write flexible software; one aspect to building great systems. We often neglect non-coding, communication aspects of building great systems.',
-        shouldPublish: true,
-        published: new Date('2021-06-13T20:00:00.000Z'),
-        image: '/imgs/tacocat.jpeg',
-        tags: ['skills'],
-        uri: '/blog/2021/senior-engineer-skills.html'
-    }
-</script>

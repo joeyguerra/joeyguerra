@@ -1,9 +1,22 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'Everybody wants a flexible system',
+    excerpt: 'A system that is easy to change over time. Maximize ROI. Be responsive. Competitive. Adapt to a changing environment.',
+    shouldPublish: true,
+    published: new Date('2024-05-06T11:52:00.000Z'),
+    tags: ['architecture', 'software', 'flexible'],
+    image: '/images/head-of-it.webp',
+    uri: '/blog/2024/flexible-architecture.html'
+}
+---
 # Everybody wants a flexible system
 
 A short story.
 
 <figure>
-    <img class="full-width" src="../../imgs/head-of-it.webp" alt="A woman software development manager standing in front of a team of developers working on their laptops, looking puzzled, while a consultant points to a screen displaying the blueprint of an inflexible warehouse management system." />
+    <img class="full-width" src="../../images/head-of-it.webp" alt="A woman software development manager standing in front of a team of developers working on their laptops, looking puzzled, while a consultant points to a screen displaying the blueprint of an inflexible warehouse management system." />
 </figure>
 
 <blockquote cite="https://thedesigngesture.com/flexibility-in-architecture-a-design-strategy/">
@@ -25,7 +38,7 @@ Julie told Anna.
 
 <blockquote>If you keep running like this, you'll lose your competitive edge.</blockquote>
 
-<img class="full-width" src="../../imgs/concerned-distribution-center.webp" alt="A distribution center with rows of inventory and a large screen displaying rigid, outdated warehouse management software, while the IT head and consultant look concerned." />
+<img class="full-width" src="../../images/concerned-distribution-center.webp" alt="A distribution center with rows of inventory and a large screen displaying rigid, outdated warehouse management software, while the IT head and consultant look concerned." />
 
 <blockquote>Inflexibility hampers ROI. When systems can't adapt, businesses struggle with obsolete tech and processes.</blockquote>
 
@@ -37,7 +50,7 @@ lamented Anna.
 
 <blockquote>We need to make changes.</blockquote>
 
-<img class="full-width" src="../../imgs/dissapointed-it-head.webp" alt="A disappointed IT head on the phone with a client, while the software development team and consultant look at standard, unfulfilled orders displayed on the screen." />
+<img class="full-width" src="../../images/dissapointed-it-head.webp" alt="A disappointed IT head on the phone with a client, while the software development team and consultant look at standard, unfulfilled orders displayed on the screen." />
 
 <blockquote>A flexible system maximizes ROI, ensuring it can accommodate market shifts and thrive as the landscape changes.</blockquote>
 
@@ -47,7 +60,7 @@ Julie outlined a new vision for LogiFlex's software development team.
 
 By restructuring the software architecture into smaller, adaptable modules, LogiFlex could better handle varying workflows and product customization.
 
-<img class="full-width" src="../../imgs/reimagining-warehouse.webp" alt="A software development team reimagining their warehouse management system architecture on a large whiteboard, with modular and adaptable cells while the IT head and consultant review the new flexible setup." />
+<img class="full-width" src="../../images/reimagining-warehouse.webp" alt="A software development team reimagining their warehouse management system architecture on a large whiteboard, with modular and adaptable cells while the IT head and consultant review the new flexible setup." />
 
 <blockquote>To future-proof, start modular: design systems that can evolve to meet new requirements and maximize business value.</blockquote>
 
@@ -76,7 +89,7 @@ They built a custom app that enables him to scan in the Bill of Lading and fills
 
 They continued this process, identifying bottleknecks in the whole system where they could apply technology to optimize; deliverying small solutions to small problems every week. This started to add up to big gains throughout the whole process.
 
-<img class="full-width" src="../../imgs/training-session.webp" alt="A training session showing software developers learning to operate different modular systems while the consultant leads the training." />
+<img class="full-width" src="../../images/training-session.webp" alt="A training session showing software developers learning to operate different modular systems while the consultant leads the training." />
 
 <blockquote>Ready to adapt to tomorrow's challenges? Build systems that can evolve and stay ahead in an ever-changing world.</blockquote>
 
@@ -89,17 +102,3 @@ Order fulfillment times were down by 30%, and the company could now handle custo
 Anna encouraged her team.
 
 <blockquote>By staying adaptable, we'll remain competitive in any market!</blockquote>
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'Everybody wants a flexible system',
-        excerpt: 'A system that is easy to change over time. Maximize ROI. Be responsive. Competitive. Adapt to a changing environment.',
-        shouldPublish: true,
-        published: new Date('2024-05-06T11:52:00.000Z'),
-        tags: ['architecture', 'software', 'flexible'],
-        image: '/imgs/head-of-it.webp',
-        uri: '/blog/2024/flexible-architecture.html'
-    }
-</script>

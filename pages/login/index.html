@@ -4,18 +4,3 @@
         <a href="${discordUrl}" title="Sign in with Discord">Discord</a>
     </section>
 </section>
-<script server>
-    import { Buffer } from 'node:buffer'
-    const redirectUrl = context.req.query?.redirectUrl ?? '/'
-    const randNumber = Math.random()
-    const state = Buffer.from(`${decodeURIComponent(redirectUrl)};${randNumber};${context.req.sessionID}`).toString('base64')
-    const discordUrl = `${process.env.DISCORD_API_HOST}/oauth2/authorize?client_id=${process.env.DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(process.env.DISCORD_REDIRECT_URL)}&response_type=code&scope=identify&state=${state}`
-
-    export default {
-        layout: '../pages/layouts/index.html',
-        title: 'Login',
-        canonical: 'https://www.joeyguerra.com/login/',
-        route: new RegExp('^/login/?$'),
-        discordUrl
-    }
-</script>

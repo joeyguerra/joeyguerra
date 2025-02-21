@@ -9,8 +9,8 @@ import handlebars from 'handlebars'
 const moduleURL = new URL(import.meta.url)
 const __dirname = path.dirname(moduleURL.pathname)
 
-handlebars.registerPartial('layouts/index.html', await File.readFile(path.resolve(__dirname, '../../www/layouts/index.html'), 'utf-8'))
-handlebars.registerPartial('layouts/app.html', await File.readFile(path.resolve(__dirname, '../../www/layouts/app.html'), 'utf-8'))
+handlebars.registerPartial('pages/layouts/index.html', await File.readFile(path.resolve(__dirname, '../../www/pages/layouts/index.html'), 'utf-8'))
+handlebars.registerPartial('pages/layouts/app.html', await File.readFile(path.resolve(__dirname, '../../www/pages/layouts/app.html'), 'utf-8'))
 
 describe('Build a component into a single file', () => {
     let dom = null

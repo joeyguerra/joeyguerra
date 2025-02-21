@@ -1,7 +1,20 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'Strategic Planning - A Lesson from Kent Beck',
+    excerpt: "Kent Beck invented Test-Driven Development (TDD), inspired from one of his dad's programming books. One of them said, here's how to write a program. You take the input tape and you manually type in the output tape that you expect; and then, program until that's the output tape that you get from that input tape.",
+    shouldPublish: true,
+    published: new Date('2024-06-01T21:00:00.000Z'),
+    tags: ['strategy', 'planning', 'goals', 'objectives', 'tdd'],
+    image: '/images/851718f4-f56e-4784-a911-a8f15a71b0c5.webp',
+    uri: '/blog/2024/strategic-planning.html'
+}
+---
 # Strategic Planning: A Lesson from Kent Beck
 
 <figure>
-    <img class="full-width" src="../../imgs/851718f4-f56e-4784-a911-a8f15a71b0c5.webp" alt="Strategic Planning" />
+    <img class="full-width" src="../../images/851718f4-f56e-4784-a911-a8f15a71b0c5.webp" alt="Strategic Planning" />
     <figcaption>
         Open AI generated hero image for this blog post.
     </figcaption>
@@ -35,17 +48,3 @@ Finally, set specific, measurable goals. These goals are the steps you will take
 By taking this systematic approach, inspired by TDD, you can create a clear roadmap for your strategic planning. This method helps ensure that your efforts are focused and aligned with your desired outcomes, making it easier to track progress and make adjustments as needed.
 
 In essence, just as TDD helps in creating robust and reliable software, applying these principles to strategic planning can lead to more effective and successful outcomes in your projects and business endeavors.
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'Strategic Planning - A Lesson from Kent Beck',
-        excerpt: `Kent Beck invented Test-Driven Development (TDD), inspired from one of his dad's programming books. One of them said, "here's how to write a program. You take the input tape and you manually type in the output tape that you expect; and then, program until that's the output tape that you get from that input tape.`,
-        shouldPublish: true,
-        published: new Date('2024-06-01T21:00:00.000Z'),
-        tags: ['strategy', 'planning', 'goals', 'objectives', 'tdd'],
-        image: '/imgs/851718f4-f56e-4784-a911-a8f15a71b0c5.webp',
-        uri: '/blog/2024/strategic-planning.html'
-    }
-</script>

@@ -1,7 +1,20 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'Flow vs Batch Based Work in Software Development',
+    excerpt: 'In the world of software development, the traditional approach often involves large batches of work, where teams are booked up for months and new features or changes have to wait in line. This approach can lead to long lead times, significant delays, and a constant need for re-prioritization, often involving lengthy discussions with stakeholders.',
+    shouldPublish: true,
+    published: new Date('2024-08-12T13:50:00.000Z'),
+    tags: ['agile', 'lean', 'tps', 'toyota production system', 'software', 'flexible'],
+    image: '/images/flow-vs-batch-based-work.webp',
+    uri: '/blog/2024/flow-vs-batch-based-work.html'
+}
+---
 # Embracing Flow-Based Work: A Path to Greater Flexibility and Efficiency
 
 <figure>
-    <img class="full-width" src="imgs/flow-vs-batch-based-work.webp" alt="AI generated image of a girl carrying a basket, wearing a backpack, dressed in a monks long dress, walking down a curing path." />
+    <img class="full-width" src="images/flow-vs-batch-based-work.webp" alt="AI generated image of a girl carrying a basket, wearing a backpack, dressed in a monks long dress, walking down a curing path." />
 </figure>
 
 In software development, the common approach often involves large batches of work, where teams are heads down for months and new features or changes have to wait in line. This approach can lead to long lead times (the duration between when an idea is conceived and when it's delivered), significant delays, and a constant need for re-prioritization, often involving time consuming discussions with stakeholders. Ever heard someone say they want to "get in the flow"? There's a way of working to do just that, which is more flexible and more efficient than the common approach.
@@ -39,17 +52,3 @@ In practice, this means that even when a team completes a product feature before
 Embracing flow-based work and small batches is a powerful strategy for improving efficiency and flexibility in software development. By reducing lead times, eliminating bottlenecks, and balancing flow with necessary batch processes, teams can create a more responsive and adaptable environment. This approach not only benefits the development team but also aligns with the broader goals of the business, enabling faster delivery of valuable features and a more seamless experience for stakeholders.
 
 This article is based on a conversation we had on our Discord server. The reader will not that the journey towards flow-based work is ongoing, with continuous learning and adaptation. But the results — faster delivery, fewer disruptions, and a more agile team — are well worth the effort.
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'Flow vs Batch Based Work in Software Development',
-        excerpt: 'In the world of software development, the traditional approach often involves large batches of work, where teams are booked up for months and new features or changes have to wait in line. This approach can lead to long lead times, significant delays, and a constant need for re-prioritization, often involving lengthy discussions with stakeholders.',
-        shouldPublish: true,
-        published: new Date('2024-08-12T13:50:00.000Z'),
-        tags: ['agile', 'lean', 'tps', 'toyota production system', 'software', 'flexible'],
-        image: '/imgs/flow-vs-batch-based-work.webp',
-        uri: '/blog/2024/flow-vs-batch-based-work.html'
-    }
-</script>

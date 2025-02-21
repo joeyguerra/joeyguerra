@@ -1,3 +1,15 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'I have 2 Mac Minis',
+    excerpt: 'And I want to create a cluster so that I can deploy some apps to them.',
+    shouldPublish: true,
+    uri: '/blog/2018/i-have-2-mac-minis.html',
+    published: new Date('2018-02-01T16:43:08.111Z'),
+    tags: ['experimenting', 'local']
+}
+---
 # I Have 2 Mac Minis or How I Quickly Deploy Apps in a Cloud Native Way
 
 I love computer programming. But let's face it, it's complicated. It's not just about programming, it's also about running an applicationa and doing something, sending messages, moving data, seeing data, there's lots to it.
@@ -79,16 +91,3 @@ client {
 config_file=/Users/Shared/opt/nomad.d/both.hcl
 nomad agent -config $config_file_path
 ```
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'I have 2 Mac Minis',
-        excerpt: 'And I want to create a cluster so that I can deploy some apps to them.',
-        shouldPublish: true,
-        uri: '/blog/2018/i-have-2-mac-minis.html',
-        published: new Date('2018-02-01T16:43:08.111Z'),
-        tags: ['experimenting', 'local']
-    }
-</script>

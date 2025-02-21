@@ -1,3 +1,16 @@
+---
+{
+  layout: './pages/layouts/post.html',
+  title: 'Coding and Code Review Guidelines',
+  excerpt: 'In order to reuse code, it must pass the teams measurement of readability and discoverability.',
+  shouldPublish: true,
+  uri: '/blog/2014/code-review-guidelines.html',
+  tags: ['review', 'code'],
+  published: new Date('2014-08-01T16:43:08.111Z'),
+  image: ''
+}
+---
+
 # Coding and Code Review Guidelines
 
 In order to reuse code, it must pass the teams measurement of readability and discoverability.
@@ -43,16 +56,3 @@ Variable, module, and function naming is one of the main characteristics that wi
 - No output arguments in function signatures.
 - Organize methods according to step down principle (public methods at top).
 - Consider replacing switch statements with polymorphism.
-
-<script server>
-  export default {
-    layout: './layouts/post.html',
-    title: 'Coding and Code Review Guidelines',
-    excerpt: 'In order to reuse code, it must pass the teams measurement of readability and discoverability.',
-    shouldPublish: true,
-    uri: '/blog/2014/code-review-guidelines.html',
-    tags: ['review', 'code'],
-    published: new Date('2014-08-01T16:43:08.111Z'),
-    image: ''
-  }
-</script>

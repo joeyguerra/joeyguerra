@@ -1,4 +1,4 @@
-${Array.from(context.postsSet).map((post, index) => `
+${Array.from(postsSet).map((post, index) => `
 <article>
     <header>
         <h2><a title="${post.title}" href="${post.uri}">${post.title}</a></h2>
@@ -6,20 +6,7 @@ ${Array.from(context.postsSet).map((post, index) => `
     </header>
     <p>${post.excerpt}</p>
     <footer>
-        <small>${context.postsSet.size - index - 1}</small>
+        <small>${postsSet.size - index - 1}</small>
     </footer>
 </article>`).join('\n')}
 
-<script server>
-    export default {
-        title: "Blog",
-        route: new RegExp('^/blog/?$'),
-        layout: './layouts/blog.html',
-        canonical: 'https://www.joeyguerra.com/blog/',
-        excerpt: 'My Blog.',
-        shouldPublish: true,
-        published: new Date('2024-09-01'),
-        uri: '/blog/',
-        tags: ['blog']
-    }
-</script>

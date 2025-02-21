@@ -1,3 +1,15 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    uri: '/blog/2022/software-is-like-gardening.html',
+    title: 'Software is like a garden',
+    excerpt: 'Software is like a garden when you invest. You till the ground, plant the seeds and maintain it daily by pulling weeds, watering, checking for good and bad insects.',
+    shouldPublish: true,
+    published: new Date('2022-09-28T17:28:00.000Z'),
+    tags: ['softwareengineerin', 'analogies', 'buyvsbuild']
+}
+---
 # Background
 
 Analogies help us explain concepts so that others can understand them better. When thinking about buying software, I like thinking of software as a garden. Another way to think of it is software is a garden vs table (┬─┬) or statue (🗿) - [Kijana Woodard](https://www.linkedin.com/in/kijanawoodard/).
@@ -11,16 +23,3 @@ Software is an investment you put effort (Tender Loving & Care - TLC) into if yo
 > All models are wrong, but some are useful - Don Box
 
 Let's keep this in perspective though. All models are wrong, but some are useful. In this case, I check myself by using this analogy in the context of investing money in software. I know the analogy breaks down in different contexts. But find it very useful when thinking about spending money for software. The common phrase is "buy vs build". But it's not a "vs" decision. It's actually a quantity decision. You're going to buy software. And, you're going to build software. The decision is what & how much software will you buy and what & how much software you're going to build.
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        uri: '/blog/2022/software-is-like-gardening.html',
-        title: 'Software is like a garden',
-        excerpt: 'Software is like a garden when you invest. You till the ground, plant the seeds and maintain it daily by pulling weeds, watering, checking for good and bad insects.',
-        shouldPublish: true,
-        published: new Date('2022-09-28T17:28:00.000Z'),
-        tags: ['softwareengineerin', 'analogies', 'buyvsbuild']
-    }
-</script>

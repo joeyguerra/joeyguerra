@@ -1,3 +1,16 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: "I Don't Want to Build Another Jira",
+    excerpt: `I don't want to build a Jira clone. Jira excels at being Jira. Trying to compete with that directly would be missing the point. Instead, I see an opportunity to address an essential gap in how teams use tools like Jira and how they collaborate to build meaningful products.`,
+    shouldPublish: true,
+    published: new Date('2024-11-10T16:21:00.000Z'),
+    tags: ['agile', 'teams', 'reloaded', 'jira'],
+    image: '/images/851718f4-f56e-4784-a911-a8f15a71b0c5.webp',
+    uri: '/blog/2024/i-dont-want-to-build-another-jira.html'
+}
+---
 # I Don't Want to Build Another Jira
 
 Task management, sprint planning, retrospectives, progress tracking, collaboration channels, agile metrics.
@@ -33,17 +46,3 @@ This accumulation of ineffective practices, industry pressure, and reliance on r
 Rather than recreating a tool that manages tasks or tracks progress, I want to build something different. My vision is a tool that helps teams create long-lived, documented stories of the problems they're solving. Not just user stories, but narratives of the jobs their products are being hired to do—stories that capture the why and how of their work, not just the what. 
 
 Think of it as a mechanism for team thought and design. It's about creating a space where the team can hold onto valuable insights, share their understanding, and build a foundation that doesn't disappear at the end of a sprint. This tool will be built not for performance metrics, but for fostering real, lasting knowledge and better decision-making.
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: "I Don't Want to Build Another Jira",
-        excerpt: `I don't want to build a Jira clone. Jira excels at being Jira. Trying to compete with that directly would be missing the point. Instead, I see an opportunity to address an essential gap in how teams use tools like Jira and how they collaborate to build meaningful products.`,
-        shouldPublish: true,
-        published: new Date('2024-11-10T16:21:00.000Z'),
-        tags: ['agile', 'teams', 'reloaded', 'jira'],
-        image: '/imgs/851718f4-f56e-4784-a911-a8f15a71b0c5.webp',
-        uri: '/blog/2024/i-dont-want-to-build-another-jira.html'
-    }
-</script>

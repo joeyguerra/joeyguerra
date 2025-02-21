@@ -1,6 +1,6 @@
 {
   "name": "jbot-website",
-  "version": "2.0.87",
+  "version": "2.0.88",
   "description": "Personal website and bot for Joey Guerra",
   "main": "Server.mjs",
   "dependencies": {
@@ -18,6 +18,7 @@
     "jimp": "^1.4.0",
     "jose": "^4.14.4",
     "jsdom": "^25.0.1",
+    "juphjacs": "github:joeyguerra/juphjacs",
     "markdown-it": "^14.1.0",
     "markdown-it-meta": "^0.0.1",
     "method-override": "^3.0.0",
@@ -33,17 +34,17 @@
     "pino-pretty": "^11.0.0"
   },
   "scripts": {
-    "test": "node --test --experimental-vm-modules",
-    "test:local": "node --watch --experimental-vm-modules",
+    "test": "node --test",
+    "test:local": "node --watch",
     "start:env": "env $(cat .env | grep -v \"#\" | xargs -0) hubot -a @hubot-friends/hubot-discord -n jbot",
-    "start": "node --experimental-vm-modules --watch Server.mjs",
-    "start:local": "DEBUG=jbot-website* node --env-file=.env --experimental-vm-modules --watch Server.mjs",
+    "start": "node --watch Server.mjs",
+    "start:local": "node --env-file=.env --watch Server.mjs",
     "start:shell": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs --name jbot",
     "start:bot": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs -a @hubot-friends/hubot-discord -n jbot",
     "docker-build": "./docker-build.sh",
     "local-deploy": "kubectl config use-context docker-desktop && kubectl apply -f charts/web/deployment.yaml -n default",
     "push": "node --run build && node --run docker-build-k3d && node --run k3d-deploy",
-    "build": "node --experimental-vm-modules Server.mjs --execute build",
+    "build": "node Server.mjs --execute",
     "docker-build-k3d": "./docker-build-k3d.sh",
     "k3d-deploy": "kubectl config use-context k3d-local && kubectl apply -f charts/web/deployment.yaml -n default"
   },

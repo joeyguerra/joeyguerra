@@ -1,3 +1,15 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'How to Get Rich (without getting lucky) by Naval Ravikant',
+    excerpt: "Naval Ravikant's tweetstorm of principals on how to get rich.",
+    shouldPublish: true,
+    uri: '/blog/2019/how-to-get-rich.html',
+    published: new Date('2019-12-31T16:43:08.111Z'),
+    tags: []
+}
+---
 # [How to Get Rich (without getting lucky) by Naval Ravikant](https://twitter.com/naval/status/1002103360646823936)
 
 - Seek wealth, not money or status. Wealth is having assets that earn while you sleep. Money is how we transfer time and wealth. Status is your place - in the social hierarchy.
@@ -38,16 +50,3 @@
 - There are no get rich quick schemes. That's just someone else getting rich off you.
 - Apply specific knowledge, with leverage, and eventually you will get what you deserve.
 - When you're finally wealthy, you'll realize that it wasn't what you were seeking in the first place. But that's for another day.
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'How to Get Rich (without getting lucky) by Naval Ravikant',
-        excerpt: "Naval Ravikant's tweetstorm of principals on how to get rich.",
-        shouldPublish: true,
-        uri: '/blog/2019/how-to-get-rich.html',
-        published: new Date('2019-12-31T16:43:08.111Z'),
-        tags: []
-    }
-</script>

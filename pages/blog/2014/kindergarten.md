@@ -1,3 +1,15 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'How can we all keep the kindergarten spirit [at work]?',
+    excerpt: "I thought it would be interesting to post a version of Amber's article that changes the context from school to work.",
+    shouldPublish: true,
+    uri: '/blog/2014/kindergarten.html',
+    published: new Date('2014-02-15T16:43:08.111Z'),
+    tags: ['psycology']
+}
+---
 # How can we all keep the kindergarten spirit [at work]
 
 [Amber Teamann](https://twitter.com/8Amber8) wrote a post on her blog titled, [How can we all keep the kindergarten spirit?](http://technicallyteamann.com/how-can-we-all-keep-the-kindergarten-spirit/). I thought it would be interesting to post a version of Amber's article that changes the context from school to work.
@@ -17,16 +29,3 @@ The natural chaos of “learning” is anticipated….and enjoyed.
 What if every [office] was like kindergarten classrooms?
 
 [How can we all keep the kindergarten spirit?](http://technicallyteamann.com/how-can-we-all-keep-the-kindergarten-spirit/)
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'How can we all keep the kindergarten spirit [at work]?',
-        excerpt: "I thought it would be interesting to post a version of Amber's article that changes the context from school to work.",
-        shouldPublish: true,
-        uri: '/blog/2014/kindergarten.html',
-        published: new Date('2014-02-15T16:43:08.111Z'),
-        tags: ['psycology']
-    }
-</script>

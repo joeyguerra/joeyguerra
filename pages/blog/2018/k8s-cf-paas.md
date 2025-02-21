@@ -1,3 +1,15 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'Kubernetes (k8s), Cloud Foundry (CF) and Platform as a Service (PaaS) - A Dialogue',
+    excerpt: ' A dialogue about using Kubernetes, Cloud Foundry and PaaS.',
+    shouldPublish: true,
+    uri: '/blog/2018/k8s-cf-paas.html',
+    published: new Date('2018-04-01T16:43:08.111Z'),
+    tags: ['k8s']
+}
+---
 # Kubernetes (k8s), Cloud Foundry (CF) and Platform as a Service (PaaS) - A Dialogue
 
 Janet [5:56 AM]
@@ -64,16 +76,3 @@ I think we probably *can* and with k8s it won't be too bad, but still, would rat
 
 Ann [9:31 AM]
 I also agree that it was worth it. The "digital transformation" aspect that PCF is really good at selling is very compelling.
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'Kubernetes (k8s), Cloud Foundry (CF) and Platform as a Service (PaaS) - A Dialogue',
-        excerpt:' A dialogue about using Kubernetes, Cloud Foundry and PaaS.',
-        shouldPublish: true,
-        uri: '/blog/2018/k8s-cf-paas.html',
-        published: new Date('2018-04-01T16:43:08.111Z'),
-        tags: ['k8s']
-    }
-</script>

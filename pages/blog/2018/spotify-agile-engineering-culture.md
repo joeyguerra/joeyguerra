@@ -1,3 +1,15 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: "Don't Follow Spotify's Agile Model",
+    excerpt: "It's easy to fall into the trap of thinking that you could copy the Spotify model presented in Henrik's Spotify Engineering Culture Videos as a way to Scale Agile. Well of course it's easy. They're organization continued to be agile as they grew. Henrik really makes it look easy and amazing! It's really very aspiring, so it totally makes sense.",
+    shouldPublish: true,
+    uri: '/blog/2018/spotiy-agile-engineering-culture.html',
+    published: new Date('2018-08-01T16:43:08.111Z'),
+    tags: ['agile', 'spotiy', 'leadership']
+}
+---
 # Don't Follow Spotify's Agile Model
 
 It's easy to fall into the trap of thinking that you could copy the Spotify model presented in Henrik's [Spotify Engineering Culture Videos](https://labs.spotify.com/2014/03/27/spotify-engineering-culture-part-1/) as a way to [Scale Agile](https://blog.crisp.se/wp-content/uploads/2012/11/SpotifyScaling.pdf). Well of course it's easy. Their organization continued to be agile as they grew. Henrik really makes it look easy and amazing! It's really very aspiring, so it totally makes sense.
@@ -132,15 +144,3 @@ Spotify has an egineering culture because creating an agile engineering culture 
 
 By the way, If you want to understand more of the tactics, read [How to Build Your Own Spotify Model](https://medium.com/the-ready/how-to-build-your-own-spotify-model-dce98025d32f).
 
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: "Don't Follow Spotify's Agile Model",
-        excerpt: "It's easy to fall into the trap of thinking that you could copy the Spotify model presented in Henrik's Spotify Engineering Culture Videos as a way to Scale Agile. Well of course it's easy. They're organization continued to be agile as they grew. Henrik really makes it look easy and amazing! It's really very aspiring, so it totally makes sense.",
-        shouldPublish: true,
-        uri: '/blog/2018/spotiy-agile-engineering-culture.html',
-        published: new Date('2018-08-01T16:43:08.111Z'),
-        tags: ['agile', 'spotiy', 'leadership']
-    }
-</script>

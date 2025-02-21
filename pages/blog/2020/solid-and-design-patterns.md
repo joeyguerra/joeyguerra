@@ -1,3 +1,15 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'The Difference Between SOLID and Design Patterns',
+    excerpt: 'So with the talk of learning a design pattern and not trying to shoehorn it into everything, is SOLID one of those things where its use case is specific to a task or is it generally just something to follow?',
+    shouldPublish: true,
+    published: new Date('2020-04-08T17:59:00.000Z'),
+    tags: ['solid', 'design', 'software'],
+    uri: '/blog/2020/solid-and-design-patterns.html'
+}
+---
 # The Difference Between SOLID and Design Patterns
 
 So with the talk of learning a design pattern and not trying to shoehorn it into everything, is [SOLID](https://en.wikipedia.org/wiki/SOLID) one of those things where its use case is specific to a task or is it generally just something to follow?
@@ -30,15 +42,3 @@ KW: e.g. in a derived class, `override Whatever....{ throw new NotImplementedExc
 
 JG: I feel like that's been the hardest thing for me to understand and visualize. While we want software to be soft, it's not. It takes mastery to gain the intuition for what code is creating rigidity and which is not.
 
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'The Difference Between SOLID and Design Patterns',
-        excerpt: 'So with the talk of learning a design pattern and not trying to shoehorn it into everything, is SOLID one of those things where its use case is specific to a task or is it generally just something to follow?',
-        shouldPublish: true,
-        published: new Date('2020-04-08T17:59:00.000Z'),
-        tags: ['solid', 'design', 'software'],
-        uri: '/blog/2020/solid-and-design-patterns.html'
-    }
-</script>

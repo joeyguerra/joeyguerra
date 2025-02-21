@@ -1,3 +1,15 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'Dream Team',
+    excerpt: "I want to work on a team who's culture has these characteristics.",
+    shouldPublish: true,
+    uri: '/blog/2014/dream-team.html',
+    published: new Date('2014-04-01T16:43:08.111Z'),
+    tags: ['team']
+}
+---
 # Dream Team
 
 I want to work on a team who's culture has these characteristics.
@@ -53,16 +65,3 @@ Do you want to be cover your butt, or would you rather be talking about the user
 ### Responding to change over following a plan
 
 What's really going to increase revenue, sticking with the plan that was developed 6 months ago?
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'Dream Team',
-        excerpt: "I want to work on a team who's culture has these characteristics.",
-        shouldPublish: true,
-        uri: '/blog/2014/dream-team.html',
-        published: new Date('2014-04-01T16:43:08.111Z'),
-        tags: ['team']
-    }
-</script>

@@ -149,7 +149,7 @@ describe('Test Template Rendering', () => {
 
     before(async () => {
         const partials = new Map()
-        partials.set('layouts/index.html', await readFile('./www/layouts/index.html', 'utf-8'))
+        partials.set('pages/layouts/index.html', await readFile('./www/pages/layouts/index.html', 'utf-8'))
         server = http2.createServer()
         app = createHandler(server, [], {partials})
         await app.listen(null, 'localhost')

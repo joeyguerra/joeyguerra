@@ -1,6 +1,19 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'An Omni-channel Technology Strategy',
+    excerpt: 'I went through an excercise to develop a technology strategy for a fictional retail company which merged 2 IT teams.',
+    shouldPublish: true,
+    published: new Date('2021-07-24T17:09:00.000Z'),
+    image: '/desk.jpeg',
+    tags: ['strategy', 'architecture'],
+    uri: '/blog/2021/omni-channel-strategy.html'
+}
+---
 # An Omni-channel Technology Strategy
 
-<img class="full-width" src="https://www.joeyguerra.com/imgs/desk.jpeg" alt="My desk" />
+<img class="full-width" src="https://www.joeyguerra.com/images/desk.jpeg" alt="My desk" />
 
 ## Problem
 
@@ -164,17 +177,3 @@ Build [cloud native](https://12factor.net), scalable, web services in front of s
 
 
 https://blog.hubspot.com/marketing/omni-channel-user-experience-examples
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'An Omni-channel Technology Strategy',
-        excerpt: 'I went through an excercise to develop a technology strategy for a fictional retail company which merged 2 IT teams.',
-        shouldPublish: true,
-        published: new Date('2021-07-24T17:09:00.000Z'),
-        image: '/desk.jpeg',
-        tags: ['strategy', 'architecture'],
-        uri: '/blog/2021/omni-channel-strategy.html'
-    }
-</script>

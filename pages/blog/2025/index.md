@@ -1,3 +1,16 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'What do you do when the business case isn’t there but you know intuitively that building software will improve the bottom line?',
+    excerpt:"You start small and work outward from the middle.",
+    shouldPublish: true,
+    published: new Date('2025-01-12T17:29:00.000Z'),
+    tags: ['strategy', 'plan', 'software', 'business', 'case'],
+    image: null,
+    uri: '/blog/2025/index.html'
+}
+---
 # What do you do when the business case isn’t there but you know intuitively that building software will improve the bottom line?
 
 You start small and work outward from the middle. 
@@ -13,17 +26,3 @@ You start small and work outward from the middle.
 ## Architectural strategy
 
 Identify data flows and processes and pick one to replace to start with. And then repeat. 
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'What do you do when the business case isn’t there but you know intuitively that building software will improve the bottom line?',
-        excerpt:"You start small and work outward from the middle.",
-        shouldPublish: true,
-        published: new Date('2025-01-12T17:29:00.000Z'),
-        tags: ['strategy', 'plan', 'software', 'business', 'case'],
-        image: null,
-        uri: '/blog/2025/index.html'
-    }
-</script>

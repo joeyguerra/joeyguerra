@@ -1,0 +1,27 @@
+
+import { Page } from 'juphjacs/src/Page.mjs'
+import { Buffer } from 'node:buffer'
+
+class LoginPage extends Page {
+    constructor (rootFolder, filePath, template) {
+        super(rootFolder, filePath, template)
+        this.layout = './pages/layouts/index.html'
+        this.title = 'Login'
+        this.canonical = 'https://www.joeyguerra.com/login/'
+        this.route = new RegExp('^/login/?$')
+        this.discordUrl = null
+    }
+
+    async get(req, res) {
+        const redirectUrl = req.query?.redirectUrl ?? '/'
+        const randNumber = Math.random()
+        const state = Buffer.from(`${decodeURIComponent(redirectUrl)};${randNumber};${context.req.sessionID}`).toString('base64')
+        this.discordUrl = `${process.env.DISCORD_API_HOST}/oauth2/authorize?client_id=${process.env.DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(process.env.DISCORD_REDIRECT_URL)}&response_type=code&scope=identify&state=${state}`
+        await this.render()
+        await res.end(this.content)
+    }
+}
+
+export default async (rootFolder, filePath, template) => {
+    return new LoginPage(rootFolder, filePath, template)
+}

@@ -1,3 +1,15 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'To Make Money is Not a Useful Objective Statment',
+    excerpt: `About 10 years ago I was part of a meeting where the CEO of the company was trying to convey his vision of the company and it's core service to customers. I asked the room what the objective was and someone jokingly answered, "to make money" and the meeting continued ... and finished.`,
+    shouldPublish: true,
+    uri: '/blog/2019/to-make-money-is-not-a-good-business-objective.html',
+    published: new Date('2019-02-01T16:43:08.111Z'),
+    tags: ['objective']
+}
+---
 # "To Make Money" is Not a Useful Objective Statment
 
 About 10 years ago I was part of a meeting where the CEO was trying to convey his vision of the company and it's core service to customers. I asked the room what the objective was and someone jokingly answered, "to make money" and the meeting continued ... and finished.
@@ -43,17 +55,3 @@ So sure, we want to make money. That's obvious. But come on. Do people a favor. 
 Here's an idea, take a week. Run some working sessions to flush out *good* objectives. Create a safe environment for healthy debate for employees to come up with good objectives. Create a few slides that clearly communicate the important ones. Spread it around. Communicate it. Make sure everyone gets a chance to see what the objectives are. That's a great *first* step. FIRST step mind you. There's lots of other things that should be done. So don't just think doing this one thing is enough.
 
 Check out [this post that talks about objectives](/blog/2018/spotify-agile-engineering-culture.html). And start making head way on changing the culture of priority contention, capacity constraints, toxic environment, disgruntled employees, and low employee satisfaction numbers to one of alignment.
-
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'To Make Money is Not a Useful Objective Statment',
-        excerpt: `About 10 years ago I was part of a meeting where the CEO of the company was trying to convey his vision of the company and it's core service to customers. I asked the room what the objective was and someone jokingly answered, "to make money" and the meeting continued ... and finished.`,
-        shouldPublish: true,
-        uri: '/blog/2019/to-make-money-is-not-a-good-business-objective.html',
-        published: new Date('2019-02-01T16:43:08.111Z'),
-        tags: ['objective']
-    }
-</script>

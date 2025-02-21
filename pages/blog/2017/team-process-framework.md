@@ -1,3 +1,15 @@
+---
+{
+  layout: './pages/layouts/post.html',
+  title: 'Team Process Framework, How We Work',
+  excerpt: "Routine enables us to move fast in a sustainable velocity. So we have 6 meetings during our iterations. It's simple, focuses on solving the <em>misalignment</em> problem, and periodical (repeats every iteration).",
+  shouldPublish: true,
+  uri: '/blog/2017/team-process-framework.html',
+  published: new Date('2017-02-01T16:43:08.111Z'),
+  image: '',
+  tags: ['team', 'process']
+}
+---
 # Team Process Framework, How We Work
 
 Routine enables us to move fast in a sustainable velocity. So we have 6 meetings during our iterations. It's simple, focuses on solving the "mis alignment" problem, and periodical (repeats every iteration).
@@ -19,16 +31,3 @@ Routine enables us to move fast in a sustainable velocity. So we have 6 meetings
   - This is hard. We just keep trying to keep it simple.
 - Any improvement must be made in accordance with the scientific method, under the guidance of a teacher, at the lowest possible level in the organization.
   - Not everyone get's this. We pick our battles.
-
-  <script server>
-    export default {
-      layout: './layouts/post.html',
-      title: 'Team Process Framework, How We Work',
-      excerpt: "Routine enables us to move fast in a sustainable velocity. So we have 6 meetings during our iterations. It's simple, focuses on solving the <em>misalignment</em> problem, and periodical (repeats every iteration).",
-      shouldPublish: true,
-      uri: '/blog/2017/team-process-framework.html',
-      published: new Date('2017-02-01T16:43:08.111Z'),
-      image: '',
-      tags: ['team', 'process']
-    }
-  </script>

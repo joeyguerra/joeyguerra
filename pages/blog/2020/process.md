@@ -1,3 +1,15 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'Process',
+    excerpt: 'I never considered myself a process oriented person',
+    shouldPublish: true,
+    published: new Date('2020-03-15T10:43:08.111Z'),
+    tags: ['process'],
+    uri: '/blog/2020/process.html'
+}
+---
 # Process
 
 I never considered myself a process oriented person.
@@ -7,16 +19,3 @@ As I started to work on systems with hundreds of people involved, I had to follo
 What spurred this? Reading about [Chesterton's Fence](https://fs.blog/2020/03/chestertons-fence/). Which really resonates with me because, while I know it seems like people are idiots, they don't just do things for no reason. There's reasons. We don't always agree with them, or understand them, but there're reasons. Reasons which were apparent at the time the decision was made. Which brings to mind some advice I got early on in my career. "You can only make decisions based on what you know at the time".
 
 Question the process. Challenge it. But take the time to understand it before changing it.
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'Process',
-        excerpt: 'I never considered myself a process oriented person',
-        shouldPublish: true,
-        published: new Date('2020-03-15T10:43:08.111Z'),
-        tags: ['process'],
-        uri: '/blog/2020/process.html'
-    }
-</script>

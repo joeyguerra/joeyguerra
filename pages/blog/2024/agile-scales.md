@@ -1,7 +1,20 @@
+---
+{
+    layout: './pages/layouts/post.html',
+    image: '',
+    title: 'Does Agile Software Development Scale?',
+    excerpt:" Of course it does. But that's the wrong question. Because Agile Software Development is directly related to computing power and so it has similar scaling qualities.",
+    shouldPublish: true,
+    published: new Date('2024-02-07T15:55:00.000Z'),
+    tags: ['agile', 'scale'],
+    image: '/images/6958430407_12683c821f_w.jpg',
+    uri: '/blog/2024/agile-scales.html'
+}
+---
 # Does Agile Software Development Scale?
 
 <figure>
-    <img class="full-width" src="../../imgs/6958430407_12683c821f_w.jpg" alt="The Big Bang Theory Case - Wallpaper by Mistic Soul" />
+    <img class="full-width" src="../../images/6958430407_12683c821f_w.jpg" alt="The Big Bang Theory Case - Wallpaper by Mistic Soul" />
     <figcaption>
         <a href="https://www.flickr.com/photos/66062500@N07/6958430407/" nofollow>The Big Bang Theory Cast - Wallpaper by Mystic Soul</a>
     </figcaption>
@@ -16,17 +29,3 @@ You see, the reason you're even asking the “does it scale” question in the f
 **Why indeed.**
 
 It's not Agile Software Development that you need to focus on scaling, it's alignment. Alignment on mission. Alignment on “the problem”. Alignment on “why”. Misalignment is always the problem. And it's the thing holding your organization hostage from accomplishing goals and solving problems. It's the thing that's keeping you from “scaling”. Why is that?
-
-<script server>
-    export default {
-        layout: './layouts/post.html',
-        image: '',
-        title: 'Does Agile Software Development Scale?',
-        excerpt:" Of course it does. But that's the wrong question. Because Agile Software Development is directly related to computing power and so it has similar scaling qualities.",
-        shouldPublish: true,
-        published: new Date('2024-02-07T15:55:00.000Z'),
-        tags: ['agile', 'scale'],
-        image: '/imgs/6958430407_12683c821f_w.jpg',
-        uri: '/blog/2024/agile-scales.html'
-    }
-</script>

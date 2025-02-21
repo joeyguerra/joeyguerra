@@ -136,7 +136,7 @@
     }
 
     .underlined {
-        background-image: url(/imgs/underline.svg);
+        background-image: url(/images/underline.svg);
         background-repeat: no-repeat;
         background-size: 100% 100%;
         content: "";
@@ -315,20 +315,4 @@
         pdf.save('carousel.pdf');
     });
 
-</script>
-<script server>
-    export default {
-        layout: './layouts/carousel.html',
-        title: 'What is Event Sourcing?',
-        canonical: 'https://www.joeyguerra.com/carousel-what-is-event-sourcing.html',
-        excerpt: 'Event Sourcing is a data persistence strategy that enables us to, at any time, visualize the state of our system at any point in time, past, present and future.',
-        shouldPublish: true,
-        published: new Date('2024-06-04'),
-        uri: '/carousel-what-is-event-sourcing.html',
-        touchStartupImage: '/imgs/carousel.png',
-        image: '/imgs/carousel-screenshot.jpg',
-        touchIcon180: '',
-        touchIcon32: '',
-        touchIcon16: ''
-    }
 </script>
