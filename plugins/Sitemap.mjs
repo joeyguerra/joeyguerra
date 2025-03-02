@@ -1,5 +1,7 @@
 
 import { EVENTS } from 'juphjacs/src/Page.mjs'
+import { TemplateLiteralRenderer } from 'juphjacs/src/TemplateLiteralRenderer.mjs'
+import { EVENTS as SITE_GENERATOR_EVENTS } from 'juphjacs/src/SiteGenerator.mjs'
 import { promises as File } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -30,7 +32,7 @@ export default async () => {
         filePath: '',
         context: {urls: []}
     }
-    process.on(EVENTS.TEMPLATE_RENDERED, async (filePath, page) => {
+    process.on(EVENTS.TEMPLATE_RENDERED, (filePath, page) => {
         if(page.filePath.includes('layouts')) {
             return
         }
@@ -47,7 +49,7 @@ export default async () => {
         }
     })
 
-    process.on(EVENTS.PRE_TEMPLATE_RENDER, async (filePath, page) => {
+    process.on(EVENTS.PRE_TEMPLATE_RENDER, (filePath, page) => {
         const filesToInclude = [
             '/sitemap.xml'
         ]
@@ -56,10 +58,10 @@ export default async () => {
         }
     })
 
-    process.on(EVENTS.STATIC_SITE_GENERATED, async (routes, layouts) => {
+    process.on(SITE_GENERATOR_EVENTS.STATIC_SITE_GENERATED, async (routes, layouts) => {
         sitemapIndex.context.urls = Array.from(urls).sort((a, b) => a.slug.localeCompare(b.slug))
         const newFilePath = sitemapIndex.filePath.replace(PAGES, '')
-        const template = new Template(readFile, PAGES)
+        const template = new TemplateLiteralRenderer(readFile, PAGES)
         const content = await readFile(join(PAGES, newFilePath), 'utf8')
         const output = await template.render(content, sitemapIndex.context)
         await File.writeFile(join(__dirname, SITE_FOLDER, newFilePath), output, 'utf8')

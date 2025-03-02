@@ -1,4 +1,4 @@
-FROM node:23-alpine3.19 AS build
+FROM node:23-alpine3.20 AS build
 WORKDIR /app
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 RUN apk add --update --no-cache

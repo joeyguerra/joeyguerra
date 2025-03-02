@@ -1,11 +1,12 @@
 
 import { Page } from 'juphjacs/src/Page.mjs'
+import { UriToStaticFileRoute } from 'juphjacs/src/UriToStaticFileRoute.mjs'
 
 class BlogIndexPage extends Page {
     constructor (rootFolder, filePath, template) {
         super(rootFolder, filePath, template)
         this.title = "Blog"
-        this.route = new RegExp('^/blog/?$')
+        this.route = new UriToStaticFileRoute(/\/blog\/?$/, this.filePath)
         this.layout = './pages/layouts/blog.html'
         this.canonical = 'https://www.joeyguerra.com/blog/'
         this.excerpt = 'My Blog.'

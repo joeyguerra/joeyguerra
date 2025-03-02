@@ -70,3 +70,4 @@ _site
 .data
 .hubot_history
 *.pem
+bitcoin.db

@@ -1,0 +1,174 @@
+<h1>Bitcoin Trading Bot</h1>
+<canvas id="priceChart" width="800" height="400"></canvas>
+
+<table>
+  <thead>
+    <tr>
+      <th>Row Number</th>
+      <th>Timestamp</th>
+      <th>Symbol</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody id="trades">
+    ${spotPrices.map(spot => `
+    <tr>
+      <td>${formatTimestamp(spot.timestamp)}</td>
+      <td>${spot.base}</td>
+      <td>$ ${formatMoneyWithCommas(spot.amount)} ${spot.currency}</td>
+    </tr>
+    `).join('')}
+  </tbody>
+</table>
+
+<script>
+  (function () {
+    const ctx = document.getElementById('priceChart').getContext('2d')
+    let spotPrices = Array.from(document.querySelectorAll('#trades tr')).map(row => {
+      const cells = row.querySelectorAll('td')
+      return {
+        timestamp: new Date(cells[0].textContent),
+        symbol: cells[1].textContent,
+        amount: parseFloat(cells[2].textContent.replace('$ ', '').replace(/,/g, '').replace(' USD', '')),
+      }
+    })
+    spotPrices = spotPrices.sort((a, b) => a.timestamp - b.timestamp)
+    const timestamps = spotPrices.map(spot => spot.timestamp)
+    const prices = spotPrices.map(spot => spot.amount)
+
+    class Chart {
+      constructor(context, config) {
+        this.context = context
+        this.config = config
+        this.draw()
+      }
+
+      draw() {
+        const ctx = this.context
+        const data = this.config.data
+        const labels = data.labels
+        const dataset = data.datasets[0]
+
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+        // Draw X and Y axis
+        ctx.beginPath()
+        ctx.moveTo(50, 10)
+        ctx.lineTo(50, 390)
+        ctx.lineTo(790, 390)
+        ctx.strokeStyle = 'white'
+        ctx.stroke()
+
+        // Draw X axis labels and ticks
+        ctx.fillStyle = 'white'
+        ctx.textAlign = 'center'
+        labels.forEach((label, index) => {
+          const x = 50 + (index * (740 / (labels.length - 1)))
+          ctx.fillText(label, x, 410)
+          ctx.beginPath()
+          ctx.moveTo(x, 390)
+          ctx.lineTo(x, 395)
+          ctx.stroke()
+        });
+
+        // Draw Y axis labels and ticks
+        const maxPrice = Math.max(...dataset.data)
+        const minPrice = Math.min(...dataset.data)
+        const yTicks = 10
+        for (let i = 0; i <= yTicks; i++) {
+          const y = 390 - (i * (380 / yTicks))
+          const price = minPrice + (i * ((maxPrice - minPrice) / yTicks))
+          ctx.fillText(price.toFixed(2), 30, y + 5)
+          ctx.beginPath()
+          ctx.moveTo(45, y)
+          ctx.lineTo(50, y)
+          ctx.stroke()
+        }
+
+        // Draw data points and line
+        ctx.beginPath()
+        dataset.data.forEach((price, index) => {
+          const x = 50 + (index * (740 / (dataset.data.length - 1)))
+          const y = 390 - ((price - minPrice) / (maxPrice - minPrice) * 380)
+          if (index === 0) {
+            ctx.moveTo(x, y)
+          } else {
+            ctx.lineTo(x, y)
+          }
+          ctx.arc(x, y, 3, 0, 2 * Math.PI)
+        });
+        ctx.strokeStyle = dataset.borderColor
+        ctx.lineWidth = dataset.borderWidth
+        ctx.stroke()
+      }
+    }
+
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: timestamps,
+        datasets: [{
+          label: 'Bitcoin Price',
+          data: prices,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 2,
+          fill: false
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit: 'minute'
+            },
+            title: {
+              display: true,
+              text: 'Time'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Price (USD)'
+            }
+          }
+        }
+      }
+    })
+
+  })()
+</script>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #121212;
+    color: white;
+  }
+
+  table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+  }
+
+  tbody tr::before {
+    counter-increment: rowNumber;
+    content: counter(rowNumber);
+    display: table-cell;
+    padding-right: 10px;
+    border: 1px solid white;
+  }
+
+  tbody {
+    counter-reset: rowNumber;
+  }
+
+  th,
+  td {
+    padding: 10px;
+    border: 1px solid white;
+  }
+</style>
