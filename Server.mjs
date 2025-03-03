@@ -30,13 +30,17 @@ class BitcoinTracker extends EventEmitter {
         this.emit('update', this.spotPrices)
     }
     async fetchPriceData() {
-        const response = await fetch('https://api.coinbase.com/v2/prices/BTC-USD/spot')
-        const doc = await response.json()
-        const spot = { timestamp: new Date(), ...doc.data }
-        this.spotPrices.unshift(spot)
-        this.spotPrices = this.spotPrices.slice(0, 300)
-        this.save(spot)
-        this.update()
+        try {
+            const response = await fetch('https://api.coinbase.com/v2/prices/BTC-USD/spot')
+            const doc = await response.json()
+            const spot = { timestamp: new Date(), ...doc.data }
+            this.spotPrices.unshift(spot)
+            this.spotPrices = this.spotPrices.slice(0, 300)
+            this.save(spot)
+            this.update()    
+        } catch (e) {
+            logger.error(e)
+        }
     }
     save(spotPrice) {
         const existing = this.database.prepare(`SELECT * FROM prices WHERE timestamp = ?`).get(spotPrice.timestamp)
