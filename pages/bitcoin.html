@@ -36,6 +36,15 @@
     const timestamps = spotPrices.map(spot => spot.timestamp)
     const prices = spotPrices.map(spot => spot.amount)
 
+    function formateDateLabel(date) {
+      return date.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+            timeZone: 'America/Chicago',
+        })
+    }
     class Chart {
       constructor(context, config) {
         this.context = context
@@ -48,13 +57,7 @@
         const data = this.config.data
         const labels = data.labels.map(label => {
           const date = new Date(label)
-          const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
-          let hours = localDate.getHours()
-          const minutes = localDate.getMinutes().toString().padStart(2, '0')
-          const ampm = hours >= 12 ? 'PM' : 'AM'
-          hours = hours % 12
-          hours = hours ? hours : 12 // the hour '0' should be '12'
-          return `${hours}:${minutes} ${ampm}`
+          return formateDateLabel(date)
         })
         const dataset = data.datasets[0]
 
