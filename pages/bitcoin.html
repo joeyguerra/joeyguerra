@@ -46,16 +46,25 @@
       draw() {
         const ctx = this.context
         const data = this.config.data
-        const labels = data.labels
+        const labels = data.labels.map(label => {
+          const date = new Date(label)
+          const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+          let hours = localDate.getHours()
+          const minutes = localDate.getMinutes().toString().padStart(2, '0')
+          const ampm = hours >= 12 ? 'PM' : 'AM'
+          hours = hours % 12
+          hours = hours ? hours : 12 // the hour '0' should be '12'
+          return `${hours}:${minutes} ${ampm}`
+        })
         const dataset = data.datasets[0]
 
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
         // Draw X and Y axis
         ctx.beginPath()
-        ctx.moveTo(50, 10)
-        ctx.lineTo(50, 390)
-        ctx.lineTo(790, 390)
+        ctx.moveTo(70, 10)  // Increased gutter space
+        ctx.lineTo(70, 370)  // Adjusted for increased gutter space
+        ctx.lineTo(790, 370)  // Adjusted for increased gutter space
         ctx.strokeStyle = 'white'
         ctx.stroke()
 
@@ -63,33 +72,45 @@
         ctx.fillStyle = 'white'
         ctx.textAlign = 'center'
         labels.forEach((label, index) => {
-          const x = 50 + (index * (740 / (labels.length - 1)))
-          ctx.fillText(label, x, 410)
+          const x = 70 + (index * (720 / (labels.length - 1)))  // Adjusted for increased gutter space
+          if (index % 5 === 0) {  // Add label every 5 ticks
+            ctx.fillText(label, x, 390)  // Adjusted for increased gutter space
+          }
           ctx.beginPath()
-          ctx.moveTo(x, 390)
-          ctx.lineTo(x, 395)
+          ctx.moveTo(x, 370)  // Adjusted for increased gutter space
+          ctx.lineTo(x, 375)  // Adjusted for increased gutter space
           ctx.stroke()
         });
+
+        // Draw X axis label
+        ctx.fillText('Time', 420, 420)  // Adjusted for increased gutter space
 
         // Draw Y axis labels and ticks
         const maxPrice = Math.max(...dataset.data)
         const minPrice = Math.min(...dataset.data)
         const yTicks = 10
         for (let i = 0; i <= yTicks; i++) {
-          const y = 390 - (i * (380 / yTicks))
+          const y = 370 - (i * (360 / yTicks))  // Adjusted for increased gutter space
           const price = minPrice + (i * ((maxPrice - minPrice) / yTicks))
-          ctx.fillText(price.toFixed(2), 30, y + 5)
+          ctx.fillText(price.toFixed(2), 50, y + 5)  // Adjusted for increased gutter space
           ctx.beginPath()
-          ctx.moveTo(45, y)
-          ctx.lineTo(50, y)
+          ctx.moveTo(65, y)  // Adjusted for increased gutter space
+          ctx.lineTo(70, y)
           ctx.stroke()
         }
+
+        // Draw Y axis label
+        ctx.save()
+        ctx.translate(30, 200)  // Adjusted for increased gutter space
+        ctx.rotate(-Math.PI / 2)
+        ctx.fillText('Price (USD)', 0, -7)
+        ctx.restore()
 
         // Draw data points and line
         ctx.beginPath()
         dataset.data.forEach((price, index) => {
-          const x = 50 + (index * (740 / (dataset.data.length - 1)))
-          const y = 390 - ((price - minPrice) / (maxPrice - minPrice) * 380)
+          const x = 70 + (index * (720 / (dataset.data.length - 1)))  // Adjusted for increased gutter space
+          const y = 370 - ((price - minPrice) / (maxPrice - minPrice) * 360)  // Adjusted for increased gutter space
           if (index === 0) {
             ctx.moveTo(x, y)
           } else {

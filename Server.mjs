@@ -20,9 +20,11 @@ class BitcoinTracker extends EventEmitter {
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         `)
-        this.interval = setInterval(this.fetchPriceData.bind(this), 5 * 1000)
+        this.randomInterval = Math.floor(Math.random() * 30) + 1
+        this.interval = setInterval(this.fetchPriceData.bind(this), this.randomInterval * 1000)
         this.spotPrices = []
     }
+    
     get(limit = 50) {
         return this.database.prepare(`SELECT * FROM prices ORDER BY timestamp DESC LIMIT ?`).all(limit)
     }
@@ -39,7 +41,8 @@ class BitcoinTracker extends EventEmitter {
             this.save(spot)
             this.update()    
         } catch (e) {
-            logger.error(e)
+            logger.warn(e.cause)
+            logger.warn(e.message)
         }
     }
     save(spotPrice) {
