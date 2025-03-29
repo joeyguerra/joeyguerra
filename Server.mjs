@@ -2,6 +2,7 @@ import { createServer } from 'node:http'
 import { DatabaseSync } from 'node:sqlite'
 import EventEmitter from 'node:events'
 import { main, logger, FetchRequest, FetchResponse } from 'juphjacs'
+import notfoundurls from './notfoundurls.mjs'
 
 const database = new DatabaseSync('bitcoin.db', { allowExtension: true })
 const { sqliteVersion } = database.prepare('select sqlite_version() as sqliteVersion;').get()

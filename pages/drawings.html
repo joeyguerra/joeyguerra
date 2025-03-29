@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Drawing App</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        button {
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button.active {
+            background-color: #2E7D32;
+        }
+        #canvas-container {
+            position: relative;
+            border: 1px solid #ccc;
+            width: 800px;
+            height: 600px;
+            overflow: hidden;
+        }
+        #drawing-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+        .resize-handle {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border: 1px solid #333;
+            position: absolute;
+            cursor: nwse-resize;
+        }
+        #json-output {
+            width: 100%;
+            height: 150px;
+            margin-top: 10px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simple Drawing App</h1>
+        <div class="toolbar">
+            <button id="select-tool">Select</button>
+            <button id="rectangle-tool">Rectangle</button>
+            <button id="circle-tool">Circle</button>
+            <button id="line-tool">Arrow Line</button>
+            <button id="delete-selected">Delete Selected</button>
+            <button id="export-btn">Export</button>
+            <button id="import-btn">Import</button>
+        </div>
+        <div id="canvas-container">
+            <canvas id="drawing-canvas"></canvas>
+        </div>
+        <textarea id="json-output" placeholder="JSON data will appear here when exporting. Paste JSON here to import."></textarea>
+    </div>
+
+    <script>
+        // Drawing app main class
+        class DrawingApp {
+            constructor() {
+                this.canvas = document.getElementById('drawing-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.shapes = [];
+                this.selectedShape = null;
+                this.currentTool = 'select';
+                this.isDragging = false;
+                this.isResizing = false;
+                this.resizeHandle = null;
+                this.dragStartX = 0;
+                this.dragStartY = 0;
+                this.drawingLine = false;
+                this.tempLine = null;
+                this.snapDistance = 15; // Distance to snap arrow to shapes
+
+                this.init();
+            }
+            
+            init() {
+                this.resizeCanvas();
+                window.addEventListener('resize', () => this.resizeCanvas());
+                
+                // Tool selection
+                document.getElementById('select-tool').addEventListener('click', () => this.setTool('select'));
+                document.getElementById('rectangle-tool').addEventListener('click', () => this.setTool('rectangle'));
+                document.getElementById('circle-tool').addEventListener('click', () => this.setTool('circle'));
+                document.getElementById('line-tool').addEventListener('click', () => this.setTool('line'));
+                document.getElementById('delete-selected').addEventListener('click', () => this.deleteSelected());
+                document.getElementById('export-btn').addEventListener('click', () => this.exportData());
+                document.getElementById('import-btn').addEventListener('click', () => this.importData());
+                
+                // Set select as default active
+                document.getElementById('select-tool').classList.add('active');
+                
+                // Canvas mouse events
+                this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
+                this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+                this.canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e));
+                
+                // Initial render
+                this.render();
+            }
+            
+            resizeCanvas() {
+                const container = document.getElementById('canvas-container');
+                this.canvas.width = container.offsetWidth;
+                this.canvas.height = container.offsetHeight;
+                this.render();
+            }
+            
+            setTool(tool) {
+                this.currentTool = tool;
+                
+                // Update UI
+                document.querySelectorAll('.toolbar button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.getElementById(`${tool}-tool`).classList.add('active');
+                
+                // Deselect when changing tools
+                if (tool !== 'select') {
+                    this.selectedShape = null;
+                    this.render();
+                }
+            }
+            
+            getMousePos(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                return {
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top
+                };
+            }
+            
+            handleMouseDown(e) {
+                const pos = this.getMousePos(e);
+                
+                if (this.currentTool === 'select') {
+                    // Check if clicking on a resize handle
+                    if (this.selectedShape && this.isPointInResizeHandle(pos, this.selectedShape)) {
+                        this.isResizing = true;
+                        this.dragStartX = pos.x;
+                        this.dragStartY = pos.y;
+                        return;
+                    }
+                    
+                    // Check if clicking on a shape to select/drag
+                    const clickedShape = this.findShapeAtPosition(pos);
+                    if (clickedShape) {
+                        this.selectedShape = clickedShape;
+                        this.isDragging = true;
+                        this.dragStartX = pos.x;
+                        this.dragStartY = pos.y;
+                    } else {
+                        this.selectedShape = null;
+                    }
+                    this.render();
+                } else if (this.currentTool === 'rectangle' || this.currentTool === 'circle') {
+                    // Start drawing a new shape
+                    this.dragStartX = pos.x;
+                    this.dragStartY = pos.y;
+                    this.isDragging = true;
+                } else if (this.currentTool === 'line') {
+                    // Start drawing a line
+                    this.drawingLine = true;
+                    this.tempLine = new ArrowLine(pos.x, pos.y, pos.x, pos.y);
+                }
+            }
+            
+            handleMouseMove(e) {
+                const pos = this.getMousePos(e);
+                
+                if (this.isDragging && this.currentTool === 'select' && this.selectedShape) {
+                    // Move the selected shape
+                    const dx = pos.x - this.dragStartX;
+                    const dy = pos.y - this.dragStartY;
+                    
+                    this.selectedShape.move(dx, dy);
+                    
+                    // Update line connections if needed
+                    this.updateLineConnections(this.selectedShape);
+                    
+                    this.dragStartX = pos.x;
+                    this.dragStartY = pos.y;
+                    this.render();
+                } else if (this.isResizing && this.selectedShape) {
+                    // Resize the selected shape
+                    const dx = pos.x - this.dragStartX;
+                    const dy = pos.y - this.dragStartY;
+                    
+                    this.selectedShape.resize(dx, dy);
+                    
+                    // Update line connections if needed
+                    this.updateLineConnections(this.selectedShape);
+                    
+                    this.dragStartX = pos.x;
+                    this.dragStartY = pos.y;
+                    this.render();
+                } else if (this.isDragging && (this.currentTool === 'rectangle' || this.currentTool === 'circle')) {
+                    // Preview new shape while dragging
+                    this.render();
+                    this.ctx.strokeStyle = '#000';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.setLineDash([5, 5]);
+                    
+                    if (this.currentTool === 'rectangle') {
+                        this.ctx.strokeRect(
+                            this.dragStartX, this.dragStartY,
+                            pos.x - this.dragStartX, pos.y - this.dragStartY
+                        );
+                    } else if (this.currentTool === 'circle') {
+                        const width = pos.x - this.dragStartX;
+                        const height = pos.y - this.dragStartY;
+                        const radius = Math.max(Math.abs(width), Math.abs(height)) / 2;
+                        const centerX = this.dragStartX + width / 2;
+                        const centerY = this.dragStartY + height / 2;
+                        
+                        this.ctx.beginPath();
+                        this.ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                        this.ctx.stroke();
+                    }
+                    this.ctx.setLineDash([]);
+                } else if (this.drawingLine && this.tempLine) {
+                    // Find nearest shape to snap to
+                    const startSnap = this.findSnapPoint(pos);
+                    const endSnap = this.findSnapPoint({x: this.tempLine.x1, y: this.tempLine.y1});
+                    
+                    // Update line end points
+                    if (startSnap) {
+                        this.tempLine.x2 = startSnap.x;
+                        this.tempLine.y2 = startSnap.y;
+                        this.tempLine.endShape = startSnap.shape;
+                    } else {
+                        this.tempLine.x2 = pos.x;
+                        this.tempLine.y2 = pos.y;
+                        this.tempLine.endShape = null;
+                    }
+                    
+                    if (endSnap) {
+                        this.tempLine.x1 = endSnap.x;
+                        this.tempLine.y1 = endSnap.y;
+                        this.tempLine.startShape = endSnap.shape;
+                    } else {
+                        this.tempLine.startShape = null;
+                    }
+                    
+                    this.render();
+                    this.tempLine.draw(this.ctx, true); // Draw with dashed line
+                }
+            }
+            
+            handleMouseUp(e) {
+                const pos = this.getMousePos(e);
+                
+                if (this.isDragging && (this.currentTool === 'rectangle' || this.currentTool === 'circle')) {
+                    // Create new shape
+                    let newShape;
+                    const width = pos.x - this.dragStartX;
+                    const height = pos.y - this.dragStartY;
+                    
+                    // Only create if there's an actual size
+                    if (Math.abs(width) > 5 && Math.abs(height) > 5) {
+                        if (this.currentTool === 'rectangle') {
+                            const x = Math.min(this.dragStartX, pos.x);
+                            const y = Math.min(this.dragStartY, pos.y);
+                            const w = Math.abs(width);
+                            const h = Math.abs(height);
+                            newShape = new Rectangle(x, y, w, h);
+                        } else if (this.currentTool === 'circle') {
+                            const radius = Math.max(Math.abs(width), Math.abs(height)) / 2;
+                            const centerX = this.dragStartX + width / 2;
+                            const centerY = this.dragStartY + height / 2;
+                            newShape = new Circle(centerX, centerY, radius);
+                        }
+                        
+                        this.shapes.push(newShape);
+                        this.selectedShape = newShape;
+                    }
+                } else if (this.drawingLine && this.tempLine) {
+                    // Find snap points for start and end
+                    const startSnap = this.findSnapPoint({x: this.tempLine.x1, y: this.tempLine.y1});
+                    const endSnap = this.findSnapPoint({x: this.tempLine.x2, y: this.tempLine.y2});
+                    
+                    // Update line with final snap positions
+                    if (startSnap) {
+                        this.tempLine.x1 = startSnap.x;
+                        this.tempLine.y1 = startSnap.y;
+                        this.tempLine.startShape = startSnap.shape;
+                    }
+                    
+                    if (endSnap) {
+                        this.tempLine.x2 = endSnap.x;
+                        this.tempLine.y2 = endSnap.y;
+                        this.tempLine.endShape = endSnap.shape;
+                    }
+                    
+                    // Only add line if it has some length
+                    if (Math.abs(this.tempLine.x2 - this.tempLine.x1) > 5 || Math.abs(this.tempLine.y2 - this.tempLine.y1) > 5) {
+                        this.shapes.push(this.tempLine);
+                        this.selectedShape = this.tempLine;
+                    }
+                }
+                
+                this.isDragging = false;
+                this.isResizing = false;
+                this.drawingLine = false;
+                this.tempLine = null;
+                this.render();
+            }
+            
+            render() {
+                // Clear canvas
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw all shapes
+                this.shapes.forEach(shape => {
+                    shape.draw(this.ctx, shape === this.selectedShape);
+                });
+                
+                // Draw resize handles if a shape is selected
+                if (this.selectedShape && !(this.selectedShape instanceof ArrowLine)) {
+                    this.drawResizeHandles(this.selectedShape);
+                }
+            }
+            
+            findShapeAtPosition(pos) {
+                // Check shapes in reverse order (top to bottom)
+                for (let i = this.shapes.length - 1; i >= 0; i--) {
+                    if (this.shapes[i].containsPoint(pos)) {
+                        return this.shapes[i];
+                    }
+                }
+                return null;
+            }
+            
+            drawResizeHandles(shape) {
+                const bounds = shape.getBounds();
+                this.ctx.fillStyle = 'white';
+                this.ctx.strokeStyle = '#333';
+                this.ctx.lineWidth = 1;
+                
+                // Draw bottom-right resize handle
+                this.ctx.fillRect(bounds.x + bounds.width - 4, bounds.y + bounds.height - 4, 8, 8);
+                this.ctx.strokeRect(bounds.x + bounds.width - 4, bounds.y + bounds.height - 4, 8, 8);
+            }
+            
+            isPointInResizeHandle(pos, shape) {
+                const bounds = shape.getBounds();
+                const handleX = bounds.x + bounds.width - 4;
+                const handleY = bounds.y + bounds.height - 4;
+                
+                return pos.x >= handleX && pos.x <= handleX + 8 &&
+                       pos.y >= handleY && pos.y <= handleY + 8;
+            }
+            
+            findSnapPoint(pos) {
+                for (let shape of this.shapes) {
+                    if (shape instanceof ArrowLine) continue;
+                    
+                    // Get shape center point
+                    const bounds = shape.getBounds();
+                    const centerX = bounds.x + bounds.width / 2;
+                    const centerY = bounds.y + bounds.height / 2;
+                    
+                    // Check distance to center
+                    const dist = Math.sqrt(Math.pow(pos.x - centerX, 2) + Math.pow(pos.y - centerY, 2));
+                    
+                    if (dist <= this.snapDistance) {
+                        return { x: centerX, y: centerY, shape: shape };
+                    }
+                    
+                    // Check distance to edges
+                    if (shape instanceof Rectangle) {
+                        // Check midpoints of each edge
+                        const midpoints = [
+                            { x: bounds.x + bounds.width / 2, y: bounds.y }, // Top
+                            { x: bounds.x + bounds.width, y: bounds.y + bounds.height / 2 }, // Right
+                            { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height }, // Bottom
+                            { x: bounds.x, y: bounds.y + bounds.height / 2 } // Left
+                        ];
+                        
+                        for (let point of midpoints) {
+                            const dist = Math.sqrt(Math.pow(pos.x - point.x, 2) + Math.pow(pos.y - point.y, 2));
+                            if (dist <= this.snapDistance) {
+                                return { x: point.x, y: point.y, shape: shape };
+                            }
+                        }
+                    } else if (shape instanceof Circle) {
+                        // Calculate nearest point on circle circumference
+                        const angle = Math.atan2(pos.y - centerY, pos.x - centerX);
+                        const radius = shape.radius;
+                        const pointOnCircle = {
+                            x: centerX + Math.cos(angle) * radius,
+                            y: centerY + Math.sin(angle) * radius
+                        };
+                        
+                        const dist = Math.sqrt(Math.pow(pos.x - pointOnCircle.x, 2) + Math.pow(pos.y - pointOnCircle.y, 2));
+                        if (dist <= this.snapDistance) {
+                            return { x: pointOnCircle.x, y: pointOnCircle.y, shape: shape };
+                        }
+                    }
+                }
+                
+                return null;
+            }
+            
+            updateLineConnections(movedShape) {
+                // Update any connected arrows
+                for (let shape of this.shapes) {
+                    if (shape instanceof ArrowLine) {
+                        if (shape.startShape === movedShape || shape.endShape === movedShape) {
+                            const snapStart = shape.startShape ? this.getConnectionPoint(shape.startShape, {x: shape.x2, y: shape.y2}) : null;
+                            const snapEnd = shape.endShape ? this.getConnectionPoint(shape.endShape, {x: shape.x1, y: shape.y1}) : null;
+                            
+                            if (snapStart) {
+                                shape.x1 = snapStart.x;
+                                shape.y1 = snapStart.y;
+                            }
+                            
+                            if (snapEnd) {
+                                shape.x2 = snapEnd.x;
+                                shape.y2 = snapEnd.y;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            getConnectionPoint(shape, toPoint) {
+                const bounds = shape.getBounds();
+                const centerX = bounds.x + bounds.width / 2;
+                const centerY = bounds.y + bounds.height / 2;
+                
+                if (shape instanceof Circle) {
+                    // For circle, calculate point on circumference
+                    const angle = Math.atan2(toPoint.y - centerY, toPoint.x - centerX);
+                    return {
+                        x: centerX + Math.cos(angle) * shape.radius,
+                        y: centerY + Math.sin(angle) * shape.radius
+                    };
+                } else if (shape instanceof Rectangle) {
+                    // For rectangle, find intersection with edge
+                    const dx = toPoint.x - centerX;
+                    const dy = toPoint.y - centerY;
+                    
+                    // Find which edge to connect to based on angle
+                    const angle = Math.atan2(dy, dx);
+                    const tanAngle = Math.abs(dy / dx);
+                    const aspectRatio = bounds.height / bounds.width;
+                    
+                    if (tanAngle < aspectRatio) {
+                        // Intersect with left or right edge
+                        const x = dx > 0 ? bounds.x + bounds.width : bounds.x;
+                        const y = centerY + dy * (x - centerX) / dx;
+                        return { x, y };
+                    } else {
+                        // Intersect with top or bottom edge
+                        const y = dy > 0 ? bounds.y + bounds.height : bounds.y;
+                        const x = centerX + dx * (y - centerY) / dy;
+                        return { x, y };
+                    }
+                }
+                
+                // Default to shape center
+                return { x: centerX, y: centerY };
+            }
+            
+            deleteSelected() {
+                if (this.selectedShape) {
+                    // Remove from array
+                    const index = this.shapes.indexOf(this.selectedShape);
+                    if (index !== -1) {
+                        this.shapes.splice(index, 1);
+                    }
+                    
+                    // Remove any connected lines
+                    this.shapes = this.shapes.filter(shape => {
+                        if (shape instanceof ArrowLine) {
+                            if (shape.startShape === this.selectedShape || shape.endShape === this.selectedShape) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    });
+                    
+                    this.selectedShape = null;
+                    this.render();
+                }
+            }
+            
+            exportData() {
+                const data = {
+                    shapes: this.shapes.map(shape => shape.serialize())
+                };
+                
+                document.getElementById('json-output').value = JSON.stringify(data, null, 2);
+            }
+            
+            importData() {
+                try {
+                    const jsonStr = document.getElementById('json-output').value;
+                    const data = JSON.parse(jsonStr);
+                    
+                    // Clear existing shapes
+                    this.shapes = [];
+                    this.selectedShape = null;
+                    
+                    // Create new shape instances
+                    const shapesMap = new Map(); // To store references for connections
+                    
+                    if (data.shapes && Array.isArray(data.shapes)) {
+                        // First pass: create all shapes
+                        data.shapes.forEach((shapeData, index) => {
+                            let shape;
+                            
+                            switch (shapeData.type) {
+                                case 'rectangle':
+                                    shape = new Rectangle(
+                                        shapeData.x,
+                                        shapeData.y,
+                                        shapeData.width,
+                                        shapeData.height
+                                    );
+                                    break;
+                                case 'circle':
+                                    shape = new Circle(
+                                        shapeData.centerX,
+                                        shapeData.centerY,
+                                        shapeData.radius
+                                    );
+                                    break;
+                                case 'arrow':
+                                    shape = new ArrowLine(
+                                        shapeData.x1,
+                                        shapeData.y1,
+                                        shapeData.x2,
+                                        shapeData.y2
+                                    );
+                                    break;
+                            }
+                            
+                            if (shape) {
+                                this.shapes.push(shape);
+                                shapesMap.set(index, shape);
+                            }
+                        });
+                        
+                        // Second pass: fix line connections
+                        data.shapes.forEach((shapeData, index) => {
+                            if (shapeData.type === 'arrow') {
+                                const line = shapesMap.get(index);
+                                
+                                if (shapeData.startShapeIndex !== undefined && shapesMap.has(shapeData.startShapeIndex)) {
+                                    line.startShape = shapesMap.get(shapeData.startShapeIndex);
+                                }
+                                
+                                if (shapeData.endShapeIndex !== undefined && shapesMap.has(shapeData.endShapeIndex)) {
+                                    line.endShape = shapesMap.get(shapeData.endShapeIndex);
+                                }
+                            }
+                        });
+                    }
+                    
+                    this.render();
+                } catch (error) {
+                    alert('Error importing data: ' + error.message);
+                }
+            }
+        }
+        
+        // Base Shape class
+        class Shape {
+            constructor() {}
+            
+            draw(ctx, isSelected) {
+                // To be implemented by subclasses
+            }
+            
+            containsPoint(point) {
+                // To be implemented by subclasses
+                return false;
+            }
+            
+            move(dx, dy) {
+                // To be implemented by subclasses
+            }
+            
+            resize(dx, dy) {
+                // To be implemented by subclasses
+            }
+            
+            getBounds() {
+                // To be implemented by subclasses
+                return { x: 0, y: 0, width: 0, height: 0 };
+            }
+            
+            serialize() {
+                // To be implemented by subclasses
+                return {};
+            }
+        }
+        
+        // Rectangle shape
+        class Rectangle extends Shape {
+            constructor(x, y, width, height) {
+                super();
+                this.x = x;
+                this.y = y;
+                this.width = width;
+                this.height = height;
+            }
+            
+            draw(ctx, isSelected) {
+                ctx.beginPath();
+                ctx.rect(this.x, this.y, this.width, this.height);
+                
+                if (isSelected) {
+                    ctx.strokeStyle = '#0077FF';
+                    ctx.lineWidth = 2;
+                } else {
+                    ctx.strokeStyle = '#000';
+                    ctx.lineWidth = 1;
+                }
+                
+                ctx.stroke();
+                ctx.fillStyle = 'rgba(200, 200, 255, 0.3)';
+                ctx.fill();
+            }
+            
+            containsPoint(point) {
+                return point.x >= this.x && point.x <= this.x + this.width &&
+                       point.y >= this.y && point.y <= this.y + this.height;
+            }
+            
+            move(dx, dy) {
+                this.x += dx;
+                this.y += dy;
+            }
+            
+            resize(dx, dy) {
+                this.width += dx;
+                this.height += dy;
+                
+                // Ensure minimum size
+                this.width = Math.max(10, this.width);
+                this.height = Math.max(10, this.height);
+            }
+            
+            getBounds() {
+                return {
+                    x: this.x,
+                    y: this.y,
+                    width: this.width,
+                    height: this.height
+                };
+            }
+            
+            serialize() {
+                return {
+                    type: 'rectangle',
+                    x: this.x,
+                    y: this.y,
+                    width: this.width,
+                    height: this.height
+                };
+            }
+        }
+        
+        // Circle shape
+        class Circle extends Shape {
+            constructor(centerX, centerY, radius) {
+                super();
+                this.centerX = centerX;
+                this.centerY = centerY;
+                this.radius = radius;
+            }
+            
+            draw(ctx, isSelected) {
+                ctx.beginPath();
+                ctx.arc(this.centerX, this.centerY, this.radius, 0, Math.PI * 2);
+                
+                if (isSelected) {
+                    ctx.strokeStyle = '#0077FF';
+                    ctx.lineWidth = 2;
+                } else {
+                    ctx.strokeStyle = '#000';
+                    ctx.lineWidth = 1;
+                }
+                
+                ctx.stroke();
+                ctx.fillStyle = 'rgba(200, 255, 200, 0.3)';
+                ctx.fill();
+            }
+            
+            containsPoint(point) {
+                const distance = Math.sqrt(
+                    Math.pow(point.x - this.centerX, 2) + Math.pow(point.y - this.centerY, 2)
+                );
+                return distance <= this.radius;
+            }
+            
+            move(dx, dy) {
+                this.centerX += dx;
+                this.centerY += dy;
+            }
+            
+            resize(dx, dy) {
+                // Use the max of dx or dy to maintain circularity
+                const maxD = Math.max(Math.abs(dx), Math.abs(dy));
+                this.radius += (dx > 0 || dy > 0) ? maxD : -maxD;
+                
+                // Ensure minimum size
+                this.radius = Math.max(5, this.radius);
+            }
+            
+            getBounds() {
+                return {
+                    x: this.centerX - this.radius,
+                    y: this.centerY - this.radius,
+                    width: this.radius * 2,
+                    height: this.radius * 2
+                };
+            }
+            
+            serialize() {
+                return {
+                    type: 'circle',
+                    centerX: this.centerX,
+                    centerY: this.centerY,
+                    radius: this.radius
+                };
+            }
+        }
+        
+        // Arrow Line shape
+        class ArrowLine extends Shape {
+            constructor(x1, y1, x2, y2) {
+                super();
+                this.x1 = x1;
+                this.y1 = y1;
+                this.x2 = x2;
+                this.y2 = y2;
+                this.startShape = null; // Reference to shape at start
+                this.endShape = null;   // Reference to shape at end
+                this.arrowSize = 10;
+            }
+            
+            draw(ctx, isSelected, isDashed = false) {
+                // Draw the line
+                ctx.beginPath();
+                ctx.moveTo(this.x1, this.y1);
+                ctx.lineTo(this.x2, this.y2);
+                
+                if (isSelected) {
+                    ctx.strokeStyle = '#0077FF';
+                    ctx.lineWidth = 2;
+                } else {
+                    ctx.strokeStyle = '#000';
+                    ctx.lineWidth = 1;
+                }
+                
+                if (isDashed) {
+                    ctx.setLineDash([5, 5]);
+                } else {
+                    ctx.setLineDash([]);
+                }
+                
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Draw the arrow
+                this.drawArrowhead(ctx);
+            }
+            
+            drawArrowhead(ctx) {
+                const angle = Math.atan2(this.y2 - this.y1, this.x2 - this.x1);
+                
+                ctx.beginPath();
+                ctx.moveTo(this.x2, this.y2);
+                ctx.lineTo(
+                    this.x2 - this.arrowSize * Math.cos(angle - Math.PI/6),
+                    this.y2 - this.arrowSize * Math.sin(angle - Math.PI/6)
+                );
+                ctx.lineTo(
+                    this.x2 - this.arrowSize * Math.cos(angle + Math.PI/6),
+                    this.y2 - this.arrowSize * Math.sin(angle + Math.PI/6)
+                );
+                ctx.closePath();
+                
+                ctx.fillStyle = '#000';
+                ctx.fill();
+            }
+            
+            containsPoint(point) {
+                // Check if point is on the line
+                const distance = Math.abs((this.y2 - this.y1) * point.x - (this.x2 - this.x1) * point.y + this.x2 * this.y1 - this.y2 * this.x1) /
+                                 Math.sqrt(Math.pow(this.y2 - this.y1, 2) + Math.pow(this.x2 - this.x1, 2));
+                return distance < 5;
+            }
+            
+            move(dx, dy) {
+                this.x1 += dx;
+                this.y1 += dy;
+                this.x2 += dx;
+                this.y2 += dy;
+            }
+            
+            resize(dx, dy) {
+                this.x2 += dx;
+                this.y2 += dy;
+            }
+            
+            getBounds() {
+                return {
+                    x: Math.min(this.x1, this.x2),
+                    y: Math.min(this.y1, this.y2),
+                    width: Math.abs(this.x2 - this.x1),
+                    height: Math.abs(this.y2 - this.y1)
+                };
+            }
+            
+            serialize() {
+                return {
+                    type: 'arrow',
+                    x1: this.x1,
+                    y1: this.y1,
+                    x2: this.x2,
+                    y2: this.y2,
+                    startShapeIndex: this.startShape ? this.startShape.index : undefined,
+                    endShapeIndex: this.endShape ? this.endShape.index : undefined
+                };
+            }
+        }
+        
+        // Initialize the drawing app
+        window.onload = () => {
+            new DrawingApp();
+        };
+    </script>
+</body>
+</html>

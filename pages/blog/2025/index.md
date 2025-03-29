@@ -3,7 +3,7 @@
     layout: './pages/layouts/post.html',
     image: '',
     title: 'What do you do when the business case isn’t there but you know intuitively that building software will improve the bottom line?',
-    excerpt:"You start small and work outward from the middle.",
+    excerpt: "You start small and work outward from the middle.",
     shouldPublish: true,
     published: new Date('2025-01-12T17:29:00.000Z'),
     tags: ['strategy', 'plan', 'software', 'business', 'case'],
