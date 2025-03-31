@@ -100,7 +100,6 @@
     @keyframes pulse {
       0%, 100% { transform: rotate(45deg) scale(1); opacity: 1; }
       50% { transform: rotate(45deg) scale(1.15); opacity: 0.5; }
-    }
       50% { transform: rotate(45deg) scale(1.4); opacity: 0.5; }
     }
 
@@ -142,6 +141,46 @@
     color: white;
     border-color: #007bff;
   }
+  .status-options, .task-status-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .status-options label, .task-status-group label {
+    padding: 0.4rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 999px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+  }
+
+  .status-options input[type="radio"], .task-status-group input[type="radio"] {
+    display: none;
+  }
+
+  .status-options input[value="todo"]:checked + label,
+  .task-status-group input[value="todo"]:checked + label {
+    background-color: orange;
+    color: white;
+    border-color: orange;
+  }
+
+  .status-options input[value="in-progress"]:checked + label,
+  .task-status-group input[value="in-progress"]:checked + label {
+    background-color: dodgerblue;
+    color: white;
+    border-color: dodgerblue;
+  }
+
+  .status-options input[value="done"]:checked + label,
+  .task-status-group input[value="done"]:checked + label {
+    background-color: green;
+    color: white;
+    border-color: green;
+  }
 </style>
 </head>
 <body>
@@ -151,6 +190,7 @@
   <main>
     <div class="cone" id="cone"></div>
     <form id="task-form">
+      <input type="text" id="tags" placeholder="Comma-separated tags (e.g. design, backend)" />
       <input type="text" id="title" placeholder="Task title" required>
       <textarea id="note" placeholder="Task notes"></textarea>
       <div id="status" class="status-options">
@@ -173,10 +213,11 @@
   </main>
   <script>
     class Task {
-      constructor(title, note, status) {
+      constructor(title, note, status, tags = []) {
         this.title = title
         this.note = note
         this.status = status
+        this.tags = tags
       }
 
       render(index, updateCallback, editCallback) {
@@ -193,6 +234,20 @@
         noteEl.contentEditable = true
         noteEl.textContent = this.note
         noteEl.addEventListener('blur', () => editCallback(index, 'note', noteEl.textContent))
+
+        const tagList = document.createElement('div')
+        tagList.style.marginTop = '0.5rem'
+        this.tags.forEach(tag => {
+          const span = document.createElement('span')
+          span.textContent = tag
+          span.style.background = '#eee'
+          span.style.borderRadius = '999px'
+          span.style.padding = '0.2rem 0.5rem'
+          span.style.marginRight = '0.25rem'
+          span.style.fontSize = '0.8rem'
+          tagList.appendChild(span)
+        })
+        tagList.addEventListener('click', e => editCallback(index, 'note', noteEl.textContent))
 
         const label = document.createElement('label')
         label.textContent = 'Status: '
@@ -211,7 +266,8 @@
           })
           const labelEl = document.createElement('label')
           labelEl.htmlFor = radio.id
-          labelEl.textContent = option.replace('-', ' ')
+          const icons = { 'todo': '📝', 'in-progress': '🚧', 'done': '✅' }
+          labelEl.textContent = `${icons[option]} ${option.replace('-', ' ')}`
           container.appendChild(radio)
           container.appendChild(labelEl)
         })
@@ -220,6 +276,7 @@
 
         div.appendChild(titleEl)
         div.appendChild(noteEl)
+        div.appendChild(tagList)
         div.appendChild(label)
 
         return div
@@ -257,13 +314,15 @@
         const title = document.getElementById('title').value
         const note = document.getElementById('note').value
         const status = document.querySelector('input[name="status"]:checked').value
-        const task = new Task(title, note, status)
+        const tags = document.getElementById('tags').value.split(',').map(t => t.trim()).filter(Boolean)
+        const task = new Task(title, note, status, tags)
         this.tasks.push(task)
         this.save()
         this.renderTasks()
         this.renderQuestions()
         this.renderCone()
         this.form.reset()
+        document.getElementById('tags').value = ''
       }
 
       addQuestion() {
@@ -391,7 +450,7 @@
         const savedTasks = localStorage.getItem('project-tasks')
         if (savedTasks) {
           const parsed = JSON.parse(savedTasks)
-          this.tasks = parsed.map(t => new Task(t.title, t.note, t.status))
+          this.tasks = parsed.map(t => new Task(t.title, t.note, t.status, t.tags || []))
         }
         const savedQuestions = localStorage.getItem('project-questions')
         if (savedQuestions) {
