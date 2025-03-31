@@ -351,10 +351,10 @@
       render(index, updateCallback, editCallback) {
         const div = document.createElement('div')
         div.className = 'task'
-                const isDraggable = this.status === 'todo'
-                div.draggable = isDraggable
-                div.style.pointerEvents = 'auto'
-                div.style.opacity = this.status === 'done' ? '0.6' : '1'
+        const isDraggable = this.status === 'todo'
+        div.draggable = isDraggable
+        div.style.pointerEvents = 'auto'
+        div.style.opacity = this.status === 'done' ? '0.6' : '1'
         div.draggable = (this.status === 'todo')
         div.dataset.index = index
         div.addEventListener('dragstart', e => {
@@ -503,6 +503,11 @@
 
       updateStatus(index, newStatus) {
         this.tasks[index].status = newStatus
+        if (newStatus === 'done') {
+          this.tasks[index].completed = new Date().toISOString()
+        } else {
+          delete this.tasks[index].completed
+        }
         this.save()
         this.renderTasks()
         this.renderCalendar()
@@ -672,7 +677,9 @@
               dot.style.color = 'white'
               dot.style.fontSize = '0.65rem'
               dot.style.marginTop = '2px'
-              dot.style.background = status === 'todo' ? 'orange' : status === 'in-progress' ? 'dodgerblue' : 'green'
+              dot.style.background = status === 'todo' ?
+                'orange' : status === 'in-progress' ?
+                'dodgerblue' : 'green'
               dot.textContent = count
               cell.appendChild(dot)
             }
