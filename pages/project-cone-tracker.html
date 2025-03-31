@@ -330,10 +330,8 @@
       </div>
       <button type="submit">Add Task</button>
     </form>
-    <section id="focus">
-      <h2>Today’s Focus</h2>
-      <div id="focus-list"></div>
-    </section>
+    
+    <button id="toggle-archive" style="margin-bottom: 1rem;">Show Archived</button>
     <div id="task-list"></div>
 
     <section id="parking-lot">
@@ -444,8 +442,13 @@
         this.cone = document.getElementById('cone')
         this.questionForm = document.getElementById('question-form')
         this.questionList = document.getElementById('question-list')
+        this.showArchived = false
         this.load()
         this.init()
+        document.getElementById('toggle-archive').addEventListener('click', () => {
+          this.showArchived = !this.showArchived
+          this.renderTasks()
+        })
       }
 
       init() {
@@ -516,9 +519,7 @@
 
       renderTasks() {
         this.list.innerHTML = ''
-        const focusList = document.getElementById('focus-list')
-        focusList.innerHTML = ''
-        const grouped = {
+                const grouped = {
           'in-progress': [],
           'todo': [],
           'done': []
@@ -526,10 +527,11 @@
         this.tasks.forEach((t, i) => {
           const rendered = t.render(i, this.updateStatus.bind(this), this.editTask.bind(this))
           grouped[t.status].push(rendered)
-          if (t.status === 'in-progress') focusList.appendChild(rendered.cloneNode(true))
-        })
+                  })
+        const showArchived = this.showArchived ?? false
+        document.getElementById('toggle-archive').textContent = showArchived ? 'Hide Archived' : 'Show Archived'
         for (const status of ['in-progress', 'todo', 'done']) {
-          if (grouped[status].length > 0) {
+          if (grouped[status].length > 0 && (status !== 'done' || showArchived)) {
             const section = document.createElement('div')
             section.className = 'task-section'
             const title = document.createElement('h3')
@@ -541,22 +543,22 @@
             e.preventDefault()
             const taskEl = e.target.closest('.task')
             document.querySelectorAll('.task').forEach(el => el.classList.remove('drag-over'))
-            if (taskEl) taskEl.classList.add('drag-over')
-          })
+                if (taskEl) taskEl.classList.add('drag-over')
+            })
             section.addEventListener('drop', e => {
-            document.querySelectorAll('.task').forEach(el => el.classList.remove('drag-over'))
-              e.preventDefault()
-              const draggedIndex = parseInt(e.dataTransfer.getData('text/plain'))
-              const draggedTask = this.tasks[draggedIndex]
-              const targetTaskEl = e.target.closest('.task')
-              const targetIndex = parseInt(targetTaskEl?.dataset.index)
-              if (draggedTask?.status === 'todo' && !isNaN(targetIndex) && draggedIndex !== targetIndex && this.tasks[targetIndex].status === 'todo') {
-                const [moved] = this.tasks.splice(draggedIndex, 1)
-                this.tasks.splice(targetIndex, 0, moved)
-                this.save()
-                this.renderTasks()
-                this.renderCone()
-              }
+                document.querySelectorAll('.task').forEach(el => el.classList.remove('drag-over'))
+                e.preventDefault()
+                const draggedIndex = parseInt(e.dataTransfer.getData('text/plain'))
+                const draggedTask = this.tasks[draggedIndex]
+                const targetTaskEl = e.target.closest('.task')
+                const targetIndex = parseInt(targetTaskEl?.dataset.index)
+                if (draggedTask?.status === 'todo' && !isNaN(targetIndex) && draggedIndex !== targetIndex && this.tasks[targetIndex].status === 'todo') {
+                    const [moved] = this.tasks.splice(draggedIndex, 1)
+                    this.tasks.splice(targetIndex, 0, moved)
+                    this.save()
+                    this.renderTasks()
+                    this.renderCone()
+                }
             })
           }
         }
