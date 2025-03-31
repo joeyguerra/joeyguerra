@@ -294,9 +294,8 @@
     }
   }
   .task[data-status='done'] {
-    opacity: 0.6;
-    pointer-events: none;
-  }
+  opacity: 0.6;
+}
 </style>
 </head>
 <body>
@@ -318,16 +317,12 @@
         <li><span style="display:inline-block;width:12px;height:12px;background:#999;transform:rotate(45deg);margin-right:0.5rem;"></span> Unresolved Question</li>
       </ul>
     </section>
-    <div class="cone" id="cone"></div>
+    <div id="calendar-container" style="margin-bottom: 2rem;"></div>
     <form id="task-form">
       <input type="text" id="tags" placeholder="Comma-separated tags (e.g. design, backend)" />
       <input type="text" id="title" placeholder="Task title" required>
       <textarea id="note" placeholder="Task notes"></textarea>
-      <div id="status" class="status-options">
-        <label><input type="radio" name="status" value="todo" checked> To Do</label>
-        <label><input type="radio" name="status" value="in-progress"> In Progress</label>
-        <label><input type="radio" name="status" value="done"> Done</label>
-      </div>
+      
       <button type="submit">Add Task</button>
     </form>
     
@@ -356,8 +351,10 @@
       render(index, updateCallback, editCallback) {
         const div = document.createElement('div')
         div.className = 'task'
-        const isDraggable = this.status === 'todo'
-        div.draggable = isDraggable
+                const isDraggable = this.status === 'todo'
+                div.draggable = isDraggable
+                div.style.pointerEvents = 'auto'
+                div.style.opacity = this.status === 'done' ? '0.6' : '1'
         div.draggable = (this.status === 'todo')
         div.dataset.index = index
         div.addEventListener('dragstart', e => {
@@ -466,14 +463,14 @@
       addTask() {
         const title = document.getElementById('title').value
         const note = document.getElementById('note').value
-        const status = document.querySelector('input[name="status"]:checked').value
+        const status = 'todo'
         const tags = document.getElementById('tags').value.split(',').map(t => t.trim()).filter(Boolean)
         const task = new Task(title, note, status, tags)
         this.tasks.push(task)
         this.save()
         this.renderTasks()
         this.renderQuestions()
-        this.renderCone()
+        this.renderCalendar()
         this.form.reset()
         document.getElementById('tags').value = ''
       }
@@ -485,7 +482,7 @@
           this.questions.push({ text: question, resolved: false, created: new Date().toISOString() })
           this.save()
           this.renderQuestions()
-          this.renderCone()
+          this.renderCalendar()
           input.value = ''
         }
       }
@@ -494,27 +491,27 @@
         this.questions[index].resolved = !this.questions[index].resolved
         this.save()
         this.renderQuestions()
-        this.renderCone()
+        this.renderCalendar()
       }
 
       deleteQuestion(index) {
         this.questions.splice(index, 1)
         this.save()
         this.renderQuestions()
-        this.renderCone()
+        this.renderCalendar()
       }
 
       updateStatus(index, newStatus) {
         this.tasks[index].status = newStatus
         this.save()
         this.renderTasks()
-        this.renderCone()
+        this.renderCalendar()
       }
 
       editTask(index, field, value) {
         this.tasks[index][field] = value
         this.save()
-        this.renderCone()
+        this.renderCalendar()
       }
 
       renderTasks() {
@@ -527,7 +524,7 @@
         this.tasks.forEach((t, i) => {
           const rendered = t.render(i, this.updateStatus.bind(this), this.editTask.bind(this))
           grouped[t.status].push(rendered)
-                  })
+        })
         const showArchived = this.showArchived ?? false
         document.getElementById('toggle-archive').textContent = showArchived ? 'Hide Archived' : 'Show Archived'
         for (const status of ['in-progress', 'todo', 'done']) {
@@ -557,7 +554,7 @@
                     this.tasks.splice(targetIndex, 0, moved)
                     this.save()
                     this.renderTasks()
-                    this.renderCone()
+                    this.renderCalendar()
                 }
             })
           }
@@ -584,37 +581,102 @@
           this.questionList.appendChild(div)
         })
       }
-
-      renderCone() {
-        this.cone.innerHTML = ''
-        const taskOrderMap = { 'todo': 0, 'in-progress': 1, 'done': 2 }
-        const taskGroups = [[], [], []]
-        this.tasks.forEach(task => taskGroups[taskOrderMap[task.status]].push(task))
-
-        const total = this.tasks.length
-        let index = 0
-        taskGroups.forEach((group, groupIndex) => {
-          group.forEach(task => {
-            const dot = document.createElement('div')
-            dot.className = `dot ${task.status}`
-            const x = (index + 1) / (total + 1)
-            const y = (groupIndex + 1) / 4
-            dot.style.left = `${x * 100}%`
-            dot.style.top = `${y * 100}%`
-            this.cone.appendChild(dot)
-            index++
-          })
-        })
-
-        this.questions.forEach(q => {
-          if (!q.resolved) {
-            const dot = document.createElement('div')
-            dot.className = 'dot question'
-            dot.style.left = `${Math.random() * 100}%`
-            dot.style.top = `${Math.random() * 100}%`
-            dot.style.background = randomColor()
-            this.cone.appendChild(dot)
+      renderCalendar() {
+        const container = document.getElementById('calendar-container')
+        container.innerHTML = ''
+        const today = new Date()
+        const year = today.getFullYear()
+      
+        const header = document.createElement('div')
+        header.style.textAlign = 'center'
+        header.style.fontWeight = 'bold'
+        header.style.marginBottom = '1rem'
+        header.textContent = `${year} Calendar View`
+        container.appendChild(header)
+      
+        const table = document.createElement('table')
+        table.style.borderCollapse = 'collapse'
+        table.style.width = '100%'
+      
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+      
+        for (let month = 0; month < 12; month++) {
+          const tr = document.createElement('tr')
+          const monthLabel = document.createElement('td')
+          monthLabel.textContent = new Date(year, month, 1).toLocaleString('default', { month: 'short' })
+          monthLabel.style.fontWeight = 'bold'
+          monthLabel.style.padding = '0.5rem'
+          monthLabel.style.border = '1px solid #ccc'
+          tr.appendChild(monthLabel)
+      
+          for (let day = 1; day <= 31; day++) {
+            const date = new Date(year, month, day)
+            if (date.getMonth() !== month) break
+      
+            const td = document.createElement('td')
+            td.style.border = '1px solid #ccc'
+            td.style.fontSize = '0.65rem'
+            td.style.padding = '4px'
+            td.style.verticalAlign = 'top'
+            const dow = dayNames[date.getDay()]
+            td.innerHTML = `<div style="text-align:center;"><strong>${day}</strong><br>${dow}</div>`
+            td.dataset.date = date.toISOString().split('T')[0]
+            tr.appendChild(td)
           }
+      
+          table.appendChild(tr)
+        }
+      
+        container.appendChild(table)
+
+        const getCell = d => {
+            const dt = new Date(d).toISOString().split('T')[0]
+            return container.querySelector(`[data-date="${dt}"]`)
+        }
+
+        const addDot = (cell, color) => {
+            const dot = document.createElement('div')
+            dot.style.width = '10px'
+            dot.style.height = '10px'
+            dot.style.borderRadius = '50%'
+            dot.style.background = color
+            dot.style.marginTop = '2px'
+            dot.style.zIndex = 2
+            cell?.appendChild(dot)
+        }
+
+        const taskGroups = {}
+        this.tasks.forEach(t => {
+          let dateKey = null
+          if (t.status === 'todo') dateKey = new Date(t.created).toISOString().split('T')[0]
+          if (t.status === 'in-progress') dateKey = new Date().toISOString().split('T')[0]
+          if (t.status === 'done' && t.completed) dateKey = new Date(t.completed).toISOString().split('T')[0]
+          if (dateKey) {
+            if (!taskGroups[dateKey]) taskGroups[dateKey] = { 'todo': 0, 'in-progress': 0, 'done': 0 }
+            taskGroups[dateKey][t.status]++
+          }
+        })
+      
+        Object.entries(taskGroups).forEach(([date, counts]) => {
+          const cell = getCell(date)
+          if (!cell) return
+          Object.entries(counts).forEach(([status, count]) => {
+            if (count > 0) {
+              const dot = document.createElement('div')
+              dot.style.width = '16px'
+              dot.style.height = '16px'
+              dot.style.borderRadius = '50%'
+              dot.style.display = 'flex'
+              dot.style.alignItems = 'center'
+              dot.style.justifyContent = 'center'
+              dot.style.color = 'white'
+              dot.style.fontSize = '0.65rem'
+              dot.style.marginTop = '2px'
+              dot.style.background = status === 'todo' ? 'orange' : status === 'in-progress' ? 'dodgerblue' : 'green'
+              dot.textContent = count
+              cell.appendChild(dot)
+            }
+          })
         })
       }
 
@@ -635,7 +697,7 @@
         }
         this.renderTasks()
         this.renderQuestions()
-        this.renderCone()
+        this.renderCalendar()
       }
     }
 
