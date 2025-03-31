@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Project Cone Tracker</title>
   <style>
+    .task.drag-over {
+      border-top: 3px solid #007bff;
+      margin-top: 0.5rem;
+      transition: margin 0.2s ease;
+    }
+    .task.dragging {
+      opacity: 0.5;
+    }
+    .task::before {
+      content: '⠿';
+      margin-right: 0.5rem;
+      cursor: grab;
+    }
     body {
       font-family: sans-serif;
       margin: 0;
@@ -200,6 +213,10 @@
       </div>
       <button type="submit">Add Task</button>
     </form>
+    <section id="focus">
+      <h2>Today’s Focus</h2>
+      <div id="focus-list"></div>
+    </section>
     <div id="task-list"></div>
 
     <section id="parking-lot">
@@ -213,16 +230,24 @@
   </main>
   <script>
     class Task {
-      constructor(title, note, status, tags = []) {
+      constructor(title, note, status, tags = [], created = new Date().toISOString()) {
         this.title = title
         this.note = note
         this.status = status
         this.tags = tags
+        this.created = created
       }
 
       render(index, updateCallback, editCallback) {
         const div = document.createElement('div')
         div.className = 'task'
+        div.draggable = (this.status === 'todo')
+        div.dataset.index = index
+        div.addEventListener('dragstart', e => {
+          e.dataTransfer.setData('text/plain', index)
+          div.classList.add('dragging')
+        })
+        div.addEventListener('dragend', () => div.classList.remove('dragging'))
         div.dataset.status = this.status
 
         const titleEl = document.createElement('h3')
@@ -237,6 +262,11 @@
 
         const tagList = document.createElement('div')
         tagList.style.marginTop = '0.5rem'
+        const timestamp = document.createElement('div')
+        timestamp.textContent = new Date(this.created).toLocaleString()
+        timestamp.style.fontSize = '0.75rem'
+        timestamp.style.color = '#666'
+        timestamp.style.marginTop = '0.25rem'
         this.tags.forEach(tag => {
           const span = document.createElement('span')
           span.textContent = tag
@@ -247,6 +277,7 @@
           span.style.fontSize = '0.8rem'
           tagList.appendChild(span)
         })
+        tagList.appendChild(timestamp)
         tagList.addEventListener('click', e => editCallback(index, 'note', noteEl.textContent))
 
         const label = document.createElement('label')
@@ -329,7 +360,7 @@
         const input = document.getElementById('question-input')
         const question = input.value.trim()
         if (question.length > 0) {
-          this.questions.push({ text: question, resolved: false })
+          this.questions.push({ text: question, resolved: false, created: new Date().toISOString() })
           this.save()
           this.renderQuestions()
           this.renderCone()
@@ -366,13 +397,17 @@
 
       renderTasks() {
         this.list.innerHTML = ''
+        const focusList = document.getElementById('focus-list')
+        focusList.innerHTML = ''
         const grouped = {
           'in-progress': [],
           'todo': [],
           'done': []
         }
         this.tasks.forEach((t, i) => {
-          grouped[t.status].push(t.render(i, this.updateStatus.bind(this), this.editTask.bind(this)))
+          const rendered = t.render(i, this.updateStatus.bind(this), this.editTask.bind(this))
+          grouped[t.status].push(rendered)
+          if (t.status === 'in-progress') focusList.appendChild(rendered.cloneNode(true))
         })
         for (const status of ['in-progress', 'todo', 'done']) {
           if (grouped[status].length > 0) {
@@ -383,6 +418,27 @@
             section.appendChild(title)
             grouped[status].forEach(taskEl => section.appendChild(taskEl))
             this.list.appendChild(section)
+            section.addEventListener('dragover', e => {
+            e.preventDefault()
+            const taskEl = e.target.closest('.task')
+            document.querySelectorAll('.task').forEach(el => el.classList.remove('drag-over'))
+            if (taskEl) taskEl.classList.add('drag-over')
+          })
+            section.addEventListener('drop', e => {
+            document.querySelectorAll('.task').forEach(el => el.classList.remove('drag-over'))
+              e.preventDefault()
+              const draggedIndex = parseInt(e.dataTransfer.getData('text/plain'))
+              const draggedTask = this.tasks[draggedIndex]
+              const targetTaskEl = e.target.closest('.task')
+              const targetIndex = parseInt(targetTaskEl?.dataset.index)
+              if (draggedTask?.status === 'todo' && !isNaN(targetIndex) && draggedIndex !== targetIndex && this.tasks[targetIndex].status === 'todo') {
+                const [moved] = this.tasks.splice(draggedIndex, 1)
+                this.tasks.splice(targetIndex, 0, moved)
+                this.save()
+                this.renderTasks()
+                this.renderCone()
+              }
+            })
           }
         }
       }
@@ -394,7 +450,7 @@
           const div = document.createElement('div')
           div.className = 'question' + (q.resolved ? ' resolved' : '')
           const span = document.createElement('span')
-          span.textContent = q.text
+          span.textContent = q.text + ' — ' + new Date(q.created).toLocaleString()
           const resolveBtn = document.createElement('button')
           resolveBtn.textContent = q.resolved ? 'Unresolve' : 'Resolve'
           resolveBtn.addEventListener('click', () => this.toggleResolved(this.questions.indexOf(q)))
@@ -450,11 +506,11 @@
         const savedTasks = localStorage.getItem('project-tasks')
         if (savedTasks) {
           const parsed = JSON.parse(savedTasks)
-          this.tasks = parsed.map(t => new Task(t.title, t.note, t.status, t.tags || []))
+          this.tasks = parsed.map(t => new Task(t.title, t.note, t.status, t.tags || [], t.created))
         }
         const savedQuestions = localStorage.getItem('project-questions')
         if (savedQuestions) {
-          this.questions = JSON.parse(savedQuestions)
+          this.questions = JSON.parse(savedQuestions).map(q => ({ ...q, created: q.created || new Date().toISOString() }))
         }
         this.renderTasks()
         this.renderQuestions()
