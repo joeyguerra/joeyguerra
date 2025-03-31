@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <base href="./" />
+    <title>${title ?? 'LinkedIn Carousel'}</title>
+    <meta name="author" content="Joey Guerra" />
+    <meta name="description" content="${excerpt ?? 'Coding examples using what I\'ve learned.'}" />
+    <meta property="og:title" content="${title ?? 'Coding Examples'}" />
+    <meta property="og:description" content="${excerpt ?? 'Coding examples using what I\'ve learned.'}" />
+    <meta property="og:image" content="${image ?? '/images/joey-g-boss-pic.jpg'}" />
+    <meta property="og:site_name" content="${title ?? 'Coding Examples'}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" href="/favicon_package_v0/apple-touch-icon.png" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-title" content="${title ?? 'Coding Examples'}" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="${touchIcon180 ?? '/favicon_package_v0/apple-touch-icon.png'}" />
+    <link rel="icon" type="image/png" sizes="32x32" href="${touchIcon32 ?? '/favicon_package_v0/favicon-32x32.png'}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="${touchIcon16 ?? '/favicon_package_v0/favicon-16x16.png'}" />
+    <link rel="manifest" href="/favicon_package_v0/site.webmanifest" />
+    <link rel="mask-icon" href="/favicon_package_v0/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-startup-image" href="${touchStartupImage ?? '/images/me.jpg'}" />
+    <link rel="canonical" href="${canonical}" />
+    <link rel="preload" href="/HubotSans/Hubot-Sans.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+</head>
+<style>
+    :root {
+        --slide-width: 1080px;
+        --slide-height: 1080px;
+        --slide-padding: 0;
+        --slide-background: black;
+        --slide-padding: 5px;
+        --toolbar-height: 50px;
+
+        --kaizen-orange-gradient-start: #FF4D21;
+        --kaizen-orange-gradient-end: #EC1C24;
+        --kaizen-gray-gradient-start: #C0D4D3;
+        --kaizen-gray: #92A1A0;
+        --kaizen-orange: #F93610;
+        --logo: url(/images/solid.png);
+        --font-color: #384A56;
+        --font-family: 'Hubot Sans', sans-serif;
+
+        --theme-1-background-color: #C0D4D3;
+        --theme-1-color: #384A56;
+
+        --theme-agile-teams-reloaded-background-color: #EBE4C9;
+        --theme-agile-teams-reloaded-color: #384A56;
+
+        --font-color: white;
+
+        --joeys-desk-background: #384A56;
+        --joeys-desk-contrast: rgb(247, 140, 36);
+        --joeys-desk-gradient-start: #384A56;
+        --joeys-desk-gradient-end: #F0F0F0;
+        --joeys-desk-gradient: linear-gradient(to bottom right, var(--joeys-desk-gradient-start), var(--joeys-desk-gradient-end));
+        --joeys-desk-gradient-background: var(--joeys-desk-gradient);
+        --joeys-desk-gradient-color: var(--joeys-desk-contrast);
+        
+    }
+
+    @font-face {
+        font-family: 'Hubot Sans';
+        src:
+            url('/HubotSans/Hubot-Sans.woff2') format('woff2 supports variations'),
+            url('/HubotSans/Hubot-Sans.woff2') format('woff2-variations');
+        font-weight: 200 900;
+        font-stretch: 75% 125%;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        /* font-family: "Hubot Sans","Hubot Sans Header Fallback",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"; */
+        /* font-family: 'Libre Baskerville', serif; */
+        /* font-family: 'Poppins', sans-serif; */
+        font-family: var(--font-family);
+        font-weight: 300;
+        font-style: normal;
+    }
+    
+    slide {
+        display: block;
+        padding: 0;
+        margin: auto;
+        position: abosolute;
+        width: auto;
+    }
+</style>
+<style>
+    header {
+        text-align: center;
+        padding: 0;
+        width: 100%;
+    }
+
+    header h1 {
+        font-size: 3em;
+    }
+
+    .slider {
+        width: var(--slide-width);
+        height: var(--slide-height);
+        margin: var(--slide-padding) auto;
+        position: relative;
+        padding: 0;
+        overflow: hidden;
+        box-shadow: 0 0 var(--slide-padding) rgba(0, 0, 0, 0.5);
+    }
+
+    .slider>.slides {
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        overflow: auto;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        height: 100%;
+    }
+
+    section>div,
+    slide>div {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1em;
+        align-items: center;
+    }
+
+    figure img {
+        width: 100%;
+    }
+
+    .slider>.slides>section,
+    .slider>.slides>slide {
+        scroll-snap-align: center;
+        height: 100%;
+        width: 100%;
+        flex-shrink: 0;
+    }
+
+    .slider .toolbar {
+        position: absolute;
+        bottom: calc(var(--toolbar-height) * -2);
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: var(--toolbar-height);
+        transition: bottom 0.2s ease-in-out;
+        background: rgba(77, 70, 62, 0.5);
+        border-radius: calc(var(--toolbar-height) * 1);
+    }
+
+    .slider:hover .toolbar {
+        bottom: 0;
+    }
+
+    .slider .toolbar a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        padding: 0;
+        height: 100%;
+        text-align: center;
+        line-height: calc(var(--toolbar-height)*.8);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        width: calc(var(--toolbar-height) * 0.7);
+        height: calc(var(--toolbar-height) * 0.7);
+        margin: 0;
+        font-size: calc(var(--toolbar-height) * 0.5);
+    }
+
+    .slider .toolbar nav {
+        display: flex;
+        justify-content: space-between;
+        width: var(--slide-width);
+        align-items: center;
+        height: 100%;
+        padding: 0 var(--slide-padding);
+    }
+
+    .slides {
+        color: white;
+    }
+
+    .slides header::before {
+        content: '';
+        display: block;
+        padding-bottom: 220px;
+        background: url('/images/desk.jpeg') no-repeat center center;
+        background-size: cover;
+        margin-bottom: 3rem;
+    }
+
+    slide footer {
+        text-align: center;
+    }
+    slide footer img {
+        width: 20%;
+        border-radius: 50%;
+        margin-bottom: 1em;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        border: 2px solid #384A56;
+    }
+    slide footer a {
+        display: block;
+        margin-top: 1em;
+        text-decoration: none;
+        color: var(--font-color);
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+    .slides section,
+    .slides slide {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-content: center;
+        background: var(--slide-background);
+        padding: 3em;
+    }
+
+    .slides p {
+        font-size: 2.5em;
+        text-align: center;
+        margin-bottom: 1em;
+    }
+
+    #slide-5 figure {
+        margin-top: 5em;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        gap: 1em;
+    }
+
+    #slide-5 figure img {
+        width: 20%;
+        margin: 0;
+        border-radius: 1%;
+    }
+
+    #slide-5 figure img:first-child {
+        width: 56%;
+    }
+
+    .circled::before {
+        background-image: url(/images/circle.svg);
+        background-repeat: no-repeat;
+        content: "";
+        position: absolute;
+        pointer-events: none;
+        width: 110%;
+        height: 50%;
+    }
+
+    .underlined {
+        background-image: url(/images/underline.svg);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        content: "";
+        pointer-events: none;
+        display: block;
+        width: 100%;
+        height: 20px;
+    }
+
+    ol,
+    ul {
+        font-size: 2.5em;
+        text-align: left;
+        padding-left: 2em;
+        width: 100%;
+        margin: 1em auto;
+    }
+
+    ol {
+        list-style: decimal;
+    }
+
+    ol li {
+        margin: 0;
+        padding: 0 0 1em 0;
+        display: list-item;
+    }
+
+    blockquote {
+        font-size: 2.5em;
+        position: relative;
+    }
+    blockquote::before {
+        content: '“';
+        font-size: 4em;
+        color: var(--joeys-desk-contrast);
+        position: absolute;
+        top: -0.5em;
+        left: -0.5em;
+    }
+    blockquote::after {
+        content: '”';
+        font-size: 4em;
+        position: absolute;
+        top: 0.5em;
+        right: -0.5em;
+        color: var(--joeys-desk-contrast);
+    }
+
+    @media print {
+        .slider {
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            align-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slider>.slides {
+            display: block;
+            overflow: auto;
+            box-shadow: none;
+        }
+
+        body>header {
+            display: none;
+        }
+
+        .slider .toolbar {
+            display: none;
+        }
+
+        .slider>.slides>section,
+        .slider>.slides>slide {
+            page-break-inside: avoid;
+            flex-shrink: 1;
+            display: block;
+            text-align: center;
+        }
+    }
+</style>
+
+<body>
+    <button id="generate-pdf">Generate PDF</button>
+    <article id="carousel" class="slider">
+        <div class="slides">
+            ${body}
+        </div>
+        <footer class="toolbar">
+            <nav></nav>
+        </footer>
+    </article>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    function setIdsOnSlides(elements) {
+        elements.forEach((element, i) => {
+            element.id = 'slide-' + parseInt(i + 1)
+        })
+    }
+    function buildNav(nav, elements) {
+        elements.forEach((element, i) => {
+            const a = document.createElement('a')
+            a.href = window.location.pathname + '#slide-' + parseInt(i + 1)
+            a.textContent = i + 1
+            nav.appendChild(a)
+        })
+        return nav
+    }
+    let slides = Array.from(document.querySelectorAll('.slides>slide'))
+    let nav = document.querySelector('.slider .toolbar nav')
+    setIdsOnSlides(slides)
+    buildNav(nav, slides)
+
+    document.getElementById('generate-pdf').addEventListener('click', async function () {
+        const { jsPDF } = window.jspdf;
+        let slides = Array.from(document.querySelectorAll('.slides slide'));
+        const options = {
+            margin: 1,
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: { scale: 1 }
+        };
+        let pdf;
+        let i = 0;
+        for await (let slide of slides) {
+            let canvas = await html2canvas(slide, options.html2canvas)
+            const imgData = canvas.toDataURL('image/jpeg', options.image.quality);
+            const imgProps = pdf ? pdf.getImageProperties(imgData) : { width: canvas.width, height: canvas.height };
+            const pdfWidth = imgProps.width / 96;
+            const pdfHeight = imgProps.height / 96;
+            if (i === 0) {
+                pdf = new jsPDF({
+                    unit: 'in',
+                    format: [pdfWidth, pdfHeight],
+                    orientation: 'portrait'
+                });
+            } else {
+                pdf.addPage([pdfWidth, pdfHeight]);
+            }
+            pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+            i++;
+        }
+        pdf.save('carousel.pdf');
+    });
+
+</script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="module" id="HotReloader">
+    import { HotReloader } from '/js/HotReloader.mjs'
+    const hotReloader = new HotReloader(window, io('/hot-reload'))
+</script>
+<script type="module">
+    import { LinkedInCarouselBuilder } from '/webapp/LinkedInCarouselBuilder.mjs'
+    import MakeKeyValueObservable from '/webapp/MakeKeyValueObservable.mjs'
+    (function () {
+        if (!io) {
+            let io = function (options) {
+                return {
+                    emit(event, message) { console.log('socket.emit', event, message) },
+                    on(event, callback) { console.log('socket.on', event, callback) }
+                }
+            }
+        }
+        let user = {}
+        let model = MakeKeyValueObservable({})
+        let socket = io()
+        function main() {
+            window.addEventListener('DOMContentLoaded', e => {
+                window.app = new LinkedInCarouselBuilder(window, io({
+                    reconnectionAttempts: 5
+                }), user, model)
+            }, true)
+        }
+        main()
+
+    })()
+</script>
+
+</html>
