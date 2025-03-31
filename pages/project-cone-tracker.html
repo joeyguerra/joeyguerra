@@ -5,6 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Project Cone Tracker</title>
   <style>
+    html {
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+  
+    body, main, .task, .question, .status-options label, .task-status-group label {
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    .dark-mode span[style*='--tag-bg'] {
+      background-color: #444;
+      color: #eee;
+    }
+    .cone::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: radial-gradient(circle at center, rgba(255, 0, 0, var(--heatmap-opacity, 0.15)), transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+  
     .task.drag-over {
       border-top: 3px solid #007bff;
       margin-top: 0.5rem;
@@ -17,6 +40,12 @@
       content: '⠿';
       margin-right: 0.5rem;
       cursor: grab;
+      display: inline-block;
+    }
+
+    .task[data-status='done']::before {
+      content: '';
+      display: none;
     }
     body {
       font-family: sans-serif;
@@ -194,13 +223,101 @@
     color: white;
     border-color: green;
   }
+  @media (max-width: 600px) {
+    .status-options,
+    .task-status-group {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .task {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .task h3,
+    .task p {
+      width: 100%;
+    }
+  }
+  .dark-mode body {
+    background: #0d0d0d;
+    color: #f0f0f0;
+  }
+
+  .dark-mode main {
+    background: #1a1a1a;
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+  }
+
+  .dark-mode .task, .dark-mode .question {
+    background: #262626;
+    border-left-color: #999;
+  }
+
+  .dark-mode .status-options label, .dark-mode .task-status-group label {
+    background-color: #333;
+    border-color: #888;
+    color: #f0f0f0;
+  }
+
+  .dark-mode .status-options input[type="radio"]:checked + label,
+  .dark-mode .task-status-group input[type="radio"]:checked + label {
+    color: white;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background: #121212;
+      color: #eee;
+    }
+
+    main {
+      background: #1e1e1e;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    .task, .question {
+      background: #2a2a2a;
+      border-left-color: #444;
+    }
+
+    .status-options label, .task-status-group label {
+      background-color: #333;
+      border-color: #555;
+      color: #eee;
+    }
+
+    .status-options input[type="radio"]:checked + label,
+    .task-status-group input[type="radio"]:checked + label {
+      color: white;
+    }
+  }
+  .task[data-status='done'] {
+    opacity: 0.6;
+    pointer-events: none;
+  }
 </style>
 </head>
 <body>
   <header>
     <h1>Project Cone Tracker</h1>
+      <div style="position: absolute; top: 1rem; right: 1rem;">
+      <label style="color: white;">
+        <input type="checkbox" id="dark-toggle"> 🌙 Dark Mode
+      </label>
+    </div>
   </header>
   <main>
+    <section id="legend" style="margin-bottom: 2rem;">
+      <h2>Legend</h2>
+      <ul style="list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 1rem;">
+        <li><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:orange;margin-right:0.5rem;"></span> To Do</li>
+        <li><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:dodgerblue;margin-right:0.5rem;"></span> In Progress</li>
+        <li><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:green;margin-right:0.5rem;"></span> Done</li>
+        <li><span style="display:inline-block;width:12px;height:12px;background:#999;transform:rotate(45deg);margin-right:0.5rem;"></span> Unresolved Question</li>
+      </ul>
+    </section>
     <div class="cone" id="cone"></div>
     <form id="task-form">
       <input type="text" id="tags" placeholder="Comma-separated tags (e.g. design, backend)" />
@@ -241,6 +358,8 @@
       render(index, updateCallback, editCallback) {
         const div = document.createElement('div')
         div.className = 'task'
+        const isDraggable = this.status === 'todo'
+        div.draggable = isDraggable
         div.draggable = (this.status === 'todo')
         div.dataset.index = index
         div.addEventListener('dragstart', e => {
@@ -270,7 +389,7 @@
         this.tags.forEach(tag => {
           const span = document.createElement('span')
           span.textContent = tag
-          span.style.background = '#eee'
+          span.style.background = 'var(--tag-bg, #eee)'
           span.style.borderRadius = '999px'
           span.style.padding = '0.2rem 0.5rem'
           span.style.marginRight = '0.25rem'
@@ -519,6 +638,21 @@
     }
 
     new ProjectCone()
+    const toggle = document.getElementById('dark-toggle')
+    toggle.addEventListener('change', () => {
+      if (toggle.checked) {
+        document.documentElement.classList.add('dark-mode')
+        localStorage.setItem('theme', 'dark')
+      } else {
+        document.documentElement.classList.remove('dark-mode')
+        localStorage.setItem('theme', 'light')
+      }
+    })
+
+    if (localStorage.getItem('theme') === 'dark') {
+      toggle.checked = true
+      document.documentElement.classList.add('dark-mode')
+    }
   </script>
 </body>
 </html>
