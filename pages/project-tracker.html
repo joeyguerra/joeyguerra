@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Cone Tracker</title>
+    <style>
+        :root {
+            --tag-bg: #333;
+            --heatmap-opacity: 0.15;
+            --color-todo: orange;
+            --color-in-progress: dodgerblue;
+            --color-done: green;
+        }
+
+        html {
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body,
+        main,
+        .task,
+        .question,
+        .task-status-group label {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .dark-mode span[style*='--tag-bg'] {
+            background-color: #444;
+            color: #eee;
+        }
+
+        .cone::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle at center, rgba(255, 0, 0, var(--heatmap-opacity, 0.15)), transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .task.drag-over {
+            border-top: 3px solid #007bff;
+            margin-top: 0.5rem;
+            transition: margin 0.2s ease;
+        }
+
+        .task.dragging {
+            opacity: 0.5;
+        }
+
+        .task::before {
+            content: '⠿';
+            margin-right: 0.5rem;
+            cursor: grab;
+            display: inline-block;
+        }
+
+        .task[data-status='done']::before {
+            content: '';
+            display: none;
+        }
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .tag-list span {
+            background: var(--tag-bg);
+            color: white;
+            border-radius: 999px;
+            padding: 0.2rem 0.5rem;
+            margin-right: 0.25rem;
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem; /* Add some space below the tags */
+        }
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 1em;
+            background: #f9f9f9;
+            color: #333;
+        }
+
+        header {
+            background: #222;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        main {
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        input,
+        textarea,
+        select {
+            padding: 0.5rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 0.5rem;
+        }
+
+        .task,
+        .question {
+            border-left: 4px solid #ccc;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            background: #f1f1f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task[data-status="todo"] {
+            border-color: orange
+        }
+
+        .task[data-status="in-progress"] {
+            border-color: dodgerblue
+        }
+
+        .task[data-status="done"] {
+            border-color: green
+        }
+
+        .question.resolved {
+            opacity: 0.6;
+            text-decoration: line-through
+        }
+
+        .cone {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to right, transparent, #ddd, transparent);
+            position: relative;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot.todo {
+            background: orange
+        }
+
+        .dot.in-progress {
+            background: dodgerblue
+        }
+
+        .dot.done {
+            background: green
+        }
+
+        .dot.question {
+            width: 2px;
+            height: 2px;
+            border-radius: 0;
+            transform: rotate(45deg);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: rotate(45deg) scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: rotate(45deg) scale(1.15);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: rotate(45deg) scale(1.4);
+                opacity: 0.5;
+            }
+        }
+
+        #parking-lot {
+            margin-top: 3rem;
+        }
+
+        .task-section {
+            margin-bottom: 2rem;
+        }
+
+        .task-section h3 {
+            margin-bottom: 1rem;
+        }
+
+        .task-status-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .task-status-group label {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            border-radius: 50px;
+            padding: .1em;
+        }
+
+        .task-status-group input[type="radio"] {
+            display: none;
+        }
+
+        .task-status-group input[type="radio"]:checked+label {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .task-status-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .task-status-group input[type="radio"] {
+            display: none;
+        }
+
+        .task-status-group input[value="todo"]:checked+label {
+            background-color: orange;
+            color: white;
+            border-color: orange;
+        }
+
+        .task-status-group input[value="in-progress"]:checked+label {
+            background-color: dodgerblue;
+            color: white;
+            border-color: dodgerblue;
+        }
+
+        .task-status-group input[value="done"]:checked+label {
+            background-color: green;
+            color: white;
+            border-color: green;
+        }
+
+        @media (max-width: 600px) {
+            .task-status-group {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .task {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .task h3,
+            .task p {
+                width: 100%;
+            }
+
+            header {
+                font-size: 1rem;
+                padding: 0.5rem;
+            }
+
+            main {
+                margin: 1rem;
+                padding: 1rem;
+                max-width: 95%;
+                border-radius: 0;
+            }
+
+            form {
+                gap: 0.5rem;
+            }
+
+            button {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+                margin: 0.25rem 0;
+            }
+
+            /* Adjust calendar table cells for small screens */
+            #calendar-container table td {
+                padding: 2px;
+                font-size: 0.55rem;
+            }
+        }
+
+        .dark-mode body {
+            background: #0d0d0d;
+            color: #f0f0f0;
+        }
+
+        .dark-mode main {
+            background: #1a1a1a;
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode .task,
+        .dark-mode .question {
+            background: #262626;
+            border-left-color: #999;
+        }
+
+        .dark-mode .task-status-group label {
+            background-color: #333;
+            border-color: #888;
+            color: #f0f0f0;
+        }
+
+        .dark-mode .task-status-group input[type="radio"]:checked+label {
+            color: white;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #121212;
+                color: #eee;
+            }
+
+            main {
+                background: #1e1e1e;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+            }
+
+            .task,
+            .question {
+                background: #2a2a2a;
+                border-left-color: #444;
+            }
+
+            .task-status-group label {
+                background-color: #333;
+                border-color: #555;
+                color: #eee;
+            }
+
+            .task-status-group input[type="radio"]:checked+label {
+                color: white;
+            }
+        }
+
+        .task[data-status='done'] {
+            opacity: 0.6;
+        }
+
+        #darkModeContainer {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+        #darkModeContainer label {
+            color: white;
+        }
+        #toggle-archive {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Project Tracker</h1>
+        <div id="darkModeContainer">
+            <label>
+                <input type="checkbox" id="dark-toggle"> 🌙 Dark Mode
+            </label>
+        </div>
+    </header>
+    <main>
+        <section id="legend" style="margin-bottom: 2rem;">
+            <h2>Legend</h2>
+            <ul style="list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 1rem;">
+                <li><span
+                        style="display:inline-block;width:12px;height:12px;border-radius:50%;background:orange;margin-right:0.5rem;"></span>
+                    To Do</li>
+                <li><span
+                        style="display:inline-block;width:12px;height:12px;border-radius:50%;background:dodgerblue;margin-right:0.5rem;"></span>
+                    In Progress</li>
+                <li><span
+                        style="display:inline-block;width:12px;height:12px;border-radius:50%;background:green;margin-right:0.5rem;"></span>
+                    Done</li>
+                <li><span
+                        style="display:inline-block;width:12px;height:12px;background:#999;transform:rotate(45deg);margin-right:0.5rem;"></span>
+                    Unresolved Question</li>
+            </ul>
+        </section>
+        <div id="calendar-container" style="margin-bottom: 2rem;"></div>
+        <form id="task-form">
+            <input type="text" id="title" placeholder="Task title" required>
+            <textarea id="note" placeholder="Task notes"></textarea>
+            <input type="text" id="tags" placeholder="Comma-separated tags (e.g. design, backend)" />
+            <button type="submit">Add Task</button>
+        </form>
+
+        <button id="toggle-archive">Show Archived</button>
+        <div id="task-list"></div>
+
+        <section id="parking-lot">
+            <h2>Parking Lot (Questions & Unknowns)</h2>
+            <form id="question-form">
+                <input type="text" id="question-input" placeholder="Enter question or unknown..." required>
+                <button type="submit">Add Question</button>
+            </form>
+            <div id="question-list"></div>
+        </section>
+    </main>
+    <script>
+        class Task {
+            constructor(title, note, status, tags = [], created = new Date().toISOString()) {
+                this.title = title
+                this.note = note
+                this.status = status
+                this.tags = tags
+                this.created = created
+            }
+
+            render(index, updateCallback, editCallback) {
+                const div = document.createElement('div')
+                div.className = 'task'
+                const isDraggable = this.status === 'todo'
+                div.draggable = isDraggable
+                div.style.pointerEvents = 'auto'
+                div.style.opacity = this.status === 'done' ? '0.6' : '1'
+                div.draggable = (this.status === 'todo')
+                div.dataset.index = index
+                div.addEventListener('dragstart', e => {
+                    e.dataTransfer.setData('text/plain', index)
+                    div.classList.add('dragging')
+                })
+                div.addEventListener('dragend', () => div.classList.remove('dragging'))
+                div.dataset.status = this.status
+
+                const titleEl = document.createElement('h3')
+                titleEl.contentEditable = true
+                titleEl.textContent = this.title
+                titleEl.addEventListener('blur', () => editCallback(index, 'title', titleEl.textContent))
+
+                const noteEl = document.createElement('p')
+                noteEl.contentEditable = true
+                noteEl.textContent = this.note
+                noteEl.addEventListener('blur', () => editCallback(index, 'note', noteEl.textContent))
+
+                const tagList = document.createElement('div')
+                tagList.classList.add('tag-list')
+                const timestamp = document.createElement('div')
+                timestamp.textContent = new Date(this.created).toLocaleString()
+                timestamp.style.fontSize = '0.75rem'
+                timestamp.style.color = '#666'
+                timestamp.style.marginTop = '0.25rem'
+                this.tags.forEach(tag => {
+                    const span = document.createElement('span')
+                    span.textContent = tag
+                    span.style.background = 'var(--tag-bg)'
+                    span.style.borderRadius = '999px'
+                    span.style.padding = '0.2rem 0.5rem'
+                    span.style.marginRight = '0.25rem'
+                    span.style.fontSize = '0.8rem'
+                    tagList.appendChild(span)
+                })
+                tagList.appendChild(timestamp)
+                tagList.addEventListener('click', e => editCallback(index, 'note', noteEl.textContent))
+
+                const statusDiv = document.createElement('div')
+                statusDiv.textContent = 'Status: '
+                const statusOptions = [
+                    {
+                        value: 'todo',
+                        label: {
+                            on: 'Todo',
+                            off: 'Wating'
+                        }
+                    },
+                    {
+                        value: 'in-progress',
+                        label: {
+                            on: 'In Progress',
+                            off: 'Not Started'
+                        }
+                    },
+                    {
+                        value: 'done',
+                        label: {
+                            on: 'Done',
+                            off: 'Not Done'
+                        }
+                    }
+                ]
+                const container = document.createElement('div')
+                statusOptions.forEach(option => {
+                    const radio = document.createElement('input')
+                    radio.type = 'radio'
+                    radio.name = `status-${index}`
+                    radio.value = option.value
+                    radio.id = `status-${index}-${option.value}`
+                    if (this.status === option.value) radio.checked = true
+                    radio.addEventListener('change', e => {
+                        this.status = e.target.value
+                        updateCallback(index, this.status)
+                    })
+                    radio.addEventListener('click', e => {
+                        this.status = this.status === e.target.value ? 'todo' : e.target.value
+                        updateCallback(index, this.status)
+                    })
+                    const labelEl = document.createElement('label')
+                    labelEl.htmlFor = radio.id
+                    const icons = { 'todo': '📝', 'in-progress': '🚧', 'done': '✅' }
+                    const iconElement = document.createElement('span')
+                    iconElement.textContent = icons[option.value]
+                    const optionElement = document.createElement('span')
+                    optionElement.textContent = this.status === option.value ? option.label.on : option.label.off
+                    labelEl.appendChild(iconElement)
+                    labelEl.appendChild(optionElement)
+                    container.appendChild(radio)
+                    container.appendChild(labelEl)
+                })
+                container.classList.add('task-status-group')
+                statusDiv.appendChild(container)
+
+                div.appendChild(titleEl)
+                div.appendChild(noteEl)
+                div.appendChild(tagList)
+                div.appendChild(statusDiv)
+
+                return div
+            }
+        }
+
+        const randomColor = () => `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`
+
+        class ProjectCone {
+            constructor() {
+                this.tasks = []
+                this.questions = []
+                this.form = document.getElementById('task-form')
+                this.list = document.getElementById('task-list')
+                this.cone = document.getElementById('cone')
+                this.questionForm = document.getElementById('question-form')
+                this.questionList = document.getElementById('question-list')
+                this.showArchived = false
+                this.load()
+                this.init()
+                document.getElementById('toggle-archive').addEventListener('click', () => {
+                    this.showArchived = !this.showArchived
+                    this.renderTasks()
+                })
+            }
+
+            init() {
+                this.form.addEventListener('submit', e => {
+                    e.preventDefault()
+                    this.addTask()
+                })
+
+                this.questionForm.addEventListener('submit', e => {
+                    e.preventDefault()
+                    this.addQuestion()
+                })
+            }
+
+            addTask() {
+                const title = document.getElementById('title').value
+                const note = document.getElementById('note').value
+                const status = 'todo'
+                const tags = document.getElementById('tags').value.split(',').map(t => t.trim()).filter(Boolean)
+                const task = new Task(title, note, status, tags)
+                this.tasks.push(task)
+                this.save()
+                this.renderTasks()
+                this.renderQuestions()
+                this.renderCalendar()
+                this.form.reset()
+                document.getElementById('tags').value = ''
+            }
+
+            addQuestion() {
+                const input = document.getElementById('question-input')
+                const question = input.value.trim()
+                if (question.length > 0) {
+                    this.questions.push({ text: question, resolved: false, created: new Date().toISOString() })
+                    this.save()
+                    this.renderQuestions()
+                    this.renderCalendar()
+                    input.value = ''
+                }
+            }
+
+            toggleResolved(index) {
+                this.questions[index].resolved = !this.questions[index].resolved
+                this.save()
+                this.renderQuestions()
+                this.renderCalendar()
+            }
+
+            deleteQuestion(index) {
+                this.questions.splice(index, 1)
+                this.save()
+                this.renderQuestions()
+                this.renderCalendar()
+            }
+
+            updateStatus(index, newStatus) {
+                this.tasks[index].status = newStatus
+                if (newStatus === 'done') {
+                    this.tasks[index].completed = new Date().toISOString()
+                } else {
+                    delete this.tasks[index].completed
+                }
+                this.save()
+                this.renderTasks()
+                this.renderCalendar()
+            }
+
+            editTask(index, field, value) {
+                this.tasks[index][field] = value
+                this.save()
+                this.renderCalendar()
+            }
+
+            renderTasks() {
+                this.list.innerHTML = ''
+                const grouped = {
+                    'in-progress': [],
+                    'todo': [],
+                    'done': []
+                }
+                this.tasks.forEach((t, i) => {
+                    const rendered = t.render(i, this.updateStatus.bind(this), this.editTask.bind(this))
+                    grouped[t.status].push(rendered)
+                })
+                const showArchived = this.showArchived ?? false
+                document.getElementById('toggle-archive').textContent = showArchived ? 'Hide Archived' : 'Show Archived'
+                for (const status of ['in-progress', 'todo', 'done']) {
+                    if (grouped[status].length > 0 && (status !== 'done' || showArchived)) {
+                        const section = document.createElement('div')
+                        section.className = 'task-section'
+                        const title = document.createElement('h3')
+                        title.textContent = status === 'in-progress' ? 'In Progress' : status === 'todo' ? 'To Do' : 'Done'
+                        section.appendChild(title)
+                        grouped[status].forEach(taskEl => section.appendChild(taskEl))
+                        this.list.appendChild(section)
+                        section.addEventListener('dragover', e => {
+                            e.preventDefault()
+                            const taskEl = e.target.closest('.task')
+                            document.querySelectorAll('.task').forEach(el => el.classList.remove('drag-over'))
+                            if (taskEl) taskEl.classList.add('drag-over')
+                        })
+                        section.addEventListener('drop', e => {
+                            document.querySelectorAll('.task').forEach(el => el.classList.remove('drag-over'))
+                            e.preventDefault()
+                            const draggedIndex = parseInt(e.dataTransfer.getData('text/plain'))
+                            const draggedTask = this.tasks[draggedIndex]
+                            const targetTaskEl = e.target.closest('.task')
+                            const targetIndex = parseInt(targetTaskEl?.dataset.index)
+                            if (draggedTask?.status === 'todo' && !isNaN(targetIndex) && draggedIndex !== targetIndex && this.tasks[targetIndex].status === 'todo') {
+                                const [moved] = this.tasks.splice(draggedIndex, 1)
+                                this.tasks.splice(targetIndex, 0, moved)
+                                this.save()
+                                this.renderTasks()
+                                this.renderCalendar()
+                            }
+                        })
+                    }
+                }
+            }
+
+            renderQuestions() {
+                this.questionList.innerHTML = ''
+                const sortedQuestions = [...this.questions].sort((a, b) => a.resolved - b.resolved)
+                sortedQuestions.forEach((q, i) => {
+                    const div = document.createElement('div')
+                    div.className = 'question' + (q.resolved ? ' resolved' : '')
+                    const span = document.createElement('span')
+                    span.textContent = q.text + ' — ' + new Date(q.created).toLocaleString()
+                    const resolveBtn = document.createElement('button')
+                    resolveBtn.textContent = q.resolved ? 'Unresolve' : 'Resolve'
+                    resolveBtn.addEventListener('click', () => this.toggleResolved(this.questions.indexOf(q)))
+                    const deleteBtn = document.createElement('button')
+                    deleteBtn.textContent = 'Delete'
+                    deleteBtn.addEventListener('click', () => this.deleteQuestion(this.questions.indexOf(q)))
+                    div.appendChild(span)
+                    div.appendChild(resolveBtn)
+                    div.appendChild(deleteBtn)
+                    this.questionList.appendChild(div)
+                })
+            }
+            renderCalendar() {
+                const container = document.getElementById('calendar-container')
+                container.innerHTML = ''
+                const today = new Date()
+                const year = today.getFullYear()
+
+                const header = document.createElement('div')
+                header.style.textAlign = 'center'
+                header.style.fontWeight = 'bold'
+                header.style.marginBottom = '1rem'
+                header.textContent = `${year} Calendar View`
+                container.appendChild(header)
+
+                const table = document.createElement('table')
+                table.style.borderCollapse = 'collapse'
+                table.style.width = '100%'
+
+                const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
+                for (let month = 0; month < 12; month++) {
+                    const tr = document.createElement('tr')
+                    const monthLabel = document.createElement('td')
+                    monthLabel.textContent = new Date(year, month, 1).toLocaleString('default', { month: 'short' })
+                    monthLabel.style.fontWeight = 'bold'
+                    monthLabel.style.padding = '0.5rem'
+                    monthLabel.style.border = '1px solid #ccc'
+                    tr.appendChild(monthLabel)
+
+                    for (let day = 1; day <= 31; day++) {
+                        const date = new Date(year, month, day)
+                        if (date.getMonth() !== month) break
+
+                        const td = document.createElement('td')
+                        td.style.border = '1px solid #ccc'
+                        td.style.fontSize = '0.65rem'
+                        td.style.padding = '4px'
+                        td.style.verticalAlign = 'top'
+                        const dow = dayNames[date.getDay()]
+                        td.innerHTML = `<div style="text-align:center;"><strong>${day}</strong><br>${dow}</div>`
+                        td.dataset.date = date.toISOString().split('T')[0]
+                        tr.appendChild(td)
+                    }
+
+                    table.appendChild(tr)
+                }
+
+                container.appendChild(table)
+
+                const getCell = d => {
+                    const dt = new Date(d).toISOString().split('T')[0]
+                    return container.querySelector(`[data-date="${dt}"]`)
+                }
+
+                const addDot = (cell, color) => {
+                    const dot = document.createElement('div')
+                    dot.style.width = '10px'
+                    dot.style.height = '10px'
+                    dot.style.borderRadius = '50%'
+                    dot.style.background = color
+                    dot.style.marginTop = '2px'
+                    dot.style.zIndex = 2
+                    cell?.appendChild(dot)
+                }
+
+                const taskGroups = {}
+                this.tasks.forEach(t => {
+                    let dateKey = null
+                    if (t.status === 'todo') dateKey = new Date(t.created).toISOString().split('T')[0]
+                    if (t.status === 'in-progress') dateKey = new Date().toISOString().split('T')[0]
+                    if (t.status === 'done' && t.completed) dateKey = new Date(t.completed).toISOString().split('T')[0]
+                    if (dateKey) {
+                        if (!taskGroups[dateKey]) taskGroups[dateKey] = { 'todo': 0, 'in-progress': 0, 'done': 0 }
+                        taskGroups[dateKey][t.status]++
+                    }
+                })
+
+                Object.entries(taskGroups).forEach(([date, counts]) => {
+                    const cell = getCell(date)
+                    if (!cell) return
+                    Object.entries(counts).forEach(([status, count]) => {
+                        if (count > 0) {
+                            const dot = document.createElement('div')
+                            dot.style.width = '16px'
+                            dot.style.height = '16px'
+                            dot.style.borderRadius = '50%'
+                            dot.style.display = 'flex'
+                            dot.style.alignItems = 'center'
+                            dot.style.justifyContent = 'center'
+                            dot.style.color = 'white'
+                            dot.style.fontSize = '0.65rem'
+                            dot.style.marginTop = '2px'
+                            dot.style.background = status === 'todo' ?
+                                'orange' : status === 'in-progress' ?
+                                    'dodgerblue' : 'green'
+                            dot.textContent = count
+                            cell.appendChild(dot)
+                        }
+                    })
+                })
+            }
+
+            save() {
+                localStorage.setItem('project-tasks', JSON.stringify(this.tasks))
+                localStorage.setItem('project-questions', JSON.stringify(this.questions))
+            }
+
+            load() {
+                const savedTasks = localStorage.getItem('project-tasks')
+                if (savedTasks) {
+                    const parsed = JSON.parse(savedTasks)
+                    this.tasks = parsed.map(t => new Task(t.title, t.note, t.status, t.tags || [], t.created))
+                }
+                const savedQuestions = localStorage.getItem('project-questions')
+                if (savedQuestions) {
+                    this.questions = JSON.parse(savedQuestions).map(q => ({ ...q, created: q.created || new Date().toISOString() }))
+                }
+                this.renderTasks()
+                this.renderQuestions()
+                this.renderCalendar()
+            }
+        }
+
+        new ProjectCone()
+        const toggle = document.getElementById('dark-toggle')
+        toggle.addEventListener('change', () => {
+            if (toggle.checked) {
+                document.documentElement.classList.add('dark-mode')
+                localStorage.setItem('theme', 'dark')
+            } else {
+                document.documentElement.classList.remove('dark-mode')
+                localStorage.setItem('theme', 'light')
+            }
+        })
+
+        if (localStorage.getItem('theme') === 'dark') {
+            toggle.checked = true
+            document.documentElement.classList.add('dark-mode')
+        }
+    </script>
+</body>
+
+</html>
