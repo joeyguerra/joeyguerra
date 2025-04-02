@@ -1,0 +1,447 @@
+{
+  "name": "Joey Guerra",
+  "title": "Software Engineering Consultant",
+  "profileUrl": "https://joeyguerra.com/images/headshot.jpeg",
+  "summary": "Joey is a seasoned software engineer and integration specialist with over 25 years of experience designing and building scalable, adaptable systems. He partners with growth-minded businesses to streamline operations, integrate systems, and develop custom software that evolves with their needs. From aerospace engineering at NASA to modern SaaS platforms, Joey brings a builder’s mindset—valuing simplicity, pragmatism, and tangible results. His recent work includes field operations software for construction, lab management systems for orthodontic manufacturers, and a cloud-native billing platform for an E&S insurance startup.",
+  "email": "joey.guerra@aftermansoftware.com",
+  "githubUrl": "https://github.com/joeyguerra",
+  "linkedInUrl": "https://linkedin.com/in/joeyguerra",
+  "experiences": [
+    {
+      "companyName": "Jack in the Box",
+      "title": "Software Engineering Consultant",
+      "description": "Served as a consultant enhancing Jack in the Box’s existing .NET and NServiceBus-based integration platform to support ingestion of inventory, product transfers, waste, and invoice data from vendor APIs. Wrote C# and SQL to extend system capabilities and integrate with the company’s financial and analytics systems. Conducted system analysis and vendor API evaluation to design robust integration solutions. Proactively identified gaps in requirements and facilitated alignment through thoughtful questions and clear communication in stakeholder meetings. Collaborated with teams building the next-generation architecture to ensure continuity and smooth integration with legacy systems. Built tooling to facilitate development as the vendors built out their API capabilities.",
+      "beginDate": "2024",
+      "endDate": "present",
+      "skills": [
+        { "name": ".NET" },
+        { "name": "C#" },
+        { "name": "MS SQL Server" },
+        { "name": "MSMQ" },
+        { "name": "NDJSON" },
+        { "name": "Event Sourcing" },
+        { "name": "JavaScript" },
+        { "name": "Node.js" }
+      ]
+    },
+    {
+      "companyName": "E&S Insurance Policy Administrator Startup",
+      "title": "Software Engineering Consultant",
+      "description": "Developed a modern, event-sourced billing platform for a startup in the Excess & Surplus (E&S) insurance space. The system was built using C#, .NET, Blazor, Azure Functions, Azure Service Bus, and MS SQL Server. Led the design and implementation of the Policy Cancellation module, ensuring regulatory compliance and accurate financial handling of mid-term policy changes. Analyzed existing systems and vendor interfaces, identified integration gaps, and collaborated across teams to align on architecture and execution. Provided technical leadership and clear communication to support the delivery of a scalable, cloud-native billing solution.",
+      "beginDate": "2023",
+      "endDate": "2024",
+      "skills": [
+        { "name": "dotnet" },
+        { "name": "Blazor"},
+        { "name": "MudBlazor"},
+        { "name": "C#" },
+        { "name": "MS SQL Server" },
+        { "name": "Azure Service Bus" },
+        { "name": "Azure Functions" },
+        { "name": "Azure Cloud" },
+        { "name": "Event Sourcing" }
+      ]
+    },
+    {
+      "companyName": "Lab Operations & Dental Manufacturing",
+      "title": "Software Engineering Consultant",
+      "description": "Built software to consolidate case information from dentist software into a unified lab workflow system. Implemented event sourcing to track case state, facilitate status visibility, task management, and dentist communications. Archival system used Azure for PDF storage. Led the design and implementation of the shipment and fulfillment system, ensuring accurate tracking and reporting of shipments. Collaborated with cross-functional teams to ensure seamless integration with existing systems and processes. Provided technical leadership and clear communication to support the delivery of a scalable, cloud-native solution.",
+      "beginDate": "2023",
+      "endDate": "2023",
+      "skills": [
+        { "name": "dotnet" },
+        { "name": "C#" },
+        { "name": "Redis"},
+        { "name": "PostgreSQL"},
+        { "name": "Blazor"},
+        { "name": "Event Sourcing" },
+        { "name": "Azure" },
+        { "name": "Microsoft Entra B2B & B2C"},
+        { "name": "PDF Archiving" }
+      ]
+    },
+    {
+      "companyName": "Royal Alliances | Mailing Services",
+      "title": "Software Engineering Consultant",
+      "description": "Replaced 150+ API services built with and running on MuleSoft with a custom, dotnet solution. The new system was built using C#, .NET, Redis, hosted in a Kubernetes cluster, and was designed to be more efficient and easier to maintain. Implemented GitHub's Scientist approach to run the system with live traffic in parallel with the existing one, which enabled us to go live with no downtime or data loss. The new system was able to handle the same volume of requests as the old system, but with less overhead and better performance, reducing hosting costs.",
+      "beginDate": "2022",
+      "endDate": "2023",
+      "skills": [
+        { "name": "dotnet" },
+        { "name": "C#" },
+        { "name": "MS SQL Server" },
+        { "name": "Azure Cloud" },
+        { "name": "Redis"},
+        { "name": "Kubernetes"},
+        { "name": "MuleSoft"}
+      ]
+    },
+    {
+      "companyName": "GameStop",
+      "title": "Software Engineering Consultant",
+      "description": "Worked with the GameStop team to integrate their warehouses with SAP. The system was built using C#, .NET, and Redis, and was designed for high througput. Worked providing clarity on existing capabilities and flushing out business cases in order to build the right integrations to SAP.",
+      "beginDate": "2021",
+      "endDate": "2022",
+      "skills": [
+        { "name": "C#" },
+        { "name": ".NET" },
+        { "name": "AWS" },
+        { "name": "AWS S3"},
+        { "name": "AWS SQS" },
+        { "name": "Redis" },
+        { "name": "SAP" },
+        { "name": "Systems Integration" }
+      ]
+    },
+    { 
+      "companyName": "Alight", 
+      "title": "Software Engineering Consultant",
+      "description": "Built a survey system to capture provider feedback.",
+      "beginDate": "2020",
+      "endDate": "2021",
+      "skills": [
+        { "name": "C#" },
+        { "name": ".NET" },
+        { "name": "AWS"},
+        { "name": "ElasticSearch" },
+        { "name": "Angular" },
+        { "name": "MS SQL Server" },
+        { "name": "Entity Framework" },
+        { "name": "Web Development" }
+      ]
+    },
+    {
+      "companyName": "TradeStation",
+      "title": "Software Engineering Consultant",
+      "description": "Worked with the TradeStation team to move their US exchange system to AWS on Windows VM.",
+      "beginDate": "2019",
+      "endDate": "2020",
+      "skills": [
+        { "name": "AWS" },
+        { "name": "AWS CloudFormation" },
+        { "name": "AWS CloudWatch" },
+        { "name": "Windows" },
+        { "name": "C#" },
+        { "name": ".NET" },
+        { "name": "SQL" }
+      ]
+    },
+    {
+      "companyName": "Catepillar Inc.",
+      "title": "Technical Principal",
+      "description": "Developed a business case to replace Catepillar's aging Order Management System that integrates with their dealers and 70+ manufacturing plants.",
+      "beginDate": "2019",
+      "endDate": "2019",
+      "skills": [
+        { "name": "Systems Integration" },
+        { "name": "Business Process Automation" },
+        { "name": "Agile XP" },
+        { "name": "Product Thinking" },
+        { "name": "Team Leadership" }
+      ]
+    },
+    { 
+      "companyName": "Verizon",
+      "title": "Technical Principal",
+      "description": "Designed architecture for log file ingestion for their security analysis product.",
+      "beginDate": "2018",
+      "endDate": "2018",
+      "skills": [
+        { "name": "Systems Integration" },
+        { "name": "Software Architecture" }
+      ]
+    },
+    {
+      "companyName": "Mr Cooper",
+      "title": "Technical Principal",
+      "description": "Investigated using Machine Learning to classify mortgage related documents and automate the process of extracting data from them. Worked with the team identify different solutions and options.",
+      "beginDate": "2018",
+      "endDate": "2018",
+      "skills": [
+        { "name": "Team Leadership" },
+        { "name": "Product Thinking" }
+      ]
+    },
+    {
+      "companyName": "Southwest Airlines",
+      "title": "Technical Principal",
+      "description": "Developed mobile development standards and best practices for the team to utilize with their contractors and vendors.",
+      "beginDate": "2018",
+      "endDate": "2018",
+      "skills": [
+        { "name": "Team Leadership" },
+        { "name": "Product Thinking" }
+      ]
+    },
+    {
+      "companyName": "Home Depot",
+      "title": "Software Engineering Manager",
+      "description": "Managed engineering teams responsible for product pages and APIs. Led cloud migration, merged mobile and desktop site codebases, and championed XP practices. Built trust across distributed teams.",
+      "beginDate": "2013",
+      "endDate": "2018",
+      "skills": [
+        { "name": "Google Cloud Platform (GCP)"},
+        { "name": "Google Cloud Pub/Sub" },
+        { "name": "Google Cloud Storage" },
+        { "name": "Web Development" },
+        { "name": "Java" },
+        { "name": "Spring" },
+        { "name": "Systems Integration" },
+        { "name": "Cloud Migration" },
+        { "name": "Team Leadership" },
+        { "name": "API Development" },
+        { "name": "Agile XP" }
+      ]
+    },
+    {
+      "companyName": "GameStop",
+      "title": "Development Manager",
+      "description": "Managed the GameInfomer tech team. Led development of GI's CRM tool, social networking site, digital magazine integration and PowerUp Rewards program.",
+      "beginDate": "2010",
+      "endDate": "2013",
+      "skills": [
+        { "name": "C#" },
+        { "name": ".NET"},
+        { "name": "ASP.NET"},
+        { "name": "MS SQL Server" },
+        { "name": "Web Development" },
+        { "name": "Team Leadership" },
+        { "name": "Agile XP" },
+        { "name": "DevOps" },
+        { "name": "CI/CD" }
+      ]
+    },
+    {
+      "companyName": "True.com",
+      "title": "Software Engineer",
+      "description": "Built and maintained the True.com dating site. Developed the video chatting platform.",
+      "beginDate": "2006",
+      "endDate": "2010",
+      "skills": [
+        { "name": "C#" },
+        { "name": "VB" },
+        { "name": "Javascript"},
+        { "name": "HTML" },
+        { "name": "CSS" },
+        { "name": ".NET" },
+        { "name": "ASP.NET" },
+        { "name": "MS SQL Server" },
+        { "name": "MySql" },
+        { "name": "Adobe Media Server" },
+        { "name": "Web Development" }
+      ]
+    },
+    {
+      "companyName": "Corprasoft, Inc.",
+      "title": "Lead Product Developer",
+      "description": "Led the design and development of Legal Discovery, the ad-hoc reporting application for the flagship product (Corprasoft Legal Desktop), used in Fortune 500 legal departments for case management. In addition to professional services engagements, providing support and customizations. First Scrum team.",
+      "beginDate": "2005",
+      "endDate": "2006",
+      "skills": [
+        { "name": "C#" },
+        { "name": "Javascript"},
+        { "name": "HTML" },
+        { "name": "CSS" },
+        { "name": ".NET" },
+        { "name": "ASP.NET" },
+        { "name": "MS SQL Server" },
+        { "name": "Web Development" },
+        { "name": "Scrum" }
+      ]
+    },
+    { 
+      "companyName": "InfoIntegration",
+      "title": "Software Engineer",
+      "description": "Wrote software for the Dallas County Adult Case Management System, replacing the county's legacy mainframe courts management system.",
+      "beginDate": "2004",
+      "endDate": "2005",
+      "skills": [
+        { "name": "C#" },
+        { "name": "Javascript"},
+        { "name": "HTML" },
+        { "name": ".NET" },
+        { "name": "ASP.NET" },
+        { "name": "MS SQL Server" },
+        { "name": "Web Development" },
+        { "name": "BizTalk" }
+      ]
+    },
+    {
+      "companyName": "WQN",
+      "title":"Software Engineer",
+      "description": "Built and maintained the WQN.com website integrated to a telephony switch, a web-based application to order and manage long distance calling PINs. Built check-cashing and CRM for customer service. Developed fraud tracking systems and reporting.",
+      "beginDate": "2002",
+      "endDate": "2004",
+      "skills": [
+        { "name": "C#" },
+        { "name": "VB" },
+        { "name": ".NET" },
+        { "name": "ASP.NET" },
+        { "name": "ASP"},
+        { "name": "Javascript"},
+        { "name": "HTML" },
+        { "name": "MS SQL Server" },
+        { "name": "Web Development" }
+      ]
+    },
+    { 
+      "companyName": "Walraven",
+      "title":"Software Engineering Consultant",
+      "description": "Built a warehouse inventory management system for book covers.",
+      "beginDate": "2002",
+      "endDate": "2003",
+      "skills": [
+        { "name": "C#" },
+        { "name": ".NET" },
+        { "name": "ASP.NET" },
+        { "name": "MS SQL Server" },
+        { "name": "Web Development" }
+      ]
+    },
+    { 
+      "companyName": "Seabury & Smith",
+      "title": "Data Modeler",
+      "description": "Developed data models for online auto insurance rate quoting.",
+      "beginDate": "2002",
+      "endDate": "2002",
+      "skills": [
+        { "name": "Data Modeling" },
+        { "name": "XML" },
+        { "name": "Data Analysis" }
+      ]
+    },
+    { 
+      "companyName": "Trilogy",
+      "title": "Data Modeler",
+      "description": "Developed data models for online auto insurance rate quoting",
+      "beginDate": "2000",
+      "endDate": "2000",
+      "skills": [
+        { "name": "Data Modeling" },
+        { "name": "XML" },
+        { "name": "Data Analysis" }
+      ]
+    },
+    {
+      "companyName": "NASA / Johnson Space Center",
+      "title": "Aerospace Engineer",
+      "description": "Worked on the International Space Station and other projects, applying engineering principles to real-world systems. Learned rigorous testing, systems thinking, and mission-critical decision making.",
+      "beginDate": "1995",
+      "endDate": "2000",
+      "skills": [
+        { "name": "Aerospace Systems" },
+        { "name": "Systems Engineering" },
+        { "name": "Problem Solving" }
+      ]
+    }
+  ],
+  "verticals": [
+    { "name": "Construction" },
+    { "name": "Insurance" },
+    { "name": "Telecom" },
+    { "name": "Social Networking" },
+    { "name": "Retail" },
+    { "name": "Manufacturing" },
+    { "name": "Healthcare" },
+    { "name": "E-commerce" },
+    { "name": "Aerospace" }
+  ],
+  "schools": [
+    {
+      "degree": "BS, Aerospace Engineering",
+      "name": "University of Texas at Austin",
+      "beginDate": "1991",
+      "endDate": "1995"
+    },
+    {
+      "degree": "Associate of Arts, Social Sciences",
+      "name": "San Jacinto College",
+      "beginDate": "1989",
+      "endDate": "1991"
+    }
+  ],
+  "interests": [
+    { "name": "Coding Web Frameworks" },
+    { "name": "Comics (Doom Patrol, Umbrella Academy)" },
+    { "name": "Pole Vaulting" },
+    { "name": "Walks & Couch to 5K" },
+    { "name": "Family" },
+    { "name": "Thinking About Systems" },
+    { "name": "Open Source - Hubot" },
+    { "name": "Beginning of Infinity" }
+  ],
+  "skillCategories": [
+    {
+      "name": "languages",
+      "skills": [
+        { "name": "JavaScript" },
+        { "name": "C#" },
+        { "name": "Node.js" },
+        { "name": "SQL" },
+        { "name": "Redis" },
+        { "name": "HTML" },
+        { "name": "CSS" },
+        { "name": "VB" },
+        { "name": "Java" },
+        { "name": "XML" }
+      ]
+    },
+    {
+      "name": "frameworks",
+      "skills": [
+        { "name": ".NET" },
+        { "name": "MudBlazor" },
+        { "name": "Express" },
+        { "name": "Hubot" },
+        { "name": "NHibernate" },
+        { "name": "Entity Framework" },
+        { "name": "ASP.NET" },
+        { "name": "Spring Boot" },
+        { "name": "Spring MVC" },
+        { "name": "Spring" },
+        { "name": "ASP.NET" },
+        { "name": "Blazor" },
+        { "name": "NServiceBus" }
+      ]
+    },
+    {
+      "name": "DevOps & Tooling",
+      "skills": [
+        { "name": "Docker" },
+        { "name": "Kubernetes" },
+        { "name": "GitHub Actions" },
+        { "name": "GitLab"},
+        { "name": "CI/CD" },
+        { "name": "GitHub Actions" },
+        { "name": "Octopus Deploy" },
+        { "name": "TeamCity" },
+        { "name": "Concourse CI" },
+        { "name": "Terraform" },
+        { "name": "AWS CloudFormation" },
+        { "name": "AWS CloudWatch" },
+        { "name": "Azure DevOps" },
+        { "name": "Azure Pipelines" }
+      ]
+    },
+    {
+      "name": "platforms",
+      "skills": [
+        { "name": "Azure" },
+        { "name": "AWS" },
+        { "name": "Google Cloud Platform" },
+        { "name": "Cloudflare" }
+      ]
+    },
+    {
+      "name": "other",
+      "skills": [
+        { "name": "Systems Integration" },
+        { "name": "Team Leadership" },
+        { "name": "Agile / XP" },
+        { "name": "Product Thinking" },
+        { "name": "Business Process Automation" },
+        { "name": "Storytelling & UX Thinking" }
+      ]
+    }
+  ]
+}

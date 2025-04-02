@@ -22,7 +22,7 @@ class BitcoinTracker extends EventEmitter {
             )
         `)
         this.randomInterval = Math.floor(Math.random() * 30) + 1
-        this.interval = setInterval(this.fetchPriceData.bind(this), this.randomInterval * 1000)
+        this.interval = null// setInterval(this.fetchPriceData.bind(this), this.randomInterval * 1000)
         this.spotPrices = []
     }
     
