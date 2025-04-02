@@ -11,6 +11,7 @@
       "companyName": "Jack in the Box",
       "title": "Software Engineering Consultant",
       "description": "Served as a consultant enhancing Jack in the Box’s existing .NET and NServiceBus-based integration platform to support ingestion of inventory, product transfers, waste, and invoice data from vendor APIs. Wrote C# and SQL to extend system capabilities and integrate with the company’s financial and analytics systems. Conducted system analysis and vendor API evaluation to design robust integration solutions. Proactively identified gaps in requirements and facilitated alignment through thoughtful questions and clear communication in stakeholder meetings. Collaborated with teams building the next-generation architecture to ensure continuity and smooth integration with legacy systems. Built tooling to facilitate development as the vendors built out their API capabilities.",
+      "companyLogoUrl": "https://www.jackintheboxfranchising.com/hs-fs/hubfs/JIB_Logo_Red_Text-a.png?width=74&height=77&name=JIB_Logo_Red_Text-a.png",
       "beginDate": "2024",
       "endDate": "present",
       "skills": [
@@ -28,6 +29,7 @@
       "companyName": "E&S Insurance Policy Administrator Startup",
       "title": "Software Engineering Consultant",
       "description": "Developed a modern, event-sourced billing platform for a startup in the Excess & Surplus (E&S) insurance space. The system was built using C#, .NET, Blazor, Azure Functions, Azure Service Bus, and MS SQL Server. Led the design and implementation of the Policy Cancellation module, ensuring regulatory compliance and accurate financial handling of mid-term policy changes. Analyzed existing systems and vendor interfaces, identified integration gaps, and collaborated across teams to align on architecture and execution. Provided technical leadership and clear communication to support the delivery of a scalable, cloud-native billing solution.",
+      "companyLogoUrl": "https://stassetsdevscus.blob.core.windows.net/staticassets/Final-CU-Logo-01.png",
       "beginDate": "2023",
       "endDate": "2024",
       "skills": [
@@ -46,6 +48,7 @@
       "companyName": "Lab Operations & Dental Manufacturing",
       "title": "Software Engineering Consultant",
       "description": "Built software to consolidate case information from dentist software into a unified lab workflow system. Implemented event sourcing to track case state, facilitate status visibility, task management, and dentist communications. Archival system used Azure for PDF storage. Led the design and implementation of the shipment and fulfillment system, ensuring accurate tracking and reporting of shipments. Collaborated with cross-functional teams to ensure seamless integration with existing systems and processes. Provided technical leadership and clear communication to support the delivery of a scalable, cloud-native solution.",
+      "companyLogoUrl": "https://klowenortho.com/hubfs/Logo.svg",
       "beginDate": "2023",
       "endDate": "2023",
       "skills": [
@@ -64,6 +67,7 @@
       "companyName": "Royal Alliances | Mailing Services",
       "title": "Software Engineering Consultant",
       "description": "Replaced 150+ API services built with and running on MuleSoft with a custom, dotnet solution. The new system was built using C#, .NET, Redis, hosted in a Kubernetes cluster, and was designed to be more efficient and easier to maintain. Implemented GitHub's Scientist approach to run the system with live traffic in parallel with the existing one, which enabled us to go live with no downtime or data loss. The new system was able to handle the same volume of requests as the old system, but with less overhead and better performance, reducing hosting costs.",
+      "companyLogoUrl": "https://royalalliances.com/wp-content/uploads/2023/04/RA-logo_COLOR_042023.png",
       "beginDate": "2022",
       "endDate": "2023",
       "skills": [
@@ -80,6 +84,7 @@
       "companyName": "GameStop",
       "title": "Software Engineering Consultant",
       "description": "Worked with the GameStop team to integrate their warehouses with SAP. The system was built using C#, .NET, and Redis, and was designed for high througput. Worked providing clarity on existing capabilities and flushing out business cases in order to build the right integrations to SAP.",
+      "companyLogoUrl": "https://logos-world.net/wp-content/uploads/2021/03/GameStop-Logo.png",
       "beginDate": "2021",
       "endDate": "2022",
       "skills": [
@@ -97,6 +102,7 @@
       "companyName": "Alight", 
       "title": "Software Engineering Consultant",
       "description": "Built a survey system to capture provider feedback.",
+      "companyLogoUrl": "https://cdn.cookielaw.org/logos/132859b3-b4f2-45ab-a1f0-36f6d522e512/b8b56de4-1c4c-4d73-9472-b6476db5653b/17d50d79-ff4c-439b-aea6-b60aaa47e335/Alight_Logo_RGB_Yellow.png",
       "beginDate": "2020",
       "endDate": "2021",
       "skills": [
@@ -114,6 +120,7 @@
       "companyName": "TradeStation",
       "title": "Software Engineering Consultant",
       "description": "Worked with the TradeStation team to move their US exchange system to AWS on Windows VM.",
+      "companyLogoUrl": "https://cdn.tradestation.com/uploads/logo-1.svg",
       "beginDate": "2019",
       "endDate": "2020",
       "skills": [
@@ -130,6 +137,7 @@
       "companyName": "Catepillar Inc.",
       "title": "Technical Principal",
       "description": "Developed a business case to replace Catepillar's aging Order Management System that integrates with their dealers and 70+ manufacturing plants.",
+      "companyLogoUrl": "https://cdn.cookielaw.org/logos/dacb864b-cd78-48d1-a68b-5f1d05fe1473/60105155-36a5-43e4-8e00-43d4d3e7ddf4/96557a7d-ea19-4fb3-95b9-c08b285d2b52/caterpillar.png",
       "beginDate": "2019",
       "endDate": "2019",
       "skills": [
@@ -144,6 +152,7 @@
       "companyName": "Verizon",
       "title": "Technical Principal",
       "description": "Designed architecture for log file ingestion for their security analysis product.",
+      "companyLogoUrl": "https://logos-world.net/wp-content/uploads/2020/10/Verizon-Emblem.png",
       "beginDate": "2018",
       "endDate": "2018",
       "skills": [
@@ -155,6 +164,7 @@
       "companyName": "Mr Cooper",
       "title": "Technical Principal",
       "description": "Investigated using Machine Learning to classify mortgage related documents and automate the process of extracting data from them. Worked with the team identify different solutions and options.",
+      "companyLogoUrl": "https://static.wikia.nocookie.net/logopedia/images/9/93/Mr._Cooper_2017.svg/revision/latest?cb=20210523153835",
       "beginDate": "2018",
       "endDate": "2018",
       "skills": [
@@ -166,6 +176,7 @@
       "companyName": "Southwest Airlines",
       "title": "Technical Principal",
       "description": "Developed mobile development standards and best practices for the team to utilize with their contractors and vendors.",
+      "companyLogoUrl": "https://www.southwest.com/swa-resources/images/globalnav/logos/swa_logo_dark.svg",
       "beginDate": "2018",
       "endDate": "2018",
       "skills": [
@@ -174,9 +185,10 @@
       ]
     },
     {
-      "companyName": "Home Depot",
+      "companyName": "The Home Depot",
       "title": "Software Engineering Manager",
       "description": "Managed engineering teams responsible for product pages and APIs. Led cloud migration, merged mobile and desktop site codebases, and championed XP practices. Built trust across distributed teams.",
+      "companyLogoUrl": "https://corporate.homedepot.com/sites/default/files/image_gallery/THD_logo.jpg",
       "beginDate": "2013",
       "endDate": "2018",
       "skills": [
@@ -197,6 +209,7 @@
       "companyName": "GameStop",
       "title": "Development Manager",
       "description": "Managed the GameInfomer tech team. Led development of GI's CRM tool, social networking site, digital magazine integration and PowerUp Rewards program.",
+      "companyLogoUrl": "https://logos-world.net/wp-content/uploads/2021/03/GameStop-Logo.png",
       "beginDate": "2010",
       "endDate": "2013",
       "skills": [
@@ -249,23 +262,6 @@
         { "name": "Scrum" }
       ]
     },
-    { 
-      "companyName": "InfoIntegration",
-      "title": "Software Engineer",
-      "description": "Wrote software for the Dallas County Adult Case Management System, replacing the county's legacy mainframe courts management system.",
-      "beginDate": "2004",
-      "endDate": "2005",
-      "skills": [
-        { "name": "C#" },
-        { "name": "Javascript"},
-        { "name": "HTML" },
-        { "name": ".NET" },
-        { "name": "ASP.NET" },
-        { "name": "MS SQL Server" },
-        { "name": "Web Development" },
-        { "name": "BizTalk" }
-      ]
-    },
     {
       "companyName": "WQN",
       "title":"Software Engineer",
@@ -314,6 +310,7 @@
       "companyName": "Trilogy",
       "title": "Data Modeler",
       "description": "Developed data models for online auto insurance rate quoting",
+      "companyLogoUrl": "https://trilogy.com//srv/htdocs/wp-content/uploads/2021/01/header-logo-1.png",
       "beginDate": "2000",
       "endDate": "2000",
       "skills": [
@@ -323,9 +320,10 @@
       ]
     },
     {
-      "companyName": "NASA / Johnson Space Center",
+      "companyName": "Lockheed Martin",
       "title": "Aerospace Engineer",
-      "description": "Worked on the International Space Station and other projects, applying engineering principles to real-world systems. Learned rigorous testing, systems thinking, and mission-critical decision making.",
+      "description": "Worked at NASA / Johnson Space Center on the International Space Station and other projects, applying engineering principles to real-world systems. Learned rigorous testing, systems thinking, and mission-critical decision making.",
+      "companyLogoUrl": "https://yt3.ggpht.com/wkjDtbEI_eJhDeom6GHa0lj1o5Z9kaHk1jZw7Yo7SxhkPlvMnaA-tXFkTWtzfKiNoD8u0x8ksg=s68-c-k-c0x00ffffff-no-rj",
       "beginDate": "1995",
       "endDate": "2000",
       "skills": [
