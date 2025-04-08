@@ -1,0 +1,169 @@
+<aside id="sidebar">
+    <section class="projects">
+        <dl>
+            <dt>iCloud</dt>
+            <dd class="active">Todos <span>31</span></dd>
+            <dd>Revenue Strategy <span>9</span></dd>
+        </dl>
+
+    </section>
+    <script>
+        function setupEditableField(element) {
+            const defaultValue = element.textContent
+            element.addEventListener('dblclick', e => {
+                e.target.contentEditable = true
+                e.target.focus()
+            }, true)
+            element.addEventListener('blur', e => {
+                e.target.contentEditable = false
+                if (e.target.textContent === '') {
+                    e.target.textContent = defaultValue
+                }
+            }, true)
+            element.addEventListener('keydown', e => {
+                if (e.key === 'Enter') {
+                    e.preventDefault()
+                    e.target.blur()
+                }
+            }, true)
+        }
+        function setupNavigableField(element) {
+            element.addEventListener('click', e => {
+                Array.from(document.querySelectorAll('.active')).forEach(active => active.classList.remove('active'))
+                e.target.parentNode.classList.add('active')
+                applySwitchToTodoList(e)
+            }, true)
+        }
+        function applySwitchToTodoList(e) {
+            console.log(e)
+        }
+        function buildTodoListRoot(name, document) {
+            const dd = document.createElement('dd')
+            const nameField = document.createElement('span')
+            const countField = document.createElement('span')
+            nameField.textContent = name
+            countField.textContent = '0'
+            setupEditableField(nameField)
+            setupNavigableField(nameField)
+            dd.appendChild(nameField)
+            dd.appendChild(countField)
+            return dd
+        }
+        function buildGroupRoot(name, document) {
+            const group = document.createElement('dl')
+            const dt = document.createElement('dt')
+            const nameField = document.createElement('span')
+            nameField.textContent = name
+            setupEditableField(nameField)
+            dt.appendChild(nameField)
+            const addTodosButton = document.createElement('button')
+            addTodosButton.innerHTML = '&#x2193;'
+            addTodosButton.className = 'add-todos'
+            addTodosButton.addEventListener('click', e => applyAddTodoListEvent(e, group, document), true)
+            dt.appendChild(addTodosButton)
+            
+            const dd = buildTodoListRoot('Todos', document)
+            group.appendChild(dt)
+            group.appendChild(dd)
+            return group
+        }
+        function applyAddTaskEvent(e) {
+            const root = e.target.closest('h3').parentElement
+            const newTask = document.createElement('div')
+            const newTaskCheckbox = document.createElement('input')
+            const newTaskText = document.createElement('p')
+            newTaskCheckbox.type = 'checkbox'
+            newTaskText.textContent = 'New Task'
+            setupEditableField(newTaskText)
+            newTask.appendChild(newTaskCheckbox)
+            newTask.appendChild(newTaskText)
+            root.appendChild(newTask)
+        }
+        function applyAddTodoListEvent(e, root, document) {
+            const newTodoListName = 'New Todo List'
+            const existingNames = Array.from(root.querySelectorAll('dd')).map(dd => dd.querySelector('span').textContent).filter(name => name.includes(newTodoListName))
+            const newTodoList = buildTodoListRoot(existingNames.length > 0 ? `${newTodoListName} copy ${existingNames.length}` : newTodoListName, document)
+            root.appendChild(newTodoList)
+            return newTodoList
+        }
+        function applyAddGroupEvent(e, root, document) {
+            const addTodosButton = document.createElement('button')
+            addTodosButton.innerHTML = '&#x2193;'
+            addTodosButton.className = 'add-todos'
+            addTodosButton.addEventListener('click', e => applyAddTodoListEvent(e, group, document), true)
+            let newGroupName = 'New Group'
+            const existingNames = Array.from(root.querySelectorAll('dt')).map(dt => dt.textContent).filter(name => name.includes(newGroupName))
+            newGroupName = existingNames.length > 0 ? `${newGroupName} copy ${existingNames.length}` : newGroupName
+            const group = buildGroupRoot(newGroupName, document)
+            root.appendChild(group)
+            return group
+        }
+    </script>
+    <footer>
+        <button class="add-group" onclick="applyAddGroupEvent(event, this.closest('aside').querySelector('section'), document)">+</button>
+        <span>Add a Group</span>
+    </footer>
+</aside>
+<main>
+    <header>
+        <span>Todos</span>
+        <span>31</span>
+    </header>
+    <section>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Business directory</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Create a list of industries and common challenges</p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Inbox to Todos</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Make hubot read an inbox</p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Joey G Project management</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Conceptualize what a project management tool that modeled your process would look like</p>
+            </div>
+            <div class="task"><input type="checkbox" />
+                <p>Make a list of todos to build this thing</p>
+            </div>
+            <div class="task"><input type="checkbox" />
+                <p>Build an Enterprise todos list</p>
+            </div>
+            <div class="task"><input type="checkbox" />
+                <p>Send hubot an email, get a curated list of articles based on your message like rss feeds but based on
+                    what you want that day.</p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Chat based inventory management</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Hubot monitors inbox and takes action from messages like updating inventory from bill of lading</p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Home remodeling app for people who are getting the remodeling done</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Build a chat and site for home remodelers to use for project management, lead gen and marketing...
+                </p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Local development tools</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Build a local use log aggregator to build a dashboard of all the log messages the local apps create
+                    for local development.</p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Content based marketing strategy</span></h3>
+        </div>
+    </section>
+    <footer>
+        716 Completed · <a href="#">Clear</a>
+    </footer>
+</main>
+
