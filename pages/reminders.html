@@ -1,109 +1,445 @@
 <aside id="sidebar">
-    <section class="projects">
-        <dl>
-            <dt>iCloud</dt>
-            <dd class="active">Todos <span>31</span></dd>
-            <dd>Revenue Strategy <span>9</span></dd>
+    <section class="groups">
+        <dl class="group">
+            <dt>
+                <span data-bind="name">New Group</span>
+                <button class="add">↓</button>
+                <button class="delete">x</button>
+            </dt>
+            <dd data-bind="list" class="active">
+                <span data-bind="name">Reminders</span>
+                <span data-bind="list.length" class="count">31</span>
+                <button class="delete">x</button>
+            </dd>
         </dl>
-
     </section>
-    <script>
-        function setupEditableField(element) {
-            const defaultValue = element.textContent
-            element.addEventListener('dblclick', e => {
-                e.target.contentEditable = true
-                e.target.focus()
-            }, true)
-            element.addEventListener('blur', e => {
-                e.target.contentEditable = false
-                if (e.target.textContent === '') {
-                    e.target.textContent = defaultValue
-                }
-            }, true)
-            element.addEventListener('keydown', e => {
-                if (e.key === 'Enter') {
-                    e.preventDefault()
-                    e.target.blur()
-                }
-            }, true)
-        }
-        function setupNavigableField(element) {
-            element.addEventListener('click', e => {
-                Array.from(document.querySelectorAll('.active')).forEach(active => active.classList.remove('active'))
-                e.target.parentNode.classList.add('active')
-                applySwitchToTodoList(e)
-            }, true)
-        }
-        function applySwitchToTodoList(e) {
-            console.log(e)
-        }
-        function buildTodoListRoot(name, document) {
-            const dd = document.createElement('dd')
-            const nameField = document.createElement('span')
-            const countField = document.createElement('span')
-            nameField.textContent = name
-            countField.textContent = '0'
-            setupEditableField(nameField)
-            setupNavigableField(nameField)
-            dd.appendChild(nameField)
-            dd.appendChild(countField)
-            return dd
-        }
-        function buildGroupRoot(name, document) {
-            const group = document.createElement('dl')
-            const dt = document.createElement('dt')
-            const nameField = document.createElement('span')
-            nameField.textContent = name
-            setupEditableField(nameField)
-            dt.appendChild(nameField)
-            const addTodosButton = document.createElement('button')
-            addTodosButton.innerHTML = '&#x2193;'
-            addTodosButton.className = 'add-todos'
-            addTodosButton.addEventListener('click', e => applyAddTodoListEvent(e, group, document), true)
-            dt.appendChild(addTodosButton)
-            
-            const dd = buildTodoListRoot('Todos', document)
-            group.appendChild(dt)
-            group.appendChild(dd)
-            return group
-        }
-        function applyAddTaskEvent(e) {
-            const root = e.target.closest('h3').parentElement
-            const newTask = document.createElement('div')
-            const newTaskCheckbox = document.createElement('input')
-            const newTaskText = document.createElement('p')
-            newTaskCheckbox.type = 'checkbox'
-            newTaskText.textContent = 'New Task'
-            setupEditableField(newTaskText)
-            newTask.appendChild(newTaskCheckbox)
-            newTask.appendChild(newTaskText)
-            root.appendChild(newTask)
-        }
-        function applyAddTodoListEvent(e, root, document) {
-            const newTodoListName = 'New Todo List'
-            const existingNames = Array.from(root.querySelectorAll('dd')).map(dd => dd.querySelector('span').textContent).filter(name => name.includes(newTodoListName))
-            const newTodoList = buildTodoListRoot(existingNames.length > 0 ? `${newTodoListName} copy ${existingNames.length}` : newTodoListName, document)
-            root.appendChild(newTodoList)
-            return newTodoList
-        }
-        function applyAddGroupEvent(e, root, document) {
-            const addTodosButton = document.createElement('button')
-            addTodosButton.innerHTML = '&#x2193;'
-            addTodosButton.className = 'add-todos'
-            addTodosButton.addEventListener('click', e => applyAddTodoListEvent(e, group, document), true)
-            let newGroupName = 'New Group'
-            const existingNames = Array.from(root.querySelectorAll('dt')).map(dt => dt.textContent).filter(name => name.includes(newGroupName))
-            newGroupName = existingNames.length > 0 ? `${newGroupName} copy ${existingNames.length}` : newGroupName
-            const group = buildGroupRoot(newGroupName, document)
-            root.appendChild(group)
-            return group
-        }
-    </script>
     <footer>
-        <button class="add-group" onclick="applyAddGroupEvent(event, this.closest('aside').querySelector('section'), document)">+</button>
+        <button class="add-group">+</button>
         <span>Add a Group</span>
     </footer>
 </aside>
+<script type="module">
+    import { Observable, ObservableArray, Observer } from '/js/Observable.mjs'
+    class ReminderModel extends Observable {
+        constructor(name) {
+            super()
+            this.name = name
+            this.completed = false
+        }
+    }
+    class ReminderSectionModel extends Observable {
+        constructor(sectionName) {
+            super()
+            this.sectionName = sectionName
+            this.reminders = []
+        }
+    }
+    class ListModel extends Observable {
+        #name = null
+        #isActive = false
+        #reminders = new ObservableArray()
+        #id = null
+        #shouldDelete = false
+        constructor(name) {
+            super()
+            this.#name = name
+            this.#id = crypto.randomUUID()
+        }
+        get name () {
+            return this.#name
+        }
+        set name (value) {
+            const old = this.#name
+            this.#name = value
+            this.update('name', old, value)
+        }
+        get reminders () {
+            return this.#reminders
+        }
+        get isActive () {
+            return this.#isActive
+        }
+        set isActive (value) {
+            const old = this.#isActive
+            this.#isActive = value
+            this.update('isActive', old, value)
+        }
+        get id () {
+            return this.#id
+        }
+        get shouldDelete () {
+            return this.#shouldDelete
+        }
+        set shouldDelete (value) {
+            const old = this.#shouldDelete
+            this.#shouldDelete = value
+            this.update('shouldDelete', old, value)
+        }
+    }
+    class GroupModel extends Observable {
+        #name = null
+        #lists = new ObservableArray()
+        #id = null
+        #isActive = false
+        constructor(name) {
+            super()
+            this.#id = crypto.randomUUID()
+            this.#name = name
+        }
+        get name () {
+            return this.#name
+        }
+        set name (value) {
+            const old = this.#name
+            this.#name = value
+            this.update('name', old, value)
+        }
+        get lists () {
+            return this.#lists
+        }
+        get id () {
+            return this.#id
+        }
+        get isActive () {
+            return this.#isActive
+        }
+        set isActive (value) {
+            const old = this.#isActive
+            this.#isActive = value
+            this.update('isActive', old, value)
+        }
+    }
+    class View extends Observer {
+        constructor(container, model){
+            super()
+            this.container = container
+            this.model = model
+        }
+        blur() {
+            this.container.classList.remove('active')
+        }
+        focus() {
+            this.container.classList.add('active')
+        }
+        destroy() {}
+    }
+    class SidebarView extends View {
+        constructor(container, model) {
+            super(container, model)
+            this.addGroupButton = this.container.querySelector('.add-group')
+            this.groupListView = new GroupsView(this.container.querySelector('.groups'), this.model.groups)
+            this.addGroupButton.addEventListener('click', this)
+        }
+        handleEvent(e) {
+            if (e.type === 'click') {
+                const group = new GroupModel()
+                group.name = 'New Group'
+                const existingNames = this.model.groups.filter(g => g.name.includes(group.name))
+                if (existingNames.length > 0) {
+                    group.name += ` copy ${existingNames.length}`
+                }
+                this.model.groups.push(group)
+            }
+        }
+        destroy() {
+            this.addGroupButton.removeEventListener('click', this)
+            this.groupListView.destroy()
+        }
+    }
+    class ListNameView extends View {
+        constructor(container, model) {
+            super(container, model)
+            this.name = this.container.querySelector('[data-bind="name"]').cloneNode(true)
+            this.deleteButton = this.container.querySelector('.delete').cloneNode(true)
+            this.count = this.container.querySelector('[data-bind="list.length"]').cloneNode(true)
+            this.container.innerHTML = ''
+            this.name.textContent = model.name
+            this.count.textContent = model.reminders.length
+
+            this.container.addEventListener('click', this)
+            this.container.appendChild(this.name)
+            this.container.appendChild(this.count)
+            this.container.appendChild(this.deleteButton)
+            this.model.observe('isActive', this)
+            this.deleteButton.addEventListener('click', this.delete.bind(this), true)
+            this.name.addEventListener('dblclick', this, true)
+            this.name.addEventListener('blur', this, true)
+            this.name.addEventListener('keydown', this, true)
+        }
+        get isEditing() {
+            return this.name.contentEditable === 'true'
+        }
+        delete(e){
+            this.model.shouldDelete = true
+        }
+        handleEvent(e) {
+            switch (e.type) {
+                case 'click':
+                    this.model.isActive = true
+                    break
+                case 'dblclick':
+                    this.name.contentEditable = true
+                    this.name.focus()
+                    break
+                case 'blur':
+                    this.name.contentEditable = false
+                    this.model.name = this.name.textContent
+                    break
+                case 'keydown':
+                    if (e.key === 'Enter') {
+                        this.name.contentEditable = false
+                        this.name.blur()
+                        return
+                    }
+                    break
+                default:
+                    break
+            }
+        }
+        update(key, old, value) {
+            switch (key) {
+                case 'isActive':
+                    if (value) {
+                        this.focus()
+                    } else {
+                        this.blur()
+                    }
+                    break
+                case 'push':
+                    const count = parseInt(this.count.textContent) + 1
+                    this.count.textContent = count
+                    break
+                case 'pop':
+                    const newCount = parseInt(this.count.textContent) - 1
+                    this.count.textContent = newCount
+                    break
+                default:
+                    break
+            }
+        }
+        destroy() {
+            this.model.isActive = false
+            this.model.stopObserving('name', this)
+            this.model.stopObserving('isActive', this)
+            this.model.reminders.stopObserving('push', this)
+            this.model.reminders.stopObserving('pop', this)
+            this.container.removeEventListener('click', this, true)
+            this.name.removeEventListener('dblclick', this, true)
+            this.name.removeEventListener('blur', this, true)
+            this.name.removeEventListener('keydown', this, true)            
+        }
+    }
+    class GroupView extends View {
+        constructor(container, model) {
+            super(container, model)
+            this.views = new ObservableArray()
+            this.container.id = model.id
+            this.name = this.container.querySelector('[data-bind="name"]').cloneNode(true)
+            this.addButton = this.container.querySelector('.add').cloneNode(true)
+            this.deleteButton = this.container.querySelector('.delete').cloneNode(true)
+            this.name.textContent = model.name
+            
+            this.list = this.container.querySelector('[data-bind="list"]').cloneNode(true)
+            this.container.innerHTML = ''
+
+            this.container.appendChild(this.name)
+            this.container.appendChild(this.addButton)
+            this.container.appendChild(this.deleteButton)
+            this.model.observe('name', this)
+            this.model.observe('isActive', this)
+            this.model.lists.observe('push', this)
+            this.model.lists.observe('remove', this)
+            this.model.lists.observe('pop', this)
+            if (this.model.lists.length === 0){
+                this.model.lists.push(new ListModel('Reminders'))
+            }
+            this.container.addEventListener('click', this, true)
+            this.addButton.addEventListener('click', this.handleAddButtonClicked.bind(this), true)
+            this.deleteButton.addEventListener('click', this.delete.bind(this), true)
+            this.name.addEventListener('dblclick', this, true)
+            this.name.addEventListener('blur', this, true)
+            this.name.addEventListener('keydown', this, true)
+        }
+        delete(e){
+            this.model.isActive = false
+            this.model.stopObserving('name', this)
+            this.model.lists.stopObserving('push', this)
+            this.model.lists.stopObserving('pop', this)
+            this.model.stopObserving('isActive', this)
+            this.views.forEach(view => {
+                view.destroy()
+            })
+            this.container.removeEventListener('click', this, true)
+            this.addButton.removeEventListener('click', this.handleAddButtonClicked.bind(this), true)
+            this.deleteButton.removeEventListener('click', this.delete.bind(this), true)
+            this.name.removeEventListener('dblclick', this, true)
+            this.name.removeEventListener('blur', this, true)
+            this.name.removeEventListener('keydown', this, true)            
+            this.model.destroy()
+            this.container.remove()
+        }
+        handleAddButtonClicked(e) {
+            const list = new ListModel('New List')
+            const existingNames = this.model.lists.filter(l => l.name.includes(list.name))
+            if (existingNames.length > 0) {
+                list.name += ` copy ${existingNames.length}`
+            }
+            this.model.lists.push(list)
+        }
+        blur() {
+            this.views.forEach(view => {
+                view.blur()
+            })
+        }
+        handleEvent(e) {
+            switch (e.type) {
+                case 'click':
+                    if (this.views.some(view => view.container.contains(e.target))) {
+                        this.model.isActive = true
+                    }
+                    break
+                case 'dblclick':
+                    this.name.contentEditable = true
+                    this.name.focus()
+                    break
+                case 'blur':
+                    this.name.contentEditable = false
+                    this.model.name = this.name.textContent
+                    break
+                case 'keydown':
+                    if (e.key === 'Enter') {
+                        this.name.contentEditable = false
+                        this.name.blur()
+                    }
+                    break
+                default:
+                    break
+            }
+        }
+        update(key, old, value, obj) {
+            switch (key) {
+                case 'isActive':
+                    this.views.forEach(view => view.blur())
+                    break
+                case 'name':
+                    this.name.textContent = value
+                    this.container.id = `group-${value.replace(' ', '-')}`
+                    break
+                case 'push':
+                    value.observe('shouldDelete', this)
+                    const listView = new ListNameView(this.list.cloneNode(true), value)
+                    this.views.forEach(view => {
+                        view.blur()
+                    })
+                    
+                    this.views.push(listView)
+                    listView.focus()
+                    this.container.appendChild(listView.container)
+                    break
+                case 'pop':
+                case 'remove':
+                    old.stopObserving(this)
+                    let listViewToRemove = null
+                    let index = 0
+                    this.views.forEach((view, i) => {
+                        if (view.model.id === old.id) {
+                            listViewToRemove = view
+                            index = i
+                        }
+                    })
+                    if (listViewToRemove) {
+                        listViewToRemove.destroy()
+                        this.views.remove(listViewToRemove)
+                        this.container.removeChild(listViewToRemove.container)
+                        if (index === 0 && this.views.length > 0) {
+                            this.views[0].focus()
+                        } else if (this.views.length > 0) {
+                            this.views[index - 1].focus()
+                        }
+                    }
+                    break
+                case 'shouldDelete':
+                    if (value) {
+                        this.model.lists.remove(obj)
+                    }
+                    break
+                default:
+                    break
+            }
+        }
+        destroy() {
+            this.model.stopObserving('name', this)
+            this.model.lists.stopObserving('push', this)
+            this.model.lists.stopObserving('pop', this)
+        }
+    }
+    class GroupsView extends View {
+        constructor(container, model) {
+            super(container, model)
+            this.container = container
+            this.groupTemplate = container.querySelector('.group').cloneNode(true)
+            container.querySelector('.group').remove()
+            this.groups = model
+            this.groups.observe('push', this)
+            this.groups.observe('pop', this)
+            this.views = new ObservableArray()
+            this.groups.forEach(group => {
+                group.observe('isActive', this)
+                const groupView = new GroupView(this.groupTemplate.cloneNode(true), group)
+                this.container.appendChild(groupView.container)
+                this.views.push(groupView)
+            })
+        }
+        update(key, old, value, obj) {
+            switch (key) {
+                case 'isActive':
+                    const blurring = this.views.filter(view => view.model.id !== obj.id)
+                    blurring.forEach(view => view.blur())
+                    break
+                case 'push':
+                    this.views.forEach(view => {
+                        try {
+                            view.blur()
+                        } catch (e) {
+                            console.error('Error blurring view:', e, view)
+                        }
+                    })
+                    const group = new GroupView(this.groupTemplate.cloneNode(true), value)
+                    this.container.appendChild(group.container)
+                    this.views.forEach(view => view.blur())
+                    group.focus()
+                    this.views.push(group)
+                    value.observe('isActive', this)
+                    break
+                case 'pop':
+                    old.stopObserving(this)
+                    const groupView = this.views.find(view => view.model.id === old.id)
+                    if (groupView) {
+                        groupView.destroy()
+                        this.views.remove(groupView)
+                    }
+                    break
+                default:
+                    break
+            }
+        }
+        destroy() {
+            this.groups.stopObserving('push', this)
+            this.groups.stopObserving('pop', this)
+            this.views.forEach(view => view.destroy())
+        }
+    }
+    const model = {
+        groups: new ObservableArray()
+    }
+    model.groups.push(new GroupModel('First Group'))
+    const views = new ObservableArray(new SidebarView(window.sidebar, model))
+
+    window.addEventListener('morphed', () => {
+        while(model.groups.pop()) {}
+        views.forEach(view => view.destroy())
+    })
+</script>
 <main>
     <header>
         <span>Todos</span>

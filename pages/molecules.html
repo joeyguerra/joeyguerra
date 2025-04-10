@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Status - Molecule Model</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" id="HotReloader">
+    import { HotReloader } from '/js/HotReloader.mjs'
+    const hotReloader = new HotReloader(window, io('/hot-reload'))
+  </script>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      margin-bottom: 0.5rem;
+    }
+    .summary {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
+    .molecule-visual {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 1rem;
+      align-items: center;;
+    }
+    .molecule {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+    }
+    .planning { background: #4169E1; }
+    .implementation { background: #DAA520; }
+    .release { background: #DC143C; }
+    .legend {
+      margin-top: 2rem;
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .legend-box {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .controls {
+      margin-top: 2rem;
+    }
+    .controls label {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    #upload {
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>What's the Status of the Project?</h1>
+  <p>Different aspects of the software development dynamically interplay over time, all in service of accomplishing a customer’s job-to-be-done</p>
+  <div class="summary">
+    <p><strong>Overview:</strong> This snapshot represents the current distribution of energy and focus across different modes of work in the project: planning, implementation, and release. Each dot is like a molecule representing one unit of effort or attention.</p>
+
+    <div class="controls">
+      <label>Planning: <input type="range" id="planningRange" min="0" max="100" value="25"></label>
+      <label>Implementation: <input type="range" id="implementationRange" min="0" max="100" value="50"></label>
+      <label>Code/Release: <input type="range" id="releaseRange" min="0" max="100" value="25" readonly></label>
+    </div>
+
+    <div id="upload">
+      <label for="jiraFile">Upload JIRA JSON Export:</label>
+      <input type="file" id="jiraFile" accept=".json" />
+    </div>
+
+    <div class="molecule-visual" id="moleculeGrid"></div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-box planning"></div>Planning & Designing</div>
+      <div class="legend-item"><div class="legend-box implementation"></div>Implementation</div>
+      <div class="legend-item"><div class="legend-box release"></div>Code/Release</div>
+    </div>
+  </div>
+
+  <script>
+    const TOTAL = 200;
+    const grid = document.getElementById("moleculeGrid");
+    const planningRange = document.getElementById("planningRange");
+    const implementationRange = document.getElementById("implementationRange");
+    const releaseRange = document.getElementById("releaseRange");
+    const jiraFile = document.getElementById("jiraFile");
+
+    let sortedIssues = []; // new global variable to store sorted issues
+
+    function updateReleaseValue() {
+      const p = parseInt(planningRange.value);
+      const i = parseInt(implementationRange.value);
+      let r = 100 - p - i;
+      r = Math.max(0, Math.min(r, 100));
+      releaseRange.value = r;
+    }
+
+    function updateMolecules() {
+      // if a JIRA JSON export has been loaded, order dots by timestamp
+      if (sortedIssues.length > 0) {
+        grid.innerHTML = "";
+        // Compute durations in minutes for each issue
+        const durations = sortedIssues.map(issue => {
+          const startTime = new Date(issue.start);
+          const endTime = new Date(issue.completed);
+          return (endTime - startTime) / 60000;
+        });
+        const minDiff = Math.min(...durations);
+        const maxDiff = Math.max(...durations);
+        const baseSize = 10;
+        const maxSize = 100;
+        sortedIssues.forEach((issue, index) => {
+          const text = `${issue.fields.summary || ''} ${issue.fields.description || ''}`;
+          const category = inferCategory(text) || "planning";
+          const el = document.createElement("div");
+          el.className = `molecule ${category}`;
+          const diffMinutes = durations[index];
+          let size;
+          if (maxDiff === minDiff) {
+            size = baseSize;
+          } else {
+            size = baseSize + ((diffMinutes - minDiff) / (maxDiff - minDiff)) * (maxSize - baseSize);
+          }
+          el.style.width = `${size}px`;
+          el.style.height = `${size}px`;
+          grid.appendChild(el);
+        });
+        return;
+      }
+      // ...existing code for slider-based random distribution...
+      updateReleaseValue();
+      const planning = parseInt(planningRange.value);
+      const implementation = parseInt(implementationRange.value);
+      const release = parseInt(releaseRange.value);
+      const total = planning + implementation + release;
+      const distribution = [
+        ...Array(Math.round(TOTAL * (planning / total))).fill("planning"),
+        ...Array(Math.round(TOTAL * (implementation / total))).fill("implementation"),
+        ...Array(Math.round(TOTAL * (release / total))).fill("release")
+      ];
+      for (let i = distribution.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [distribution[i], distribution[j]] = [distribution[j], distribution[i]];
+      }
+      grid.innerHTML = "";
+      distribution.forEach(type => {
+        const el = document.createElement("div");
+        el.className = `molecule ${type}`;
+        grid.appendChild(el);
+      });
+    }
+
+    function inferCategory(text) {
+      if (/design|plan|requirement/i.test(text)) return 'planning';
+      if (/implement|develop|feature|build/i.test(text)) return 'implementation';
+      if (/test|release|deploy|merge|qa|bug/i.test(text)) return 'release';
+      return null;
+    }
+
+    jiraFile.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const data = JSON.parse(e.target.result, function (key, value) {
+            if (['timestamp', 'start', 'completed'].includes(key)) {
+              return new Date(value);
+            }
+            return value;
+          });
+          const issues = data.issues || [];
+          let planning = 0, implementation = 0, release = 0;
+
+          issues.forEach(issue => {
+            const text = `${issue.fields.summary || ''} ${issue.fields.description || ''}`;
+            const category = inferCategory(text);
+            if (category === 'planning') planning++;
+            else if (category === 'implementation') implementation++;
+            else if (category === 'release') release++;
+          });
+
+          const total = planning + implementation + release;
+          if (total > 0) {
+            planningRange.value = Math.round((planning / total) * 100);
+            implementationRange.value = Math.round((implementation / total) * 100);
+            releaseRange.value = Math.round((release / total) * 100);
+          }
+
+          // Sort issues by timestamp (assumes timestamp is a valid ISO string)
+          sortedIssues = issues.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+          updateMolecules();
+        } catch (err) {
+          alert("Invalid JSON file. Please upload a valid JIRA JSON export.");
+        }
+        jiraFile.value = ""; // clear file field after handling
+      };
+      reader.readAsText(file);
+    });
+
+    planningRange.addEventListener("input", updateMolecules);
+    implementationRange.addEventListener("input", updateMolecules);
+
+    updateMolecules();
+  </script>
+</body>
+</html>
