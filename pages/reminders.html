@@ -18,20 +18,127 @@
         <span>Add a Group</span>
     </footer>
 </aside>
+<main id="remindersView">
+    <header>
+        <span class="title">Reminders</span>
+        <span class="count">31</span>
+    </header>
+    <section>
+        <div class="projects">
+            <h3>
+                <span class="title">Joey G Project management</span>
+                <button class="add">↓</button>
+            </h3>
+            <div class="task"><input type="checkbox" />
+                <p>Conceptualize what a project management tool that modeled your process would look like</p>
+            </div>
+            <div class="task"><input type="checkbox" />
+                <p>Make a list of todos to build this thing</p>
+            </div>
+            <div class="task"><input type="checkbox" />
+                <p>Build an Enterprise todos list</p>
+            </div>
+            <div class="task"><input type="checkbox" />
+                <p>Send hubot an email, get a curated list of articles based on your message like rss feeds but based on
+                    what you want that day.</p>
+            </div>
+        </div>
+        <div class="projects">
+            <h3>
+                <span>Chat based inventory management</span>
+                <button class="add">↓</button>
+            </h3>
+            <div class="task"><input type="checkbox" />
+                <p>Hubot monitors inbox and takes action from messages like updating inventory from bill of lading</p>
+            </div>
+        </div>
+        <div class="projects">
+            <h3>
+                <span>Home remodeling app for people who are getting the remodeling done</span>
+                <button class="add">↓</button>
+            </h3>
+            <div class="task"><input type="checkbox" />
+                <p>Build a chat and site for home remodelers to use for project management, lead gen and marketing...</p>
+            </div>
+        </div>
+        <div class="projects">
+            <h3>
+                <span>Local development tools</span>
+                <button class="add">↓</button>
+            </h3>
+            <div class="task"><input type="checkbox" />
+                <p>Build a local use log aggregator to build a dashboard of all the log messages the local apps create for local development.</p>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <span class="count">716</span> Completed · <button class="clear">Clear</button>
+    </footer>
+</main>
+
+
 <script type="module">
     import { Observable, ObservableArray, Observer } from '/js/Observable.mjs'
     class ReminderModel extends Observable {
+        #id = null
+        #name = null
+        #shouldDelete = false
         constructor(name) {
             super()
-            this.name = name
-            this.completed = false
+            this.#id = crypto.randomUUID()
+            this.#name = name
+        }
+        get id () {
+            return this.#id
+        }
+        get name () {
+            return this.#name
+        }
+        set name (value) {
+            const old = this.#name
+            this.#name = value
+            this.update('name', old, value)
+        }
+        get shouldDelete () {
+            return this.#shouldDelete
+        }
+        set shouldDelete (value) {
+            const old = this.#shouldDelete
+            this.#shouldDelete = value
+            this.update('shouldDelete', old, value)
         }
     }
     class ReminderSectionModel extends Observable {
+        #sectionName = null
+        #reminders = new ObservableArray()
+        #shouldDelete = false
+        #id = null
         constructor(sectionName) {
             super()
-            this.sectionName = sectionName
-            this.reminders = []
+            this.#sectionName = sectionName
+            this.#id = crypto.randomUUID()
+        }
+        get sectionName () {
+            return this.#sectionName
+        }
+        set sectionName (value) {
+            const old = this.#sectionName
+            this.#sectionName = value
+            this.update('sectionName', old, value)
+        }
+        get reminders () {
+            return this.#reminders
+        }
+        get shouldDelete () {
+            return this.#shouldDelete
+        }
+        set shouldDelete (value) {
+            const old = this.#shouldDelete
+            this.#shouldDelete = value
+            this.update('shouldDelete', old, value)
+        }
+        get id () {
+            return this.#id
         }
     }
     class ListModel extends Observable {
@@ -129,6 +236,7 @@
             this.addGroupButton = this.container.querySelector('.add-group')
             this.groupListView = new GroupsView(this.container.querySelector('.groups'), this.model.groups)
             this.addGroupButton.addEventListener('click', this)
+            console.log('sidebar model', this.model)
         }
         handleEvent(e) {
             if (e.type === 'click') {
@@ -238,7 +346,6 @@
             this.addButton = this.container.querySelector('.add').cloneNode(true)
             this.deleteButton = this.container.querySelector('.delete').cloneNode(true)
             this.name.textContent = model.name
-            
             this.list = this.container.querySelector('[data-bind="list"]').cloneNode(true)
             this.container.innerHTML = ''
 
@@ -259,6 +366,8 @@
             this.name.addEventListener('dblclick', this, true)
             this.name.addEventListener('blur', this, true)
             this.name.addEventListener('keydown', this, true)
+            this.model.isActive = true
+            console.log(this.model)
         }
         delete(e){
             this.model.isActive = false
@@ -305,6 +414,7 @@
                 case 'blur':
                     this.name.contentEditable = false
                     this.model.name = this.name.textContent
+                    this.model.isActive = false
                     break
                 case 'keydown':
                     if (e.key === 'Enter') {
@@ -319,7 +429,10 @@
         update(key, old, value, obj) {
             switch (key) {
                 case 'isActive':
-                    this.views.forEach(view => view.blur())
+                    console.log('is active = ', old, value)
+                    if (value) {
+                        this.views.forEach(view => view.blur())
+                    }
                     break
                 case 'name':
                     this.name.textContent = value
@@ -429,6 +542,78 @@
             this.views.forEach(view => view.destroy())
         }
     }
+    class RemindersTitleView extends View {
+        constructor(container, model){
+            super(container, model)
+            this.title = this.container.querySelector('.title').cloneNode(true)
+            this.count = this.container.querySelector('.count').cloneNode(true)
+            this.container.innerHTML = ''
+            this.title.textContent = model.name
+            this.count.textContent = model.reminders.length
+            this.container.appendChild(this.title)
+            this.container.appendChild(this.count)
+        }
+    }
+    class RemindersProjectView extends View {
+        constructor(container, model) {
+            super(container, model)
+            this.title = this.container.querySelector('.title').cloneNode(true)
+            this.count = this.container.querySelector('.count').cloneNode(true)
+            this.container.innerHTML = ''
+            this.title.textContent = model.name
+            this.count.textContent = model.reminders.length
+            this.container.appendChild(this.title)
+            this.container.appendChild(this.count)
+        }
+        update(key, old, value) {
+            switch (key) {
+                case 'name':
+                    this.title.textContent = value
+                    break
+                case 'push':
+                    const count = parseInt(this.count.textContent) + 1
+                    this.count.textContent = count
+                    break
+                case 'pop':
+                    const newCount = parseInt(this.count.textContent) - 1
+                    this.count.textContent = newCount
+                    break
+                default:
+                    break
+            }
+        }
+        destroy() {
+            this.model.stopObserving('name', this)
+            this.model.stopObserving('push', this)
+            this.model.stopObserving('pop', this)
+        }
+
+        handleEvent(e) {
+            switch (e.type) {
+                case 'click':
+                    this.model.isActive = true
+                    break
+                case 'dblclick':
+                    this.name.contentEditable = true
+                    this.name.focus()
+                    break
+                case 'blur':
+                    this.name.contentEditable = false
+                    this.model.name = this.name.textContent
+                    break
+                case 'keydown':
+                    if (e.key === 'Enter') {
+                        this.name.contentEditable = false
+                        this.name.blur()
+                        return
+                    }
+                    break
+                default:
+                    break
+            }
+        }
+    }
+
     const model = {
         groups: new ObservableArray()
     }
@@ -440,66 +625,3 @@
         views.forEach(view => view.destroy())
     })
 </script>
-<main>
-    <header>
-        <span>Todos</span>
-        <span>31</span>
-    </header>
-    <section>
-        <div class="category">
-            <h3><button class="add-task">+</button><span>Business directory</span></h3>
-            <div class="task"><input type="checkbox" />
-                <p>Create a list of industries and common challenges</p>
-            </div>
-        </div>
-        <div class="category">
-            <h3><button class="add-task">+</button><span>Inbox to Todos</span></h3>
-            <div class="task"><input type="checkbox" />
-                <p>Make hubot read an inbox</p>
-            </div>
-        </div>
-        <div class="category">
-            <h3><button class="add-task">+</button><span>Joey G Project management</span></h3>
-            <div class="task"><input type="checkbox" />
-                <p>Conceptualize what a project management tool that modeled your process would look like</p>
-            </div>
-            <div class="task"><input type="checkbox" />
-                <p>Make a list of todos to build this thing</p>
-            </div>
-            <div class="task"><input type="checkbox" />
-                <p>Build an Enterprise todos list</p>
-            </div>
-            <div class="task"><input type="checkbox" />
-                <p>Send hubot an email, get a curated list of articles based on your message like rss feeds but based on
-                    what you want that day.</p>
-            </div>
-        </div>
-        <div class="category">
-            <h3><button class="add-task">+</button><span>Chat based inventory management</span></h3>
-            <div class="task"><input type="checkbox" />
-                <p>Hubot monitors inbox and takes action from messages like updating inventory from bill of lading</p>
-            </div>
-        </div>
-        <div class="category">
-            <h3><button class="add-task">+</button><span>Home remodeling app for people who are getting the remodeling done</span></h3>
-            <div class="task"><input type="checkbox" />
-                <p>Build a chat and site for home remodelers to use for project management, lead gen and marketing...
-                </p>
-            </div>
-        </div>
-        <div class="category">
-            <h3><button class="add-task">+</button><span>Local development tools</span></h3>
-            <div class="task"><input type="checkbox" />
-                <p>Build a local use log aggregator to build a dashboard of all the log messages the local apps create
-                    for local development.</p>
-            </div>
-        </div>
-        <div class="category">
-            <h3><button class="add-task">+</button><span>Content based marketing strategy</span></h3>
-        </div>
-    </section>
-    <footer>
-        716 Completed · <a href="#">Clear</a>
-    </footer>
-</main>
-

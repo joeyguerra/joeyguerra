@@ -1,10 +1,4 @@
-import { DatabaseSync } from 'node:sqlite'
-import { dirname } from 'node:path'
-import { utimes } from 'node:fs/promises'
-import { fileURLToPath } from 'node:url'
 import { Page } from 'juphjacs/src/Page.mjs'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
 
 class BitcoinTrackerPage extends Page {
     constructor(rootFolder, filePath, template, delegate) {
