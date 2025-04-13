@@ -18,6 +18,70 @@
         <span>Add a Group</span>
     </footer>
 </aside>
+<main>
+    <header>
+        <span class="title">Todos</span>
+        <span class="count">31</span>
+    </header>
+    <section>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Business directory</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Create a list of industries and common challenges</p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Inbox to Todos</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Make hubot read an inbox</p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Joey G Project management</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Conceptualize what a project management tool that modeled your process would look like</p>
+            </div>
+            <div class="task"><input type="checkbox" />
+                <p>Make a list of todos to build this thing</p>
+            </div>
+            <div class="task"><input type="checkbox" />
+                <p>Build an Enterprise todos list</p>
+            </div>
+            <div class="task"><input type="checkbox" />
+                <p>Send hubot an email, get a curated list of articles based on your message like rss feeds but based on
+                    what you want that day.</p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Chat based inventory management</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Hubot monitors inbox and takes action from messages like updating inventory from bill of lading</p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Home remodeling app for people who are getting the remodeling done</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Build a chat and site for home remodelers to use for project management, lead gen and marketing...
+                </p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Local development tools</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Build a local use log aggregator to build a dashboard of all the log messages the local apps create
+                    for local development.</p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Content based marketing strategy</span></h3>
+        </div>
+    </section>
+    <footer>
+        716 Completed · <a href="#">Clear</a>
+    </footer>
+</main>
+
+
 <script type="module">
     import { Observable, ObservableArray, Observer } from '/js/Observable.mjs'
     class ReminderModel extends Observable {
@@ -124,11 +188,19 @@
         destroy() {}
     }
     class SidebarView extends View {
-        constructor(container, model) {
+        constructor(container, window, model) {
             super(container, model)
             this.addGroupButton = this.container.querySelector('.add-group')
-            this.groupListView = new GroupsView(this.container.querySelector('.groups'), this.model.groups)
+            this.groupListView = new GroupsView(this.container.querySelector('.groups'), this.model)
             this.addGroupButton.addEventListener('click', this)
+            this.model.groups.forEach(group => {
+                group.observe('isActive', this)
+            })
+            this.reminderViews = new ObservableArray()
+            this.window = window
+            this.reminderViewTemplate = this.window.document.querySelector('main').cloneNode(true)
+            this.window.document.querySelector('main').remove()
+            this.model.observe('selectedItem', this)
         }
         handleEvent(e) {
             if (e.type === 'click') {
@@ -138,7 +210,37 @@
                 if (existingNames.length > 0) {
                     group.name += ` copy ${existingNames.length}`
                 }
+                group.observe('isActive', this)
                 this.model.groups.push(group)
+            }
+        }
+        update(key, old, value, obj) {
+            switch (key) {
+                case 'selectedItem':
+                    console.log('sidebar', key, value)
+                    break
+                case 'isActive':
+                    if (obj.isActive) {
+                        const listModel = obj.lists.find(list => list.isActive)
+                        const view = this.reminderViews.find(view => view.model.id === listModel.id)
+                        if (view) {
+                            this.reminderViews.forEach(v => {
+                                if (v === view) {
+                                    v.focus()
+                                } else {
+                                    v.blur()
+                                }
+                            })
+                        } else {
+                            const reminderView = new RemindersView(this.reminderViewTemplate.cloneNode(true), listModel)
+                            this.reminderViews.push(reminderView)
+                            this.window.document.querySelector('#sidebar').insertAdjacentElement('afterend', reminderView.container)
+                            listModel.isActive = true
+                        }
+                    }
+                    break
+                default:
+                    break
             }
         }
         destroy() {
@@ -156,11 +258,13 @@
             this.name.textContent = model.name
             this.count.textContent = model.reminders.length
 
-            this.container.addEventListener('click', this)
             this.container.appendChild(this.name)
             this.container.appendChild(this.count)
             this.container.appendChild(this.deleteButton)
+            
             this.model.observe('isActive', this)
+
+            this.container.addEventListener('click', this, true)
             this.deleteButton.addEventListener('click', this.delete.bind(this), true)
             this.name.addEventListener('dblclick', this, true)
             this.name.addEventListener('blur', this, true)
@@ -184,11 +288,13 @@
                 case 'blur':
                     this.name.contentEditable = false
                     this.model.name = this.name.textContent
+                    this.model.isActive = false
                     break
                 case 'keydown':
                     if (e.key === 'Enter') {
                         this.name.contentEditable = false
                         this.name.blur()
+                        this.model.isActive = true
                         return
                     }
                     break
@@ -196,7 +302,7 @@
                     break
             }
         }
-        update(key, old, value) {
+        update(key, old, value, obj) {
             switch (key) {
                 case 'isActive':
                     if (value) {
@@ -246,30 +352,27 @@
             this.container.appendChild(this.addButton)
             this.container.appendChild(this.deleteButton)
             this.model.observe('name', this)
-            this.model.observe('isActive', this)
             this.model.lists.observe('push', this)
             this.model.lists.observe('remove', this)
             this.model.lists.observe('pop', this)
-            if (this.model.lists.length === 0){
-                this.model.lists.push(new ListModel('Reminders'))
-            }
-            this.container.addEventListener('click', this, true)
             this.addButton.addEventListener('click', this.handleAddButtonClicked.bind(this), true)
             this.deleteButton.addEventListener('click', this.delete.bind(this), true)
             this.name.addEventListener('dblclick', this, true)
             this.name.addEventListener('blur', this, true)
             this.name.addEventListener('keydown', this, true)
+            if (this.model.lists.length === 0){
+                const listModel = new ListModel('Reminders')
+                this.model.lists.push(listModel)
+            }
         }
         delete(e){
             this.model.isActive = false
             this.model.stopObserving('name', this)
             this.model.lists.stopObserving('push', this)
             this.model.lists.stopObserving('pop', this)
-            this.model.stopObserving('isActive', this)
             this.views.forEach(view => {
                 view.destroy()
             })
-            this.container.removeEventListener('click', this, true)
             this.addButton.removeEventListener('click', this.handleAddButtonClicked.bind(this), true)
             this.deleteButton.removeEventListener('click', this.delete.bind(this), true)
             this.name.removeEventListener('dblclick', this, true)
@@ -293,11 +396,6 @@
         }
         handleEvent(e) {
             switch (e.type) {
-                case 'click':
-                    if (this.views.some(view => view.container.contains(e.target))) {
-                        this.model.isActive = true
-                    }
-                    break
                 case 'dblclick':
                     this.name.contentEditable = true
                     this.name.focus()
@@ -319,7 +417,12 @@
         update(key, old, value, obj) {
             switch (key) {
                 case 'isActive':
-                    this.views.forEach(view => view.blur())
+                    this.model.lists.filter(list => list !== obj).forEach(list => {
+                        list.stopObserving(this)
+                        list.isActive = false
+                        list.observe('isActive', this)
+                    })
+                    this.model.isActive = this.views.some(view => view.model.isActive)
                     break
                 case 'name':
                     this.name.textContent = value
@@ -327,18 +430,17 @@
                     break
                 case 'push':
                     value.observe('shouldDelete', this)
+                    value.observe('isActive', this)
                     const listView = new ListNameView(this.list.cloneNode(true), value)
-                    this.views.forEach(view => {
-                        view.blur()
-                    })
-                    
                     this.views.push(listView)
-                    listView.focus()
                     this.container.appendChild(listView.container)
+                    value.isActive = true
                     break
                 case 'pop':
                 case 'remove':
-                    old.stopObserving(this)
+                    if(old) {
+                        old.stopObserving(this)
+                    }
                     let listViewToRemove = null
                     let index = 0
                     this.views.forEach((view, i) => {
@@ -379,7 +481,7 @@
             this.container = container
             this.groupTemplate = container.querySelector('.group').cloneNode(true)
             container.querySelector('.group').remove()
-            this.groups = model
+            this.groups = model.groups
             this.groups.observe('push', this)
             this.groups.observe('pop', this)
             this.views = new ObservableArray()
@@ -393,26 +495,36 @@
         update(key, old, value, obj) {
             switch (key) {
                 case 'isActive':
-                    const blurring = this.views.filter(view => view.model.id !== obj.id)
-                    blurring.forEach(view => view.blur())
+                    const unSelectedGroups = this.views.filter(view => view.model !== obj)
+                    unSelectedGroups.forEach(view => {
+                        view.model.stopObserving(this)
+                    })
+                    unSelectedGroups.forEach(view => {
+                        view.views.forEach(v => v.model.isActive = false)
+                    })
+                    this.views.forEach(view => view.model.observe('isActive', this))
                     break
                 case 'push':
                     this.views.forEach(view => {
-                        try {
-                            view.blur()
-                        } catch (e) {
-                            console.error('Error blurring view:', e, view)
-                        }
+                        view.model.stopObserving(this)
+                    })
+                    this.views.forEach(view => {
+                        view.model.isActive = false
+                    })
+                    this.views.forEach(view => {
+                        view.model.observe('isActive', this)
                     })
                     const group = new GroupView(this.groupTemplate.cloneNode(true), value)
                     this.container.appendChild(group.container)
                     this.views.forEach(view => view.blur())
-                    group.focus()
                     this.views.push(group)
+                    value.isActive = true
                     value.observe('isActive', this)
                     break
                 case 'pop':
-                    old.stopObserving(this)
+                    if(old) {
+                        old.stopObserving(this)
+                    }
                     const groupView = this.views.find(view => view.model.id === old.id)
                     if (groupView) {
                         groupView.destroy()
@@ -429,77 +541,42 @@
             this.views.forEach(view => view.destroy())
         }
     }
+
+    class RemindersView extends View {
+        constructor(container, model) {
+            super(container, model)
+            this.model.observe('isActive', this)
+            this.title = this.container.querySelector('header .title')
+            this.count = this.container.querySelector('header .count')
+            this.title.textContent = this.model.name
+            this.count.textContent = this.model.reminders.length
+        }
+        blur() {
+            this.container.style.display = 'none'
+        }
+        focus() {
+            this.container.style.display = 'block'
+        }
+        update(key, old, value, obj) {
+            console.log('reminders view update', key, old, value, obj)
+            switch (key) {
+                case 'isActive':
+                    break
+                default:
+                    break
+            }
+        }
+    }
+
     const model = {
-        groups: new ObservableArray()
+        groups: new ObservableArray(),
+        selectedItem: null
     }
     model.groups.push(new GroupModel('First Group'))
-    const views = new ObservableArray(new SidebarView(window.sidebar, model))
+    const views = new ObservableArray(new SidebarView(window.sidebar, window, model))
 
     window.addEventListener('morphed', () => {
         while(model.groups.pop()) {}
         views.forEach(view => view.destroy())
     })
 </script>
-<main>
-    <header>
-        <span>Todos</span>
-        <span>31</span>
-    </header>
-    <section>
-        <div class="category">
-            <h3><button class="add-task">+</button><span>Business directory</span></h3>
-            <div class="task"><input type="checkbox" />
-                <p>Create a list of industries and common challenges</p>
-            </div>
-        </div>
-        <div class="category">
-            <h3><button class="add-task">+</button><span>Inbox to Todos</span></h3>
-            <div class="task"><input type="checkbox" />
-                <p>Make hubot read an inbox</p>
-            </div>
-        </div>
-        <div class="category">
-            <h3><button class="add-task">+</button><span>Joey G Project management</span></h3>
-            <div class="task"><input type="checkbox" />
-                <p>Conceptualize what a project management tool that modeled your process would look like</p>
-            </div>
-            <div class="task"><input type="checkbox" />
-                <p>Make a list of todos to build this thing</p>
-            </div>
-            <div class="task"><input type="checkbox" />
-                <p>Build an Enterprise todos list</p>
-            </div>
-            <div class="task"><input type="checkbox" />
-                <p>Send hubot an email, get a curated list of articles based on your message like rss feeds but based on
-                    what you want that day.</p>
-            </div>
-        </div>
-        <div class="category">
-            <h3><button class="add-task">+</button><span>Chat based inventory management</span></h3>
-            <div class="task"><input type="checkbox" />
-                <p>Hubot monitors inbox and takes action from messages like updating inventory from bill of lading</p>
-            </div>
-        </div>
-        <div class="category">
-            <h3><button class="add-task">+</button><span>Home remodeling app for people who are getting the remodeling done</span></h3>
-            <div class="task"><input type="checkbox" />
-                <p>Build a chat and site for home remodelers to use for project management, lead gen and marketing...
-                </p>
-            </div>
-        </div>
-        <div class="category">
-            <h3><button class="add-task">+</button><span>Local development tools</span></h3>
-            <div class="task"><input type="checkbox" />
-                <p>Build a local use log aggregator to build a dashboard of all the log messages the local apps create
-                    for local development.</p>
-            </div>
-        </div>
-        <div class="category">
-            <h3><button class="add-task">+</button><span>Content based marketing strategy</span></h3>
-        </div>
-    </section>
-    <footer>
-        716 Completed · <a href="#">Clear</a>
-    </footer>
-</main>
-

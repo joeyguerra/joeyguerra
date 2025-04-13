@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reminders App - MVC with KVO</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" id="HotReloader">
+        import { HotReloader } from '/js/HotReloader.mjs'
+        const hotReloader = new HotReloader(window, io('/hot-reload'))
+    </script>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            height: 100vh;
+            margin: 0;
+        }
+
+        aside {
+            width: 250px;
+            background: #f2f2f2;
+            border-right: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            background: #fff;
+            overflow-y: auto;
+        }
+
+        .group,
+        .list,
+        .section,
+        .reminder {
+            margin-bottom: 8px;
+            padding: 6px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .group-header,
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-inline {
+            width: 100%;
+            margin-top: 4px;
+            padding: 6px;
+            font-size: 14px;
+        }
+
+        .tree ul {
+            list-style: none;
+            padding-left: 15px;
+        }
+
+        .tree li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 4px;
+            min-height: 32px;
+            transition: background 0.2s ease;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: red;
+            font-size: 14px;
+        }
+
+        .dragging {
+            opacity: 0.5;
+            transform: scale(1.02);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .drag-ghost {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.9;
+            background: transparent;
+            list-style: none;
+            list-style-position: inside;
+        }
+
+        li.phantom-slot {
+            height: 1px;
+            line-height: 1px;
+            min-height: 1px;
+            background: #e6f0ff;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            position: relative;
+            display: block;
+            width: 100%;
+            border-bottom: solid 1px #007aff;
+        }
+
+        li.phantom-slot::before {
+            content: 'o';
+            display: inline-block;
+            color: #007aff;
+            margin-left: -9px;
+        }
+
+        .phantom-slot {
+            height: 40px;
+            background: #e6f0ff;
+            margin: 4px 0;
+            border-radius: 4px;
+        }
+        
+        /* Animation related styles */
+        .animated-move {
+            transition: transform 0.3s ease-out;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .animate-away {
+            animation: fadeout 0.3s ease-out forwards;
+        }
+        
+        .animate-in {
+            animation: fadein 0.3s ease-out forwards;
+        }
+        
+        @keyframes fadeout {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.8); }
+        }
+        
+        @keyframes fadein {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+
+<body>
+    <aside>
+        <input id="newGroupInput" class="input-inline" placeholder="New group name" />
+        <div id="groupContainer" class="tree"></div>
+    </aside>
+    <main>
+        <div id="mainContent"></div>
+    </main>
+
+    <script type="module">
+        class KVOModel {
+            constructor(data = {}) {
+                this.data = data
+                this.observers = {}
+            }
+
+            get(key) {
+                return this.data[key]
+            }
+
+            set(key, value) {
+                const oldValue = this.data[key]
+                this.data[key] = value
+                if (this.observers[key]) {
+                    this.observers[key].forEach(cb => cb(value, oldValue))
+                }
+            }
+
+            observe(key, cb) {
+                if (!this.observers[key]) this.observers[key] = []
+                this.observers[key].push(cb)
+            }
+        }
+
+        class Reminder {
+            constructor(text) {
+                this.text = text
+                this.completed = false
+                this.createdAt = new Date()
+                this.completedAt = null
+            }
+
+            toggle() {
+                this.completed = !this.completed
+                this.completedAt = this.completed ? new Date() : null
+            }
+        }
+
+        class ReminderList {
+            constructor(title) {
+                this.title = title
+                this.sections = []
+            }
+
+            addSection(name) {
+                const section = new KVOModel({ name, reminders: [] })
+                this.sections.push(section)
+                return section
+            }
+        }
+
+        class Group {
+            constructor(name) {
+                this.name = name
+                this.lists = []
+            }
+
+            addList(name) {
+                const list = new ReminderList(name)
+                this.lists.push(list)
+                return list
+            }
+        }
+
+        const appState = {
+            groups: [],
+            selectedList: null,
+            lastActiveGroupIndex: null // Track the last active group
+        }
+
+        let isDraggingListItem = false
+        let globalDragData = {
+            currentGroup: null,
+            dragIndex: null
+        }
+
+        const groupContainer = document.getElementById('groupContainer')
+        const mainContent = document.getElementById('mainContent')
+
+        function renderSidebar() {
+            groupContainer.innerHTML = ''
+            appState.groups.forEach((group, groupIndex) => {
+                const groupEl = document.createElement('div')
+                groupEl.className = 'group'
+                groupEl.draggable = true
+                groupEl.dataset.index = groupIndex
+
+                groupEl.addEventListener('dragstart', (e) => {
+                    if (isDraggingListItem) {
+                        e.preventDefault()
+                        return
+                    }
+                    e.dataTransfer.setData('text/plain', groupIndex)
+                })
+
+                groupEl.addEventListener('dragover', (e) => {
+                    if (isDraggingListItem) return
+                    if (e.target !== groupEl) return
+                    e.preventDefault()
+                    groupEl.style.opacity = 0.5
+                })
+
+                groupEl.addEventListener('dragleave', () => {
+                    if (isDraggingListItem) return
+                    groupEl.style.opacity = 1.0
+                })
+
+                groupEl.addEventListener('drop', (e) => {
+                    if (isDraggingListItem) return
+                    if (e.target !== groupEl) return
+                    e.preventDefault()
+                    groupEl.style.opacity = 1.0
+                    const fromIndex = parseInt(e.dataTransfer.getData('text/plain'))
+                    const toIndex = parseInt(groupEl.dataset.index)
+                    if (fromIndex !== toIndex) {
+                        const moved = appState.groups.splice(fromIndex, 1)[0]
+                        appState.groups.splice(toIndex, 0, moved)
+                        renderSidebar()
+                    }
+                })
+
+                const header = document.createElement('div')
+                header.className = 'group-header'
+                header.innerHTML = `<strong>${group.name}</strong>`
+                const delBtn = document.createElement('button')
+                delBtn.textContent = '🗑'
+                delBtn.onclick = () => {
+                    appState.groups.splice(groupIndex, 1)
+                    renderSidebar()
+                }
+                header.appendChild(delBtn)
+
+                const listInput = document.createElement('input')
+                listInput.className = 'input-inline'
+                listInput.placeholder = 'New list name'
+                listInput.onkeypress = (e) => {
+                    if (e.key === 'Enter') {
+                        // Track which group is currently active
+                        appState.lastActiveGroupIndex = groupIndex
+                        
+                        group.addList(listInput.value)
+                        listInput.value = ''
+                        renderSidebar()
+                    }
+                }
+                
+                // Mark this input when it receives focus
+                listInput.onfocus = () => {
+                    appState.lastActiveGroupIndex = groupIndex
+                }
+
+                const listEl = document.createElement('ul')
+                group.lists.forEach((list, listIndex) => {
+                    const li = document.createElement('li')
+                    li.draggable = true
+                    li.dataset.index = listIndex
+
+                    let ghostEl = null
+                    let dragIndex = null
+                    let currentGroup = null
+                    let isDragging = false
+                    let startX, startY
+
+                    li.addEventListener('mousedown', (e) => {
+                        e.preventDefault()
+                        startX = e.pageX
+                        startY = e.pageY
+                        
+                        const move = (e) => {
+                            // Only start dragging if mouse has moved significantly
+                            if (!isDragging) {
+                                const deltaX = Math.abs(e.pageX - startX)
+                                const deltaY = Math.abs(e.pageY - startY)
+                                
+                                // If moved more than 3px, start dragging
+                                if (deltaX > 3 || deltaY > 3) {
+                                    isDragging = true
+                                    isDraggingListItem = true
+                                    
+                                    // Store drag data globally for access during drop
+                                    globalDragData.dragIndex = listIndex
+                                    globalDragData.currentGroup = group
+                                    
+                                    // Clone element for drag ghost
+                                    ghostEl = li.cloneNode(true)
+                                    ghostEl.classList.add('drag-ghost')
+                                    ghostEl.style.left = `${e.pageX}px`
+                                    ghostEl.style.top = `${e.pageY}px`
+                                    document.body.appendChild(ghostEl)
+                                    
+                                    // Add visual feedback
+                                    li.classList.add('dragging')
+                                }
+                            }
+                            
+                            if (isDragging && ghostEl) {
+                                ghostEl.style.left = `${e.pageX}px`
+                                ghostEl.style.top = `${e.pageY}px`
+                                
+                                // Update phantom slot position based on current mouse position
+                                document.querySelectorAll('.phantom-slot').forEach(el => el.remove())
+                                
+                                // Find closest list item to cursor for drop indication
+                                const allListItems = document.querySelectorAll('.tree li')
+                                let closestItem = null
+                                let closestDistance = Infinity
+                                
+                                allListItems.forEach(item => {
+                                    const rect = item.getBoundingClientRect()
+                                    const itemMiddleY = rect.top + rect.height / 2
+                                    const distance = Math.abs(e.clientY - itemMiddleY)
+                                    
+                                    if (distance < closestDistance) {
+                                        closestDistance = distance
+                                        closestItem = item
+                                    }
+                                })
+                                
+                                if (closestItem) {
+                                    const slot = document.createElement('li')
+                                    slot.className = 'phantom-slot'
+                                    slot.dataset.dropTarget = 'true'
+                                    
+                                    // Position slot above or below the closest item
+                                    const rect = closestItem.getBoundingClientRect()
+                                    const insertBefore = e.clientY < (rect.top + rect.height / 2)
+                                    
+                                    if (insertBefore) {
+                                        closestItem.parentNode.insertBefore(slot, closestItem)
+                                    } else {
+                                        closestItem.parentNode.insertBefore(slot, closestItem.nextSibling)
+                                    }
+                                }
+                            }
+                        }
+
+                        const up = (e) => {
+                            document.removeEventListener('mousemove', move)
+                            document.removeEventListener('mouseup', up)
+                            
+                            if (isDragging) {
+                                // Handle the drop
+                                const slots = document.querySelectorAll('.phantom-slot')
+                                if (slots.length > 0 && globalDragData.currentGroup && globalDragData.dragIndex !== null) {
+                                    const slot = slots[0]
+                                    const listItems = Array.from(slot.parentNode.children)
+                                    const toIndex = listItems.indexOf(slot)
+                                    
+                                    // Create a deep copy of the list
+                                    const originalGroup = globalDragData.currentGroup
+                                    const originalList = originalGroup.lists[globalDragData.dragIndex]
+                                    const listCopy = new ReminderList(originalList.title)
+                                    
+                                    // Deep copy sections and reminders
+                                    originalList.sections.forEach(section => {
+                                        const newSection = listCopy.addSection(section.get('name'))
+                                        section.get('reminders').forEach(reminder => {
+                                            const newReminder = new Reminder(reminder.text)
+                                            newReminder.completed = reminder.completed
+                                            newReminder.createdAt = new Date(reminder.createdAt)
+                                            newReminder.completedAt = reminder.completedAt ? new Date(reminder.completedAt) : null
+                                            newSection.get('reminders').push(newReminder)
+                                        })
+                                    })
+                                    
+                                    // Animation: Get current position before removal
+                                    const sourceRect = li.getBoundingClientRect()
+                                    const slotRect = slot.getBoundingClientRect()
+                                    
+                                    // Create animation clone at the original position
+                                    const animationClone = li.cloneNode(true)
+                                    animationClone.style.position = 'fixed'
+                                    animationClone.style.left = sourceRect.left + 'px'
+                                    animationClone.style.top = sourceRect.top + 'px'
+                                    animationClone.style.width = sourceRect.width + 'px'
+                                    animationClone.style.height = sourceRect.height + 'px'
+                                    animationClone.style.margin = '0'
+                                    animationClone.style.zIndex = '1000'
+                                    animationClone.classList.add('animated-move')
+                                    
+                                    // Add clone to document
+                                    document.body.appendChild(animationClone)
+                                    
+                                    // Remove original from data model
+                                    originalGroup.lists.splice(globalDragData.dragIndex, 1)
+                                    
+                                    // Get the target group
+                                    const closestGroupEl = slot.closest('.group')
+                                    const targetGroupIndex = parseInt(closestGroupEl.dataset.index, 10)
+                                    const targetGroup = appState.groups[targetGroupIndex]
+                                    
+                                    // Insert copy at destination
+                                    const actualToIndex = Math.min(toIndex, targetGroup.lists.length)
+                                    targetGroup.lists.splice(actualToIndex, 0, listCopy)
+                                    
+                                    // Update selected list reference if needed
+                                    if (appState.selectedList === originalList) {
+                                        appState.selectedList = listCopy
+                                    }
+                                    
+                                    // Clean up dragging artifacts
+                                    if (ghostEl) ghostEl.remove()
+                                    document.querySelectorAll('.phantom-slot').forEach(el => el.remove())
+                                    document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'))
+                                    
+                                    // Update UI
+                                    renderSidebar()
+                                    renderMain()
+                                    
+                                    // Get position of new element after rendering
+                                    setTimeout(() => {
+                                        // Find the newly created element
+                                        const allItems = document.querySelectorAll('.tree li')
+                                        let newElement = null
+                                        
+                                        // Find item with matching title
+                                        allItems.forEach(item => {
+                                            const titleEl = item.querySelector('span')
+                                            if (titleEl && titleEl.textContent === originalList.title) {
+                                                newElement = item
+                                            }
+                                        })
+                                        
+                                        if (newElement) {
+                                            const targetRect = newElement.getBoundingClientRect()
+                                            
+                                            // Animate the clone to the new position
+                                            requestAnimationFrame(() => {
+                                                animationClone.style.transform = `translate(${targetRect.left - sourceRect.left}px, ${targetRect.top - sourceRect.top}px)`
+                                                
+                                                // Remove the clone after animation completes
+                                                setTimeout(() => {
+                                                    animationClone.remove()
+                                                    newElement.classList.add('animate-in')
+                                                }, 300)
+                                            })
+                                        } else {
+                                            // If we can't find the new element, just remove the clone
+                                            animationClone.remove()
+                                        }
+                                    }, 10)
+                                } else {
+                                    // No valid drop target, clean up
+                                    if (ghostEl) ghostEl.remove()
+                                    document.querySelectorAll('.phantom-slot').forEach(el => el.remove())
+                                    document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'))
+                                }
+                                
+                                isDraggingListItem = false
+                                isDragging = false
+                            } else {
+                                // This was a click, not a drag - select the list
+                                appState.selectedList = list
+                                renderMain()
+                            }
+                        }
+
+                        document.addEventListener('mousemove', move)
+                        document.addEventListener('mouseup', up)
+                    })
+
+                    li.addEventListener('dragover', (e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+
+                        document.querySelectorAll('.phantom-slot').forEach(el => el.remove())
+
+                        const slot = document.createElement('li')
+                        slot.className = 'phantom-slot'
+                        slot.dataset.dropTarget = 'true'
+                        li.parentNode.insertBefore(slot, li)
+                    })
+
+                    li.addEventListener('drop', (e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+
+                        const slots = document.querySelectorAll('.phantom-slot')
+                        if (slots.length > 0 && currentGroup && dragIndex !== null) {
+                            const slot = slots[0]
+                            const toIndex = Array.from(slot.parentNode.children).indexOf(slot)
+                            
+                            // Create a proper deep copy of the list
+                            const originalList = currentGroup.lists[dragIndex]
+                            const listCopy = new ReminderList(originalList.title)
+                            
+                            // Deep copy all sections and reminders
+                            originalList.sections.forEach(section => {
+                                const newSection = listCopy.addSection(section.get('name'))
+                                section.get('reminders').forEach(reminder => {
+                                    const newReminder = new Reminder(reminder.text)
+                                    newReminder.completed = reminder.completed
+                                    newReminder.createdAt = new Date(reminder.createdAt)
+                                    newReminder.completedAt = reminder.completedAt ? new Date(reminder.completedAt) : null
+                                    newSection.get('reminders').push(newReminder)
+                                })
+                            })
+                            
+                            // Remove the original
+                            currentGroup.lists.splice(dragIndex, 1)
+                            
+                            // Insert the copy at the new position
+                            currentGroup.lists.splice(toIndex, 0, listCopy)
+                            
+                            // Update the selected list reference if it was the moved list
+                            if (appState.selectedList === originalList) {
+                                appState.selectedList = listCopy
+                            }
+                            
+                            // Reset drag state
+                            isDraggingListItem = false
+                            isDragging = false
+                            
+                            renderSidebar()
+                            renderMain()
+                        }
+
+                        if (ghostEl) ghostEl.remove()
+                        document.querySelectorAll('.phantom-slot').forEach(el => el.remove())
+                    })
+
+                    li.addEventListener('mouseup', (e) => {
+                        if(!isDragging) return
+                        e.preventDefault()
+                        e.stopPropagation()
+
+                        const slots = document.querySelectorAll('.phantom-slot')
+                        if (slots.length > 0 && currentGroup && dragIndex !== null) {
+                            const slot = slots[0]
+                            const toIndex = Array.from(slot.parentNode.children).indexOf(slot)
+                            
+                            // Create a proper deep copy of the list
+                            const originalList = currentGroup.lists[dragIndex]
+                            const listCopy = new ReminderList(originalList.title)
+                            
+                            // Deep copy all sections and reminders
+                            originalList.sections.forEach(section => {
+                                const newSection = listCopy.addSection(section.get('name'))
+                                section.get('reminders').forEach(reminder => {
+                                    const newReminder = new Reminder(reminder.text)
+                                    newReminder.completed = reminder.completed
+                                    newReminder.createdAt = new Date(reminder.createdAt)
+                                    newReminder.completedAt = reminder.completedAt ? new Date(reminder.completedAt) : null
+                                    newSection.get('reminders').push(newReminder)
+                                })
+                            })
+                            
+                            // Remove the original
+                            currentGroup.lists.splice(dragIndex, 1)
+                            
+                            // Insert the copy at the new position
+                            currentGroup.lists.splice(toIndex, 0, listCopy)
+                            
+                            // Update the selected list reference if it was the moved list
+                            if (appState.selectedList === originalList) {
+                                appState.selectedList = listCopy
+                            }
+                            
+                            renderSidebar()
+                            renderMain()
+                        }
+
+                        if (ghostEl) ghostEl.remove()
+                        document.querySelectorAll('.phantom-slot').forEach(el => el.remove())
+                    })
+
+                    const span = document.createElement('span')
+                    span.textContent = list.title
+                    span.style.cursor = 'pointer'
+                    span.onclick = () => {
+                        appState.selectedList = list
+                        renderMain()
+                    }
+
+                    const deleteBtn = document.createElement('button')
+                    deleteBtn.textContent = '🗑'
+                    deleteBtn.onclick = () => {
+                        group.lists.splice(listIndex, 1)
+                        renderSidebar()
+                    }
+
+                    li.appendChild(span)
+                    li.appendChild(deleteBtn)
+                    listEl.appendChild(li)
+                })
+                groupEl.appendChild(header)
+                groupEl.appendChild(listInput)
+                groupEl.appendChild(listEl)
+                groupContainer.appendChild(groupEl)
+                
+                // Store the input reference if this is the active group
+                if (appState.lastActiveGroupIndex === groupIndex) {
+                    // Focus will be applied after all groups are rendered
+                    setTimeout(() => listInput.focus(), 0)
+                }
+            })
+            
+            // If no group was previously active or that group is gone, focus the last one
+            if (appState.lastActiveGroupIndex === null || appState.lastActiveGroupIndex >= appState.groups.length) {
+                if (appState.groups.length > 0) {
+                    const lastGroupEl = groupContainer.lastChild
+                    const lastInput = lastGroupEl.querySelector('input.input-inline')
+                    setTimeout(() => lastInput.focus(), 0)
+                }
+            }
+        }
+
+        function renderMain() {
+            mainContent.innerHTML = ''
+            const list = appState.selectedList
+            if (!list) return
+
+            const title = document.createElement('h2')
+            title.textContent = list.title
+            mainContent.appendChild(title)
+
+            const addSectionInput = document.createElement('input')
+            addSectionInput.placeholder = 'New section title'
+            addSectionInput.className = 'input-inline'
+            addSectionInput.onkeypress = (e) => {
+                if (e.key === 'Enter') {
+                    list.addSection(addSectionInput.value)
+                    addSectionInput.value = ''
+                    renderMain()
+                }
+            }
+
+            mainContent.appendChild(addSectionInput)
+
+            list.sections.forEach((section, sectionIndex) => {
+                const sectionDiv = document.createElement('div')
+                sectionDiv.className = 'section'
+
+                const nameInput = document.createElement('input')
+                nameInput.value = section.get('name')
+                nameInput.className = 'input-inline'
+                nameInput.onchange = () => section.set('name', nameInput.value)
+                sectionDiv.appendChild(nameInput)
+
+                const reminderInput = document.createElement('input')
+                reminderInput.placeholder = 'New reminder'
+                reminderInput.className = 'input-inline'
+                reminderInput.onkeypress = (e) => {
+                    if (e.key === 'Enter') {
+                        const reminder = new Reminder(reminderInput.value)
+                        section.get('reminders').push(reminder)
+                        reminderInput.value = ''
+                        renderMain()
+                    }
+                }
+                sectionDiv.appendChild(reminderInput)
+
+                const ul = document.createElement('ul')
+                section.get('reminders').forEach((r, rIndex) => {
+                    const li = document.createElement('li')
+                    li.className = 'reminder'
+
+                    const label = document.createElement('label')
+                    const checkbox = document.createElement('input')
+                    checkbox.type = 'checkbox'
+                    checkbox.checked = r.completed
+                    checkbox.onchange = () => {
+                        r.toggle()
+                        renderMain()
+                    }
+
+                    const span = document.createElement('span')
+                    span.textContent = r.text
+                    if (r.completed) span.classList.add('completed')
+
+                    const meta = document.createElement('div')
+                    meta.style.fontSize = '12px'
+                    meta.style.color = '#666'
+                    meta.innerHTML = `Created: ${r.createdAt.toLocaleString()}<br>` +
+                        (r.completedAt ? `Completed: ${r.completedAt.toLocaleString()}` : '')
+
+                    label.appendChild(checkbox)
+                    label.appendChild(span)
+                    li.appendChild(label)
+                    li.appendChild(meta)
+                    ul.appendChild(li)
+                })
+
+                sectionDiv.appendChild(ul)
+                mainContent.appendChild(sectionDiv)
+            })
+        }
+
+        document.getElementById('newGroupInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const name = e.target.value.trim()
+                if (name) {
+                    appState.groups.push(new Group(name))
+                    e.target.value = ''
+                    renderSidebar()
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

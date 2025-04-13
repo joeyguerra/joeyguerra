@@ -1,0 +1,489 @@
+<aside id="sidebar">
+    <section class="groups">
+        <dl class="group">
+            <dt>
+                <span >New Group</span>
+                <button class="add">↓</button>
+                <button class="delete">x</button>
+            </dt>
+            <dd class="active">
+                <span >Reminders</span>
+                <span class="count">31</span>
+                <button class="delete">x</button>
+            </dd>
+        </dl>
+    </section>
+    <footer>
+        <button class="add-group" onclick="commandQueue.add(new AddGroup('New Group', new Date()))">+</button>
+        <span>Add a Group</span>
+    </footer>
+</aside>
+<main>
+    <header>
+        <span>Todos</span>
+        <span>31</span>
+    </header>
+    <section>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Business directory</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Create a list of industries and common challenges</p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Inbox to Todos</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Make hubot read an inbox</p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Joey G Project management</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Conceptualize what a project management tool that modeled your process would look like</p>
+            </div>
+            <div class="task"><input type="checkbox" />
+                <p>Make a list of todos to build this thing</p>
+            </div>
+            <div class="task"><input type="checkbox" />
+                <p>Build an Enterprise todos list</p>
+            </div>
+            <div class="task"><input type="checkbox" />
+                <p>Send hubot an email, get a curated list of articles based on your message like rss feeds but based on
+                    what you want that day.</p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Chat based inventory management</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Hubot monitors inbox and takes action from messages like updating inventory from bill of lading</p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Home remodeling app for people who are getting the remodeling done</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Build a chat and site for home remodelers to use for project management, lead gen and marketing...
+                </p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Local development tools</span></h3>
+            <div class="task"><input type="checkbox" />
+                <p>Build a local use log aggregator to build a dashboard of all the log messages the local apps create
+                    for local development.</p>
+            </div>
+        </div>
+        <div class="category">
+            <h3><button class="add-task">+</button><span>Content based marketing strategy</span></h3>
+        </div>
+    </section>
+    <footer>
+        716 Completed · <a href="#">Clear</a>
+    </footer>
+</main>
+
+<script>
+    class Command {
+        constructor(occurredAt) {
+            this.occurredAt = occurredAt
+            this.recordedAt = new Date()
+            this.kind = this.constructor.name
+        }
+    }
+    class AddGroup extends Command {
+        constructor(name, occurredAt) {
+            super(occurredAt)
+            this.name = name
+        }
+    }
+    class ReplaceFirstGroup extends Command {
+        constructor(name, occurredAt) {
+            super(occurredAt)
+            this.name = name
+        }
+    }
+    class AddList extends Command {
+        constructor(name, element, occurredAt) {
+            super(occurredAt)
+            this.name = name
+            this.element = element
+        }
+    }
+    class DeleteGroup extends Command {
+        constructor(element, occurredAt) {
+            super(occurredAt)
+            this.element = element
+        }
+    }
+    class DeleteList extends Command {
+        constructor(element, occurredAt) {
+            super(occurredAt)
+            this.element = element
+        }
+    }
+    class SelectList extends Command {
+        constructor(element, occurredAt) {
+            super(occurredAt)
+            this.element = element
+        }
+    }
+
+    class MakeEditable extends Command {
+        constructor(element, occurredAt) {
+            super(occurredAt)
+            this.element = element
+        }
+    }
+    class MakeReadable extends Command {
+        constructor(element, occurredAt) {
+            super(occurredAt)
+            this.element = element
+        }
+    }
+
+    class GroupAddedEvent extends CustomEvent {
+        constructor(info) {
+            super(GroupAddedEvent.name, info)
+            this.name = info.name
+        }
+    }
+    class GroupDeletedEvent extends CustomEvent {
+        constructor(info) {
+            super(GroupDeletedEvent.name, info)
+            this.element = info.element
+        }
+    }
+    class FirstGroupReplacedEvent extends CustomEvent {
+        constructor(info) {
+            super(FirstGroupReplacedEvent.name, info)
+            this.name = info.name
+        }
+    }
+    class ListSelectedEvent extends CustomEvent {
+        constructor(info) {
+            super(ListSelectedEvent.name, info)
+            this.element = info.element
+        }
+    }
+    class ListAddedEvent extends CustomEvent {
+        constructor(info) {
+            super(ListAddedEvent.name, info)
+            this.name = info.name
+        }
+    }
+    class ElementWasMadeEditable extends CustomEvent {
+        constructor(info) {
+            super(ElementWasMadeEditable.name, info)
+            this.element = info.element
+        }
+    }
+    class ElementWasMadeReadable extends CustomEvent {
+        constructor(info) {
+            super(ElementWasMadeReadable.name, info)
+            this.element = info.element
+        }
+    }
+    class ListDeletedEvent extends CustomEvent {
+        constructor(info) {
+            super(ListDeletedEvent.name, info)
+            this.element = info.element
+        }
+    }
+    class AddGroupCommandHandler {
+        constructor(window) {
+            this.window = window
+        }
+
+        handle(command) {
+            const event = new GroupAddedEvent({
+                detail: {
+                    name: command.name,
+                    occurredAt: command.occurredAt,
+                    recordedAt: new Date()
+                }
+            })
+            return [event]
+        }
+    }
+    class ReplaceFirstGroupCommandHandler {
+        constructor(window) {
+            this.window = window
+        }
+
+        handle(command) {
+            const event = new FirstGroupReplacedEvent({
+                detail: {
+                    name: command.name,
+                    occurredAt: command.occurredAt,
+                    recordedAt: new Date()
+                }
+            })
+            return [event]
+        }
+    }
+    class DeleteGroupCommandHandler {
+        constructor(window) {
+            this.window = window
+        }
+
+        handle(command) {
+            const event = new GroupDeletedEvent({
+                detail: {
+                    element: command.element,
+                    occurredAt: command.occurredAt,
+                    recordedAt: new Date()
+                }
+            })
+            return [event]
+        }
+    }
+    class AddListCommandHandler {
+        constructor(window) {
+            this.window = window
+        }
+
+        handle(command) {
+            const event = new ListAddedEvent({
+                detail: {
+                    name: command.name,
+                    element: command.element,
+                    occurredAt: command.occurredAt,
+                    recordedAt: new Date()
+                }
+            })
+            return [event]
+        }
+    }
+    class SelectListCommandHandler {
+        constructor(window) {
+            this.window = window
+        }
+
+        handle(command) {
+            const event = new ListSelectedEvent({
+                detail: {
+                    element: command.element,
+                    occurredAt: command.occurredAt,
+                    recordedAt: new Date()
+                }
+            })
+            return [event]
+        }
+    }
+
+    class MakeEditableCommandHandler {
+        constructor(window) {
+            this.window = window
+        }
+
+        handle(command) {
+            const event = new ElementWasMadeEditable({
+                detail: {
+                    element: command.element,
+                    occurredAt: command.occurredAt,
+                    recordedAt: new Date()
+                }
+            })
+            return [event]
+        }
+    }
+    class MakeReadableCommandHandler {
+        constructor(window) {
+            this.window = window
+        }
+
+        handle(command) {
+            const event = new ElementWasMadeReadable({
+                detail: {
+                    element: command.element,
+                    occurredAt: command.occurredAt,
+                    recordedAt: new Date()
+                }
+            })
+            return [event]
+        }
+    }
+    class DeleteListCommandHandler {
+        constructor(window) {
+            this.window = window
+        }
+
+        handle(command) {
+            const event = new ListDeletedEvent({
+                detail: {
+                    element: command.element,
+                    occurredAt: command.occurredAt,
+                    recordedAt: new Date()
+                }
+            })
+            return [event]
+        }
+    }
+
+    class CommandQueue {
+        constructor(window) {
+            this.queue = []
+            this.window = window
+            this.handlers = {}
+        }
+        addCommandHandler(commandName, handler) {
+            this.handlers[commandName] = handler
+        }
+
+        add(command) {
+            this.queue.push(command)
+            this.process()
+        }
+
+        process() {
+            if (this.queue.length > 0) {
+                const command = this.queue.shift()
+                console.log('Processing command:', command)
+                this.handle(command)
+                this.window.requestAnimationFrame(() => this.process())
+            }
+        }
+
+        handle(command) {
+            const handler = this.handlers[command.kind]
+            if (handler) {
+                const events = handler.handle(command)
+                events.forEach(event => {
+                    this.window.document.dispatchEvent(event)
+                })
+            } else {
+                console.error('No handler found for command:', command)
+            }
+        }
+    }
+    class ResetSelectedList {
+        constructor(window) {
+            this.window = window
+            this.window.document.addEventListener(GroupAddedEvent.name, this.applyAddGroup.bind(this))
+            this.window.document.addEventListener(ListSelectedEvent.name, this.applySelectList.bind(this))
+        }
+
+        applyAddGroup(e) {
+            const activeItems = this.window.document.querySelectorAll('.active')
+            activeItems.forEach(item => item.classList.remove('active'))
+        }
+
+        applySelectList(e) {
+            const activeItems = this.window.document.querySelectorAll('.active')
+            activeItems.forEach(item => item.classList.remove('active'))
+        }
+    }
+
+    class GroupView {
+        constructor(container, window, commandQueue) {
+            this.window = window
+            this.container = container
+            this.template = container.querySelector('.group').cloneNode(true)
+            this.commandQueue = commandQueue
+            this.window.document.addEventListener(GroupAddedEvent.name, this.applyGroupAdded.bind(this))
+            this.window.document.addEventListener(GroupDeletedEvent.name, this.applyGroupDeleted.bind(this))
+            this.window.document.addEventListener(FirstGroupReplacedEvent.name, this.applyFirstGroupReplaced.bind(this))
+            this.window.document.addEventListener(ElementWasMadeEditable.name, this.applyEditableElement.bind(this))
+            this.window.document.addEventListener(ElementWasMadeReadable.name, this.applyReadableElement.bind(this))
+            this.window.document.addEventListener(ListAddedEvent.name, this.applyListAdded.bind(this))
+        }
+        applyListAdded(e){
+            const container = e.detail.element
+            const list = container.querySelector('dd').cloneNode(true)
+            const listName = list.querySelector('span')
+            const deleteButton = list.querySelector('button.delete')
+            listName.textContent = e.detail.name
+            listName.addEventListener('dblclick', e => this.commandQueue.add(new MakeEditable(listName, new Date())))
+            listName.addEventListener('blur', e => this.commandQueue.add(new MakeReadable(listName, new Date())))
+            listName.addEventListener('keypress', e => {
+                if (e.key === 'Enter') {
+                    this.commandQueue.add(new MakeReadable(listName, new Date()))
+                }
+            })
+            deleteButton.addEventListener('click', e => {
+                console.log('delete this list', e)
+                e.preventDefault()
+                this.commandQueue.add(new DeleteList(list, new Date()))
+            }, true)
+            list.classList.add('active')
+            container.appendChild(list)
+        }
+        addGroup(detail){
+            const template = this.template.cloneNode(true)
+            const title = template.querySelector('dt span')
+            const list = template.querySelector('dd')
+            const firstListName = list.querySelector('span')
+            const addButton = template.querySelector('dt button.add')
+            const deleteButton = template.querySelector('dt button.delete')
+            title.textContent = detail.name
+            title.addEventListener('dblclick', e => this.commandQueue.add(new MakeEditable(title, new Date())))
+            title.addEventListener('blur', e => this.commandQueue.add(new MakeReadable(title, new Date())))
+            title.addEventListener('keypress', e => {
+                if (e.key === 'Enter') {
+                    this.commandQueue.add(new MakeReadable(title, new Date()))
+                }
+            })
+            addButton.addEventListener('click', e => this.commandQueue.add(new AddList('New List', template, new Date())))
+            deleteButton.addEventListener('click', e => this.commandQueue.add(new DeleteGroup(template, new Date())))
+            list.addEventListener('click', e => {
+                // this.commandQueue.add(new SelectList(list, new Date()))
+            }, true)
+            firstListName.addEventListener('dblclick', e => this.commandQueue.add(new MakeEditable(firstListName, new Date())))
+            firstListName.addEventListener('blur', e => this.commandQueue.add(new MakeReadable(firstListName, new Date())))
+            firstListName.addEventListener('keypress', e => {
+                if (e.key === 'Enter') {
+                    this.commandQueue.add(new MakeReadable(firstListName, new Date()))
+                }
+            })
+            list.classList.add('active')
+            return template
+        }
+        applyReadableElement(e) {
+            e.detail.element.setAttribute('contenteditable', 'false')
+            e.detail.element.blur()
+        }
+        applyEditableElement(e) {
+            console.log('applyEditableElement', e.detail.element)
+            e.detail.element.setAttribute('contenteditable', 'true')
+            e.detail.element.focus()
+        }
+        applyGroupAdded(e) {
+            const container = this.addGroup(e.detail)
+            this.container.appendChild(container)
+        }
+        applyFirstGroupReplaced(e) {
+            const container = this.addGroup(e.detail)
+            this.container.replaceChild(container, this.container.querySelector('.group'))
+        }
+        applyGroupDeleted(e){
+            console.log('delete this group', e.detail.element)
+            e.preventDefault()
+            e.detail.element.remove()
+        }
+    }
+    class SelectedList {
+        constructor(window) {
+            this.window = window
+            this.window.document.addEventListener(ListSelectedEvent.name, this.applySelectList.bind(this))
+        }
+
+        applySelectList(e) {
+            const element = e.detail.element
+            element.classList.add('active')
+        }
+    }
+
+    const commandQueue = new CommandQueue(window)
+    const resetSelectedList = new ResetSelectedList(window)
+    const groupView = new GroupView(window.document.querySelector('#sidebar .groups'), window, commandQueue)
+    const selectedList = new SelectedList(window)
+
+    commandQueue.addCommandHandler(AddGroup.name, new AddGroupCommandHandler(window))
+    commandQueue.addCommandHandler(ReplaceFirstGroup.name, new ReplaceFirstGroupCommandHandler(window))
+    commandQueue.addCommandHandler(DeleteGroup.name, new DeleteGroupCommandHandler(window))
+    commandQueue.addCommandHandler(AddList.name, new AddListCommandHandler(window))
+    commandQueue.addCommandHandler(SelectList.name, new SelectListCommandHandler(window))
+    commandQueue.addCommandHandler(MakeEditable.name, new MakeEditableCommandHandler(window))
+    commandQueue.addCommandHandler(MakeReadable.name, new MakeReadableCommandHandler(window))
+    commandQueue.addCommandHandler(DeleteList.name, new DeleteListCommandHandler(window))
+    commandQueue.add(new ReplaceFirstGroup('New Group', new Date()))
+</script>
