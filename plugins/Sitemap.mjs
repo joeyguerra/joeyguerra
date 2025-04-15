@@ -3,11 +3,11 @@ import { EVENTS } from 'juphjacs/src/Page.mjs'
 import { TemplateLiteralRenderer } from 'juphjacs/src/TemplateLiteralRenderer.mjs'
 import { EVENTS as SITE_GENERATOR_EVENTS } from 'juphjacs/src/SiteGenerator.mjs'
 import { promises as File } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { dirname, join, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const { readFile } = File
-const __dirname = dirname(fileURLToPath(import.meta.url)).replace('/plugins', '')
+const __dirname = dirname(fileURLToPath(import.meta.url)).replace(`${sep}plugins`, '')
 const PAGES = join(__dirname, 'pages')
 const SITE_FOLDER = '_site'
 
@@ -36,7 +36,7 @@ export default async () => {
         if(page.filePath.includes('layouts')) {
             return
         }
-        if (filePath.includes('/sitemap.xml')) {
+        if (filePath.includes(('sitemap.xml'))) {
             sitemapIndex.filePath = filePath
             sitemapIndex.context = page
         }
@@ -51,7 +51,7 @@ export default async () => {
 
     process.on(EVENTS.PRE_TEMPLATE_RENDER, (filePath, page) => {
         const filesToInclude = [
-            '/sitemap.xml'
+            'sitemap.xml'
         ]
         if (filesToInclude.some(file => filePath.includes(file))) {
             page.urls = new Set(Array.from(urls).sort((a, b) => a.slug.localeCompare(b.slug)))

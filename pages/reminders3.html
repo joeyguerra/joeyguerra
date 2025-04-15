@@ -13,16 +13,17 @@
 
     <style>
         body {
-            font-family: sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             display: flex;
             height: 100vh;
             margin: 0;
+            background-color: #f5f5f5;
         }
 
         aside {
-            width: 250px;
-            background: #f2f2f2;
-            border-right: 1px solid #ccc;
+            width: 300px;
+            background: #f2f2f7;
+            border-right: 1px solid #d1d1d6;
             padding: 10px;
             overflow-y: auto;
         }
@@ -30,33 +31,34 @@
         main {
             flex: 1;
             padding: 20px;
-            background: #fff;
+            background: #ffffff;
             overflow-y: auto;
         }
 
-        .group,
-        .list,
-        .section,
-        .reminder {
+        .group {
             margin-bottom: 8px;
-            padding: 6px;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #d1d1d6;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
-        .group-header,
-        .list-header {
+        .group-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-weight: 600;
+            color: #1c1c1e;
         }
 
         .input-inline {
             width: 100%;
             margin-top: 4px;
-            padding: 6px;
+            padding: 8px;
             font-size: 14px;
+            border: none;
+            background-color: transparent;
         }
 
         .tree ul {
@@ -68,21 +70,37 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 6px 4px;
-            min-height: 32px;
+            padding: 8px;
+            min-height: 40px;
+            border-radius: 6px;
             transition: background 0.2s ease;
+        }
+
+        .tree li:hover {
+            background-color: #e5e5ea;
+        }
+
+        .tree li.selected {
+            background-color: #d1d1d6; /* macOS blue color */
+            color: #1c1c1e;
+            font-weight: bold;
+        }
+        
+        .tree li.selected.active {
+            background-color: #0071e3; /* macOS gray color */
+            color: white;
         }
 
         .completed {
             text-decoration: line-through;
-            color: #888;
+            color: #8e8e93;
         }
 
         button {
             background: none;
             border: none;
             cursor: pointer;
-            color: red;
+            color: #ff3b30;
             font-size: 14px;
         }
 
@@ -129,30 +147,18 @@
             margin: 4px 0;
             border-radius: 4px;
         }
-        
-        /* Animation related styles */
-        .animated-move {
-            transition: transform 0.3s ease-out;
-            pointer-events: none;
-            z-index: 10;
+
+        .tree li span {
+            outline: none; /* Remove outline when editing */
+            padding: 2px 4px;
+            border-radius: 3px;
         }
-        
-        .animate-away {
-            animation: fadeout 0.3s ease-out forwards;
-        }
-        
-        .animate-in {
-            animation: fadein 0.3s ease-out forwards;
-        }
-        
-        @keyframes fadeout {
-            0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(0.8); }
-        }
-        
-        @keyframes fadein {
-            0% { opacity: 0; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1); }
+
+        .tree li span[contenteditable="true"] {
+            background-color: white;
+            border: 1px solid #007aff;
+            min-width: 50px;
+            display: inline-block;
         }
     </style>
 </head>
@@ -167,6 +173,79 @@
     </main>
 
     <script type="module">
+        // Save to localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('remindersAppData', JSON.stringify({
+                groups: appState.groups,
+                selectedListTitle: appState.selectedList ? appState.selectedList.title : null,
+                selectedGroupIndex: appState.lastActiveGroupIndex
+            }))
+        }
+
+        // Load from localStorage
+        function loadFromLocalStorage() {
+            const savedData = localStorage.getItem('remindersAppData')
+            if (!savedData) return false
+            
+            try {
+                const parsedData = JSON.parse(savedData)
+                
+                // Reconstruct groups with their proper class instances
+                appState.groups = parsedData.groups.map(groupData => {
+                    const group = new Group(groupData.name)
+                    
+                    // Reconstruct lists
+                    group.lists = groupData.lists.map(listData => {
+                        const list = new ReminderList(listData.title)
+                        
+                        // Reconstruct sections with KVOModel
+                        list.sections = listData.sections.map(sectionData => {
+                            const section = new KVOModel({ 
+                                name: sectionData.data.name,
+                                reminders: []
+                            })
+                            
+                            // Reconstruct reminders
+                            section.data.reminders = sectionData.data.reminders.map(reminderData => {
+                                const reminder = new Reminder(reminderData.text)
+                                reminder.completed = reminderData.completed
+                                reminder.createdAt = new Date(reminderData.createdAt)
+                                reminder.completedAt = reminderData.completedAt ? new Date(reminderData.completedAt) : null
+                                return reminder
+                            })
+                            
+                            return section
+                        })
+                        
+                        return list
+                    })
+                    
+                    return group
+                })
+                
+                // Find the selected list if it exists
+                if (parsedData.selectedListTitle) {
+                    for (const group of appState.groups) {
+                        for (const list of group.lists) {
+                            if (list.title === parsedData.selectedListTitle) {
+                                appState.selectedList = list
+                                break
+                            }
+                        }
+                        if (appState.selectedList) break
+                    }
+                }
+                
+                // Restore last active group index
+                appState.lastActiveGroupIndex = parsedData.selectedGroupIndex
+                
+                return true
+            } catch (error) {
+                console.error('Error loading data from localStorage:', error)
+                return false
+            }
+        }
+
         class KVOModel {
             constructor(data = {}) {
                 this.data = data
@@ -296,6 +375,7 @@
                 delBtn.onclick = () => {
                     appState.groups.splice(groupIndex, 1)
                     renderSidebar()
+                    saveToLocalStorage() // Save after deleting a group
                 }
                 header.appendChild(delBtn)
 
@@ -310,6 +390,7 @@
                         group.addList(listInput.value)
                         listInput.value = ''
                         renderSidebar()
+                        saveToLocalStorage() // Save after adding a list
                     }
                 }
                 
@@ -331,6 +412,9 @@
                     let startX, startY
 
                     li.addEventListener('mousedown', (e) => {
+                        // Only proceed if it's a left click (button 0)
+                        if (e.button !== 0) return
+                        
                         e.preventDefault()
                         startX = e.pageX
                         startY = e.pageY
@@ -432,24 +516,6 @@
                                         })
                                     })
                                     
-                                    // Animation: Get current position before removal
-                                    const sourceRect = li.getBoundingClientRect()
-                                    const slotRect = slot.getBoundingClientRect()
-                                    
-                                    // Create animation clone at the original position
-                                    const animationClone = li.cloneNode(true)
-                                    animationClone.style.position = 'fixed'
-                                    animationClone.style.left = sourceRect.left + 'px'
-                                    animationClone.style.top = sourceRect.top + 'px'
-                                    animationClone.style.width = sourceRect.width + 'px'
-                                    animationClone.style.height = sourceRect.height + 'px'
-                                    animationClone.style.margin = '0'
-                                    animationClone.style.zIndex = '1000'
-                                    animationClone.classList.add('animated-move')
-                                    
-                                    // Add clone to document
-                                    document.body.appendChild(animationClone)
-                                    
                                     // Remove original from data model
                                     originalGroup.lists.splice(globalDragData.dragIndex, 1)
                                     
@@ -472,42 +538,10 @@
                                     document.querySelectorAll('.phantom-slot').forEach(el => el.remove())
                                     document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'))
                                     
-                                    // Update UI
+                                    // Update UI immediately without animation
                                     renderSidebar()
                                     renderMain()
-                                    
-                                    // Get position of new element after rendering
-                                    setTimeout(() => {
-                                        // Find the newly created element
-                                        const allItems = document.querySelectorAll('.tree li')
-                                        let newElement = null
-                                        
-                                        // Find item with matching title
-                                        allItems.forEach(item => {
-                                            const titleEl = item.querySelector('span')
-                                            if (titleEl && titleEl.textContent === originalList.title) {
-                                                newElement = item
-                                            }
-                                        })
-                                        
-                                        if (newElement) {
-                                            const targetRect = newElement.getBoundingClientRect()
-                                            
-                                            // Animate the clone to the new position
-                                            requestAnimationFrame(() => {
-                                                animationClone.style.transform = `translate(${targetRect.left - sourceRect.left}px, ${targetRect.top - sourceRect.top}px)`
-                                                
-                                                // Remove the clone after animation completes
-                                                setTimeout(() => {
-                                                    animationClone.remove()
-                                                    newElement.classList.add('animate-in')
-                                                }, 300)
-                                            })
-                                        } else {
-                                            // If we can't find the new element, just remove the clone
-                                            animationClone.remove()
-                                        }
-                                    }, 10)
+                                    saveToLocalStorage()
                                 } else {
                                     // No valid drop target, clean up
                                     if (ghostEl) ghostEl.remove()
@@ -521,6 +555,8 @@
                                 // This was a click, not a drag - select the list
                                 appState.selectedList = list
                                 renderMain()
+                                renderSidebar()
+                                saveToLocalStorage()
                             }
                         }
 
@@ -636,9 +672,22 @@
                     const span = document.createElement('span')
                     span.textContent = list.title
                     span.style.cursor = 'pointer'
-                    span.onclick = () => {
+                    
+                    // Add click handler for selection
+                    span.onclick = (e) => {
                         appState.selectedList = list
+                        
+                        // Remove active class from all list items first
+                        document.querySelectorAll('.tree li').forEach(item => {
+                            item.classList.remove('active')
+                        })
+                        
+                        // Mark this list item as active (clicked into)
+                        li.classList.add('active')
+                        
                         renderMain()
+                        renderSidebar()
+                        saveToLocalStorage() // Save when changing selected list
                     }
 
                     const deleteBtn = document.createElement('button')
@@ -646,6 +695,7 @@
                     deleteBtn.onclick = () => {
                         group.lists.splice(listIndex, 1)
                         renderSidebar()
+                        saveToLocalStorage() // Save after deleting a list
                     }
 
                     li.appendChild(span)
@@ -691,6 +741,7 @@
                     list.addSection(addSectionInput.value)
                     addSectionInput.value = ''
                     renderMain()
+                    saveToLocalStorage() // Save when adding a section
                 }
             }
 
@@ -703,7 +754,10 @@
                 const nameInput = document.createElement('input')
                 nameInput.value = section.get('name')
                 nameInput.className = 'input-inline'
-                nameInput.onchange = () => section.set('name', nameInput.value)
+                nameInput.onchange = () => {
+                    section.set('name', nameInput.value)
+                    saveToLocalStorage() // Save when changing section name
+                }
                 sectionDiv.appendChild(nameInput)
 
                 const reminderInput = document.createElement('input')
@@ -715,6 +769,7 @@
                         section.get('reminders').push(reminder)
                         reminderInput.value = ''
                         renderMain()
+                        saveToLocalStorage() // Save when adding a reminder
                     }
                 }
                 sectionDiv.appendChild(reminderInput)
@@ -731,6 +786,7 @@
                     checkbox.onchange = () => {
                         r.toggle()
                         renderMain()
+                        saveToLocalStorage() // Save when toggling a reminder
                     }
 
                     const span = document.createElement('span')
@@ -762,9 +818,40 @@
                     appState.groups.push(new Group(name))
                     e.target.value = ''
                     renderSidebar()
+                    saveToLocalStorage() // Save after adding a new group
                 }
             }
         })
+
+        // Initialize app by loading data from localStorage
+        function initApp() {
+            // Try to load from localStorage first
+            if (!loadFromLocalStorage()) {
+                // If nothing in localStorage, create sample data
+                const personalGroup = new Group('Personal')
+                const workGroup = new Group('Work')
+                
+                const todoList = personalGroup.addList('To Do')
+                const section = todoList.addSection('Today')
+                section.get('reminders').push(new Reminder('Call Mom'))
+                section.get('reminders').push(new Reminder('Buy groceries'))
+                
+                const workTodo = workGroup.addList('Work Tasks')
+                const workSection = workTodo.addSection('This Week')
+                workSection.get('reminders').push(new Reminder('Finish project proposal'))
+                workSection.get('reminders').push(new Reminder('Schedule meeting'))
+                
+                appState.groups.push(personalGroup)
+                appState.groups.push(workGroup)
+                appState.selectedList = todoList
+            }
+            
+            renderSidebar()
+            renderMain()
+        }
+
+        // Initialize the app when page loads
+        window.addEventListener('DOMContentLoaded', initApp)
     </script>
 </body>
 

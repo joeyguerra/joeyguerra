@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorting</title>
+  <style>
+    li {
+        cursor: pointer;
+        position: relative;
+    }
+    .targeting {
+        border-bottom: solid 1px #007AFF;
+    }
+    .targeting::before {
+        content: 'o';
+        font-size: .7em;
+        position: absolute;
+        left: -.4em;
+        bottom: -.5em;
+        color: #007AFF;
+    }
+  </style>
+</head>
+<body>
+    <ul>
+        <li>item 1</li>
+        <li>item 2</li>
+        <li>item 3</li>
+        <li>item 4</li>
+        <li>item 5</li>
+    </ul>
+</body>
+<script type="module">
+    class Sortable {
+        constructor(container, options) {
+            this.container = container
+            this.options = options
+            this.draggedItem = null
+            this.init()
+        }
+        init() {
+            this.container.querySelectorAll('li').forEach( li => {
+                li.setAttribute('draggable', true)
+                li.setAttribute('droppable', true)
+                li.addEventListener('dragstart', (e) => {
+                    this.draggedItem = e.target
+                })
+                li.addEventListener('dragend', (e) => {
+                    this.draggedItem = null
+                })
+                li.addEventListener('dragenter', (e) => {
+                    if (this.draggedItem === e.target) {
+                        return
+                    }
+                    e.target.classList.add('targeting')
+                })
+                li.addEventListener('dragover', e => {
+                    e.preventDefault()
+                    if (this.draggedItem === e.target) {
+                        return
+                    }
+                    e.dataTransfer.dropEffect = 'move'
+                })
+                li.addEventListener('dragleave', e => {
+                    e.target.classList.remove('targeting')
+                })
+                li.addEventListener('drop', e => {
+                    e.preventDefault()
+                    if (this.draggedItem === e.target) {
+                        return
+                    }
+                    e.target.insertAdjacentElement('afterend', this.draggedItem)
+                    e.target.classList.remove('targeting')
+                })
+            })
+        }
+    }
+    const sortable = new Sortable(document.querySelector('ul'), {
+        animation: 150,
+        ghostClass: 'blue-background-class',
+        onEnd: function (evt) {
+            console.log('Item moved:', evt.item)
+        }
+    })
+</script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="module" id="HotReloader">
+  import { HotReloader } from '/js/HotReloader.mjs'
+  const hotReloader = new HotReloader(window, io('/hot-reload'))
+</script>
+</html>

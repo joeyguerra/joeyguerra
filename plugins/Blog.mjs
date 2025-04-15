@@ -1,5 +1,6 @@
 import { EVENTS } from 'juphjacs/src/Page.mjs'
 import { EVENTS as SITE_GENERATOR_EVENTS } from 'juphjacs/src/SiteGenerator.mjs'
+import { sep } from 'node:path'
 class Post {
     constructor(title, year, excerpt, slug, uri, published, tags, image, shouldPublish) {
         this.title = title
@@ -27,7 +28,8 @@ export default async (delegate) => {
     }
 
     process.on(EVENTS.TEMPLATE_RENDERED, async (filePath, page) => {
-        if (filePath.includes('/blog/index.html')) {
+        if (!filePath) return
+        if (filePath.includes(`${sep}blog${sep}index.html`)) {
             blogIndex.filePath = filePath
             blogIndex.context = page
         }
@@ -44,9 +46,6 @@ export default async (delegate) => {
     })
 
     process.on(EVENTS.PRE_TEMPLATE_RENDER, (filePath, page) => {
-        const filesToInclude = [
-            '/blog/index.html'
-        ]
     })
 
     process.on(SITE_GENERATOR_EVENTS.STATIC_SITE_GENERATED, async (siteGenerator) => {

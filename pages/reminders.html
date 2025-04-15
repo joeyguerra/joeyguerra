@@ -85,17 +85,65 @@
 <script type="module">
     import { Observable, ObservableArray, Observer } from '/js/Observable.mjs'
     class ReminderModel extends Observable {
+        #id = null
+        #name = null
+        #shouldDelete = false
         constructor(name) {
             super()
-            this.name = name
-            this.completed = false
+            this.#id = crypto.randomUUID()
+            this.#name = name
+        }
+        get id () {
+            return this.#id
+        }
+        get name () {
+            return this.#name
+        }
+        set name (value) {
+            const old = this.#name
+            this.#name = value
+            this.update('name', old, value)
+        }
+        get shouldDelete () {
+            return this.#shouldDelete
+        }
+        set shouldDelete (value) {
+            const old = this.#shouldDelete
+            this.#shouldDelete = value
+            this.update('shouldDelete', old, value)
         }
     }
     class ReminderSectionModel extends Observable {
+        #sectionName = null
+        #reminders = new ObservableArray()
+        #shouldDelete = false
+        #id = null
         constructor(sectionName) {
             super()
-            this.sectionName = sectionName
-            this.reminders = []
+            this.#sectionName = sectionName
+            this.#id = crypto.randomUUID()
+        }
+        get sectionName () {
+            return this.#sectionName
+        }
+        set sectionName (value) {
+            const old = this.#sectionName
+            this.#sectionName = value
+            this.update('sectionName', old, value)
+        }
+        get reminders () {
+            return this.#reminders
+        }
+        get shouldDelete () {
+            return this.#shouldDelete
+        }
+        set shouldDelete (value) {
+            const old = this.#shouldDelete
+            this.#shouldDelete = value
+            this.update('shouldDelete', old, value)
+        }
+        get id () {
+            return this.#id
         }
     }
     class ListModel extends Observable {
@@ -344,7 +392,6 @@
             this.addButton = this.container.querySelector('.add').cloneNode(true)
             this.deleteButton = this.container.querySelector('.delete').cloneNode(true)
             this.name.textContent = model.name
-            
             this.list = this.container.querySelector('[data-bind="list"]').cloneNode(true)
             this.container.innerHTML = ''
 
@@ -403,6 +450,7 @@
                 case 'blur':
                     this.name.contentEditable = false
                     this.model.name = this.name.textContent
+                    this.model.isActive = false
                     break
                 case 'keydown':
                     if (e.key === 'Enter') {
