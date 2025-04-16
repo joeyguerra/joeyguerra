@@ -173,6 +173,25 @@
             color: #aaa;
         }
 
+        body>footer {
+            display: flex;
+            justify-content: center;
+        }
+
+        body>footer nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-left: 1rem;
+        }
+        body>footer nav a::after {
+            content: '|';
+            margin-left: 0.7rem;
+            color: inherit;
+            font-weight: 200;
+            color: #aaa;
+        }
+        
         ol {
             padding-left: 1.25rem;
         }
@@ -242,9 +261,12 @@
         ${body}
     </main>
     <footer>
-        &copy; 2025 Joey Guerra. All rights reserved. | <a href="https://linkedin.com/in/joeyguerra"
-            style="color:#00c896;">LinkedIn</a> | <a href="https://github.com/joeyguerra"
-            style="color:#00c896;">GitHub</a>
+        <span>&copy; 2025 Joey Guerra. All rights reserved.</span>
+        <nav>
+            <a href="https://linkedin.com/in/joeyguerra" style="color:#00c896;">LinkedIn</a>
+            <a href="https://github.com/joeyguerra" style="color:#00c896;">GitHub</a>
+            <a href="https://joeyguerra.com/blog" title="Joey Guerra's Blog">Blog</a>
+        </nav>
     </footer>
     <button id="toTop">To The Top</button>
 
