@@ -46,6 +46,9 @@ export const SidebarComponent = {
         groups: [], // Array of group element references
         lists: {}   // Object mapping group_index:list_index to list element references
     },
+    selectedItem: null,
+    phantomSlot: null,
+    selectedGroup: null,
     init() {
         StateAggregator.register(this)
         this.elements.container = document.getElementById('groupContainer')
@@ -282,58 +285,53 @@ export const SidebarComponent = {
     },
     createGroupElement(group, groupIndex) {
         const groupEl = document.createElement('div')
+        let isDragging = false
         groupEl.className = 'group'
         groupEl.dataset.index = groupIndex
-        
-        // Make the group draggable, but only when dragging the header
-        groupEl.draggable = false // Changed to false, only header is draggable
-        
+        groupEl.draggable = true
         const header = document.createElement('strong')
         header.textContent = group.name
-        header.draggable = true // Make only the header draggable
         
-        // Add drag and drop event listeners to the header
-        header.addEventListener('dragstart', (e) => {
+        groupEl.addEventListener('dragstart', e => {
             e.stopPropagation()
-            e.dataTransfer.setData('text/plain', `group:${groupIndex}`)
-            header.classList.add('dragging')
             groupEl.classList.add('group-dragging')
+            this.selectedGroup = e.target
+            isDragging = true
         })
         
-        header.addEventListener('dragend', () => {
-            header.classList.remove('dragging')
+        groupEl.addEventListener('dragend', e => {
+            e.stopPropagation()
             groupEl.classList.remove('group-dragging')
+            this.selectedGroup = null
+            isDragging = false
+        })
+
+        groupEl.addEventListener('dragenter', e => {
+            if (!isDragging) return
+            e.stopPropagation()
         })
         
-        groupEl.addEventListener('dragover', (e) => {
+        groupEl.addEventListener('dragover', e => {
             e.preventDefault()
-            
-            // Only apply drag-over styling for group drops
-            const dragData = e.dataTransfer.getData('text/plain') || ''
-            if (dragData.startsWith('group:')) {
-                groupEl.classList.add('drag-over')
+            if (this.selectedGroup === e.target) {
+                return
             }
+            e.dataTransfer.dropEffect = 'move'
         })
         
-        groupEl.addEventListener('dragleave', () => {
-            groupEl.classList.remove('drag-over')
+        groupEl.addEventListener('dragleave', e => {
+            e.target.classList.remove('drag-over')
         })
         
-        groupEl.addEventListener('drop', (e) => {
+        groupEl.addEventListener('drop', e => {
             e.preventDefault()
+            e.stopPropagation()
             groupEl.classList.remove('drag-over')
-            
-            const data = e.dataTransfer.getData('text/plain') || ''
-            
-            // Only handle group drops
-            if (data.startsWith('group:')) {
-                const fromIndex = parseInt(data.split(':')[1])
-                const toIndex = parseInt(groupEl.dataset.index)
-                
-                if (fromIndex !== toIndex) {
-                    EventBus.publish('groupReordered', { fromIndex, toIndex })
-                }
+            if (this.selectedGroup === e.target) {
+                return
             }
+            e.target.insertAdjacentElement('afterend', this.selectedGroup)
+            this.selectedGroup = null
         })
         
         // Delete button for the group
@@ -369,142 +367,53 @@ export const SidebarComponent = {
     },
     createListElement(list, groupIndex, listIndex) {
         const listEl = document.createElement('li')
-        listEl.dataset.groupIndex = groupIndex
-        listEl.dataset.listIndex = listIndex
-        
-        if (this.state.selectedList === list) {
-            listEl.classList.add('selected', 'active')
-        }
-        
-        // Make the list draggable
-        listEl.draggable = true
+        listEl.setAttribute('draggable', true)
+        let isDragging = false
         
         // Add drag and drop event listeners
         listEl.addEventListener('dragstart', (e) => {
             e.stopPropagation()
-            e.dataTransfer.setData('text/plain', `list:${groupIndex}:${listIndex}`)
-            listEl.classList.add('dragging')
+            this.selectedItem = e.target
+            this.selectedItem.classList.add('dragging')
+            isDragging = true
         })
-        
-        listEl.addEventListener('dragend', (e) => {
-            e.stopPropagation()
-            listEl.classList.remove('dragging')
-            // Remove all phantom slots and clean up any drag-over styling
-            document.querySelectorAll('.phantom-slot').forEach(el => el.remove())
-            document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'))
+
+        listEl.addEventListener('dragenter', (e) => {
+            if (!isDragging) return
+            if (this.selectedItem === e.target) {
+                return
+            }
+
+            if (e.target === listEl.parentNode.lastElementChild) {
+                listEl.insertAdjacentElement('afterend', this.selectedItem)
+            } else {
+                listEl.parentNode.insertBefore(this.selectedItem, listEl)
+            }
         })
         
         listEl.addEventListener('dragover', (e) => {
             e.preventDefault()
-            
-            // Add class to highlight the current drop target
-            listEl.classList.add('drag-over')
-            
-            // Clear existing phantom slots
-            listEl.parentNode.querySelectorAll('.phantom-slot').forEach(el => el.remove())
-            
-            // Create a phantom slot before the current item
-            const beforeSlot = document.createElement('li')
-            beforeSlot.className = 'phantom-slot'
-            beforeSlot.dataset.position = 'before'
-            beforeSlot.dataset.targetIndex = listIndex
-            
-            // Handle dropping items onto the phantom slot
-            beforeSlot.addEventListener('dragover', (e) => {
-                e.preventDefault()
-                beforeSlot.classList.add('active-drop-target')
-            })
-            
-            beforeSlot.addEventListener('dragleave', () => {
-                beforeSlot.classList.remove('active-drop-target')
-            })
-            
-            beforeSlot.addEventListener('drop', (e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                
-                // Clean up phantom slots
-                document.querySelectorAll('.phantom-slot').forEach(el => el.remove())
-                
-                // Get data about the dragged item
-                const data = e.dataTransfer.getData('text/plain') || ''
-                
-                // Only handle list drops
-                if (!data.startsWith('list:')) return
-                
-                const parts = data.split(':')
-                const fromGroupIndex = parseInt(parts[1])
-                const fromListIndex = parseInt(parts[2])
-                const toGroupIndex = groupIndex
-                const toListIndex = parseInt(beforeSlot.dataset.targetIndex)
-                
-                // Only process if dropping to a different position
-                if (fromGroupIndex === toGroupIndex && fromListIndex === toListIndex) {
-                    return
-                }
-                
-                if (fromGroupIndex === toGroupIndex) {
-                    // Same group, reorder lists
-                    EventBus.publish('listReordered', {
-                        groupIndex: toGroupIndex,
-                        fromIndex: fromListIndex,
-                        toIndex: toListIndex
-                    })
-                }
-            })
-            
-            // Insert the phantom slot before the current item
-            listEl.parentNode.insertBefore(beforeSlot, listEl)
+            if (this.draggedItem === e.target) {
+                return
+            }
+            e.dataTransfer.dropEffect = 'move'
         })
         
         listEl.addEventListener('dragleave', (e) => {
-            // Only process if the mouse actually leaves this element
-            // and isn't entering a child element
-            if (!e.currentTarget.contains(e.relatedTarget)) {
-                listEl.classList.remove('drag-over')
-                
-                // Don't immediately remove the phantom slots during dragging
-                // They will be cleaned up on dragend
-            }
+            listEl.classList.remove('drag-over')
         })
-        
+
+        listEl.addEventListener('dragend', () => {
+            this.selectedItem.classList.remove('dragging')
+            EventBus.publish('listSelected', list)
+            isDragging = false
+        })
+
         listEl.addEventListener('drop', (e) => {
             e.stopPropagation()
-            e.preventDefault()
-            
-            // Remove all phantom slots
-            document.querySelectorAll('.phantom-slot').forEach(el => el.remove())
-            
-            const data = e.dataTransfer.getData('text/plain') || ''
-            
-            // Only handle list drops
-            if (!data.startsWith('list:')) return
-            
-            const parts = data.split(':')
-            const fromGroupIndex = parseInt(parts[1])
-            const fromListIndex = parseInt(parts[2])
-            const toGroupIndex = groupIndex
-            const toListIndex = listIndex
-            
-            // Only handle if dropping on a different position
-            if (fromGroupIndex === toGroupIndex && fromListIndex === toListIndex) {
-                return
-            }
-            
-            if (fromGroupIndex === toGroupIndex) {
-                // Same group, reorder lists
-                EventBus.publish('listReordered', {
-                    groupIndex: toGroupIndex,
-                    fromIndex: fromListIndex,
-                    toIndex: toListIndex
-                })
-            } else {
-                // Different groups, move list between groups
-                // (This would require additional implementation)
-                // For now, we'll just reorder within the same group
-            }
+            isDragging = false
         })
-        
+
         // Create span for the text content
         const textSpan = document.createElement('span')
         textSpan.textContent = list.title

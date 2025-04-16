@@ -82,7 +82,7 @@
             min-height: 40px;
             border-radius: 6px;
             transition: background 0.2s ease;
-            cursor: move;
+            cursor: pointer;
         }
 
         .tree li:hover {
@@ -101,11 +101,25 @@
         }
 
         .tree li.dragging {
-            opacity: 0.5;
             transform: scale(0.98);
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            background-color: black;
+            color: white;
         }
 
+        .tree li.dropped {
+            animation: flash 0.5s ease-in-out;
+        }
+
+        @keyframes flash {
+            0%, 100% {
+                background-color: rgba(0, 122, 255, 0.1);
+            }
+            50% {
+                background-color: rgba(0, 122, 255, 0.3);
+            }
+        }
+        
         .tree li.drag-over {
             background-color: rgba(0, 122, 255, 0.1);
             border: 1px dashed #007aff;
@@ -114,14 +128,14 @@
         .tree .phantom-slot {
             height: 30px;
             background-color: rgba(0, 122, 255, 0.1);
-            border: 1px dashed #007aff;
+            border: 0 solid inherit;
             border-radius: 6px;
             margin: 2px 0;
         }
 
         .tree .phantom-slot.active-drop-target {
             background-color: rgba(0, 122, 255, 0.3);
-            border: 2px dashed #007aff;
+            border: none;
         }
 
         .completed {

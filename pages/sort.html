@@ -34,27 +34,31 @@
 </body>
 <script type="module">
     class Sortable {
-        constructor(container, options) {
+        constructor(container, items, options) {
             this.container = container
+            this.items = items
             this.options = options
             this.draggedItem = null
-            this.init()
         }
-        init() {
-            this.container.querySelectorAll('li').forEach( li => {
+        setup() {
+            const targetingClassName = this.options.targetingClassName || 'targeting'
+            const onEnd = this.options.onEnd || function () {}
+            this.items.forEach( li => {
                 li.setAttribute('draggable', true)
                 li.setAttribute('droppable', true)
                 li.addEventListener('dragstart', (e) => {
+                    e.stopPropagation()
                     this.draggedItem = e.target
                 })
                 li.addEventListener('dragend', (e) => {
+                    e.stopPropagation()
                     this.draggedItem = null
                 })
                 li.addEventListener('dragenter', (e) => {
                     if (this.draggedItem === e.target) {
                         return
                     }
-                    e.target.classList.add('targeting')
+                    e.target.classList.add(targetingClassName)
                 })
                 li.addEventListener('dragover', e => {
                     e.preventDefault()
@@ -64,26 +68,33 @@
                     e.dataTransfer.dropEffect = 'move'
                 })
                 li.addEventListener('dragleave', e => {
-                    e.target.classList.remove('targeting')
+                    e.target.classList.remove(targetingClassName)
                 })
                 li.addEventListener('drop', e => {
                     e.preventDefault()
+                    e.stopPropagation()
                     if (this.draggedItem === e.target) {
                         return
                     }
                     e.target.insertAdjacentElement('afterend', this.draggedItem)
-                    e.target.classList.remove('targeting')
+                    e.target.classList.remove(targetingClassName)
+                    onEnd({
+                        item: this.draggedItem,
+                        target: e.target
+                    })
+                    this.draggedItem = null
                 })
             })
         }
     }
-    const sortable = new Sortable(document.querySelector('ul'), {
+    const sortable = new Sortable(document.querySelector('ul'), document.querySelectorAll('li'), {
         animation: 150,
-        ghostClass: 'blue-background-class',
+        targetingClassName: 'targeting',
         onEnd: function (evt) {
             console.log('Item moved:', evt.item)
         }
     })
+    sortable.setup()
 </script>
 <script src="/socket.io/socket.io.js"></script>
 <script type="module" id="HotReloader">
