@@ -38,7 +38,9 @@ export const SidebarComponent = {
     name: 'sidebar',
     state: {
         groups: [],
-        selectedList: null
+        selectedList: null,
+        selectedItem: null,
+        selectedGroup: null,    
     },
     // Store DOM references
     elements: {
@@ -46,9 +48,7 @@ export const SidebarComponent = {
         groups: [], // Array of group element references
         lists: {}   // Object mapping group_index:list_index to list element references
     },
-    selectedItem: null,
-    phantomSlot: null,
-    selectedGroup: null,
+    isDraggingGroup: false,
     init() {
         StateAggregator.register(this)
         this.elements.container = document.getElementById('groupContainer')
@@ -285,55 +285,55 @@ export const SidebarComponent = {
     },
     createGroupElement(group, groupIndex) {
         const groupEl = document.createElement('div')
-        let isDragging = false
         groupEl.className = 'group'
         groupEl.dataset.index = groupIndex
         groupEl.draggable = true
         const header = document.createElement('strong')
         header.textContent = group.name
         
+        groupEl.setAttribute('draggable', true)
         groupEl.addEventListener('dragstart', e => {
-            e.stopPropagation()
-            groupEl.classList.add('group-dragging')
-            this.selectedGroup = e.target
-            isDragging = true
+            this.state.selectedGroup = e.target
+            this.isDraggingGroup = true
         })
         
         groupEl.addEventListener('dragend', e => {
-            e.stopPropagation()
-            groupEl.classList.remove('group-dragging')
-            this.selectedGroup = null
-            isDragging = false
+            this.state.selectedGroup.classList.remove('dropped')
+            this.state.selectedGroup = null
+            this.isDraggingGroup = false
         })
 
         groupEl.addEventListener('dragenter', e => {
-            if (!isDragging) return
-            e.stopPropagation()
+            if (!this.isDraggingGroup) return
+            if (this.state.selectedGroup === e.target || this.state.selectedGroup.contains(e.target)) {
+                return
+            }
+            let groupContainer = e.target
+            while (groupContainer && !groupContainer.classList.contains('group')) {
+                if (groupContainer === document.body) break
+                groupContainer = groupContainer.parentElement
+            }
+            if (groupContainer === document.body) return
+            this.state.selectedGroup.classList.add('dropped')
+            if (groupContainer === groupEl.parentNode.lastElementChild) {
+                groupEl.insertAdjacentElement('afterend', this.state.selectedGroup)
+            } else {
+                groupEl.parentNode.insertBefore(this.state.selectedGroup, groupEl)
+            }
         })
         
         groupEl.addEventListener('dragover', e => {
             e.preventDefault()
-            if (this.selectedGroup === e.target) {
+            if(!this.isDraggingGroup) return
+            if (this.state.selectedGroup === e.target || this.state.selectedGroup.contains(e.target)) {
                 return
             }
             e.dataTransfer.dropEffect = 'move'
         })
         
         groupEl.addEventListener('dragleave', e => {
-            e.target.classList.remove('drag-over')
         })
-        
-        groupEl.addEventListener('drop', e => {
-            e.preventDefault()
-            e.stopPropagation()
-            groupEl.classList.remove('drag-over')
-            if (this.selectedGroup === e.target) {
-                return
-            }
-            e.target.insertAdjacentElement('afterend', this.selectedGroup)
-            this.selectedGroup = null
-        })
-        
+                
         // Delete button for the group
         const deleteBtn = document.createElement('button')
         deleteBtn.textContent = '🗑'
@@ -350,6 +350,9 @@ export const SidebarComponent = {
         // Create list elements
         group.lists.forEach((list, listIndex) => {
             const listEl = this.createListElement(list, groupIndex, listIndex)
+            if (list.title === this.state.selectedList?.title) {
+                listEl.classList.add('selected', 'active')
+            }
             listContainer.appendChild(listEl)
             this.elements.lists[`${groupIndex}:${listIndex}`] = listEl
         })
@@ -368,32 +371,36 @@ export const SidebarComponent = {
     createListElement(list, groupIndex, listIndex) {
         const listEl = document.createElement('li')
         listEl.setAttribute('draggable', true)
-        let isDragging = false
-        
+        listEl.setAttribute('droppable', true)
+
         // Add drag and drop event listeners
         listEl.addEventListener('dragstart', (e) => {
             e.stopPropagation()
-            this.selectedItem = e.target
-            this.selectedItem.classList.add('dragging')
-            isDragging = true
+            this.state.selectedItem = e.target
+            this.state.selectedItem.classList.add('dragging')
+        })
+
+        listEl.addEventListener('dragend', e => {
+            e.stopPropagation()
+            this.state.selectedItem.classList.remove('dragging')
+            EventBus.publish('listSelected', list)
         })
 
         listEl.addEventListener('dragenter', (e) => {
-            if (!isDragging) return
-            if (this.selectedItem === e.target) {
+            if(this.isDraggingGroup) return
+            if (this.state.selectedItem === e.target || this.state.selectedItem.contains(e.target)) {
                 return
             }
-
             if (e.target === listEl.parentNode.lastElementChild) {
-                listEl.insertAdjacentElement('afterend', this.selectedItem)
+                listEl.insertAdjacentElement('afterend', this.state.selectedItem)
             } else {
-                listEl.parentNode.insertBefore(this.selectedItem, listEl)
+                listEl.parentNode.insertBefore(this.state.selectedItem, listEl)
             }
         })
         
         listEl.addEventListener('dragover', (e) => {
             e.preventDefault()
-            if (this.draggedItem === e.target) {
+            if (this.state.selectedItem === e.target) {
                 return
             }
             e.dataTransfer.dropEffect = 'move'
@@ -403,15 +410,8 @@ export const SidebarComponent = {
             listEl.classList.remove('drag-over')
         })
 
-        listEl.addEventListener('dragend', () => {
-            this.selectedItem.classList.remove('dragging')
-            EventBus.publish('listSelected', list)
-            isDragging = false
-        })
-
         listEl.addEventListener('drop', (e) => {
             e.stopPropagation()
-            isDragging = false
         })
 
         // Create span for the text content
@@ -572,11 +572,10 @@ export const MainComponent = {
         this.initialRender()
     },
     selectList(list) {
-        // Skip if the same list is already selected
         if (this.state.selectedList === list) return
-        
         this.state.selectedList = list
-        this.initialRender() // Full render needed when changing lists
+        this.initialRender()
+        EventBus.publish('stateSaved')
     },
     updateTitle(newTitle) {
         if (this.elements.title) {

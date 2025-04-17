@@ -38,7 +38,7 @@
             this.container = container
             this.items = items
             this.options = options
-            this.draggedItem = null
+            this.selectedItem = null
         }
         setup() {
             const targetingClassName = this.options.targetingClassName || 'targeting'
@@ -48,21 +48,21 @@
                 li.setAttribute('droppable', true)
                 li.addEventListener('dragstart', (e) => {
                     e.stopPropagation()
-                    this.draggedItem = e.target
+                    this.selectedItem = e.target
                 })
                 li.addEventListener('dragend', (e) => {
                     e.stopPropagation()
-                    this.draggedItem = null
+                    this.selectedItem = null
                 })
                 li.addEventListener('dragenter', (e) => {
-                    if (this.draggedItem === e.target) {
+                    if (this.selectedItem === e.target || this.selectedItem.contains(e.target)) {
                         return
                     }
                     e.target.classList.add(targetingClassName)
                 })
                 li.addEventListener('dragover', e => {
                     e.preventDefault()
-                    if (this.draggedItem === e.target) {
+                    if (this.selectedItem === e.target) {
                         return
                     }
                     e.dataTransfer.dropEffect = 'move'
@@ -73,16 +73,16 @@
                 li.addEventListener('drop', e => {
                     e.preventDefault()
                     e.stopPropagation()
-                    if (this.draggedItem === e.target) {
+                    if (this.selectedItem === e.target) {
                         return
                     }
-                    e.target.insertAdjacentElement('afterend', this.draggedItem)
+                    e.target.insertAdjacentElement('afterend', this.selectedItem)
                     e.target.classList.remove(targetingClassName)
                     onEnd({
-                        item: this.draggedItem,
+                        item: this.selectedItem,
                         target: e.target
                     })
-                    this.draggedItem = null
+                    this.selectedItem = null
                 })
             })
         }
