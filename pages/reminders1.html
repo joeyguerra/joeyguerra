@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reminders App - MVC</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" id="HotReloader">
+        import { HotReloader } from '/js/HotReloader.mjs'
+        const hotReloader = new HotReloader(window, io('/hot-reload'))
+    </script>
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+
+        aside {
+            width: 300px;
+            background: #f2f2f7;
+            border-right: 1px solid #d1d1d6;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            background: #ffffff;
+            overflow-y: auto;
+        }
+
+        .group {
+            margin-bottom: 8px;
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #d1d1d6;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            cursor: move;
+            transition: all 0.2s ease;
+        }
+
+        .group.dragging {
+            opacity: 0.5;
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .group.drag-over {
+            border: 2px dashed #007aff;
+            background-color: rgba(0, 122, 255, 0.05);
+        }
+
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #1c1c1e;
+        }
+
+        .input-inline {
+            width: 100%;
+            margin-top: 4px;
+            padding: 8px;
+            font-size: 14px;
+            border: none;
+            background-color: transparent;
+        }
+
+        .tree ul {
+            list-style: none;
+            padding-left: 15px;
+        }
+
+        .tree li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            min-height: 40px;
+            border-radius: 6px;
+            transition: background 0.2s ease;
+            cursor: pointer;
+        }
+
+        .tree li:hover {
+            background-color: #e5e5ea;
+        }
+
+        .tree li.selected {
+            background-color: #d1d1d6;
+            /* macOS blue color */
+            color: #1c1c1e;
+            font-weight: bold;
+        }
+
+        .tree li.selected.active {
+            background-color: #0071e3;
+            /* macOS gray color */
+            color: white;
+        }
+
+        .tree li.dragging {
+            transform: scale(0.98);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            background-color: rgba(0, 122, 255, 0.1);
+            color: black;
+        }
+
+        .tree .dropped {
+            animation: flash 0.5s ease-in-out;
+            background-color: rgba(0, 122, 255, 0.1);
+            transition: background 0.2s ease;
+        }
+
+        @keyframes flash {
+
+            0%,
+            100% {
+                background-color: rgba(0, 122, 255, 0.1);
+            }
+
+            50% {
+                background-color: rgba(0, 122, 255, 0.3);
+            }
+        }
+
+        .tree li.drag-over {
+            background-color: rgba(0, 122, 255, 0.1);
+            border: 1px dashed #007aff;
+        }
+
+        .tree .phantom-slot {
+            height: 30px;
+            background-color: rgba(0, 122, 255, 0.1);
+            border: 0 solid inherit;
+            border-radius: 6px;
+            margin: 2px 0;
+        }
+
+        .tree .phantom-slot.active-drop-target {
+            background-color: rgba(0, 122, 255, 0.3);
+            border: none;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: #8e8e93;
+        }
+
+        button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #ff3b30;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <aside>
+        <input id="newGroupInput" class="input-inline" placeholder="New group name" />
+        <div id="groupContainer" class="tree"></div>
+    </aside>
+    <main>
+        <div id="mainContent"></div>
+    </main>
+</body>
+<script type="module">
+    class WindowResizeHandler {
+        constructor(container, window) {
+            this.container = container
+            this.window = window
+            this.window.addEventListener('resize', this, true)
+        }
+        destroy() {
+            this.window.removeEventListener('resize', this, true)
+        }
+        handleEvent(e) {
+            if (e.type === 'resize') {
+                this.resize(e)
+            }
+        }
+        resize(e) {
+            if (e.target.innerWidth >= 768) {
+                e.target.document.body.classList.add('resized')
+            } else {
+                e.target.document.body.classList.remove('resized')
+            }
+        }
+    }
+    const asideMenu = new WindowResizeHandler(window.sidebar, window)
+
+    window.addEventListener('beforeunload', () => {
+        asideMenu.destroy()
+    })
+    asideMenu.resize({ target: window })
+
+</script>
+
+<script type="module">
+    import { Observable, ObservableArray, Observer } from '/js/Observable.mjs'
+    class View extends Observer {
+        constructor(container, model) {
+            super()
+            this.container = container
+            this.model = model
+        }
+        blur() {
+            this.container.classList.remove('active')
+        }
+        focus() {
+            this.container.classList.add('active')
+        }
+        destroy() { }
+    }
+
+    class GroupModel extends Observable {
+        constructor(name, lists) {
+            super()
+            this.name = name
+            this.lists = lists ?? []
+        }
+    }
+    class NewGroupNameView extends View {
+        constructor(container, model) {
+            super(container, model)
+            this.container.focus()
+            this.container.addEventListener('blur', this.blur.bind(this))
+            this.container.addEventListener('keypress', this.keypress.bind(this))
+        }
+        blur(e) {
+            const value = e.target.value
+            if (value) {
+                this.model.selectedItem = value
+                this.model.groups.push(new GroupModel(value))
+                e.target.value = ''
+            }
+        }
+        keypress(e) {
+            if (e.key === 'Enter') {
+                this.blur(e)
+            }
+        }
+    }
+    class ListeItemView extends View {
+        constructor(container, model) {
+            super(container, model)
+            this.listInput = document.createElement('input')
+            this.listInput.placeholder = 'New list name'
+            this.container.appendChild(this.listInput)
+        }
+    }
+    class GroupView extends View {
+        constructor(container, model) {
+            super(container, model)
+            this.isDraggingGroup = false
+            this.model.groups.observe('push', this)
+        }
+        update(key, old, value, obj) {
+            switch(key) {
+                case 'push':
+                    this.container.appendChild(this.createGroupElement(value))
+                    break
+            }
+        }
+        createGroupElement(group) {
+            const groupEl = document.createElement('div')
+            groupEl.className = 'group'
+            groupEl.draggable = true
+            const header = document.createElement('strong')
+            header.textContent = group.name
+            
+            groupEl.setAttribute('draggable', true)
+            groupEl.addEventListener('dragstart', e => {
+                this.model.selectedGroup = e.target
+                this.isDraggingGroup = true
+            })
+            
+            groupEl.addEventListener('dragend', e => {
+                this.model.selectedGroup.classList.remove('dropped')
+                this.model.selectedGroup = null
+                this.isDraggingGroup = false
+            })
+
+            groupEl.addEventListener('dragenter', e => {
+                if (!this.isDraggingGroup) return
+                if (this.model.selectedGroup === e.target || this.model.selectedGroup.contains(e.target)) {
+                    return
+                }
+                let groupContainer = e.target
+                while (groupContainer && !groupContainer.classList.contains('group')) {
+                    if (groupContainer === document.body) break
+                    groupContainer = groupContainer.parentElement
+                }
+                if (groupContainer === document.body) return
+                this.state.selectedGroup.classList.add('dropped')
+                if (groupContainer === groupEl.parentNode.lastElementChild) {
+                    groupEl.insertAdjacentElement('afterend', this.model.selectedGroup)
+                } else {
+                    groupEl.parentNode.insertBefore(this.model.selectedGroup, groupEl)
+                }
+            })
+            
+            groupEl.addEventListener('dragover', e => {
+                e.preventDefault()
+                if(!this.isDraggingGroup) return
+                if (this.model.selectedGroup === e.target || this.model.selectedGroup.contains(e.target)) {
+                    return
+                }
+                e.dataTransfer.dropEffect = 'move'
+            })
+                                
+            // Delete button for the group
+            const deleteBtn = document.createElement('button')
+            deleteBtn.textContent = '🗑'
+            deleteBtn.addEventListener('click', () => {
+            })
+            
+            header.appendChild(deleteBtn)
+            groupEl.appendChild(header)
+            
+            const listContainer = document.createElement('ul')
+            
+            group.lists.forEach((list, listIndex) => {
+                const listView = this.createListElement(list)
+                if (list.title === this.model.selectedList?.title) {
+                    listView.container.classList.add('selected', 'active')
+                }
+                listContainer.appendChild(listView.container)
+            })
+            
+            groupEl.appendChild(listContainer)
+            return groupEl
+
+        }
+        createListElement(list) {
+            return new ListeItemView(document.createElement('li'), list)
+        }
+        updateAddListInputHandler() {
+
+        }
+    }
+
+    const model = {
+        groups: new ObservableArray(),
+        selectedItem: null,
+        selectedGroup: null
+    }
+    const views = new ObservableArray()
+    views.push(
+        new NewGroupNameView(document.getElementById('newGroupInput'), model),
+        new GroupView(document.getElementById('groupContainer'), model)
+    )
+
+    window.addEventListener('morphed', () => {
+        while (model.groups.pop()) { }
+        views.forEach(view => view.destroy())
+    })
+</script>
+
+</html>
