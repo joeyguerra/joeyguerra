@@ -89,7 +89,9 @@ export const SidebarComponent = {
             .filter(key => key.startsWith(`${groupIndex}:`))
         
         listsToRemove.forEach(key => {
-            delete this.elements.lists[key]
+            const groupIndex = key.split(':')[0]
+            const listIndex = key.split(':')[1]
+            EventBus.publish('listDeleted', { groupIndex , listIndex })
         })
         
         // Update the state
@@ -110,7 +112,8 @@ export const SidebarComponent = {
                 this.updateListHandlers(li, idx, listIdx)
             })
         })
-        
+        this.selectedList = null
+        this.selectedGroup = null
         EventBus.publish('stateSaved')
     },
     addList({ groupIndex, list }) {
@@ -597,6 +600,7 @@ export const MainComponent = {
         this.elements.container = document.getElementById('mainContent')
 
         EventBus.subscribe('listSelected', this.selectList.bind(this))
+        EventBus.subscribe('listDeleted', this.deleteList.bind(this))
         EventBus.subscribe('sectionAdded', this.addSection.bind(this))
         EventBus.subscribe('sectionRenamed', this.renameSection.bind(this))
         EventBus.subscribe('reminderAdded', this.addReminder.bind(this))
@@ -606,6 +610,15 @@ export const MainComponent = {
         
         // Initial render
         this.initialRender()
+    },
+    deleteList({ groupIndex , listIndex }) {
+        // Clear the main content
+        this.elements.container.innerHTML = ''
+        this.elements.sections = {}
+        this.elements.reminders = {}
+        
+        // Clear the selected list in the state
+        this.state.selectedList = null
     },
     renderCalendar() {
         const calendar = document.getElementById('calendarYearView')
