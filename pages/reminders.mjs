@@ -4,10 +4,9 @@ import { Page } from 'juphjacs/src/Page.mjs'
 class RemindersPage extends Page {
     constructor (rootFolder, filePath, template) {
         super(rootFolder, filePath, template)
-        this.title = 'Ratings'
-        this.layout = './pages/layouts/reminder.html'
+        this.title = 'Reminders'
         this.canonical = 'https://www.joeyguerra.com/reminders.html'
-        this.excerpt = 'Todo App'
+        this.excerpt = 'Reminders is a simple app that helps you remember to do things.'
         this.shouldPublish = true
         this.published = new Date('2025-04-07')
         this.image = '/images/pushups-screenshot.jpg'
