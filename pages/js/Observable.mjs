@@ -37,6 +37,12 @@ class ObservableArray extends Array {
     constructor(...args) {
         super(...args)
     }
+    move(oldIndex, newIndex) {
+        if (oldIndex < 0 || oldIndex >= this.length || newIndex < 0 || newIndex >= this.length) return
+        const [item] = this.splice(oldIndex, 1)
+        this.splice(newIndex, 0, item)
+        this.#update('move', oldIndex, newIndex)
+    }
     push(item) {
         super.push(item)
         this.#update('push', null, item)

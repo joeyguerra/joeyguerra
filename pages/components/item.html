@@ -1,0 +1,226 @@
+<style>
+    :root {
+        --background-color: #f0f0f0;
+        --text-color: #333;
+        --border-color: #ccc;
+        --hover-color: #e0e0e0;
+        --selected-color: #007BFF;
+        --selected-text-color: #fff;
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+        position: relative;
+    }
+    li {
+        margin: 5px 0;
+        padding: 10px;
+        border-radius: 5px;
+        display: flex;
+        border: solid 1px #ccc;
+        position: relative;
+    }
+    li.selected {
+        background-color: #007BFF;
+        color: white;
+    }
+
+    .insertion-line {
+        height: 1px;
+        background-color: var(--selected-color);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .insertion-line::before {
+        content: '○';
+        position: absolute;
+        top: -9px;
+        left: -8px;
+        color: var(--selected-color);
+    }
+</style>
+<ul></ul>
+
+<script type="module">
+    import { Observable, ObservableArray, Observer } from '/js/Observable.mjs'
+    class LineItemModel extends Observable {
+        #text =  null
+        #isSelected = false
+        constructor(obj) {
+            super()
+            this.#text = obj.text
+            this.#isSelected = obj.isSelected
+        }
+        get text() {
+            return this.#text
+        }
+        set text(value) {
+            this.#text = value
+            this.update('text', null, value)
+        }
+        get isSelected() {
+            return this.#isSelected
+        }
+        set isSelected(value) {
+            this.#isSelected = value
+            this.update('isSelected', null, value)
+        }
+    }
+
+    class ListModel extends Observable {
+        #items = null
+        constructor() {
+            super()
+            this.#items = new ObservableArray()
+        }
+        get items() {
+            return this.#items
+        }
+        set items(value) {
+            this.#items = value
+            this.update('items', null, value)
+        }
+    }
+
+    class View extends Observer {
+        constructor(container, model, delegate) {
+            super()
+            this.container = container
+            this.model = model
+            this.delegate = delegate
+        }
+        deselect() {
+
+        }
+    }
+    class ListView extends View {
+        constructor(container, model, delegate) {
+            super(container, model, delegate)
+            this.model.items.observe('push', this)
+            this.model.items.observe('move', this)
+            this.views = new ObservableArray()
+            this.draggedItem = null
+            this.closestElement = null
+            this.phantomLine = document.createElement('li')
+            this.phantomLine.classList.add('insertion-line')
+        }
+        selectedView() {
+            return this.views.find(v => v.model.isSelected)
+        }
+        getClosestElement(y) {
+            const draggableElements = [...this.container.querySelectorAll('[draggable=true]')]
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect()
+                const offset = y - box.top - box.height
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child }
+                } else {
+                    return closest
+                }
+            }, { offset: Number.NEGATIVE_INFINITY })
+        }
+        addItem(item) {
+            const li = document.createElement('li')
+            const view = new LineItemView(li, item, this)
+            view.container.setAttribute('draggable', true)
+            view.container.addEventListener('dragstart', e => {
+                this.draggedItem = view.container
+                this.draggedItem.classList.add('dragging')
+            })
+            view.container.addEventListener('dragend', e => {
+                e.preventDefault()
+                this.phantomLine.replaceWith(this.draggedItem)
+                this.draggedItem.classList.remove('dragging')
+                this.delegate?.viewWasSorted(this.views.find(v => v.container === this.draggedItem))
+                this.draggedItem = null
+            })
+            this.container.addEventListener('dragover', e => {
+                e.preventDefault()
+                const previous = this.closestElement?.element
+                this.closestElement = this.getClosestElement(e.clientY)
+
+                if (this.closestElement.element && this.closestElement.offset <= -5) {
+                    this.container.insertBefore(this.phantomLine, this.closestElement.element)
+                } else {
+                    this.container.appendChild(this.phantomLine)
+                }
+            })
+            this.views.push(view)
+            this.container.appendChild(view.container)
+        }
+        update(key, old, value, model) {
+            if (key === 'push') {
+                this.addItem(value)
+            }
+        }
+        wasSelected(view) {
+            for (const v of this.views) {
+                if (v === view) continue
+                v.deselect()
+            }
+        }
+        moveUp(view) {
+            const index = this.views.findIndex(v => v.model === view.model)
+            if (index > 0) {
+                const item = this.model.items[index]
+                this.model.items.move(index, index - 1)
+            }
+        }
+        moveDown(view) {
+            const index = this.views.findIndex(v => v.model === view.model)
+            if (index < this.views.length - 1) {
+                const item = this.model.items[index]
+                this.model.items.move(index, index + 1)
+            }
+        }
+    }
+    class LineItemView extends View {
+        constructor(container, model, delegate) {
+            super(container, model, delegate)
+            this.container.addEventListener('click', this, true)
+
+            this.model.observe('isSelected', this)
+            this.update('text', null, model, model)
+        }
+        handleEvent(event) {
+            switch (event.type) {
+                case 'click':
+                    this.model.isSelected = true
+                    break
+            }
+        }
+        update(key, old, value, model) {
+            if (key === 'isSelected') {
+                this.container.classList.toggle('selected', value)
+                if(value === true) {
+                    this.delegate.wasSelected(this)
+                } else {
+                    this.deselect()
+                }
+            }
+            if (key === 'text') {
+                this.container.innerHTML = `<div>${value.text}</div>`
+            }
+        }
+        deselect() {
+            this.container.classList.remove('selected')
+            this.container.setAttribute('disabled', true)
+        }
+    }
+    const app = {
+        model: new ListModel(),
+        container: document.querySelector('ul'),
+        views: [],
+        viewWasSorted(view) {
+            console.log(view.model)
+        }
+    }
+    app.views.push(new ListView(app.container, app.model, app))
+    for (let i = 0; i < 1000; i++) {
+        app.model.items.push(new LineItemModel({ text: `Lots of ${i}`, isSelected: false }))
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+        window.app = app
+    })
+</script>

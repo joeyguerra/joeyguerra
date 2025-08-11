@@ -1,3 +1,16 @@
+// Description:
+// Ship Tracking Service.
+//
+// Dependencies:
+//
+// Configuration:
+//
+// Commands:
+//
+// Notes:
+//
+// Author:
+//   Joey Guerra
 
 class Ship {
     constructor (name, location) {

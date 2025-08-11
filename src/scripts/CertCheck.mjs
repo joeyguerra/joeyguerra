@@ -29,7 +29,10 @@ async function makeRequest(domain) {
     }
     return new Promise((resolve, reject)=>{
         const req = https.request(options, res => {
-            const { valid_from, valid_to } = res.socket.getPeerCertificate()
+            const cert = res.socket.getPeerCertificate()
+            const cipher = res.socket.getCipher()
+            console.log('cipher', cipher)
+            const { valid_from, valid_to } = cert
             const validFrom = new Date(valid_from)
             const validTo = new Date(valid_to)
             const today = new Date()

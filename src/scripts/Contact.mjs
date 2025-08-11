@@ -9,6 +9,7 @@
 //
 // Author:
 //   Joey Guerra
+
 import crypto from 'node:crypto'
 import fs from 'node:fs'
 
@@ -66,7 +67,7 @@ export default robot => {
         resp.render('contacts/index.html', {contacts: output, term})
     })
 
-    robot.router.get('/contact/:id?', (req, resp) => {
+    robot.router.get('/contact/:id', (req, resp) => {
         const id = req.params.id
         const contact = contacts.find(c => c.id == id)
         resp.render('contacts/form.html', contact)
