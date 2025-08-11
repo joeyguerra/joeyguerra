@@ -12,7 +12,7 @@
     "dijkstrajs": "^1.0.3",
     "discord.js": "^14.11.0",
     "express-session": "^1.17.3",
-    "formidable": "^3.5.0",
+    "formidable": "^3.5.4",
     "html-to-pdfmake": "^2.5.13",
     "hubot": "^13.0.0",
     "jimp": "^1.4.0",
