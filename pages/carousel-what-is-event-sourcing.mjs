@@ -6,7 +6,7 @@ class CarouselWhatIsEventSourcingPage extends Page {
         super(rootFolder, filePath, template)
         this.layout = './pages/layouts/carousel.html'
         this.title = 'What is Event Sourcing?'
-        this.canonical = 'https://www.joeyguerra.com/carousel-what-is-event-sourcing.html'
+        this.canonical = 'https://joeyguerra.com/carousel-what-is-event-sourcing.html'
         this.excerpt = 'Event Sourcing is a data persistence strategy that enables us to, at any time, visualize the state of our system at any point in time, past, present and future.'
         this.shouldPublish = true
         this.published = new Date('2024-06-04')

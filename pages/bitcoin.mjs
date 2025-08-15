@@ -5,7 +5,7 @@ class BitcoinTrackerPage extends Page {
         super(rootFolder, filePath, template, delegate)
         this.layout = './pages/layouts/app.html'
         this.title = 'Bitcoin Tracker'
-        this.canonical = 'https://www.joeyguerra.com/bitcoin.html'
+        this.canonical = 'https://joeyguerra.com/bitcoin.html'
         this.uri = '/bitcoin.html'
         this.excerpt = 'Tracks Bitcoin price.'
         this.shouldPublish = true

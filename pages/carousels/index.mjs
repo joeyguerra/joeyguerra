@@ -6,7 +6,7 @@ class CarouselsPage extends Page {
         super(rootFolder, filePath, template)
         this.layout = './pages/layouts/index.html'
         this.title = 'All my LiinkedIn Carousels'
-        this.canonical = 'https://www.joeyguerra.com/carousels/'
+        this.canonical = 'https://joeyguerra.com/carousels/'
         this.excerpt = 'List of all my LinkedIn carousels. These are slide decks that I created to share insights and tips on software engineering, leadership, and career development.'
         this.shouldPublish = true
         this.published = new Date('2025-03-30')

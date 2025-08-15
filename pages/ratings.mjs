@@ -6,7 +6,7 @@ class RatingsPage extends Page {
         super(rootFolder, filePath, template)
         this.title = 'Ratings'
         this.layout = './pages/layouts/app.html'
-        this.canonical = 'https://www.joeyguerra.com/ratings.html'
+        this.canonical = 'https://joeyguerra.com/ratings.html'
         this.excerpt = 'Ratings example with MVC.'
         this.shouldPublish = true
         this.published = new Date('2015-01-01')

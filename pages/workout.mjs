@@ -6,7 +6,7 @@ class WorkoutPage extends Page {
         super(rootFolder, filePath, template)
         this.title = 'Workout Tracker'
         this.layout = './pages/layouts/app.html'
-        this.canonical = 'https://www.joeyguerra.com/workout.html'
+        this.canonical = 'https://joeyguerra.com/workout.html'
         this.excerpt = 'Track your work.'
         this.shouldPublish = true
         this.uri = '/workout.html'

@@ -6,7 +6,7 @@ class IntegrationBugChaosCarouselPage extends Page {
         super(rootFolder, filePath, template)
         this.layout = './pages/layouts/carousel.html'
         this.title = 'Can AI Handle Integration Disasters?'
-        this.canonical = 'https://www.joeyguerra.com/integration-bug-chaos.html'
+        this.canonical = 'https://joeyguerra.com/integration-bug-chaos.html'
         this.excerpt = 'We hit a wall: corrupt sales data in a SOX-compliant pipeline. Friday night firefighting, late-night debugging, missing documentation, and urgent pressure. Could AI do this job?'
         this.shouldPublish = true
         this.published = new Date('2025-03-29')

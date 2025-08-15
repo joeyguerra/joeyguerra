@@ -6,7 +6,7 @@ class AiSoftwareEngineeringTrapCarouselPage extends Page {
         super(rootFolder, filePath, template)
         this.layout = './pages/layouts/joeyg-carousel.html'
         this.title = 'AI Makes You Faster. But Is It Making You Weaker?'
-        this.canonical = 'https://www.joeyguerra.com/ai-software-engineering-trap.html'
+        this.canonical = 'https://joeyguerra.com/ai-software-engineering-trap.html'
         this.excerpt = 'A CTO’s Guide to Balancing Short-Term Wins with Long-Term Team Health.'
         this.shouldPublish = true
         this.published = new Date('2025-03-30')

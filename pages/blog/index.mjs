@@ -8,7 +8,7 @@ class BlogIndexPage extends Page {
         this.title = "Blog"
         this.route = new UriToStaticFileRoute(/\/blog\/?$/, this.filePath)
         this.layout = './pages/layouts/blog.html'
-        this.canonical = 'https://www.joeyguerra.com/blog/'
+        this.canonical = 'https://joeyguerra.com/blog/'
         this.excerpt = 'My Blog.'
         this.shouldPublish = true
         this.published = new Date('2024-09-01')

@@ -7,7 +7,7 @@ class ResponsiveHeaderPage extends Page {
         this.layout = './pages/layouts/post.html'
         this.title = 'Responsive Header'
         this.excerpt = 'This is a responsive header with a mobile navigation.'
-        this.canonical = 'https://www.joeyguerra.com/responsive-header.html'
+        this.canonical = 'https://joeyguerra.com/responsive-header.html'
         this.shouldPublish = true
         this.image = ''
         this.published = new Date('2024-09-01')

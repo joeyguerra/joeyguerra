@@ -2,7 +2,7 @@
 {
     title: 'Notes',
     layout: './pages/layouts/index.html',
-    canonical: 'https://www.joeyguerra.com/notes.html',
+    canonical: 'https://joeyguerra.com/notes.html',
     excerpt: 'Notes',
     shouldPublish: false,
     published: new Date('2024-09-01'),

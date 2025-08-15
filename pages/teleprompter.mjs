@@ -6,7 +6,7 @@ class TeleprompterPage extends Page {
         super(rootFolder, filePath, template)
         this.title = 'Teleprompter'
         this.layout = './pages/layouts/app.html'
-        this.canonical = 'https://www.joeyguerra.com/teleprompter.html'
+        this.canonical = 'https://joeyguerra.com/teleprompter.html'
         this.excerpt = 'Web teleprompter.'
         this.shouldPublish = false
         this.uri = '/teleprompter.html'

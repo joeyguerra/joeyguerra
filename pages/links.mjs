@@ -6,7 +6,7 @@ class LinksPage extends Page {
         super(rootFolder, filePath, template)
         this.title = 'Links to Topics of Interest'
         this.layout = './pages/layouts/index.html'
-        this.canonical = 'https://www.joeyguerra.com/links.html'
+        this.canonical = 'https://joeyguerra.com/links.html'
         this.excerpt = 'Links to Topics of Interest.'
         this.shouldPublish = true
         this.published = new Date('2022-09-01')

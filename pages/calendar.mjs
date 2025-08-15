@@ -6,7 +6,7 @@ class CalendarPage extends Page {
         super(rootFolder, filePath, template)
         this.layout = './pages/layouts/app.html'
         this.title = 'A large calendar, all 365 day'
-        this.canonical = 'https://www.joeyguerra.com/calendar.html'
+        this.canonical = 'https://joeyguerra.com/calendar.html'
         this.uri = '/calendar.html'
         this.excerpt = 'This is a 38x46 inch calendar that shows all 365 days.'
         this.shouldPublish = true

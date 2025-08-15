@@ -6,7 +6,7 @@ class SitemapPage extends Page {
         super(rootFolder, filePath, template)
         this.title = 'Site Map'
         this.excerpt = 'Site Map.'
-        this.canonical = 'https://www.joeyguerra.com/sitemap.xml'
+        this.canonical = 'https://joeyguerra.com/sitemap.xml'
         this.shouldPublish = true
         this.image = ''
         this.published = new Date('2025-02-19')

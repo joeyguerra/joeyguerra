@@ -6,7 +6,7 @@ class CarouselKMarketingPage extends Page {
         super(rootFolder, filePath, template)
         this.layout = './pages/layouts/carousel.html'
         this.title = '360 Feedback Loop is Non-Existent with Customers'
-        this.canonical = 'https://www.joeyguerra.com/carousel-k-marketing.html'
+        this.canonical = 'https://joeyguerra.com/carousel-k-marketing.html'
         this.excerpt = 'LinkedIn carousel template.'
         this.shouldPublish = true
         this.published = new Date('2024-10-01')

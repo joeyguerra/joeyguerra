@@ -6,7 +6,7 @@ class LinkedInCarouselPage extends Page {
         super(rootFolder, filePath, template)
         this.title = 'LinkedIn Carousel Builder'
         this.layout = './pages/layouts/carousel.html'
-        this.canonical = 'https://www.joeyguerra.com/linkedincarousel.html'
+        this.canonical = 'https://joeyguerra.com/linkedincarousel.html'
         this.excerpt = 'Build PDF documents for LinkedIn Carousel Posts.'
         this.shouldPublish = true
         this.published = new Date('2024-03-07')

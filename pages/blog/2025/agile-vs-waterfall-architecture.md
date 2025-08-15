@@ -18,7 +18,7 @@
     <img class="full-width" src="images/iterative-steps-with-value.jpg" alt="Four quadrant drawing of a man by a well with a pail of water. 2nd quadrant is the same man at a water pump, pumping water into the pail. 3rd quadrant is the same man pumping water into the pai, but now there's a filter attached to the pump. 4th quadrant is the man standing next to the pump and the pump automatically filling the pail." />
 </figure>
 
-In manufacturing, there’s a world of difference between a batch-and-queue process and a pull-based flow like the (Toyota Production System)[https://global.toyota/en/company/vision-and-philosophy/production-system/].
+In manufacturing, there’s a world of difference between a batch-and-queue process and a pull-based flow like the [Toyota Production System](https://global.toyota/en/company/vision-and-philosophy/production-system/).
 The same is true in software development.
 
 When you strip away the jargon, Agile (especially when practiced through Scrum or Kanban) is a pull-based, demand-responsive approach to delivering value, while Waterfall is a batch-based, queue-heavy approach that tries to deliver the entire solution all at once.

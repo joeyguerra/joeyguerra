@@ -6,7 +6,7 @@ class PushupsPage extends Page {
         super(rootFolder, filePath, template)
         this.title = 'Daily Pushups'
         this.layout = './pages/layouts/app.html'
-        this.canonical = 'https://www.joeyguerra.com/pushups.html'
+        this.canonical = 'https://joeyguerra.com/pushups.html'
         this.excerpt = 'An app to record your daily pushups.'
         this.shouldPublish = false
         this.published = new Date('2024-02-03')

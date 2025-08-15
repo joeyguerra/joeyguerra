@@ -6,7 +6,7 @@ class CarouselPage extends Page {
         super(rootFolder, filePath, template)
         this.layout = './pages/layouts/carousel.html'
         this.title = 'Carousel Example 1'
-        this.canonical = 'https://www.joeyguerra.com/carousel-1.html'
+        this.canonical = 'https://joeyguerra.com/carousel-1.html'
         this.excerpt = 'LinkedIn carousel template.'
         this.uri = '/carousel-1.html'
         this.shouldPublish = true

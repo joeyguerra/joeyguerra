@@ -13,7 +13,7 @@
 ---
 # An Omni-channel Technology Strategy
 
-<img class="full-width" src="https://www.joeyguerra.com/images/desk.jpeg" alt="My desk" />
+<img class="full-width" src="https://joeyguerra.com/images/desk.jpeg" alt="My desk" />
 
 ## Problem
 

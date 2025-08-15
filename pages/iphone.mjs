@@ -6,7 +6,7 @@ class iPhonePage extends Page {
         super(rootFolder, filePath, template)
         this.title = 'iPhone CSS Layout'
         this.layout = './pages/layouts/index.html'
-        this.canonical = 'https://www.joeyguerra.com/iphone.html'
+        this.canonical = 'https://joeyguerra.com/iphone.html'
         this.excerpt = 'iPhone CSS Layout.'
         this.shouldPublish = true
         this.published = new Date('2024-08-15')

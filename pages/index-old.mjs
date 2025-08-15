@@ -6,7 +6,7 @@ class AboutMePage extends Page {
         super(rootFolder, filePath, template)
         this.title = "Joey Guerra's Personal Web Site"
         this.layout = './pages/layouts/index.html'
-        this.canonical = 'https://www.joeyguerra.com/'
+        this.canonical = 'https://joeyguerra.com/'
         this.excerpt = 'Just my website.'
         this.shouldPublish = true
         this.published = new Date('2024-11-24')

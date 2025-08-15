@@ -6,7 +6,7 @@ class IndexPage extends Page {
         super(rootFolder, filePath, template)
         this.title = "Joey Guerra | Software Engineering Consultant"
         this.layout = './pages/layouts/homepage.html'
-        this.canonical = 'https://www.joeyguerra.com/'
+        this.canonical = 'https://joeyguerra.com/'
         this.excerpt = `I specialize in software modernization and systems integration. Whether you're trying to move off legacy code,
         unify your data, or automate operations, I bring clarity, momentum, and proven architecture patterns that work
         in the real world.`

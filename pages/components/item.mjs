@@ -6,7 +6,7 @@ class ItemPage extends Page {
         super(rootFolder, filePath, template)
         this.title = 'Item Component'
         this.layout = './pages/layouts/component.html'
-        this.canonical = 'https://www.joeyguerra.com/components/item.html'
+        this.canonical = 'https://joeyguerra.com/components/item.html'
         this.excerpt = 'The Item Component is just an item in a list.'
         this.shouldPublish = true
         this.published = new Date('2025-05-03T15:55:00Z')

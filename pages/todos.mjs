@@ -6,7 +6,7 @@ class TodoPage extends Page {
         super(rootFolder, filePath, template)
         this.title = 'Todo App'
         this.layout = './pages/layouts/app.html'
-        this.canonical = 'https://www.joeyguerra.com/todos.html'
+        this.canonical = 'https://joeyguerra.com/todos.html'
         this.excerpt = 'Implement the MVC pattern for a Todo App.'
         this.shouldPublish = true
         this.uri = '/todos.html'

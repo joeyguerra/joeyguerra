@@ -6,7 +6,7 @@ class CarouselEventsPage extends Page {
         super(rootFolder, filePath, template)
         this.layout = './pages/layouts/carousel.html'
         this.title = 'Carousel Example 1'
-        this.canonical = 'https://www.joeyguerra.com/linkedincarousel.html'
+        this.canonical = 'https://joeyguerra.com/linkedincarousel.html'
         this.excerpt = 'LinkedIn carousel template.'
         this.shouldPublish = true
         this.published = new Date('2024-10-05')

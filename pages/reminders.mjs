@@ -5,7 +5,7 @@ class RemindersPage extends Page {
     constructor (rootFolder, filePath, template) {
         super(rootFolder, filePath, template)
         this.title = 'Reminders'
-        this.canonical = 'https://www.joeyguerra.com/reminders.html'
+        this.canonical = 'https://joeyguerra.com/reminders.html'
         this.excerpt = 'Reminders is a simple app that helps you remember to do things.'
         this.shouldPublish = true
         this.published = new Date('2025-04-07')

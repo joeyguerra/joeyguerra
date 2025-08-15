@@ -7,7 +7,7 @@ class LoginPage extends Page {
         super(rootFolder, filePath, template)
         this.layout = './pages/layouts/index.html'
         this.title = 'Login'
-        this.canonical = 'https://www.joeyguerra.com/login/'
+        this.canonical = 'https://joeyguerra.com/login/'
         this.route = new RegExp('^/login/?$')
         this.discordUrl = null
     }
