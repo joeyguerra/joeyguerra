@@ -12,6 +12,8 @@
 }
 ---
 
+**Blog Series: Making Software Work for Growing Businesses**
+
 # Software Project Kickoff Checklist
 
 Use this checklist before you start your next software project to avoid wasted time, money, and frustration.

@@ -12,6 +12,8 @@
 }
 ---
 
+**Blog Series: Making Software Work for Growing Businesses**
+
 # Why Your Last Software Project Failed (and How to Avoid It Next Time)
 
 If you’re running a mid-sized business, chances are you’ve had at least one bad experience with a software project. Maybe you hired an offshore team that promised the world and delivered… crickets. Maybe you had developers who just ghosted you when things got hard. Or maybe you went live with something that looked good on the surface but crumbled the first time your team tried to actually use it.
