@@ -14,7 +14,7 @@
 
 ```sh
 npm i
-node --run start:local
+npm run dev
 ```
 
 # Deploy To Local K8s
@@ -28,5 +28,5 @@ kubectl create secret generic discord-token --from-literal=HUBOT_DISCORD_TOKEN=<
 ## Local Build and Deploy
 
 ```sh
-node --run publish
+npm run publish
 ```
