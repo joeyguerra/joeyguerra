@@ -1,15 +1,11 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Resuscitating Hubot',
-    excerpt: "According to GitHub stats, Hubot development stalled after 2015. There was a little bit of activity in 2017 and 2019, but not enough to consider the codebase under active development. I'm resuscitating Hubot.",
-    shouldPublish: true,
-    published: new Date('2023-06-13T19:25:22.000Z'),
-    tags: ['hubot', 'chatbot', '2014'],
-    image: '/meandhubot.jpg',
-    uri: '/blog/2023/resuscitating-hubot.html'
-}
+layout: './pages/layouts/post.html'
+title: "Resuscitating Hubot"
+excerpt: "According to GitHub stats, Hubot development stalled after 2015. There was a little bit of activity in 2017 and 2019, but not enough to consider the codebase under active development. I'm resuscitating Hubot."
+published: 2023-06-13
+uri: '/blog/2023/resuscitating-hubot.html'
+image: '/meandhubot.jpg'
+tags: ['hubot', 'chatbot', '2014']
 ---
 # Resuscitating Hubot
 

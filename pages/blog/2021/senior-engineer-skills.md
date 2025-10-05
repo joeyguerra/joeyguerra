@@ -1,15 +1,11 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Tactical suggestions for developing non-coding skills',
-    excerpt: 'As software engineers, we focus our time and attention on learning how to write flexible software; one aspect to building great systems. We often neglect non-coding, communication aspects of building great systems.',
-    shouldPublish: true,
-    published: new Date('2021-06-13T20:00:00.000Z'),
-    image: '/images/tacocat.jpeg',
-    tags: ['skills'],
-    uri: '/blog/2021/senior-engineer-skills.html'
-}
+layout: './pages/layouts/post.html'
+title: "Tactical suggestions for developing non-coding skills"
+excerpt: "As software engineers, we focus our time and attention on learning how to write flexible software; one aspect to building great systems. We often neglect non-coding, communication aspects of building great systems."
+published: 2021-06-13
+uri: '/blog/2021/senior-engineer-skills.html'
+image: '/images/tacocat.jpeg'
+tags: ['skills']
 ---
 # Tactical suggestions for developing non-coding skills
 

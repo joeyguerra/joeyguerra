@@ -1,8 +1,8 @@
 {
   "name": "jbot-website",
-  "version": "2.0.151",
-  "description": "Personal website and bot for Joey Guerra",
-  "main": "Server.mjs",
+  "version": "3.0.1",
+  "description": "Personal website for Joey Guerra",
+  "main": "server.mjs",
   "dependencies": {
     "@hubot-friends/hubot-discord": "^4.0.5",
     "ansi-escapes": "^6.2.0",
@@ -36,18 +36,12 @@
   },
   "scripts": {
     "test": "node --test",
-    "test:local": "node --watch",
-    "start:env": "env $(cat .env | grep -v \"#\" | xargs -0) hubot -a @hubot-friends/hubot-discord -n jbot",
-    "start": "RESOURCES='favicon_package_v0, .well-known, HubotSans, webapp, css, js, images' DEBUG=debug node Server.mjs",
-    "start:local": "node --env-file=.env --watch Server.mjs",
-    "start:shell": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs --name jbot",
-    "start:bot": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs -a @hubot-friends/hubot-discord -n jbot",
-    "docker-build": "./docker-build.sh",
-    "local-deploy": "kubectl config use-context docker-desktop && kubectl apply -f charts/web/deployment.yaml -n default",
-    "push": "node --run build && node --run docker-build-k3d && node --run k3d-deploy",
-    "build": "node Server.mjs --execute",
-    "docker-build-k3d": "./docker-build-k3d.sh",
-    "k3d-deploy": "kubectl config use-context k3d-local && kubectl apply -f charts/web/deployment.yaml -n default"
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs",
+    "jbot": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs -a @hubot-friends/hubot-discord -n jbot",
+    "docker-build": "./docker-build-k3d.sh",
+    "local-deploy": "kubectl config use-context k3d-local && kubectl apply -f charts/web/deployment.yaml -n default",
+    "push": "node --run docker-build && node --run local-deploy"
   },
   "repository": {
     "type": "git",

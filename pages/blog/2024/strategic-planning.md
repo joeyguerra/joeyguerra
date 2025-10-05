@@ -1,15 +1,11 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Strategic Planning - A Lesson from Kent Beck',
-    excerpt: "Kent Beck invented Test-Driven Development (TDD), inspired from one of his dad's programming books. One of them said, here's how to write a program. You take the input tape and you manually type in the output tape that you expect; and then, program until that's the output tape that you get from that input tape.",
-    shouldPublish: true,
-    published: new Date('2024-06-01T21:00:00.000Z'),
-    tags: ['strategy', 'planning', 'goals', 'objectives', 'tdd'],
-    image: '/images/851718f4-f56e-4784-a911-a8f15a71b0c5.webp',
-    uri: '/blog/2024/strategic-planning.html'
-}
+layout: './pages/layouts/post.html'
+title: "Strategic Planning - A Lesson from Kent Beck"
+excerpt: "Kent Beck invented Test-Driven Development (TDD), inspired from one of his dad's programming books. One of them said, here's how to write a program. You take the input tape and you manually type in the output tape that you expect; and then, program until that's the output tape that you get from that input tape."
+published: 2024-06-01
+uri: '/blog/2024/strategic-planning.html'
+image: '/images/851718f4-f56e-4784-a911-a8f15a71b0c5.webp'
+tags: ['strategy', 'planning', 'goals', 'objectives', 'tdd']
 ---
 # Strategic Planning: A Lesson from Kent Beck
 

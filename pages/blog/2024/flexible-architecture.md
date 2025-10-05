@@ -1,15 +1,11 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Everybody wants a flexible system',
-    excerpt: 'A system that is easy to change over time. Maximize ROI. Be responsive. Competitive. Adapt to a changing environment.',
-    shouldPublish: true,
-    published: new Date('2024-05-06T11:52:00.000Z'),
-    tags: ['architecture', 'software', 'flexible'],
-    image: '/images/head-of-it.webp',
-    uri: '/blog/2024/flexible-architecture.html'
-}
+layout: './pages/layouts/post.html'
+title: "Everybody wants a flexible system"
+excerpt: "A system that is easy to change over time. Maximize ROI. Be responsive. Competitive. Adapt to a changing environment."
+published: 2024-05-06
+uri: '/blog/2024/flexible-architecture.html'
+image: '/images/head-of-it.webp'
+tags: ['architecture', 'software', 'flexible']
 ---
 # Everybody wants a flexible system
 

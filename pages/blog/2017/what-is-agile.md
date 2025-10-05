@@ -1,14 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Agile',
-    shouldPublish: true,
-    uri: '/blog/2016/what-is-agile.html',
-    excerpt: 'agile adj. - Characterized by quickness, lightness, and ease of movement; nimble.',
-    published: new Date('2017-03-01T16:43:08.111Z'),
-    tags: ['agile']
-}
+layout: './pages/layouts/post.html'
+title: "Agile"
+excerpt: "agile adj. - Characterized by quickness, lightness, and ease of movement; nimble."
+published: 2017-03-01
+uri: '/blog/2016/what-is-agile.html'
+tags: ['agile']
 ---
 # Agile
 

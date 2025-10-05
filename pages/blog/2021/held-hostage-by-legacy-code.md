@@ -1,15 +1,11 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Stop Being Held Hostage By Legacy Code',
-    excerpt: 'Your developers and their code have an antibiosis relationship.',
-    shouldPublish: true,
-    published: new Date('2021-09-21T12:08:00.000Z'),
-    image: '/iu-2.jpeg',
-    tags: ['legacy', 'advice'],
-    uri: '/blog/2021/held-hostage-by-legacy-code.html'
-}
+layout: './pages/layouts/post.html'
+title: "Stop Being Held Hostage By Legacy Code"
+excerpt: "Your developers and their code have an antibiosis relationship."
+published: 2021-09-21
+uri: '/blog/2021/held-hostage-by-legacy-code.html'
+image: '/iu-2.jpeg'
+tags: ['legacy', 'advice']
 ---
 # Stop Being Held Hostage By Legacy Code
 

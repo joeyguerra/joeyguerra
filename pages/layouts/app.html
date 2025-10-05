@@ -9,7 +9,7 @@
     <meta name="description" content="${excerpt ?? 'Coding examples using what I\'ve learned.'}"/>
     <meta property="og:title" content="${title ?? 'Coding Examples'}"/>
     <meta property="og:description" content="${excerpt ?? 'Coding examples using what I\'ve learned.'}"/>
-    <meta property="og:image" content="${image ?? 'images/joey-g-boss-pic.jpg'}"/>
+    <meta property="og:image" content="${image || 'images/joey-g-boss-pic.jpg'}"/>
     <meta property="og:site_name" content="${title ?? 'Coding Examples'}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <link rel="apple-touch-icon" href="favicon_package_v0/apple-touch-icon.png"/>
@@ -62,7 +62,7 @@
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script type="module" id="HotReloader">
-      import { HotReloader } from '/js/HotReloader.mjs'
+      import { HotReloader } from '/__juphjacs__/HotReloader.mjs'
       const hotReloader = new HotReloader(window, io('/hot-reload'))
   </script>
 

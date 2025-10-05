@@ -1,15 +1,14 @@
 
-import { Page } from 'juphjacs/src/Page.mjs'
+import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
 
 class CalendarPage extends Page {
-    constructor (rootFolder, filePath, template) {
-        super(rootFolder, filePath, template)
+    constructor (pagesFolder, filePath, template, delegate) {
+        super(pagesFolder, filePath, template)
         this.layout = './pages/layouts/app.html'
         this.title = 'A large calendar, all 365 day'
         this.canonical = 'https://joeyguerra.com/calendar.html'
         this.uri = '/calendar.html'
         this.excerpt = 'This is a 38x46 inch calendar that shows all 365 days.'
-        this.shouldPublish = true
         this.published = new Date('2024-01-01')
         this.image = ''
         this.touchStartupImage = ''
@@ -20,6 +19,6 @@ class CalendarPage extends Page {
     }
 }
 
-export default async (rootFolder, filePath, template) => {
-    return new CalendarPage(rootFolder, filePath, template)
+export default async (pagesFolder, filePath, template, delegate) => {
+    return new CalendarPage(pagesFolder, filePath, template, delegate)
 }

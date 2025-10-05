@@ -1,14 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Story Points, So Many Questions',
-    excerpt: "Tony likes to push my buttons sometimes. He knows what my opinion is about how and why teams should estimate stories. So I get a text from him today, asking me what I think about Do Story Points Relate to Complexity or Time?. I'm compelled to bite. I can help it, but meh, it's easy to post things to the internets.",
-    shouldPublish: true,
-    uri: '/blog/2016/storypoints-so-many-questions.html',
-    tags: ['story', 'points', 'scrum'],
-    published: new Date('2016-08-01T16:43:08.111Z')
-}
+layout: './pages/layouts/post.html'
+title: "Story Points, So Many Questions"
+excerpt: "Tony likes to push my buttons sometimes. He knows what my opinion is about how and why teams should estimate stories. So I get a text from him today, asking me what I think about Do Story Points Relate to Complexity or Time?. I'm compelled to bite. I can help it, but meh, it's easy to post things to the internets."
+published: 2016-08-01
+uri: '/blog/2016/storypoints-so-many-questions.html'
+tags: ['story', 'points', 'scrum']
 ---
 
 # Story Points, So Many Questions

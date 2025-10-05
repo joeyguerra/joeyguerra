@@ -1,14 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Dream Team',
-    excerpt: "I want to work on a team who's culture has these characteristics.",
-    shouldPublish: true,
-    uri: '/blog/2014/dream-team.html',
-    published: new Date('2014-04-01T16:43:08.111Z'),
-    tags: ['team']
-}
+layout: './pages/layouts/post.html'
+title: "Dream Team"
+excerpt: "I want to work on a team who's culture has these characteristics."
+published: 2014-04-01
+uri: '/blog/2014/dream-team.html'
+tags: ['team']
 ---
 # Dream Team
 

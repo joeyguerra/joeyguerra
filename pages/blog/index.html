@@ -1,12 +1,8 @@
-${Array.from(postsSet).map((post, index) => `
+${posts.map(post => `
 <article>
-    <header>
-        <h2><a title="${post.title}" href="${post.uri}">${post.title}</a></h2>
-        <time datetime="${post.published}">${post.published}</time>
-    </header>
+    <h2><a href="${post.link}">${post.title}</a></h2>
+    <time datetime="${post.published}">${post.published}</time>
     <p>${post.excerpt}</p>
-    <footer>
-        <small>${postsSet.size - index - 1}</small>
-    </footer>
-</article>`).join('\n')}
-
+    ${post.tags.length > 0 ? `<p class="tags">${post.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}</p>` : ''}
+</article>
+`).join('\n')}

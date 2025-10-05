@@ -1,14 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    uri: '/blog/2022/software-is-like-gardening.html',
-    title: 'Software is like a garden',
-    excerpt: 'Software is like a garden when you invest. You till the ground, plant the seeds and maintain it daily by pulling weeds, watering, checking for good and bad insects.',
-    shouldPublish: true,
-    published: new Date('2022-09-28T17:28:00.000Z'),
-    tags: ['softwareengineerin', 'analogies', 'buyvsbuild']
-}
+layout: './pages/layouts/post.html'
+title: "Software is like a garden"
+excerpt: "Software is like a garden when you invest. You till the ground, plant the seeds and maintain it daily by pulling weeds, watering, checking for good and bad insects."
+published: 2022-09-28
+uri: '/blog/2022/software-is-like-gardening.html'
+tags: ['softwareengineerin', 'analogies', 'buyvsbuild']
 ---
 # Background
 

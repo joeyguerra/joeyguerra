@@ -1,15 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Setup a Raspberry Pi',
-    excerpt: 'Ready to talk.',
-    shouldPublish: true,
-    uri: '/blog/2018/setup-raspberrypi.html',
-    published: new Date('2018-03-01T16:43:08.111Z'),
-    tags: ['experimenting'],
-    uri: '/blog/2018/setup-raspberrypi.html'
-}
+layout: './pages/layouts/post.html'
+title: "Setup a Raspberry Pi"
+excerpt: "Ready to talk."
+published: 2018-03-01
+uri: '/blog/2018/setup-raspberrypi.html'
+tags: ['experimenting']
 ---
 # I want a Raspberry Pi ready to talk to other machines
 

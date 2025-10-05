@@ -1,5 +1,5 @@
 
-import { Page } from 'juphjacs/src/Page.mjs'
+import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
 import { Buffer } from 'node:buffer'
 
 class LoginPage extends Page {

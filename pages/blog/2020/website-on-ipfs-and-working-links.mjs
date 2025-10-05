@@ -1,5 +1,5 @@
 
-import { Page } from 'juphjacs/src/Page.mjs'
+import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
 
 class WebsiteOnIpfsAndWorking extends Page {
     constructor (rootFolder, filePath, template) {

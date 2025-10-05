@@ -9,13 +9,13 @@
     <title>${title ?? 'Joey Guerra\'s Software Engineering Blog'}</title>
     <meta name="author" content="Joey Guerra"/>
     <meta name="description" content="${excerpt ?? 'Blog about software engineering, agile, leadership, strategy and organizations.'}"/>
-    <meta name="image" content="https://joeyguerra.com${image ?? 'images/me.jpg'}"/>
+    <meta name="image" content="https://joeyguerra.com${image || 'images/me.jpg'}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="publish_date" property="og:publish_date" content="${published}"/>
     <meta name="published_time" property="article:published_time" content="${published}"/>
 
     <meta property="og:title" content="${title ?? 'Joey Guerra\'s Software Engineering Blog'}"/>
-    <meta property="og:image" content="https://joeyguerra.com${image ?? 'images/me.jpg'}"/>
+    <meta property="og:image" content="https://joeyguerra.com${image || 'images/me.jpg'}"/>
     <meta property="og:description" content="${excerpt ?? 'Blog about software engineering, agile, leadership, strategy and organizations.'}"/>
     <meta property="og:url" content="https://joeyguerra.com${uri ?? 'blog/'}"/>
     <meta property="og:type" content="summary"/>
@@ -24,7 +24,7 @@
     <meta name="twitter:site" content="@ijoeyguerra"/>
     <meta name="twitter:creator" content="@ijoeyguerra"/>
     <meta name="twitter:title" content="${title ?? 'Joey Guerra\'s Software Engineering Blog'}"/>
-    <meta name="twitter:image" content="https://joeyguerra.com${image ?? 'images/me.jpg'}"/>
+    <meta name="twitter:image" content="https://joeyguerra.com${image || 'images/me.jpg'}"/>
     <meta name="twitter:description" content="${excerpt ?? 'Blog about software engineering, agile, leadership, strategy and organizations.'}"/>
     
     <link rel="apple-touch-icon" href="favicon_package_v0/apple-touch-icon.png"/>
@@ -127,7 +127,7 @@
 </body>
 <script src="/socket.io/socket.io.js"></script>
 <script type="module" id="HotReloader">
-    import { HotReloader } from '/js/HotReloader.mjs'
+    import { HotReloader } from '/__juphjacs__/HotReloader.mjs'
     const hotReloader = new HotReloader(window, io('/hot-reload'))
 </script>
 </html>

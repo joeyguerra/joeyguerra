@@ -1,15 +1,11 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Flow vs Batch Based Work in Software Development',
-    excerpt: 'In the world of software development, the traditional approach often involves large batches of work, where teams are booked up for months and new features or changes have to wait in line. This approach can lead to long lead times, significant delays, and a constant need for re-prioritization, often involving lengthy discussions with stakeholders.',
-    shouldPublish: true,
-    published: new Date('2024-08-12T13:50:00.000Z'),
-    tags: ['agile', 'lean', 'tps', 'toyota production system', 'software', 'flexible'],
-    image: '/images/flow-vs-batch-based-work.webp',
-    uri: '/blog/2024/flow-vs-batch-based-work.html'
-}
+layout: './pages/layouts/post.html'
+title: "Flow vs Batch Based Work in Software Development"
+excerpt: "In the world of software development, the traditional approach often involves large batches of work, where teams are booked up for months and new features or changes have to wait in line. This approach can lead to long lead times, significant delays, and a constant need for re-prioritization, often involving lengthy discussions with stakeholders."
+published: 2024-08-12
+uri: '/blog/2024/flow-vs-batch-based-work.html'
+image: '/images/flow-vs-batch-based-work.webp'
+tags: ['agile', 'lean', 'tps', 'toyota production system', 'software', 'flexible']
 ---
 # Embracing Flow-Based Work: A Path to Greater Flexibility and Efficiency
 

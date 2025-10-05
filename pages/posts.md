@@ -1,13 +1,10 @@
 ---
-{
-    title: 'Ideas for posts',
-    layout: './pages/layouts/index.html',
-    canonical: 'https://joeyguerra.com/posts.html',
-    excerpt: 'Ideas for posts',
-    shouldPublish: false,
-    uri: '/posts.html',
-    tags: ['posts']
-}
+title: 'Ideas for posts'
+layout: './pages/layouts/index.html'
+canonical: 'https://joeyguerra.com/posts.html'
+excerpt: 'Ideas for posts'
+uri: '/posts.html'
+tags: ['posts']
 ---
 # Ideas for posts
 

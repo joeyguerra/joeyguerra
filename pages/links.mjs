@@ -1,18 +1,19 @@
 
-import { Page } from 'juphjacs/src/Page.mjs'
+import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
 
 class LinksPage extends Page {
-    constructor (rootFolder, filePath, template) {
-        super(rootFolder, filePath, template)
+    constructor (pagesFolder, filePath, template, delegate) {
+        super(pagesFolder, filePath, template, delegate)
         this.title = 'Links to Topics of Interest'
+        this.uri = '/links.html'
         this.layout = './pages/layouts/index.html'
         this.canonical = 'https://joeyguerra.com/links.html'
         this.excerpt = 'Links to Topics of Interest.'
-        this.shouldPublish = true
         this.published = new Date('2022-09-01')
+        this.image = ''
     }
 }
 
-export default async (rootFolder, filePath, template) => {
-    return new LinksPage(rootFolder, filePath, template)
+export default async (pagesFolder, filePath, template, delegate) => {
+    return new LinksPage(pagesFolder, filePath, template, delegate)
 }

@@ -1,16 +1,15 @@
 
-import { Page } from 'juphjacs/src/Page.mjs'
+import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
 
 class IndexPage extends Page {
-    constructor (rootFolder, filePath, template) {
-        super(rootFolder, filePath, template)
+    constructor (pagesFolder, filePath, template, delegate) {
+        super(pagesFolder, filePath, template, delegate)
         this.title = "Joey Guerra | Software Engineering Consultant"
         this.layout = './pages/layouts/homepage.html'
         this.canonical = 'https://joeyguerra.com/'
         this.excerpt = `I specialize in software modernization and systems integration. Whether you're trying to move off legacy code,
         unify your data, or automate operations, I bring clarity, momentum, and proven architecture patterns that work
         in the real world.`
-        this.shouldPublish = true
         this.published = new Date('2025-04-01 20:43:00')
         this.uri = '/'
         this.image = ''

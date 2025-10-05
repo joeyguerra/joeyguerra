@@ -1,14 +1,11 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Delusional Conflict',
-    excerpt: "Or rather, you think there's going to be a conflict about a particular subject and so you don't even broach it. You don't even know if all the subsequent decisions and problems could've been avoided had you just asked.",
-    shouldPublish: true,
-    uri: '/blog/2014/delusional-conflict.html',
-    published: new Date('2014-06-01T16:43:08.111Z'),
-    tags: ['psychology']
-}
+layout: './pages/layouts/post.html'
+title: "Delusional Conflict"
+excerpt: "Or rather, you think there's going to be a conflict about a particular subject and so you don't even broach it. You don't even know if all the subsequent decisions and problems could've been avoided had you just asked."
+published: 2014-06-01
+uri: '/blog/2014/delusional-conflict.html'
+tags: ['psychology']
+image: ''
 ---
 # Delusional Conflict
 

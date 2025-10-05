@@ -1,14 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Why people say Test Driven Design (TDD) is hard',
-    excerpt: "I've been working with my team to practice Test Driven Design (TDD) for about 2 years. They just started REALLY doing it about 4 weeks ago after I finally gave them the permission they needed to do it. And even now, they don't feel comfortable because it takes them longer to finish development. Below is my story of how I kick started the team practicing TDD and my observations of what I think are keeping the majority of Software Engineers from following the practice.",
-    shouldPublish: true,
-    uri: '/blog/2016/why-tdd-is-hard.html',
-    tags: ['tdd'],
-    published: new Date('2016-03-16T16:43:08.111Z')
-}
+layout: './pages/layouts/post.html'
+title: "Why people say Test Driven Design (TDD) is hard"
+excerpt: "I've been working with my team to practice Test Driven Design (TDD) for about 2 years. They just started REALLY doing it about 4 weeks ago after I finally gave them the permission they needed to do it. And even now, they don't feel comfortable because it takes them longer to finish development. Below is my story of how I kick started the team practicing TDD and my observations of what I think are keeping the majority of Software Engineers from following the practice."
+published: 2016-03-16
+uri: '/blog/2016/why-tdd-is-hard.html'
+tags: ['tdd']
 ---
 # Why people say Test Driven Design (TDD) is hard
 
