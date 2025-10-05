@@ -1,15 +1,11 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'An Omni-channel Technology Strategy',
-    excerpt: 'I went through an excercise to develop a technology strategy for a fictional retail company which merged 2 IT teams.',
-    shouldPublish: true,
-    published: new Date('2021-07-24T17:09:00.000Z'),
-    image: '/desk.jpeg',
-    tags: ['strategy', 'architecture'],
-    uri: '/blog/2021/omni-channel-strategy.html'
-}
+layout: './pages/layouts/post.html'
+title: "An Omni-channel Technology Strategy"
+excerpt: "I went through an excercise to develop a technology strategy for a fictional retail company which merged 2 IT teams."
+published: 2021-07-24
+uri: '/blog/2021/omni-channel-strategy.html'
+image: '/desk.jpeg'
+tags: ['strategy', 'architecture']
 ---
 # An Omni-channel Technology Strategy
 

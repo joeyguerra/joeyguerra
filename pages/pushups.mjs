@@ -1,14 +1,14 @@
 
-import { Page } from 'juphjacs/src/Page.mjs'
+import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
 
 class PushupsPage extends Page {
-    constructor (rootFolder, filePath, template) {
-        super(rootFolder, filePath, template)
-        this.title = 'Daily Pushups'
+    constructor (pagesFolder, filePath, template, delegate) {
+        super(pagesFolder, filePath, template, delegate)
+        this.title = 'Pushups'
+        this.uri = '/pushups.html'
         this.layout = './pages/layouts/app.html'
         this.canonical = 'https://joeyguerra.com/pushups.html'
         this.excerpt = 'An app to record your daily pushups.'
-        this.shouldPublish = false
         this.published = new Date('2024-02-03')
         this.touchStartupImage = '/images/daily-pushups-splash-screen.png'
         this.image = '/images/pushups-screenshot.jpg'
@@ -19,6 +19,6 @@ class PushupsPage extends Page {
     }
 }
 
-export default async (rootFolder, filePath, template) => {
-    return new PushupsPage(rootFolder, filePath, template)
+export default async (pagesFolder, filePath, template, delegate) => {
+    return new PushupsPage(pagesFolder, filePath, template, delegate)
 }

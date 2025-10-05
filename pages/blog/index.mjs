@@ -1,23 +1,25 @@
 
-import { Page } from 'juphjacs/src/Page.mjs'
-import { UriToStaticFileRoute } from 'juphjacs/src/UriToStaticFileRoute.mjs'
+import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
 
 class BlogIndexPage extends Page {
-    constructor (rootFolder, filePath, template) {
-        super(rootFolder, filePath, template)
+    constructor (pagesFolder, filePath, template, delegate) {
+        super(pagesFolder, filePath, template, delegate)
         this.title = "Blog"
-        this.route = new UriToStaticFileRoute(/\/blog\/?$/, this.filePath)
         this.layout = './pages/layouts/blog.html'
         this.canonical = 'https://joeyguerra.com/blog/'
         this.excerpt = 'My Blog.'
-        this.shouldPublish = true
-        this.published = new Date('2024-09-01')
+        this.published = new Date('1998-10-01')
         this.uri = '/blog/'
         this.tags = ['blog']
-        this.postsSet = []
+        this.posts = new Set()
+    }
+    async get (req, res) {
+        await this.render()
+        res.setHeader('Content-Type', 'text/html')
+        res.end(this.content)
     }
 }
 
-export default async (rootFolder, filePath, template) => {
-    return new BlogIndexPage(rootFolder, filePath, template)
+export default async (pagesFolder, filePath, template, delegate) => {
+    return new BlogIndexPage(pagesFolder, filePath, template, delegate)
 }

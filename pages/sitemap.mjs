@@ -1,5 +1,5 @@
 
-import { Page } from 'juphjacs/src/Page.mjs'
+import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
 
 class SitemapPage extends Page {
     constructor (rootFolder, filePath, template) {
@@ -7,7 +7,6 @@ class SitemapPage extends Page {
         this.title = 'Site Map'
         this.excerpt = 'Site Map.'
         this.canonical = 'https://joeyguerra.com/sitemap.xml'
-        this.shouldPublish = true
         this.image = ''
         this.published = new Date('2025-02-19')
         this.uri = '/sitemap.xml'

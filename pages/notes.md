@@ -1,14 +1,11 @@
 ---
-{
-    title: 'Notes',
-    layout: './pages/layouts/index.html',
-    canonical: 'https://joeyguerra.com/notes.html',
-    excerpt: 'Notes',
-    shouldPublish: false,
-    published: new Date('2024-09-01'),
-    uri: '/notes.html',
-    tags: ['notes']
-}
+title: 'Notes'
+layout: './pages/layouts/index.html'
+canonical: 'https://joeyguerra.com/notes.html'
+excerpt: 'Notes'
+published: '2024-09-01'
+uri: '/notes.html'
+tags: ['notes']
 ---
 # My Notes of Daily Lessons in Software Engineering
 

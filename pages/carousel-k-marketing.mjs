@@ -1,5 +1,5 @@
 
-import { Page } from 'juphjacs/src/Page.mjs'
+import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
 
 class CarouselKMarketingPage extends Page {
     constructor (rootFolder, filePath, template) {
@@ -8,7 +8,6 @@ class CarouselKMarketingPage extends Page {
         this.title = '360 Feedback Loop is Non-Existent with Customers'
         this.canonical = 'https://joeyguerra.com/carousel-k-marketing.html'
         this.excerpt = 'LinkedIn carousel template.'
-        this.shouldPublish = true
         this.published = new Date('2024-10-01')
         this.uri = '/carousel-k-marketing.html'
         this.touchStartupImage = '/images/carousel.png'

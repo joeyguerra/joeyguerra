@@ -1,5 +1,5 @@
 
-import { Page } from 'juphjacs/src/Page.mjs'
+import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
 
 class TodoPage extends Page {
     constructor (rootFolder, filePath, template) {
@@ -8,7 +8,6 @@ class TodoPage extends Page {
         this.layout = './pages/layouts/app.html'
         this.canonical = 'https://joeyguerra.com/todos.html'
         this.excerpt = 'Implement the MVC pattern for a Todo App.'
-        this.shouldPublish = true
         this.uri = '/todos.html'
         this.image = '/pushups-screenshot.jpg'
         this.touchStartupImage = ''

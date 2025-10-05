@@ -1,14 +1,13 @@
 
-import { Page } from 'juphjacs/src/Page.mjs'
+import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
 
 class WorkoutPage extends Page {
-    constructor (rootFolder, filePath, template) {
-        super(rootFolder, filePath, template)
+    constructor (pagesFolder, filePath, template, delegate) {
+        super(pagesFolder, filePath, template, delegate)
         this.title = 'Workout Tracker'
         this.layout = './pages/layouts/app.html'
         this.canonical = 'https://joeyguerra.com/workout.html'
         this.excerpt = 'Track your work.'
-        this.shouldPublish = true
         this.uri = '/workout.html'
         this.image = '/pushups-screenshot.jpg'
         this.touchStartupImage = ''
@@ -19,6 +18,6 @@ class WorkoutPage extends Page {
     }
 }
 
-export default async (rootFolder, filePath, template) => {
-    return new WorkoutPage(rootFolder, filePath, template)
+export default async (pagesFolder, filePath, template, delegate) => {
+    return new WorkoutPage(pagesFolder, filePath, template, delegate)
 }

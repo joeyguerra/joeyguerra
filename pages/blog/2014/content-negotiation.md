@@ -1,14 +1,11 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Content Negotiation in Node JS, augmenting Express JS',
-    excerpt: "tldr; Building websites with content negotiation in mind gives you flexibility.",
-    shouldPublish: true,
-    uri: '/blog/2014/content-negotiation.html',
-    published: new Date('2014-07-01T16:43:08.111Z'),
-    tags: ['rest']
-}
+layout: './pages/layouts/post.html'
+title: "Content Negotiation in Node JS, augmenting Express JS"
+excerpt: "tldr; Building websites with content negotiation in mind gives you flexibility."
+published: 2014-07-01
+uri: '/blog/2014/content-negotiation.html'
+tags: ['rest']
+image: ''
 ---
 
 # Content Negotiation in Node JS, augmenting Express JS

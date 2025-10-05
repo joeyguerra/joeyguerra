@@ -1,14 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Is MVC an architecture or a framework?',
-    excerpt: "There's a lot of ideas about what MVC is and isn't. Here's my take.",
-    shouldPublish: true,
-    uri: '/blog/2019/mvc-architecture-framework.html',
-    published: new Date('2019-08-01T16:43:08.111Z'),
-    tags: ['mvc', 'architecture']
-}
+layout: './pages/layouts/post.html'
+title: "Is MVC an architecture or a framework?"
+excerpt: "There's a lot of ideas about what MVC is and isn't. Here's my take."
+published: 2019-08-01
+uri: '/blog/2019/mvc-architecture-framework.html'
+tags: ['mvc', 'architecture']
 ---
 # Is MVC an architecture or a framework?
 

@@ -1,14 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'How to Get Rich (without getting lucky) by Naval Ravikant',
-    excerpt: "Naval Ravikant's tweetstorm of principals on how to get rich.",
-    shouldPublish: true,
-    uri: '/blog/2019/how-to-get-rich.html',
-    published: new Date('2019-12-31T16:43:08.111Z'),
-    tags: []
-}
+layout: './pages/layouts/post.html'
+title: "How to Get Rich (without getting lucky) by Naval Ravikant"
+excerpt: "Naval Ravikant's tweetstorm of principals on how to get rich."
+published: 2019-12-31
+uri: '/blog/2019/how-to-get-rich.html'
+tags: []
 ---
 # [How to Get Rich (without getting lucky) by Naval Ravikant](https://twitter.com/naval/status/1002103360646823936)
 

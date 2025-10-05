@@ -1,14 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'The Difference between Scrum and Agile',
-    excerpt: 'The way I see it, on one hand, there is no difference.',
-    shouldPublish: true,
-    uri: '/blog/2019/difference-scrum-agile.html',
-    published: new Date('2019-08-01T16:43:08.111Z'),
-    tags: ['agile', 'scrum']
-}
+layout: './pages/layouts/post.html'
+title: "The Difference between Scrum and Agile"
+excerpt: "The way I see it, on one hand, there is no difference."
+published: 2019-08-01
+uri: '/blog/2019/difference-scrum-agile.html'
+tags: ['agile', 'scrum']
 ---
 # The Difference between Scrum and Agile
 

@@ -1,15 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Why Your Last Software Project Failed (and How to Avoid It Next Time)',
-    excerpt: "If you’re running a mid-sized business, chances are you’ve had at least one bad experience with a software project. Maybe you hired an offshore team that promised the world and delivered… crickets. Maybe you had developers who just ghosted you when things got hard (you started critiquing the work). Or maybe you went live with something that looked good on the surface but crumbled the first time your team tried to actually use it.",
-    shouldPublish: true,
-    published: new Date('2025-10-01T17:29:00.000Z'),
-    tags: ['software', 'project', 'failures', 'mitigation'],
-    image: null,
-    uri: '/blog/2025/why-your-last-software-project-failed.html'
-}
+layout: './pages/layouts/post.html'
+title: "Why Your Last Software Project Failed (and How to Avoid It Next Time)"
+excerpt: "If you’re running a mid-sized business, chances are you’ve had at least one bad experience with a software project. Maybe you hired an offshore team that promised the world and delivered… crickets. Maybe you had developers who just ghosted you when things got hard (you started critiquing the work). Or maybe you went live with something that looked good on the surface but crumbled the first time your team tried to actually use it."
+published: 2025-10-01
+uri: '/blog/2025/why-your-last-software-project-failed.html'
+tags: ['software', 'project', 'failures', 'mitigation']
 ---
 
 **Blog Series: Making Software Work for Growing Businesses**

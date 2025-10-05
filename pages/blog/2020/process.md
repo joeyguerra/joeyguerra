@@ -1,14 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Process',
-    excerpt: 'I never considered myself a process oriented person',
-    shouldPublish: true,
-    published: new Date('2020-03-15T10:43:08.111Z'),
-    tags: ['process'],
-    uri: '/blog/2020/process.html'
-}
+layout: './pages/layouts/post.html'
+title: "Process"
+excerpt: "I never considered myself a process oriented person"
+published: 2020-03-15
+uri: '/blog/2020/process.html'
+tags: ['process']
 ---
 # Process
 

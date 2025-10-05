@@ -1,14 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Definition of Quality in Software',
-    excerpt: 'Has your boss ever asked you to increase your code quality? How did you do that?',
-    shouldPublish: true,
-    uri: '/blog/2014/quality-software.html',
-    published: new Date('2014-02-01T16:43:08.111Z'),
-    tags: ['quality', 'software']
-}
+layout: './pages/layouts/post.html'
+title: "Definition of Quality in Software"
+excerpt: "Has your boss ever asked you to increase your code quality? How did you do that?"
+published: 2014-02-01
+uri: '/blog/2014/quality-software.html'
+tags: ['quality', 'software']
 ---
 # Definition of Quality in Software
 

@@ -1,5 +1,5 @@
 
-import { Page } from 'juphjacs/src/Page.mjs'
+import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
 
 class CarouselEventsPage extends Page {
     constructor (rootFolder, filePath, template) {
@@ -8,7 +8,6 @@ class CarouselEventsPage extends Page {
         this.title = 'Carousel Example 1'
         this.canonical = 'https://joeyguerra.com/linkedincarousel.html'
         this.excerpt = 'LinkedIn carousel template.'
-        this.shouldPublish = true
         this.published = new Date('2024-10-05')
         this.uri = '/linkedincarousel.html'
         this.touchStartupImage = '/images/daily-pushups-splash-screen.png'

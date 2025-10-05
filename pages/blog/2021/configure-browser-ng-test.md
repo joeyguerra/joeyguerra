@@ -1,14 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'Use Safari Instead of Chrome with Angular (ng test)',
-    excerpt: "I don't use Chrome. I'm a rebel I guess. So when building Angular apps and practicing TDD, I wanted to configure Karma to use Safari instead of Chrome.",
-    shouldPublish: true,
-    published: new Date('2021-03-27T11:17:00.000Z'),
-    tags: ['programming is hard'],
-    uri: '/blog/2021/configure-browser-ng-test.html'
-}
+layout: './pages/layouts/post.html'
+title: "Use Safari Instead of Chrome with Angular (ng test)"
+excerpt: "I don't use Chrome. I'm a rebel I guess. So when building Angular apps and practicing TDD, I wanted to configure Karma to use Safari instead of Chrome."
+published: 2021-03-27
+uri: '/blog/2021/configure-browser-ng-test.html'
+tags: ['programming is hard']
 ---
 # Use Safari Instead of Chrome with Angular (ng test)
 

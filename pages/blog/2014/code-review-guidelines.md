@@ -1,14 +1,10 @@
 ---
-{
-  layout: './pages/layouts/post.html',
-  title: 'Coding and Code Review Guidelines',
-  excerpt: 'In order to reuse code, it must pass the teams measurement of readability and discoverability.',
-  shouldPublish: true,
-  uri: '/blog/2014/code-review-guidelines.html',
-  tags: ['review', 'code'],
-  published: new Date('2014-08-01T16:43:08.111Z'),
-  image: ''
-}
+layout: './pages/layouts/post.html'
+title: "Coding and Code Review Guidelines"
+excerpt: "In order to reuse code, it must pass the teams measurement of readability and discoverability."
+published: 2014-08-01
+uri: '/blog/2014/code-review-guidelines.html'
+tags: ['review', 'code']
 ---
 
 # Coding and Code Review Guidelines

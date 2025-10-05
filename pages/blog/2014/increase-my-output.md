@@ -1,14 +1,11 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: "I Want to Increase My Output by 10, 100, 1000",
-    excerpt: 'I want to capture and share my journey about how I increase my work output as a software engineer by multiples of 10, 100, 1000.',
-    shouldPublish: true,
-    uri: '/blog/2014/increase-my-output.html',
-    published: new Date('2014-01-01T17:43:08.111Z'),
-    tags: ['career']
-}
+layout: './pages/layouts/post.html'
+title: "I Want to Increase My Output by 10, 100, 1000"
+excerpt: "I want to capture and share my journey about how I increase my work output as a software engineer by multiples of 10, 100, 1000."
+published: 2014-01-01
+uri: '/blog/2014/increase-my-output.html'
+tags: ['career']
+image: ''
 ---
 # I Want to Increase My Output by 10, 100, 1000
 

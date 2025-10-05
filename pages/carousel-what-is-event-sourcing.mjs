@@ -1,5 +1,5 @@
 
-import { Page } from 'juphjacs/src/Page.mjs'
+import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
 
 class CarouselWhatIsEventSourcingPage extends Page {
     constructor (rootFolder, filePath, template) {
@@ -8,7 +8,6 @@ class CarouselWhatIsEventSourcingPage extends Page {
         this.title = 'What is Event Sourcing?'
         this.canonical = 'https://joeyguerra.com/carousel-what-is-event-sourcing.html'
         this.excerpt = 'Event Sourcing is a data persistence strategy that enables us to, at any time, visualize the state of our system at any point in time, past, present and future.'
-        this.shouldPublish = true
         this.published = new Date('2024-06-04')
         this.uri = '/carousel-what-is-event-sourcing.html'
         this.touchStartupImage = '/images/carousel.png'

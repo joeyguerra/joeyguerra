@@ -1,14 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'The internet is filled with Javascript Frameworks',
-    excerpt: 'Just implement the MVC pattern in Javascript.',
-    shouldPublish: true,
-    uri: '/blog/2014/javascript-frameworks.html',
-    published: new Date('2014-03-01T16:43:08.111Z'),
-    tags: ['frameworks', 'javascript']
-}
+layout: './pages/layouts/post.html'
+title: "The internet is filled with Javascript Frameworks"
+excerpt: "Just implement the MVC pattern in Javascript."
+published: 2014-03-01
+uri: '/blog/2014/javascript-frameworks.html'
+tags: ['frameworks', 'javascript']
 ---
 
 # The internet is filled with Javascript Frameworks

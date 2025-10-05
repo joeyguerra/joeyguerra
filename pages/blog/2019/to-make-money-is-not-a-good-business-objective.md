@@ -1,14 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'To Make Money is Not a Useful Objective Statment',
-    excerpt: `About 10 years ago I was part of a meeting where the CEO of the company was trying to convey his vision of the company and it's core service to customers. I asked the room what the objective was and someone jokingly answered, "to make money" and the meeting continued ... and finished.`,
-    shouldPublish: true,
-    uri: '/blog/2019/to-make-money-is-not-a-good-business-objective.html',
-    published: new Date('2019-02-01T16:43:08.111Z'),
-    tags: ['objective']
-}
+layout: './pages/layouts/post.html'
+title: "To Make Money is Not a Useful Objective Statment"
+excerpt: "About 10 years ago I was part of a meeting where the CEO of the company was trying to convey his vision of the company and it's core service to customers. I asked the room what the objective was and someone jokingly answered, \"to make money\" and the meeting continued ... and finished."
+published: 2019-02-01
+uri: '/blog/2019/to-make-money-is-not-a-good-business-objective.html'
+tags: ['objective']
 ---
 # "To Make Money" is Not a Useful Objective Statment
 

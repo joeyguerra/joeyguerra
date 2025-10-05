@@ -1,15 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: "Want to Leverage AI? Teach Your Business to Talk to Itself First",
-    excerpt: "Every company wants to harness AI. Dashboards aren't enough. Everyone wants real-time answers, recommendations, forecasts, and action. Start your journey with ChatOps.",
-    shouldPublish: true,
-    published: new Date('2025-07-17T18:44:00.000Z'),
-    tags: ['AI', 'chatops', 'journey', 'CTO Insights'],
-    image: null,
-    uri: '/blog/2025/chatops-to-ai.html'
-}
+layout: './pages/layouts/post.html'
+title: "Want to Leverage AI? Teach Your Business to Talk to Itself First"
+excerpt: "Every company wants to harness AI. Dashboards aren't enough. Everyone wants real-time answers, recommendations, forecasts, and action. Start your journey with ChatOps."
+published: 2025-07-17
+uri: '/blog/2025/chatops-to-ai.html'
+tags: ['AI', 'chatops', 'journey', 'CTO Insights']
 ---
 
 # Want to Leverage AI? Teach Your Business to Talk to Itself First.

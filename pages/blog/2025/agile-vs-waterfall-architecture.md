@@ -1,15 +1,11 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: "Agile Is Pull-Based — Waterfall Is Batch-Based — And That Makes All The Difference",
-    excerpt: "In manufacturing, there’s a world of difference between a batch-and-queue process and a pull-based flow like the [Toyota Production System](https://global.toyota/en/company/vision-and-philosophy/production-system/). The same is true in software development.",
-    shouldPublish: true,
-    published: new Date('2025-08-11T09:27:00.000Z'),
-    tags: ['Agile', 'Software Engineering', 'Project Management', 'Waterfall'],
-    image: '/images/iterative-steps-with-value.jpg',
-    uri: '/blog/2025/agile-vs-waterfall-architecture.html'
-}
+layout: './pages/layouts/post.html'
+title: "Agile Is Pull-Based — Waterfall Is Batch-Based — And That Makes All The Difference"
+excerpt: "In manufacturing, there’s a world of difference between a batch-and-queue process and a pull-based flow like the [Toyota Production System](https://global.toyota/en/company/vision-and-philosophy/production-system/). The same is true in software development."
+published: 2025-08-11
+uri: '/blog/2025/agile-vs-waterfall-architecture.html'
+image: '/images/iterative-steps-with-value.jpg'
+tags: ['Agile', 'Software Engineering', 'Project Management', 'Waterfall']
 ---
 
 # Agile Is Pull-Based — Waterfall Is Batch-Based — And That Makes All The Difference

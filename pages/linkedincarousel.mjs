@@ -1,5 +1,5 @@
 
-import { Page } from 'juphjacs/src/Page.mjs'
+import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
 
 class LinkedInCarouselPage extends Page {
     constructor (rootFolder, filePath, template) {
@@ -8,7 +8,6 @@ class LinkedInCarouselPage extends Page {
         this.layout = './pages/layouts/carousel.html'
         this.canonical = 'https://joeyguerra.com/linkedincarousel.html'
         this.excerpt = 'Build PDF documents for LinkedIn Carousel Posts.'
-        this.shouldPublish = true
         this.published = new Date('2024-03-07')
         this.uri = '/linkedincarousel.html'
         this.touchStartupImage = '/images/daily-pushups-splash-screen.png'

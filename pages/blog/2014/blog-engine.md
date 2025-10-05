@@ -1,14 +1,11 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: "I'm a programmer, I'm coding my own blog engine",
-    excerpt: "This has been a long time coming. I've preached about blogging for years and yet, have never done it myself. Well, I have but back in 1997 and I didn't keep it up and I don't have proof. And I'm a big believer programmers should write code and if you're a programmer AND gonna write a blog, you should write the blog engine yourself. It shows off your talents, or lack there of, and you'll learn something along the way.",
-    shouldPublish: true,
-    uri: '/blog/2014/content-negotiation.html',
-    published: new Date('2014-01-01T16:43:08.111Z'),
-    tags: ['coding']
-}
+layout: './pages/layouts/post.html'
+title: "I'm a programmer, I'm coding my own blog engine"
+excerpt: "This has been a long time coming. I've preached about blogging for years and yet, have never done it myself. Well, I have but back in 1997 and I didn't keep it up and I don't have proof. And I'm a big believer programmers should write code and if you're a programmer AND gonna write a blog, you should write the blog engine yourself. It shows off your talents, or lack there of, and you'll learn something along the way."
+published: 2014-01-01
+uri: '/blog/2014/content-negotiation.html'
+tags: ['coding']
+image: ''
 ---
 
 # I'm a programmer and I'm coding my own blog engine

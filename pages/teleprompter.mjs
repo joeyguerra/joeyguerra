@@ -1,5 +1,5 @@
 
-import { Page } from 'juphjacs/src/Page.mjs'
+import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
 
 class TeleprompterPage extends Page {
     constructor (rootFolder, filePath, template) {
@@ -8,7 +8,6 @@ class TeleprompterPage extends Page {
         this.layout = './pages/layouts/app.html'
         this.canonical = 'https://joeyguerra.com/teleprompter.html'
         this.excerpt = 'Web teleprompter.'
-        this.shouldPublish = false
         this.uri = '/teleprompter.html'
         this.image = null
         this.touchIcon180 = null

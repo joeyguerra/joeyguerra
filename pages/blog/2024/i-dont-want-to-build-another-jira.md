@@ -1,15 +1,11 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: "I Don't Want to Build Another Jira",
-    excerpt: `I don't want to build a Jira clone. Jira excels at being Jira. Trying to compete with that directly would be missing the point. Instead, I see an opportunity to address an essential gap in how teams use tools like Jira and how they collaborate to build meaningful products.`,
-    shouldPublish: true,
-    published: new Date('2024-11-10T16:21:00.000Z'),
-    tags: ['agile', 'teams', 'reloaded', 'jira'],
-    image: '/images/851718f4-f56e-4784-a911-a8f15a71b0c5.webp',
-    uri: '/blog/2024/i-dont-want-to-build-another-jira.html'
-}
+layout: './pages/layouts/post.html'
+title: "I Don't Want to Build Another Jira"
+excerpt: "I don't want to build a Jira clone. Jira excels at being Jira. Trying to compete with that directly would be missing the point. Instead, I see an opportunity to address an essential gap in how teams use tools like Jira and how they collaborate to build meaningful products."
+published: 2024-11-10
+uri: '/blog/2024/i-dont-want-to-build-another-jira.html'
+image: '/images/851718f4-f56e-4784-a911-a8f15a71b0c5.webp'
+tags: ['agile', 'teams', 'reloaded', 'jira']
 ---
 # I Don't Want to Build Another Jira
 

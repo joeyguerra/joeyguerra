@@ -1,15 +1,10 @@
 ---
-{
-    layout: './pages/layouts/post.html',
-    image: '',
-    title: 'I take everyone who says AI is replacing software engineering jobs seriously',
-    excerpt: "I'm taking everyone who says AI is replacing software engineering jobs seriously. Which means that every interaction I have, every task I accomplish, I take a step back and think through what would have to be in place in order for AI to do this?",
-    shouldPublish: true,
-    published: new Date('2025-03-29T10:44:00.000Z'),
-    tags: ['AI', 'DataEngineering', 'SystemsDesign', 'Integration', 'FridayNightDebugging', 'Leadership', 'Compliance', 'Observability', 'HumanInTheLoop', 'yesimtalkingtoyou'],
-    image: null,
-    uri: '/blog/2025/take-ai-seriously.html'
-}
+layout: './pages/layouts/post.html'
+title: "I take everyone who says AI is replacing software engineering jobs seriously"
+excerpt: "I'm taking everyone who says AI is replacing software engineering jobs seriously. Which means that every interaction I have, every task I accomplish, I take a step back and think through what would have to be in place in order for AI to do this?"
+published: 2025-03-29
+uri: '/blog/2025/take-ai-seriously.html'
+tags: ['AI', 'DataEngineering', 'SystemsDesign', 'Integration', 'FridayNightDebugging', 'Leadership', 'Compliance', 'Observability', 'HumanInTheLoop', 'yesimtalkingtoyou']
 ---
 
 # AI Will Replace Software Engineering Jobs?
