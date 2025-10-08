@@ -1,6 +1,6 @@
 {
   "name": "jbot-website",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Personal website for Joey Guerra",
   "main": "server.mjs",
   "dependencies": {
