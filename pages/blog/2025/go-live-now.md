@@ -2,7 +2,7 @@
 layout: './pages/layouts/post.html'
 title: 'Managing Software Project Risks: How to "Go Live Now" the Right Way'
 excerpt: "\"Go live now\" has a bad reputation in software circles. People hear it and think: rushed, untested, incomplete, risky. But it doesn't have to mean that."
-published: 2025-10-13T13:26:00Z
+published: 2025-10-13T18:26:00Z
 uri: '/blog/2025/go-live-now.html'
 tags: ['making', 'software', 'series', 'principles']
 ---
