@@ -7,6 +7,8 @@ uri: '/blog/2025/best-practices-working-with-software-development-team.html'
 tags: ['software', 'development', 'teams', 'ghosted', 'working', 'practices']
 ---
 
+**Blog Series: Making Software Work for Growing Businesses**
+
 # Best Practices for Working with a Software Development Team
 
 *The phrase "Best Practices" is thrown around alot. To be honest, each situation is different and dynamic. I apply many skills from my toolbox depending on what's happening at that time.*

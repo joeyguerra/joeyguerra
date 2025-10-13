@@ -7,15 +7,10 @@ charts
 bash-server
 examples
 mocks
-webapp
 .env
 .gitignore
 .gitlab-ci.yml
 .hubot_history
-Auth0.mjs
-bitcoinwatcher.mjs
-cardano-setup.sh
-contacts.json
 ChatCompletionRequestMessageRoleEnum
 Dockerfile
 text2image.mjs
