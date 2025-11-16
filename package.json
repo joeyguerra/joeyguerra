@@ -1,6 +1,6 @@
 {
   "name": "jbot-website",
-  "version": "3.0.8",
+  "version": "3.0.11",
   "description": "Personal website for Joey Guerra",
   "main": "server.mjs",
   "dependencies": {
@@ -34,9 +34,9 @@
   },
   "scripts": {
     "test": "node --test",
-    "start": "node Server.mjs",
+    "start": "LOG_LEVEL=debug node ./node_modules/hubot/bin/Hubot.mjs --disable-httpd -a @hubot-friends/hubot-discord -n jbot",
     "dev": "LOG_LEVEL=debug node --watch Server.mjs",
-    "jbot": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs --disable-httpd -a @hubot-friends/hubot-discord -n jbot",
+    "jbot": "LOG_LEVEL=debug node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs --disable-httpd -a @hubot-friends/hubot-discord -n jbot",
     "docker-build": "./docker-build-k3d.sh",
     "local-deploy": "kubectl config use-context k3d-local && kubectl apply -f charts/web/deployment.yaml -n default",
     "push": "node --run docker-build && node --run local-deploy"

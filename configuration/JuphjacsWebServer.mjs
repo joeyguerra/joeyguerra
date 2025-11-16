@@ -12,10 +12,14 @@ export default async robot => {
         return {
             addEvent(eventType, data) {
                 console.debug(`Database event logged: ${eventType}`, data)
+                try {
                 robot.messageRoom(CHANNEL_ID, `# New guide signup:
 \`\`\`json
 ${JSON.stringify(data, null, 2)}
 \`\`\``)
+                } catch (error) {
+                    robot.logger.error(`Failed to send message to chat room: ${error.message}`)
+                }
             }
         }
     }

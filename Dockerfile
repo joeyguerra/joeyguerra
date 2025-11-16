@@ -1,4 +1,4 @@
-FROM node:23-alpine3.20 AS build
+FROM node:25.2-alpine3.21 AS build
 WORKDIR /app
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 RUN apk add --update --no-cache
@@ -7,4 +7,4 @@ RUN npm ci
 RUN chown -R appuser:appgroup /app
 USER appuser
 
-ENTRYPOINT ["node", "--run", "start"]
+ENTRYPOINT ["npm", "start"]
