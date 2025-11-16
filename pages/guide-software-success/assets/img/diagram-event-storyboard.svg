@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 200">
+  <defs><style>.b{fill:#f7f3ea;stroke:#0b3a46;stroke-width:2} .t{font-family:Inter, Arial, sans-serif; fill:#0b3a46} .a{fill:none;stroke:#0b3a46;stroke-width:2;marker-end:url(#arrow)}</style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#0b3a46"/></marker>
+  </defs>
+  <g transform="translate(20,40)">
+    <rect x="0" y="0" width="160" height="60" rx="10" class="b"/><text x="80" y="36" text-anchor="middle" class="t">Order Placed</text>
+    <path d="M160 30 H200" class="a"/>
+    <rect x="200" y="0" width="160" height="60" rx="10" class="b"/><text x="280" y="36" text-anchor="middle" class="t">Order Received</text>
+    <path d="M360 30 H400" class="a"/>
+    <rect x="400" y="0" width="160" height="60" rx="10" class="b"/><text x="480" y="36" text-anchor="middle" class="t">Inventory Updated</text>
+    <path d="M560 30 H600" class="a"/>
+    <rect x="600" y="0" width="160" height="60" rx="10" class="b"/><text x="680" y="36" text-anchor="middle" class="t">Revenue Recognized</text>
+  </g>
+</svg>

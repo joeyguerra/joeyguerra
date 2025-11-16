@@ -6,6 +6,7 @@ excerpt: 'Ideas for posts'
 uri: '/posts.html'
 tags: ['posts']
 ---
+
 # Ideas for posts
 
 - No/Low code tools for app building		

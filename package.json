@@ -4,7 +4,7 @@
   "description": "Personal website for Joey Guerra",
   "main": "server.mjs",
   "dependencies": {
-    "@hubot-friends/hubot-discord": "^4.0.5",
+    "@hubot-friends/hubot-discord": "^4.1.0",
     "ansi-escapes": "^7.1.1",
     "body-parser": "^2.2.0",
     "cheerio": "^1.1.2",
@@ -14,7 +14,7 @@
     "express-session": "^1.18.2",
     "formidable": "^3.5.4",
     "html-to-pdfmake": "^2.5.31",
-    "hubot": "^13.1.3",
+    "hubot": "^13.1.4",
     "jimp": "^1.6.0",
     "jose": "^6.1.0",
     "jsdom": "^27.0.0",
@@ -35,8 +35,8 @@
   "scripts": {
     "test": "node --test",
     "start": "node Server.mjs",
-    "dev": "node --watch Server.mjs",
-    "jbot": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs -a @hubot-friends/hubot-discord -n jbot",
+    "dev": "LOG_LEVEL=debug node --watch Server.mjs",
+    "jbot": "node --env-file=.env --watch ./node_modules/hubot/bin/Hubot.mjs --disable-httpd -a @hubot-friends/hubot-discord -n jbot",
     "docker-build": "./docker-build-k3d.sh",
     "local-deploy": "kubectl config use-context k3d-local && kubectl apply -f charts/web/deployment.yaml -n default",
     "push": "node --run docker-build && node --run local-deploy"

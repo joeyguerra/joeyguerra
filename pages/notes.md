@@ -3,7 +3,7 @@ title: 'Notes'
 layout: './pages/layouts/index.html'
 canonical: 'https://joeyguerra.com/notes.html'
 excerpt: 'Notes'
-published: '2024-09-01'
+published: 2024-09-01
 uri: '/notes.html'
 tags: ['notes']
 ---

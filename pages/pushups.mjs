@@ -1,5 +1,5 @@
 
-import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
+import { Page } from 'juphjacs'
 
 class PushupsPage extends Page {
     constructor (pagesFolder, filePath, template, delegate) {

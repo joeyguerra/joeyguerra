@@ -1,0 +1,299 @@
+<style>
+    :root {
+        --ink: #0b3a46;
+        --paper: #f7f3ea;
+        --grid: #d6d1c9;
+        --accent: #00C896;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        line-height: 1.6;
+        min-height: 100vh;
+    }
+
+    h1,
+    h2 {
+        font-family: Orbitron, Inter, sans-serif;
+        letter-spacing: .02em;
+    }
+
+    h1 {
+        font-size: clamp(32px, 5vw, 56px);
+        line-height: 1.15;
+        margin: 0 0 .5em;
+        color: var(--accent);
+        text-transform: uppercase;
+    }
+
+    h2 {
+        font-size: clamp(24px, 3.5vw, 36px);
+        line-height: 1.2;
+        margin: 0 0 1em;
+    }
+
+    main {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+    }
+
+    .hero {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .subtitle {
+        font-size: clamp(18px, 2.5vw, 24px);
+        color: var(--ink);
+        opacity: .9;
+        max-width: 600px;
+        margin: 0 auto 2rem;
+    }
+
+    .benefits {
+        background: #fff;
+        border: 1px solid var(--grid);
+        border-radius: 14px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 0 rgba(11, 58, 70, .06);
+    }
+
+    .benefits h3 {
+        margin-top: 0;
+        color: var(--ink);
+    }
+
+    .benefits ul {
+        margin: 1rem 0;
+        padding-left: 1.5rem;
+    }
+
+    .benefits li {
+        margin-bottom: .75rem;
+    }
+
+    .form-container {
+        background: #fff;
+        border: 2px solid var(--accent);
+        border-radius: 14px;
+        padding: 2.5rem;
+        box-shadow: 0 10px 20px rgba(0, 200, 150, .15);
+    }
+
+    .form-container h3 {
+        margin-top: 0;
+        color: var(--ink);
+        font-size: 1.5rem;
+    }
+
+    .form {
+        display: grid;
+        gap: 1.25rem;
+    }
+
+    .form label {
+        display: grid;
+        gap: .5rem;
+        font-weight: 600;
+        letter-spacing: .02em;
+        color: var(--ink);
+    }
+
+    .form input {
+        border: 2px solid var(--ink);
+        border-radius: 12px;
+        padding: .9rem 1.2rem;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: border-color .2s;
+    }
+
+    .form input:focus {
+        outline: none;
+        border-color: var(--accent);
+    }
+
+    .form button {
+        background: var(--accent);
+        color: var(--ink);
+        border: none;
+        border-radius: 14px;
+        padding: 1.1rem 1.5rem;
+        font-weight: 800;
+        font-size: 1.1rem;
+        letter-spacing: .06em;
+        cursor: pointer;
+        transition: background .2s, transform .1s;
+        text-transform: uppercase;
+    }
+
+    .form button:hover {
+        background: #00b085;
+        transform: translateY(-2px);
+    }
+
+    .form button:active {
+        transform: translateY(0);
+    }
+
+    .form button:disabled {
+        opacity: .6;
+        cursor: not-allowed;
+    }
+
+    .message {
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: 600;
+        display: none;
+    }
+
+    .message.success {
+        background: #d4f4dd;
+        color: #0d5520;
+        display: block;
+    }
+
+    .message.error {
+        background: #fde8e8;
+        color: #9b2c2c;
+        display: block;
+    }
+
+    .privacy {
+        font-size: .9rem;
+        color: var(--ink);
+        opacity: .7;
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    footer {
+        text-align: center;
+        padding: 2rem;
+        margin-top: 4rem;
+        border-top: 1px solid var(--grid);
+        font-size: .9rem;
+        opacity: .7;
+    }
+
+    @media (max-width: 640px) {
+        .container {
+            padding: 2rem 1rem;
+        }
+
+        .form-container {
+            padding: 1.5rem;
+        }
+    }
+</style>
+<div class="hero">
+    <h1>The Mid-Sized Business Owner's Guide to Software Success</h1>
+    <p class="subtitle">Go Live Now, scale with confidence, and get real ROI from your software investments.</p>
+</div>
+
+<div class="benefits">
+    <h3>In This Free Guide You'll Learn:</h3>
+    <ul>
+        <li><strong>Why Software Projects Fail</strong> — and what to do differently</li>
+        <li><strong>Best Practices</strong> for working with a software development team</li>
+        <li><strong>How to "Go Live Now"</strong> without risking it all</li>
+        <li><strong>Designing for Scalability</strong> with Event Modeling</li>
+        <li><strong>ROI Analysis</strong> — Custom Software vs Off-the-Shelf tools</li>
+        <li><strong>What to Demand</strong> from your software partners</li>
+        <li><strong>Project Kickoff Checklist</strong> to ensure success from day one</li>
+    </ul>
+</div>
+
+<div class="form-container">
+    <h3>Get Your Free Guide</h3>
+    <form id="guideForm" class="form" method="post" enctype="application/x-www-form-urlencoded">
+        <input type="hidden" name="csrf" value="${csrfToken}">
+        <label>
+            Name
+            <input name="name" type="text" placeholder="Your name" required>
+        </label>
+        <label>
+            Email Address
+            <input name="email" type="email" placeholder="you@company.com" required>
+        </label>
+        <button type="submit">Get the Guide</button>
+    </form>
+    <div id="formMessage" class="message"></div>
+    <p class="privacy">We respect your privacy. No spam, ever.</p>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('guideForm')
+        const msg = document.getElementById('formMessage')
+
+        if (!form) return
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault()
+            
+            const submitBtn = form.querySelector('button[type="submit"]')
+            const originalText = submitBtn.textContent
+            
+            submitBtn.disabled = true
+            submitBtn.textContent = 'Submitting...'
+            msg.style.display = 'none'
+            msg.className = 'message'
+            msg.textContent = ''
+
+            const formData = new FormData(form)
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                csrf: formData.get('csrf')
+            }
+
+            try {
+                console.debug('Submitting guide signup form', data)
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+
+                const result = await response.json()
+
+                if (response.ok && result.success) {
+                    msg.classList.add('success')
+                    msg.textContent = '✅ Success! Redirecting to your guide...'
+                    form.reset()
+                    
+                    setTimeout(() => {
+                        window.location.href = result.redirectUrl
+                    }, 1500)
+                } else {
+                    throw new Error(result.error || 'Network response was not ok.')
+                }
+            } catch (error) {
+                console.error(error)
+                msg.classList.add('error')
+                msg.textContent = error.message === 'Invalid CSRF token' 
+                    ? '🚨 Security error. Please refresh the page and try again.'
+                    : '🚨 Something went wrong. Please try again later.'
+                submitBtn.disabled = false
+                submitBtn.textContent = originalText
+            }
+        })
+    })
+</script>

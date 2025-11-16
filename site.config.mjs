@@ -2,7 +2,7 @@ export default {
     siteName: 'Joey Guerra',
     sourceFolder: './pages',
     buildFolder: './_site',
-    resources: ['css', 'js', 'images', 'HubotSans', 'favicon_package_v0', '.well-known'],
+    resources: ['css', 'js', 'images', 'HubotSans', 'favicon_package_v0', '.well-known', 'guide-software-success/assets'],
     fileExtensions: {
         exclude: ['.html', '.xml', '.md', '.mjs', '.js'],
         include: ['.html', '.xml', '.md']

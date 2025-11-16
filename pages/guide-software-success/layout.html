@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <base href="./" />
+  <title>${title ?? 'Get Your Free Guide to Software Success'}</title>
+  <meta name="author" content="Joey Guerra" />
+  <meta name="description" content="${excerpt}" />
+  <meta property="og:title" content="${title}" />
+  <meta property="og:description" content="${excerpt}" />
+  <meta property="og:image" content="assets/img/60s-rocket.png" />
+  <meta property="og:site_name" content="${title}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="canonical" href="${canonical}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/print.css" media="print">
+</head>
+
+<body>
+    <main>
+        ${body}
+    </main>
+    <footer class="site-footer">
+        <span>JOEY G MISSION CONTROL • TX</span>
+        <span>© 2025 Joey G</span>
+    </footer>
+</body>
+</html>

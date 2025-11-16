@@ -14,6 +14,10 @@ class BlogIndexPage extends Page {
         this.posts = new Set()
     }
     async get (req, res) {
+        const blogPlugin = this.context.getPluginByName('BlogPlugin')
+        if (blogPlugin) {
+            this.posts = blogPlugin.posts
+        }
         await this.render()
         res.setHeader('Content-Type', 'text/html')
         res.end(this.content)

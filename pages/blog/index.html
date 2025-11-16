@@ -1,4 +1,4 @@
-${posts.map(post => `
+${[...(posts || [])].map(post => `
 <article>
     <h2><a href="${post.link}">${post.title}</a></h2>
     <time datetime="${post.published}">${post.published}</time>

@@ -1,0 +1,72 @@
+// Description:
+//   Start a juphjacs web server.
+//
+// Author:
+//   Joey Guerra
+
+import { JuphjacWebServer } from 'juphjacs'
+
+const CHANNEL_ID = '1239325514133667931'
+export default async robot => {
+    function createDatabase () {
+        return {
+            addEvent(eventType, data) {
+                console.debug(`Database event logged: ${eventType}`, data)
+                robot.messageRoom(CHANNEL_ID, `# New guide signup:
+\`\`\`json
+${JSON.stringify(data, null, 2)}
+\`\`\``)
+            }
+        }
+    }
+
+    class CacheService {
+        constructor() {
+            this.store = new Map()
+        }
+        get(key) {
+            return this.store.get(key)
+        }
+        set(key, value) {
+            this.store.set(key, value)
+        }
+    }
+
+    // Initialize your services
+    const db = await createDatabase()
+    const cache = new CacheService()
+
+    const myAppConfig = {
+        appName: 'Joey Guerra Website',
+        enableFeatureX: true,
+        apiBaseUrl: 'https://joeyguerra.com'
+    }
+
+    const server = new JuphjacWebServer({
+        rootDir: process.cwd(),
+        logLevel: process.env.LOG_LEVEL || 'info',
+        logger: robot.logger,
+        context: {
+            db,
+            cache,
+            config: myAppConfig,
+            robot
+        }
+    })
+
+    await server.initialize()
+    await server.start(process.env.PORT || 3000)
+
+    process.on('SIGINT', async () => {
+        console.log('Shutting down server...')
+        await server.stop()
+        process.exit(0)
+    })
+    process.on('SIGTERM', async () => {
+        console.log('Shutting down server...')
+        await server.stop()
+        process.exit(0)
+    })
+
+
+}

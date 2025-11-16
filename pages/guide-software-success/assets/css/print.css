@@ -1,0 +1,7 @@
+@page { size: 8.5in 11in; margin: 0.6in; }
+@media print {
+  body { background: white; }
+  .cover { border: none; margin-top: -10%;}
+  .page { page-break-inside: avoid; page-break-before: auto; border: none; box-shadow: none; margin: 0 0 1rem 0; }
+  .site-footer { display: none; }
+}
