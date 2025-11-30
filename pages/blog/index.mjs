@@ -10,7 +10,7 @@ class BlogIndexPage extends Page {
         this.excerpt = 'My Blog.'
         this.published = new Date('1998-10-01')
         this.uri = '/blog/'
-        this.tags = ['blog']
+        this.tags = ['system', 'field ops', 'idempotent flows', 'feedback loops', 'interfaces', 'hubot data plane', 'juphjacs', 'mission', 'kaizen ops']
         this.posts = new Set()
     }
     async get (req, res) {

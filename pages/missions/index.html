@@ -1,0 +1,128 @@
+<style>
+    @import url('/css/missions.css');
+</style>
+<header class="hero">
+    <div class="hero-copy">
+        <h1>Active Missions</h1>
+        <p>
+            Long-lived projects and multi-part journeys. Each mission explores a system, framework, or domain in depth—building in public, documenting decisions, and sharing lessons along the way.
+        </p>
+    </div>
+</header>
+
+<article id="missions-list">
+    <header>
+        <h2 class="section-title">Missions In Progress</h2>
+        <p class="section-sub">
+            These are ongoing arcs you can follow like a story. Updates happen as the work progresses.
+        </p>
+    </header>
+
+    <div class="missions-grid">
+        ${missions.filter(m => m.status === 'active').map(mission => `
+        <article class="mission-card" id="${mission.id}">
+            <header>
+                <div class="mission-header">
+                    <span class="mission-category">${mission.category}</span>
+                    <span class="mission-status mission-status-${mission.status}">${mission.status}</span>
+                </div>
+                <h3 class="mission-title">
+                    <a href="${mission.link}">${mission.title}</a>
+                </h3>
+            </header>
+            
+            <p class="mission-description">${mission.description}</p>
+            
+            <section class="mission-objectives">
+                <h4 class="objectives-title">Key Objectives</h4>
+                <ul class="objectives-list">
+                    ${mission.objectives.map(obj => `<li>${obj}</li>`).join('')}
+                </ul>
+            </section>
+
+            <footer class="mission-footer">
+                <div class="progress-section">
+                    <div class="progress-track">
+                        <div class="progress-bar" 
+                             role="progressbar" 
+                             aria-valuenow="${mission.progress}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100" 
+                             aria-label="${mission.title} progress"
+                             style="width: ${mission.progress}%;"></div>
+                    </div>
+                    <div class="mission-meta">
+                        <span>Mission status</span>
+                        <span>${mission.progress}% · Started ${new Date(mission.started).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>
+                    </div>
+                </div>
+                <a href="${mission.link}" class="mission-link">View mission →</a>
+            </footer>
+        </article>
+        `).join('\n')}
+    </div>
+</article>
+
+<article id="background-missions">
+    <header>
+        <h2 class="section-title">Background Missions</h2>
+        <p class="section-sub">
+            These missions are running in the background—slower pace, but still making progress.
+        </p>
+    </header>
+
+    <div class="missions-grid missions-grid-compact">
+        ${missions.filter(m => m.status === 'background').map(mission => `
+        <article class="mission-card mission-card-compact" id="${mission.id}">
+            <header>
+                <div class="mission-header">
+                    <span class="mission-category">${mission.category}</span>
+                    <span class="mission-status mission-status-${mission.status}">${mission.status}</span>
+                </div>
+                <h3 class="mission-title">
+                    <a href="${mission.link}">${mission.title}</a>
+                </h3>
+            </header>
+            
+            <p class="mission-description">${mission.description}</p>
+
+            <footer class="mission-footer">
+                <div class="progress-section">
+                    <div class="progress-track">
+                        <div class="progress-bar" 
+                             role="progressbar" 
+                             aria-valuenow="${mission.progress}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100" 
+                             aria-label="${mission.title} progress"
+                             style="width: ${mission.progress}%;"></div>
+                    </div>
+                    <div class="mission-meta">
+                        <span>${mission.progress}%</span>
+                        <span>Started ${new Date(mission.started).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>
+                    </div>
+                </div>
+                <a href="${mission.link}" class="mission-link">View mission →</a>
+            </footer>
+        </article>
+        `).join('\n')}
+    </div>
+</article>
+
+<aside class="mission-info">
+    <h2 class="section-title">What is a Mission?</h2>
+    <div class="info-card">
+        <p>
+            A mission is a long-lived project or exploration that unfolds over time. Unlike one-off blog posts, missions have:
+        </p>
+        <ul class="info-list">
+            <li><strong>Multiple entries</strong> documenting progress and decisions</li>
+            <li><strong>Clear objectives</strong> that define success</li>
+            <li><strong>Visible progress</strong> you can follow along with</li>
+            <li><strong>Real outcomes</strong> — code, frameworks, case studies, playbooks</li>
+        </ul>
+        <p>
+            Think of them as serialized narratives about building systems, not just blog posts about finished work.
+        </p>
+    </div>
+</aside>

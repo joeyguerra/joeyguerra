@@ -9,19 +9,19 @@ tags: ['event', 'software', 'modeling']
 
 # What is an event?
 
-Let’s talk about events.
+Let's talk about events.
 
 Not the kind with finger food and name tags. I mean the kind that runs your business — quietly, relentlessly, behind every invoice, every click, and every "oops."
 
-In software, we love to obsess over state. "What’s the current status?"; "Is this order active?"; "Did the payment go through?".
+In software, we love to obsess over state. "What's the current status?"; "Is this order active?"; "Did the payment go through?".
 
-But here’s the thing — state is just a snapshot of the past (a point in time). It’s a Polaroid in a world that’s constantly changing. The real story — the movie — lives in the events.
+But here's the thing — state is just a snapshot of the past (a point in time). It's a Polaroid in a world that's constantly changing. The real story — the movie — lives in the events.
 
 ## The Movie vs. The Snapshot
 
-Imagine you walk into a room. There’s a kid holding a gold medal. You can guess: "They must’ve won a race.". But you didn’t see the race — the sweat, the stumble, the last-second surge.
+Imagine you walk into a room. There's a kid holding a gold medal. You can guess: "They must've won a race.". But you didn't see the race — the sweat, the stumble, the last-second surge.
 
-That’s what most software systems do: They store the medal and forget the race.
+That's what most software systems do: They store the medal and forget the race.
 
 Event-based systems say:
 > Forget the snapshot — give me the tape (think VHS tape here).
@@ -30,19 +30,19 @@ Event-based systems say:
 
 An event is a fact about something that already happened — a moment in time that changed the world (or at least your business).
 
-It’s always written in the past tense:
+It's always written in the past tense:
 - OrderWasPlaced
 - InvoiceWasSent
 - PaymentWasReceived
 - UserLostPasswordForTheThirdTimeThisWeek
 
-Events are immutable (you can't change them) — once they happen, you can’t un-happen them; you can only react.
+Events are immutable (you can't change them) — once they happen, you can't un-happen them; you can only react.
 
 ## Event Sourcing: The Ledger of Truth
 
-If you think of your app like an accountant would, your database doesn't just hold balances — it holds transactions. That’s what Event Sourcing is. Instead of saving "the current state," we store every event that got us here.
+If you think of your app like an accountant would, your database doesn't just hold balances — it holds transactions. That's what Event Sourcing is. Instead of saving "the current state," we store every event that got us here.
 
-Your app becomes a storybook of everything that’s ever happened.
+Your app becomes a storybook of everything that's ever happened.
 
 ```sh
 AccountWasOpened
@@ -57,9 +57,9 @@ Events tell you *how* it came to be.
 
 ## Event Modeling: Designing the Story
 
-Now let’s move from accounting to storytelling.
+Now let's move from accounting to storytelling.
 
-Event Modeling is the art of designing your system as a timeline of these events — a storyboard of the user’s and the system’s actions.
+Event Modeling is the art of designing your system as a timeline of these events — a storyboard of the user's and the system's actions.
 
 You start with the end in mind: "What should the user see?"
 
@@ -67,7 +67,7 @@ Then you work backward:
 - "What events must have happened in order for that view to exist?"
 - "What command triggered that event?"
 
-It’s basically Pixar for software systems.
+It's basically Pixar for software systems.
 
 ## Why Business Owners Should Care
 
@@ -78,11 +78,11 @@ When you model your software around those facts, you get clarity:
 - Easier audits and debugging.
 - The ability to replay history and learn from it.
 
-It’s not just good software — it’s organizational memory.
+It's not just good software — it's organizational memory.
 
 ## The Shift in Thinking
 
-When you stop asking, "What’s the state of things right now?"
+When you stop asking, "What's the state of things right now?"
 and start asking,
 
 > What happened to get us here?
@@ -101,5 +101,5 @@ Everything else — reports, dashboards, "current status" screens — is just th
 
 Want to start thinking in events?
 
-Start writing your system’s story in past tense.
+Start writing your system's story in past tense.
 Then sit back and watch how clear the future gets.

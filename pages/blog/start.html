@@ -1,0 +1,260 @@
+<style>
+    @import url('/css/start.css');
+</style>
+<header class="hero">
+    <div class="hero-copy">
+        <small class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            <span>Mission Briefing</span>
+        </small>
+        <h1>How to use this weblog to make real progress.</h1>
+        <p>
+            This isn't a feed of hot takes. It's a mission control for builders who think in systems. Here's how to navigate the missions, frameworks, and field notes so you get exactly what you need with minimal friction.
+        </p>
+    </div>
+
+    <aside class="hero-panel">
+        <h2 class="hero-panel-title">On this page</h2>
+        <nav>
+            <ul class="hero-panel-list">
+                <li><a href="/blog/start.html#who-for">Who this weblog is for</a></li>
+                <li><a href="/blog/start.html#structure">How content is structured (Missions, Jobs, Concepts, Logs)</a></li>
+                <li><a href="/blog/start.html#recommended">Recommended first reads</a></li>
+                <li><a href="/blog/start.html#missions">Active missions I'm working on now</a></li>
+                <li><a href="/blog/start.html#principles">How I think about systems and software</a></li>
+            </ul>
+        </nav>
+    </aside>
+</header>
+
+<!-- WHO THIS IS FOR -->
+<article id="who-for">
+    <header>
+        <h2 class="section-title">Who this is for</h2>
+        <p class="section-sub">
+            When we use something, a way to think about it is: what job are we hiring it to do? That way of thinking is known as Jobs-to-Be-Done (JTBD).
+            
+            In Jobs-to-Be-Done terms, these are the kinds of progress people hire this weblog to make.
+        </p>
+    </header>
+
+    <div class="two-col">
+        <div>
+            <ul class="who-for-list">
+                <li>Technical leaders who want to <strong>see how an expert thinks</strong> through systems, not just the final diagrams.</li>
+                <li>Founders and operators who want to <strong>scale without exploding the back office</strong> or burning out their teams.</li>
+                <li>Engineers who feel the pain of messy integrations and want language for <strong>interfaces, flows, and failure modes</strong>.</li>
+                <li>People who are tired of algorithmic feeds and prefer <strong>calm, structured thinking</strong> they can return to.</li>
+            </ul>
+        </div>
+
+        <aside class="card card-alt">
+            <h3 class="card-title">If this sounds like you…</h3>
+            <p class="card-body">
+                You value clarity over hype, systems over silver bullets, and want to understand <em>why</em> decisions are made - not just what the current best practice is.
+            </p>
+        </aside>
+    </div>
+</article>
+
+<!-- HOW THIS WEBLOG IS STRUCTURED -->
+<article id="structure">
+    <header>
+        <h2 class="section-title">How the weblog is structured</h2>
+        <p class="section-sub">
+            Instead of categories and tags, everything is organized around missions, jobs-to-be-done, and concepts.
+        </p>
+    </header>
+
+    <div class="cards-grid-4 cards-grid-2">
+        <article class="structure-card">
+            <header>
+                <h3 class="structure-name"><a href="/missions/">Missions</a></h3>
+                <p class="structure-label">Long-lived arcs</p>
+            </header>
+            <p class="structure-body">
+                Multi-part journeys like building a framework, scaling a system, or unpacking a tricky domain.
+            </p>
+            <footer class="structure-meta">Example: Juphjacs Web Framework, Field Ops SaaS.</footer>
+        </article>
+
+        <article class="structure-card">
+            <header>
+                <h3 class="structure-name">Jobs</h3>
+                <p class="structure-label">Reader intent</p>
+            </header>
+            <p class="structure-body">
+                Entry points based on what you're trying to do: get smart quickly, escape noise, join a mission, etc.
+            </p>
+            <footer class="structure-meta">You'll see these on the homepage.</footer>
+        </article>
+
+        <article class="structure-card">
+            <header>
+                <h3 class="structure-name">Concepts</h3>
+                <p class="structure-label">Field guides</p>
+            </header>
+            <p class="structure-body">
+                Reusable mental models and playbooks: interfaces, leverage, feedback loops, idempotent flows.
+            </p>
+            <footer class="structure-meta">Think of these as technical field manuals.</footer>
+        </article>
+
+        <article class="structure-card">
+            <header>
+                <h3 class="structure-name">Mission Log</h3>
+                <p class="structure-label">Chronology</p>
+            </header>
+            <p class="structure-body">
+                A time-ordered log of new entries. If you want to see what changed most recently, this is the place.
+            </p>
+            <footer class="structure-meta">Lightweight and honest: what I'm actually thinking about now.</footer>
+        </article>
+    </div>
+</article>
+
+<!-- RECOMMENDED FIRST READS -->
+<article id="recommended">
+    <header>
+        <h2 class="section-title">Recommended first reads</h2>
+        <p class="section-sub">
+            Start here if you want a fast orientation to how I think about systems, interfaces, and stability.
+        </p>
+    </header>
+
+    <div class="cards-grid-3">
+        <article class="article-card">
+            <header>
+                <p class="article-tag">Systems & Interfaces</p>
+                <h3 class="article-title">
+                    <a href="/posts/hidden-cost-of-interfaces.html">The Hidden Cost of Interfaces in Your System</a>
+                </h3>
+            </header>
+            <p class="article-desc">
+                Why integration pain isn't accidental - and how most of it lives in the shape of your interfaces.
+            </p>
+            <footer class="article-meta">12 min read · Reasoning path included</footer>
+        </article>
+
+        <article class="article-card">
+            <header>
+                <p class="article-tag">Stability & Flows</p>
+                <h3 class="article-title">
+                    <a href="/posts/idempotent-flows.html">Idempotent Flows Are the Real Source of Stability</a>
+                </h3>
+            </header>
+            <p class="article-desc">
+                How making operations safe to repeat changes everything about how you design, deploy, and recover.
+            </p>
+            <footer class="article-meta">9 min read · Includes examples</footer>
+        </article>
+
+        <article class="article-card">
+            <header>
+                <p class="article-tag">Leverage & Strategy</p>
+                <h3 class="article-title">
+                    <a href="/posts/leverage-model.html">The Leverage Model: Small Changes, Big Outcomes</a>
+                </h3>
+            </header>
+            <p class="article-desc">
+                A practical way to think about where to invest effort so your systems do more with less.
+            </p>
+            <footer class="article-meta">10 min read · Concept map</footer>
+        </article>
+    </div>
+</article>
+
+<!-- ACTIVE MISSIONS + ABOUT -->
+<article class="two-col" id="missions">
+    <section>
+        <header>
+            <h2 class="section-title">Active missions</h2>
+            <p class="section-sub">
+                Ongoing arcs you can follow like a story. These update over time.
+            </p>
+        </header>
+
+        <article class="mission-card">
+            <header>
+                <h3 class="mission-title">Build the Juphjacs Web Framework</h3>
+            </header>
+            <p class="mission-desc">
+                Exploring a different way to build web applications: small, composable, and closer to how we actually think.
+            </p>
+            <div class="progress-track">
+                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" aria-label="Build the Juphjacs Web Framework progress" style="width: 70%;"></div>
+            </div>
+            <footer class="mission-meta">
+                <span>Mission status</span>
+                <span>70% · <a href="/missions/juphjacs">View mission →</a></span>
+            </footer>
+        </article>
+
+        <article class="mission-card">
+            <header>
+                <h3 class="mission-title">Field Ops SaaS Case Study</h3>
+            </header>
+            <p class="mission-desc">
+                How a custom field operations system changed crew scheduling, billing accuracy, and burnout risk.
+            </p>
+            <div class="progress-track">
+                <div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" aria-label="Field Ops SaaS Case Study progress" style="width: 45%;"></div>
+            </div>
+            <footer class="mission-meta">
+                <span>Mission status</span>
+                <span>45% · <a href="/missions/field-ops">View mission →</a></span>
+            </footer>
+        </article>
+    </section>
+
+    <aside>
+        <header>
+            <h2 class="section-title">About Joey (short version)</h2>
+        </header>
+        <div class="card card-alt">
+            <div class="about-text">
+                I build custom software and systems for real businesses - the kind that have crews, warehouses,
+                legacy tools, and a lot on the line if things go sideways. I started as an aerospace engineer,
+                moved into software in the late 90s, and have spent the last few decades helping teams ship and operate
+                systems that actually work in the real world.
+                <br><br>
+                I write to make my thinking visible, so it's easier for you (and me) to see the shape of problems,
+                the trade-offs in play, and the structure behind the solutions.
+            </div>
+        </div>
+    </aside>
+</article>
+
+<!-- HOW I THINK -->
+<article id="principles">
+    <header>
+        <h2 class="section-title">How I think about systems and software</h2>
+        <p class="section-sub">
+            A few principles that show up repeatedly in what I write and build.
+        </p>
+    </header>
+
+    <div class="cards-grid-2">
+        <section class="card">
+            <h3 class="card-title">Guiding principles</h3>
+            <ul class="principles-list">
+                <li>Most complexity is coordination complexity, not code complexity.</li>
+                <li>Interfaces determine your failure modes far more than your frameworks.</li>
+                <li>Idempotent flows are the real stability engine in distributed systems.</li>
+                <li>Observability is a first-class feature, not an add-on in sprint 9.</li>
+                <li>Good systems respect physical realities: time, attention, and human limits.</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h3 class="card-title">How to continue from here</h3>
+            <ul class="principles-list" aria-label="Ways to continue from here">
+                <li>Pick a <strong>mission</strong> that lines up with work you're doing now.</li>
+                <li>Browse by <strong>job</strong> on the homepage if you're solving a specific problem.</li>
+                <li>Skim the <strong>concepts</strong> when you need language or a mental model.</li>
+                <li>Watch the <strong>mission log</strong> to see what's changing in real time.</li>
+                <li>If something resonates, build on it, challenge it, or <a href="mailto:blog-feedback@joeyguerra.com" title="new email message">send me</a> a note.</li>
+            </ul>
+        </section>
+    </div>
+</article>

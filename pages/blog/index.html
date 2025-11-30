@@ -1,8 +1,335 @@
-${[...(posts || [])].map(post => `
+<header class="hero">
+    <div class="hero-copy">
+        <h1>A weblog for builders who think in systems.</h1>
+        <p>
+            Structured thinking. Mission logs. Field guides. Reasoning paths.
+            Designed for people who want to see how decisions get made, not just the final take.
+        </p>
+        <a href="/blog/start.html" class="hero-primary">
+            <span>Start Here</span>
+            <span class="arrow">→</span>
+        </a>
+    </div>
+    <aside class="hero-graphic" aria-label="Mission Telemetry Visualization">
+        <!-- 1. Telemetry config (edit this only) -->
+        <script type="application/json" id="telemetry-config">
+          {
+            "nodes": [
+              { "id": "idempotent",  "label": "Idempotent Flows",    "x": 20, "y": 100, "type": "concept", "status": "active" },
+              { "id": "feedback",    "label": "Feedback Loops",      "x": 30, "y": 140, "type": "concept", "status": "active" },
+              { "id": "fieldOps",    "label": "Field Ops",           "x": 200,  "y": 90, "type": "mission", "status": "active" },
+              { "id": "juphjacs",    "label": "Juphjacs",            "x": 210, "y": 200,  "type": "mission", "status": "active" },
+              { "id": "hubotPlane",  "label": "Hubot Data Plane",    "x": 190, "y": 150, "type": "mission", "status": "active" },
+              { "id": "interfaces",  "label": "Interfaces",          "x": 50, "y": 190,  "type": "concept", "status": "active" },
+              { "id": "systemHub",   "label": "System Hub",          "x": 300, "y": 100, "type": "core", "status": "active" }
+            ],
+            "edges": [
+              ["idempotent", "fieldOps"],
+              ["idempotent", "hubotPlane"],
+              ["feedback", "fieldOps"],
+              ["feedback",  "juphjacs"],
+              ["interfaces",  "juphjacs"],
+              ["interfaces",  "hubotPlane"],
+              ["hubotPlane",  "systemHub"],
+              ["feedback",  "hubotPlane"],
+              ["juphjacs",  "systemHub"],
+              ["fieldOps","systemHub"]
+            ]
+          }
+          </script>
+
+        <!-- 2. SVG container (will be populated by JS) -->
+        <svg id="telemetry-map" width="420" height="260" viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+        </svg>
+
+        <!-- 3. Rendering script -->
+        <script>
+            (function () {
+                const svg = document.getElementById('telemetry-map');
+                if (!svg) return;
+
+                const config = JSON.parse(
+                    document.getElementById('telemetry-config').textContent
+                );
+
+                const ns = 'http://www.w3.org/2000/svg';
+                const nodeById = {};
+
+                function el(tag, attrs) {
+                    const node = document.createElementNS(ns, tag);
+                    for (const [k, v] of Object.entries(attrs || {})) {
+                        node.setAttribute(k, v);
+                    }
+                    return node;
+                }
+
+                // --- Base panel background ------------------------------------------------
+                svg.appendChild(el('rect', {
+                    x: 0, y: 0, width: 420, height: 260, rx: 18, fill: '#014733'
+                }));
+
+                // --- Grid (retro plotting) ------------------------------------------------
+                const grid = el('g', {
+                    stroke: '#0C5A40',
+                    'stroke-width': 0.5,
+                    opacity: 0.45
+                });
+
+                // vertical lines
+                for (let x = 40; x <= 400; x += 40) {
+                    grid.appendChild(el('line', { x1: x, y1: 20, x2: x, y2: 240 }));
+                }
+                // horizontal lines
+                for (let y = 40; y <= 240; y += 40) {
+                    grid.appendChild(el('line', { x1: 20, y1: y, x2: 400, y2: y }));
+                }
+                svg.appendChild(grid);
+
+                // --- Title strip ----------------------------------------------------------
+                svg.appendChild(el('rect', {
+                    x: 20, y: 20, width: 170, height: 24, rx: 4, fill: '#0C5A40'
+                }));
+                const title = el('text', {
+                    x: 30, y: 37,
+                    'font-family': 'Inter, system-ui',
+                    'font-size': 11,
+                    'letter-spacing': '0.16em',
+                    fill: '#D7FFF2'
+                });
+                title.textContent = 'MISSION TELEMETRY';
+                svg.appendChild(title);
+
+                // Axes labels
+                const yLabel = el('text', {
+                    x: 26, y: 60,
+                    'font-family': 'JetBrains Mono, monospace',
+                    'font-size': 9,
+                    fill: '#84D9C0'
+                });
+                yLabel.textContent = 'ACTIVITY';
+                svg.appendChild(yLabel);
+
+                const xLabel = el('text', {
+                    x: 332, y: 232,
+                    'font-family': 'JetBrains Mono, monospace',
+                    'font-size': 9,
+                    fill: '#84D9C0'
+                });
+                xLabel.textContent = 'SCOPE';
+                svg.appendChild(xLabel);
+
+                // --- Prepare node lookup --------------------------------------------------
+                config.nodes.forEach(n => {
+                    nodeById[n.id] = n;
+                });
+
+                // --- Edges ----------------------------------------------------------------
+                const edgesGroup = el('g', {
+                    stroke: '#16C79A',
+                    'stroke-width': 1.4,
+                    'stroke-linecap': 'round',
+                    opacity: 0.9
+                });
+
+                config.edges.forEach(([fromId, toId]) => {
+                    const from = nodeById[fromId];
+                    const to = nodeById[toId];
+                    if (!from || !to) return;
+                    edgesGroup.appendChild(el('line', {
+                        x1: from.x, y1: from.y,
+                        x2: to.x, y2: to.y
+                    }));
+                });
+
+                svg.appendChild(edgesGroup);
+
+                // --- Nodes ----------------------------------------------------------------
+                const nodesGroup = el('g', {
+                    fill: '#00F5A4',
+                    stroke: '#C8FFF0',
+                    'stroke-width': 0.8
+                });
+
+                config.nodes.forEach(n => {
+                    let r = 4;
+                    if (n.type === 'core') r = 6;
+                    else if (n.type === 'mission') r = 5;
+
+                    nodesGroup.appendChild(el('circle', {
+                        cx: n.x, cy: n.y, r
+                    }));
+                });
+
+                svg.appendChild(nodesGroup);
+
+                // --- Labels ---------------------------------------------------------------
+                const labelsGroup = el('g', {
+                    'font-family': 'Inter, system-ui',
+                    'font-size': 11,
+                    fill: '#E9FFF8'
+                });
+
+                config.nodes.forEach(n => {
+                    const label = el('text', {
+                        x: n.x + 10,
+                        y: n.y - 4
+                    });
+                    label.textContent = n.label;
+                    labelsGroup.appendChild(label);
+                });
+
+                svg.appendChild(labelsGroup);
+
+                // --- Legend ---------------------------------------------------------------
+                const legend = el('g', {
+                    'font-family': 'JetBrains Mono, monospace',
+                    'font-size': 9
+                });
+
+                // ACTIVE (solid)
+                legend.appendChild(el('circle', {
+                    cx: 32, cy: 214, r: 4, fill: '#00F5A4'
+                }));
+                const activeText = el('text', {
+                    x: 42, y: 217, fill: '#CFFEF2'
+                });
+                activeText.textContent = 'ACTIVE';
+                legend.appendChild(activeText);
+
+                // BACKGROUND (outlined)
+                legend.appendChild(el('circle', {
+                    cx: 32, cy: 232, r: 4,
+                    fill: 'none', stroke: '#00F5A4', 'stroke-width': 1
+                }));
+                const bgText = el('text', {
+                    x: 42, y: 235, fill: '#86D8C2'
+                });
+                bgText.textContent = 'BACKGROUND';
+                legend.appendChild(bgText);
+
+                svg.appendChild(legend);
+            })();
+        </script>
+    </aside>
+</header>
+
+<article class="jobs-section">
+    <h2 class="section-title">What progress do you want to make today?</h2>
+
+    <div class="jobs-grid">
+        <article class="job-card">
+            <div>
+                <div class="job-title">Get Smart Quickly</div>
+                <div class="job-desc">Shortcuts to depth: distilled mental models and real examples.</div>
+            </div>
+        </article>
+
+        <article class="job-card">
+            <div>
+                <div class="job-title">See How Experts Think</div>
+                <div class="job-desc">Reasoning paths, trade-offs, and decisions laid out clearly.</div>
+            </div>
+        </article>
+
+        <article class="job-card">
+            <div>
+                <div class="job-title">Escape the Noise</div>
+                <div class="job-desc">Calm, structured reading without algorithms screaming at you.</div>
+            </div>
+        </article>
+
+        <article class="job-card">
+            <div>
+                <div class="job-title">Discover New Ideas</div>
+                <div class="job-desc">Field guides and frameworks you won't see in standard playbooks.</div>
+            </div>
+        </article>
+
+        <article class="job-card">
+            <div>
+                <div class="job-title">Join a Narrative</div>
+                <div class="job-desc">Follow missions as they unfold, not just isolated posts.</div>
+            </div>
+        </article>
+
+        <article class="job-card">
+            <div>
+                <div class="job-title">Find the Words</div>
+                <div class="job-desc">Language for the intuitions you already feel in your work.</div>
+            </div>
+        </article>
+    </div>
+</section>
 <article>
-    <h2><a href="${post.link}">${post.title}</a></h2>
-    <time datetime="${post.published}">${post.published}</time>
-    <p>${post.excerpt}</p>
-    ${post.tags.length > 0 ? `<p class="tags">${post.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}</p>` : ''}
+    <header>
+        <h2 class="section-title">Signature Frameworks</h2>
+    </header>
+    <div class="frameworks-grid">
+        <section class="framework-card">
+            <h3 class="framework-title">Leverage Model</h3>
+            <p class="framework-desc">Why small system changes compound into outsized outcomes.</p>
+        </section>
+        <section class="framework-card">
+            <h3 class="framework-title">Interface Playbook</h3>
+            <p class="framework-desc">Boundaries, contracts, and governance for messy integrations.</p>
+        </section>
+        <section class="framework-card">
+            <h3 class="framework-title">Feedback Loops Guide</h3>
+            <p class="framework-desc">Designing loops that stabilize instead of amplify chaos.</p>
+        </section>
+    </div>
 </article>
-`).join('\n')}
+<article class="lower-grid">
+    <section>
+        <header>
+            <h2 class="section-title">Missions In Progress</h2>
+        </header>
+        <article class="mission-card">
+            <h3 class="mission-title">Hubot Data Plane</h3>
+            <div class="progress-track">
+                <div class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" aria-label="Hubot Data Plane progress" style="width:10%;"></div>
+            </div>
+            <footer class="mission-meta">
+                <span>Mission status</span>
+                <span>10%</span>
+            </footer>
+        </article>
+
+        <article class="mission-card">
+            <h3 class="mission-title">Field Ops SaaS Case Study</h3>
+            <div class="progress-track">
+                <div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" aria-label="Field Ops SaaS Case Study progress" style="width:45%;"></div>
+            </div>
+            <footer class="mission-meta">
+                <span>Mission status</span>
+                <span>45%</span>
+            </footer>
+        </article>
+        <article class="mission-card">
+            <h3 class="mission-title">Build the Juphjacs Web Framework</h3>
+            <div class="progress-track">
+                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" aria-label="Build the Juphjacs Web Framework progress" style="width:70%;"></div>
+            </div>
+            <footer class="mission-meta">
+                <span>Mission status</span>
+                <span>70%</span>
+            </footer>
+        </article>
+
+    </section>
+
+    <aside>
+        <header>
+            <h2 class="section-title">Latest Logs</h2>
+        </header>
+        <nav class="logs-card" aria-label="Recent blog posts">
+            ${[...(posts || [])].slice(0, 5).map(post => `
+            <div class="log-item">
+                <time class="log-date" datetime="${post.published}">${new Date(post.published).toLocaleDateString('en-US', { month: 'short', day:
+                    'numeric' })}</time>
+                <a class="log-title" href="${post.link}">${post.title}</a>
+            </div>
+            `).join('\n')}
+        </nav>
+    </aside>
+</article>

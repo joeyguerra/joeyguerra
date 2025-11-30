@@ -7,7 +7,7 @@ class AiSoftwareEngineeringTrapCarouselPage extends Page {
         this.layout = './pages/layouts/joeyg-carousel.html'
         this.title = 'AI Makes You Faster. But Is It Making You Weaker?'
         this.canonical = 'https://joeyguerra.com/ai-software-engineering-trap.html'
-        this.excerpt = 'A CTO’s Guide to Balancing Short-Term Wins with Long-Term Team Health.'
+        this.excerpt = 'A CTO's Guide to Balancing Short-Term Wins with Long-Term Team Health.'
         this.shouldPublish = true
         this.published = new Date('2025-03-30')
         this.uri = '/ai-software-engineering-trap.html'
