@@ -29,22 +29,6 @@ class MissionsPage extends Page {
                 link: '/missions/juphjacs.html'
             },
             {
-                id: 'field-ops',
-                title: 'Field Ops SaaS Case Study',
-                status: 'active',
-                progress: 45,
-                description: 'How a custom field operations system changed crew scheduling, billing accuracy, and burnout risk.',
-                started: '2024-06-01',
-                category: 'Systems Integration',
-                objectives: [
-                    'Document system architecture decisions',
-                    'Analyze integration patterns and failures',
-                    'Extract reusable patterns',
-                    'Measure business impact'
-                ],
-                link: '/missions/field-ops'
-            },
-            {
                 id: 'hubot-data-plane',
                 title: 'Hubot Data Plane',
                 status: 'active',
@@ -58,13 +42,13 @@ class MissionsPage extends Page {
                     'Build monitoring and observability',
                     'Create migration tooling'
                 ],
-                link: '/missions/hubot-data-plane'
+                link: '/missions/hubot-data-plane.html'
             },
             {
                 id: 'interface-playbook',
                 title: 'Interface Design Playbook',
                 status: 'background',
-                progress: 25,
+                progress: 5,
                 description: 'Patterns and anti-patterns for designing system interfaces that reduce integration pain.',
                 started: '2024-03-10',
                 category: 'Systems Design',
@@ -74,7 +58,7 @@ class MissionsPage extends Page {
                     'Build versioning strategies',
                     'Develop testing frameworks'
                 ],
-                link: '/missions/interface-playbook'
+                link: '/missions/interface-playbook.html'
             }
         ]
     }

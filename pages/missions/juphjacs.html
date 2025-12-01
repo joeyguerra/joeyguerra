@@ -46,8 +46,9 @@
     </div>
 </header>
 
-<article class="mission-content">
-    <section id="problem" class="content-section">
+<div class="mission-layout">
+    <article class="mission-content">
+        <section id="problem" class="content-section">
         <header>
             <h2>The Problem</h2>
         </header>
@@ -112,15 +113,15 @@
             `).join('\n')}
         </div>
     </section>
-</article>
+    </article>
 
-<aside class="mission-sidebar">
+    <aside class="mission-sidebar">
     <section class="sidebar-section">
         <h2>Related Reading</h2>
         <nav class="related-posts">
             ${mission.relatedPosts.map(post => `
             <article class="related-post">
-                <time class="post-date" datetime="${post.date}">${new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</time>
+                <time class="post-date" datetime="${post.date}">${new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}</time>
                 <h3 class="post-title">
                     <a href="${post.link}">${post.title}</a>
                 </h3>
@@ -133,10 +134,10 @@
     <section class="sidebar-section">
         <h2>Quick Links</h2>
         <nav class="quick-links">
-            <a href="#problem" class="quick-link">The Problem</a>
-            <a href="#vision" class="quick-link">The Vision</a>
-            <a href="#objectives" class="quick-link">Objectives</a>
-            <a href="#updates" class="quick-link">Updates</a>
+            <a href="/missions/juphjacs.html#problem" class="quick-link">The Problem</a>
+            <a href="/missions/juphjacs.html#vision" class="quick-link">Vision</a>
+            <a href="/missions/juphjacs.html#objectives" class="quick-link">Objectives</a>
+            <a href="/missions/juphjacs.html#updates" class="quick-link">Updates</a>
         </nav>
     </section>
 
@@ -147,4 +148,5 @@
         </p>
         <a href="https://github.com/joeyguerra/juphjacs" class="sidebar-link">View on GitHub →</a>
     </section>
-</aside>
+    </aside>
+</div>

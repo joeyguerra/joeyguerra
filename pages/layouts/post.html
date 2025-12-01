@@ -42,7 +42,7 @@
     <meta name="apple-mobile-web-app-title" content="Joey Guerra"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <link rel="canonical" href="https://joeyguerra.com${uri ?? 'blog/'}"/>
-    <link rel="stylesheet" href="css/blog.css"/>
+    <link rel="stylesheet" href="css/post.css"/>
     <link rel="preload" href="HubotSans/Hubot-Sans.woff2" as="font" type="font/woff2" crossorigin>
     <style>
       @font-face {
@@ -56,74 +56,59 @@
       html, body {
         font-family: "Hubot Sans","Hubot Sans Header Fallback",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
       }
-      header {
-        margin: 0 auto;
-        width: 100%;
-      }
-      header a {
-        display: block;
-        width: 115px;
-        height: 115px;
-        background: url(images/logo-2x.svg) no-repeat center center;
-        background-color: black;
-        border-radius: 50%;
-      }
-      header a span {
-        text-indent: -9999px;
-        position: absolute;
-        display: block;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 2em 0;
-        font-size: 1em;
-        background-color: #fff;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-      }
-
-      th, td {
-        padding: 0.75em 1em;
-        border: 1px solid #e0e0e0;
-        text-align: left;
-      }
-
-      th {
-        background-color: #f5f5f5;
-        font-weight: 600;
-      }
-
-      tr:nth-child(even) {
-        background-color: #fafafa;
-      }
-
-      tr:hover {
-        background-color: #f0f8ff;
-      }
     </style>
   </head>
   <body>
-    <header>
-      <a title="Joey Guerra's Blog" href="blog/">
-        <span>Joey Guerra's Blog</span>
-      </a>
-    </header>
-    <main role="main">
-        <section>
+    <div class="page">
+      <div class="shell">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <span class="separator">→</span>
+          <a href="/blog/mission-log.html">Blog</a>
+          <span class="separator">→</span>
+          <span class="current">${title}</span>
+        </nav>
+
+      <header class="post-hero">
+        <div class="post-header">
+          <div class="post-meta-top">
+            <time class="post-date" datetime="${published}">${new Date(published).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
+          </div>
+          <h1>${title}</h1>
+          <p class="post-excerpt">${excerpt ?? ''}</p>
+        </div>
+      </header>
+
+      <div class="post-layout">
+        <article class="post-content">
           ${body}
-        </section>
-        <section class="tags">
-          ${tags.map(tag => `<span>#${tag}</span>`).join('')}
-        </section>
-    </main>
-    <footer>
-      <small>This is my personal blog. It's a playground I use to explore my own opinions and they are very dynamic. Please keep it in mind as you read through. I hope this site makes you smile.</small>
-      <a href="blog/" title="Go to blog">
-        <img src="images/joeysgotwings.jpeg" width="50%" alt="Joey's got wings" />
-      </a>
-      <a id="repo-link" href="https://github.com/joeyguerra/joeyguerra" title="Blog Repo">https://github.com/joeyguerra/joeyguerra</a>
-  </footer>
+        </article>
+
+        <aside class="post-sidebar">
+          <section class="sidebar-section">
+            <h2>Tags</h2>
+            <div class="post-tags">
+              ${tags.map(tag => `<a href="/blog/mission-log.html?tag=${tag}" class="tag">#${tag}</a>`).join('')}
+            </div>
+          </section>
+
+          <section class="sidebar-section">
+            <h2>Navigation</h2>
+            <nav class="quick-links">
+              <a href="/blog/mission-log.html" class="quick-link">← Back to blog</a>
+              <a href="/blog/start.html" class="quick-link">Start here</a>
+              <a href="/missions/" class="quick-link">Missions</a>
+            </nav>
+          </section>
+        </aside>
+      </div>
+
+      <footer class="site-footer">
+        <p>This is my personal blog. It's a playground I use to explore my own opinions and they are very dynamic. Please keep it in mind as you read through. I hope this site makes you smile.</p>
+        <p><a href="https://github.com/joeyguerra/joeyguerra" title="Blog Repo">View on GitHub</a></p>
+      </footer>
+      </div>
+    </div>
 </body>
 <script src="/socket.io/socket.io.js"></script>
 <script type="module" id="HotReloader">

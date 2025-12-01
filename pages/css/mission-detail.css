@@ -250,6 +250,11 @@
     border-color: var(--border-subtle);
 }
 
+.objective-planned {
+    background: var(--panel-bg);
+    border-color: var(--border-subtle);
+}
+
 .objective-header {
     display: flex;
     justify-content: space-between;

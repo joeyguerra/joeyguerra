@@ -35,8 +35,8 @@ class JuphjacsMissionPage extends Page {
             
             principles: [
                 'Minimize abstraction layers between your code and the platform',
-                'Make the framework transparent—you should see what it\'s doing',
-                'Enable incremental adoption—use what you need, when you need it',
+                'Make the framework transparent-you should see what it\'s doing',
+                'Enable incremental adoption-use what you need, when you need it',
                 'Prioritize developer clarity over framework cleverness'
             ],
             
@@ -44,17 +44,22 @@ class JuphjacsMissionPage extends Page {
                 {
                     title: 'Build a minimal routing system',
                     status: 'completed',
-                    description: 'File-based routing with no magic—just map URLs to files.'
+                    description: 'File-based routing with no magic-just map URLs to files.'
                 },
                 {
-                    title: 'Create composable page components',
+                    title: 'Custom route handlers',
+                    status: 'completed',
+                    description: 'Allow developers to define how requests are handled with simple methods defined on the page objects.'
+                },
+                {
+                    title: 'Create page object design',
                     status: 'completed',
                     description: 'Simple Page class that handles rendering, layout, and metadata.'
                 },
                 {
-                    title: 'Support both SSR and client-side rendering',
-                    status: 'in-progress',
-                    description: 'Render pages on the server, hydrate on the client when needed.'
+                    title: 'Static Site Rendering (SSR) first',
+                    status: 'completed',
+                    description: 'Render pages on the server.'
                 },
                 {
                     title: 'Develop plugin architecture',
@@ -62,38 +67,38 @@ class JuphjacsMissionPage extends Page {
                     description: 'Simple lifecycle hooks for extending functionality without framework lock-in.'
                 },
                 {
+                    title: 'Build developer tooling',
+                    status: 'in-progress',
+                    description: 'Hot reload, error reporting, and debugging helpers.'
+                },
+                {
                     title: 'Document patterns and best practices',
                     status: 'not-started',
                     description: 'Real examples, reasoning behind decisions, and migration guides.'
-                },
-                {
-                    title: 'Build developer tooling',
-                    status: 'not-started',
-                    description: 'Hot reload, error reporting, and debugging helpers.'
                 }
             ],
             
             updates: [
                 {
-                    date: '2025-11-15',
+                    date: '2025-11-29',
                     title: 'Plugin lifecycle hooks working',
-                    summary: 'Implemented beforeRender, afterRender, and request hooks. BlogPlugin now cleanly extends base functionality.',
+                    summary: 'Implemented pre template render, template rendered, and request hooks. BlogPlugin now cleanly extends base functionality.',
                     type: 'milestone'
                 },
                 {
-                    date: '2025-10-20',
+                    date: '2025-11-15',
                     title: 'Page class stabilized',
                     summary: 'Settled on a pattern: Page constructor takes template and context, render method handles layout composition.',
                     type: 'milestone'
                 },
                 {
-                    date: '2025-09-08',
+                    date: '2025-02-12',
                     title: 'Initial routing implementation',
                     summary: 'File-based routing working. Load .mjs files as page handlers, serve .html as templates.',
                     type: 'milestone'
                 },
                 {
-                    date: '2025-08-12',
+                    date: '2024-09-22',
                     title: 'Project kickoff',
                     summary: 'Started exploring what a minimal framework would look like. Initial experiments with template rendering.',
                     type: 'update'
@@ -102,16 +107,22 @@ class JuphjacsMissionPage extends Page {
             
             relatedPosts: [
                 {
-                    title: 'Why I\'m Building Another Web Framework',
-                    link: '/posts/why-juphjacs',
-                    date: '2025-09-01',
-                    excerpt: 'The reasoning behind starting this project and what I hope to learn.'
+                    title: 'File-Based Routing Without the Magic',
+                    link: '/blog/2024/file-based-routing.html',
+                    date: '2025-10-13',
+                    excerpt: 'How Juphjacs maps URLs to files with zero configuration.'
                 },
                 {
-                    title: 'File-Based Routing Without the Magic',
-                    link: '/posts/file-based-routing',
-                    date: '2025-10-15',
-                    excerpt: 'How Juphjacs maps URLs to files with zero configuration.'
+                    title: 'Juphjacs Project Kickoff',
+                    link: '/blog/2024/juphjacs-project-kickoff.html',
+                    date: '2024-09-21',
+                    excerpt: 'The origin story and goals of Juphjacs, a minimal, composable web framework.'
+                },
+                {
+                    title: "Why I'm Building Another Web Framework",
+                    link: '/blog/2024/why-juphjacs.html',
+                    date: '2024-08-30',
+                    excerpt: 'The reasoning behind starting this project and what I hope to learn.'
                 }
             ]
         }

@@ -4,7 +4,7 @@ title: "Why Your Last Software Project Failed (and How to Avoid It Next Time)"
 excerpt: "If you're running a mid-sized business, chances are you've had at least one bad experience with a software project. Maybe you hired an offshore team that promised the world and delivered… crickets. Maybe you had developers who just ghosted you when things got hard (you started critiquing the work). Or maybe you went live with something that looked good on the surface but crumbled the first time your team tried to actually use it."
 published: 2025-10-01
 uri: '/blog/2025/why-your-last-software-project-failed.html'
-tags: ['software', 'project', 'failures', 'mitigation']
+tags: ['software', 'project', 'failures', 'mitigation', 'businesses']
 ---
 
 **Blog Series: Making Software Work for Growing Businesses**
@@ -43,9 +43,9 @@ When you hire a team, you assume they're invested in your success. But sometimes
 How to fix it: Make sure your partner isn't just writing code. They should be asking questions about your business. If they're not curious, they're not going to deliver value, because that's not their focus.
 
 What to Do Differently Next Time
-1.	Insist on transparency — weekly demos, daily check-ins, clear ownership.
-2.	Validate before you commit — start small, prove the team can deliver, then expand.
-3.	Find a partner who cares about your business — not just the code.
+1.	Insist on transparency - weekly demos, daily check-ins, clear ownership.
+2.	Validate before you commit - start small, prove the team can deliver, then expand.
+3.	Find a partner who cares about your business - not just the code.
 
 Good software isn't just about technology. It's about trust, communication, and alignment.
 

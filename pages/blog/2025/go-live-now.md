@@ -4,7 +4,7 @@ title: 'Managing Software Project Risks: How to "Go Live Now" the Right Way'
 excerpt: "\"Go live now\" has a bad reputation in software circles. People hear it and think: rushed, untested, incomplete, risky. But it doesn't have to mean that."
 published: 2025-10-13T18:26:00Z
 uri: '/blog/2025/go-live-now.html'
-tags: ['making', 'software', 'series', 'principles']
+tags: ['making', 'software', 'series', 'principles', 'businesses']
 ---
 
 **Blog Series: Making Software Work for Growing Businesses**
@@ -15,7 +15,7 @@ tags: ['making', 'software', 'series', 'principles']
 
 But it doesn't have to mean that. In fact, "Go live now" can be one of the **smartest strategies you'll even adopt** - if you redefine what "live" really means.
 
-## The Real Problem Isn't Going Live — It's Going All In
+## The Real Problem Isn't Going Live - It's Going All In
 
 When projects fail, it's rarely because they launched something early. It's because they launched **everything** early.
 
@@ -45,7 +45,7 @@ That's not recklessness. That's **feedback-driven progress** that you can improv
 
 1. Start small, but real
 
-    Don't launch prototypes that live in isolation. Instead, put a slice of your system in front of real users doing real work. Maybe that's just one feature, one department, or one branch location—but it's live in the truest sense.
+    Don't launch prototypes that live in isolation. Instead, put a slice of your system in front of real users doing real work. Maybe that's just one feature, one department, or one branch location-but it's live in the truest sense.
 
 1. Design for Evolution
 
