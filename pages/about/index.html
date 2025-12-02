@@ -1,0 +1,129 @@
+<style>
+    @import url('/css/about.css');
+</style>
+
+<header class="about-hero">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="separator">→</span>
+        <a href="/blog/">Kaizen Ops</a>
+        <span class="separator">→</span>
+        <span class="current">About Joey</span>
+    </nav>
+
+    <div class="hero-header">
+        <h1>About Joey</h1>
+        <h2>
+            I design and build systems for real operations — the kind with crews, warehouses, legacy tools, and real risk if things go sideways.
+        </h2>
+        <p class="hero-description">
+            I started as an aerospace engineer in the late 90s and moved into software. Since then I've helped teams ship and operate systems that actually work in the real world. This weblog is where I make my thinking visible so you can see the structure behind decisions — interfaces, flows, failure modes, and how to make systems easier to evolve.
+        </p>
+    </div>
+</header>
+
+<div class="about-layout">
+    <article class="about-content">
+        <section id="what-i-do" class="content-section">
+            <header>
+                <h2>What I do</h2>
+            </header>
+            <ul class="bullets">
+                <li>Design resilient interfaces and data flows across services and teams</li>
+                <li>Reduce coordination complexity by clarifying contracts and failure modes</li>
+                <li>Build small, composable tooling that fits how people actually work</li>
+                <li>Mentor teams on idempotent flows, observability, and pragmatic delivery</li>
+            </ul>
+        </section>
+
+        <section id="background" class="content-section">
+            <header>
+                <h2>Background</h2>
+            </header>
+            <p>
+                Aerospace was my first systems education: constraints are real, failure is concrete, and clarity matters. Software added a new dimension — humans and organizations. I’ve led and supported efforts across logistics, field ops, and platform work, with a bias toward solving the right problem with the least moving parts.
+            </p>
+        </section>
+
+        <section id="approach" class="content-section">
+            <header>
+                <h2>How I work</h2>
+            </header>
+            <ul class="bullets">
+                <li><strong>Interfaces first</strong>: boundaries determine failure modes more than frameworks</li>
+                <li><strong>Idempotent flows</strong>: make operations safe to repeat so recovery is boring</li>
+                <li><strong>Contract thinking</strong>: promises you can keep, versioned with intent</li>
+                <li><strong>Observability</strong>: instrument the things people actually need to reason about</li>
+                <li><strong>Small pieces</strong>: prefer composable parts over big abstract machinery</li>
+            </ul>
+        </section>
+
+        <section id="principles" class="content-section">
+            <header>
+                <h2>Guiding principles</h2>
+            </header>
+            <ul class="bullets">
+                <li>Most complexity is coordination complexity, not code complexity</li>
+                <li>Good systems respect physical realities: time, attention, and human limits</li>
+                <li>Design evolves — make the next change easy instead of the current design perfect</li>
+                <li>Prefer explicit trade-offs over accidental ones</li>
+            </ul>
+        </section>
+
+        <section id="toolbox" class="content-section">
+            <header>
+                <h2>Toolbox</h2>
+            </header>
+            <ul class="bullets">
+                <li>Languages: C#, JavaScript, Python, SQL, HTML, CSS</li>
+                <li>Systems: HTTP, eventing, queues, retries, backoff, concurrency</li>
+                <li>Ops: Docker, observability, structured logging, tracing, metrics</li>
+                <li>Practices: TDD, CI/CD, contract testing, failure injection, progressive delivery, test - test - test</li>
+            </ul>
+        </section>
+
+        <section id="contact" class="content-section">
+            <header>
+                <h2>Contact</h2>
+            </header>
+            <p>
+                Best way to reach me is email and LinkedIn. If something here resonates or you want to collaborate, I’d love to hear from you.
+            </p>
+            <ul class="links">
+                <li><a href="mailto:hello@joeyguerra.com">hello@joeyguerra.com</a></li>
+                <li><a href="https://www.linkedin.com/in/joeyguerra/" target="_blank" rel="noopener">linkedin.com/in/joeyguerra</a></li>
+            </ul>
+        </section>
+    </article>
+
+    <aside class="about-sidebar">
+        <section class="sidebar-section">
+            <h2>Quick Links</h2>
+            <nav class="quick-links">
+                <a href="/about/#what-i-do" class="quick-link">What I do</a>
+                <a href="/about/#background" class="quick-link">Background</a>
+                <a href="/about/#approach" class="quick-link">How I work</a>
+                <a href="/about/#principles" class="quick-link">Principles</a>
+                <a href="/about/#toolbox" class="quick-link">Toolbox</a>
+                <a href="/about/#contact" class="quick-link">Contact</a>
+            </nav>
+        </section>
+
+        <section class="sidebar-section">
+            <h2>Current missions</h2>
+            <nav class="sidebar-nav">
+                <a class="sidebar-link" href="/missions/juphjacs.html">Juphjacs Web Framework</a>
+                <a class="sidebar-link" href="/missions/interface-playbook.html">Interface Design Playbook</a>
+                <a class="sidebar-link" href="/missions/hubot-data-plane.html">Hubot Data Plane</a>
+            </nav>
+        </section>
+
+        <section class="sidebar-section">
+            <h2>Start here</h2>
+            <nav class="sidebar-nav">
+                <a class="sidebar-link" href="/blog/start.html">How to use this weblog</a>
+                <a class="sidebar-link" href="/blog/mission-log.html">Mission Log</a>
+            </nav>
+        </section>
+    </aside>
+</div>

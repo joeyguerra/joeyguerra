@@ -1,34 +1,5 @@
 @import './base.css';
 
-/* BREADCRUMB */
-
-.breadcrumb {
-    font-size: 0.8125rem;
-    color: var(--text-soft);
-    margin-bottom: var(--space-lg);
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-}
-
-.breadcrumb a {
-    color: var(--text-soft);
-    text-decoration: none;
-}
-
-.breadcrumb a:hover {
-    color: var(--accent);
-}
-
-.breadcrumb .separator {
-    color: var(--text-soft);
-    opacity: 0.5;
-}
-
-.breadcrumb .current {
-    color: var(--text-main);
-}
-
 /* POST HERO */
 
 .post-hero {
@@ -360,11 +331,6 @@
     .post-excerpt {
         font-size: 1rem;
     }
-
-    .breadcrumb {
-        flex-wrap: wrap;
-    }
-
     .post-content p,
     .post-content ul,
     .post-content ol {

@@ -1,0 +1,128 @@
+/* Spotlight-style search overlay */
+.spotlight-backdrop {
+  --spot-bg: rgba(15, 17, 21, 0.6);
+  --spot-panel-bg: #0f1115;
+  --spot-panel-border: #22262d;
+  --spot-text: #e8edf3;
+  --spot-muted: #9aa4b2;
+  --spot-accent: #00c896;
+  --spot-highlight: #20242b;
+  --spot-shadow: 0 20px 50px rgba(0,0,0,0.5);
+
+  position: fixed;
+  inset: 0;
+  background: var(--spot-bg);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: none;
+  z-index: 10000;
+}
+
+.spotlight-backdrop.is-open { display: block }
+
+.spotlight-panel {
+  position: absolute;
+  left: 50%;
+  top: 14vh;
+  transform: translateX(-50%);
+  width: min(760px, 92vw);
+  background: var(--spot-panel-bg);
+  border: 1px solid var(--spot-panel-border);
+  border-radius: 12px;
+  box-shadow: var(--spot-shadow);
+  overflow: hidden;
+  color: var(--spot-text);
+}
+
+.spotlight-input-wrap {
+  display: grid;
+  grid-template-columns: 28px 1fr 80px;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--spot-panel-border);
+}
+
+.spotlight-input-wrap .icon {
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+.spotlight-input {
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  color: var(--spot-text);
+  padding: 8px 2px;
+}
+
+.spotlight-kbd-hint {
+  justify-self: end;
+  font-size: 12px;
+  color: var(--spot-muted);
+  background: #151921;
+  border: 1px solid var(--spot-panel-border);
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.spotlight-results {
+  max-height: 60vh;
+  overflow: auto;
+}
+
+.spotlight-empty,
+.spotlight-loading,
+.spotlight-error {
+  padding: 18px 16px;
+  color: var(--spot-muted);
+}
+
+.spotlight-list {
+  list-style: none;
+  padding: 6px 6px 8px;
+  margin: 0;
+}
+
+.spotlight-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.spotlight-item:hover,
+.spotlight-item.is-active {
+  background: var(--spot-highlight);
+}
+
+.spotlight-item .title {
+  color: var(--spot-text);
+  font-weight: 600;
+}
+
+.spotlight-item .desc {
+  color: var(--spot-muted);
+  font-size: 13px;
+}
+
+.spotlight-item .badge {
+  font-size: 12px;
+  color: #0b1512;
+  background: var(--spot-accent);
+  border-radius: 999px;
+  padding: 4px 8px;
+}
+
+@media (max-width: 520px) {
+  .spotlight-input-wrap {
+    grid-template-columns: 24px 1fr 56px;
+  }
+  .spotlight-kbd-hint { display: none }
+}

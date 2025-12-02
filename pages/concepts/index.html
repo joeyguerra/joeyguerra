@@ -3,134 +3,148 @@
 </style>
 
 <header class="page-hero">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="separator">→</span>
+        <a href="/blog/">Kaizen Ops</a>
+        <span class="separator">→</span>
+        <span class="current">Concepts</span>
+    </nav>
     <div class="hero-header">
         <h1>Concepts</h1>
-        <p class="hero-tagline">
+        <h2>
             Reusable mental models and playbooks for building systems that work in the real world.
-        </p>
-        <p class="hero-description">
-            These are field manuals - practical frameworks for thinking about interfaces, leverage, feedback loops, idempotent flows, and the coordination complexity that lives between your components.
+        </h2>
+        <p>
+            These are field manuals - practical frameworks for thinking about interfaces, leverage, feedback loops,
+            idempotent flows, and the coordination complexity that lives between your components.
         </p>
     </div>
 </header>
 
-<div class="concepts-layout">
-    <section class="concepts-grid">
-    <article class="concept-card">
-        <header class="concept-header">
-            <h2 class="concept-title">
-                <a href="/missions/interface-playbook.html">Interface Design</a>
-            </h2>
-            <span class="concept-category">Systems Design</span>
-        </header>
-        <p class="concept-description">
-            Most integration pain doesn't come from code - it comes from the shape of your interfaces. Learn to design boundaries that clarify failure modes instead of hiding them.
-        </p>
-        <footer class="concept-meta">
-            <span class="concept-status">Active</span>
-            <a href="/missions/interface-playbook.html" class="concept-link">Explore →</a>
-        </footer>
-    </article>
+<div class="layout">
+    <section class="grid">
+        <article class="card">
+            <header>
+                <h2 class="title">
+                    <a href="/missions/interface-playbook.html">Interface Design</a>
+                </h2>
+                <span class="category">Systems Design</span>
+            </header>
+            <p class="description">
+                Most integration pain doesn't come from code - it comes from the shape of your interfaces. Learn to
+                design boundaries that clarify failure modes instead of hiding them.
+            </p>
+            <footer class="meta">
+                <span class="status">Active</span>
+                <a href="/missions/interface-playbook.html" class="link">Explore →</a>
+            </footer>
+        </article>
 
-    <article class="concept-card">
-        <header class="concept-header">
-            <h2 class="concept-title">
-                <a href="/concepts/idempotency.html">Idempotent Flows</a>
-            </h2>
-            <span class="concept-category">Stability</span>
-        </header>
-        <p class="concept-description">
-            Operations that are safe to repeat converge to the same state. This simple property changes everything about how you design, deploy, and recover.
-        </p>
-        <footer class="concept-meta">
-            <span class="concept-status">Active</span>
-            <a href="/concepts/idempotency.html" class="concept-link">Explore →</a>
-        </footer>
-    </article>
+        <article class="card">
+            <header class="header">
+                <h2 class="title">
+                    <a href="/concepts/idempotency.html">Idempotent Flows</a>
+                </h2>
+                <span class="category">Stability</span>
+            </header>
+            <p class="description">
+                Operations that are safe to repeat converge to the same state. This simple property changes everything
+                about how you design, deploy, and recover.
+            </p>
+            <footer class="meta">
+                <span class="status">Active</span>
+                <a href="/concepts/idempotency.html" class="link">Explore →</a>
+            </footer>
+        </article>
 
-    <article class="concept-card">
-        <header class="concept-header">
-            <h2 class="concept-title">
-                <a href="/concepts/leverage.html">Leverage Model</a>
-            </h2>
-            <span class="concept-category">Strategy</span>
-        </header>
-        <p class="concept-description">
-            Not all work creates equal outcomes. Learn to identify where small changes create disproportionate impact - and where effort vanishes without leverage.
-        </p>
-        <footer class="concept-meta">
-            <span class="concept-status">Planned</span>
-            <a href="/concepts/leverage.html" class="concept-link">Explore →</a>
-        </footer>
-    </article>
+        <article class="card">
+            <header class="header">
+                <h2 class="title">
+                    <a href="/concepts/leverage.html">Leverage Model</a>
+                </h2>
+                <span class="category">Strategy</span>
+            </header>
+            <p class="description">
+                Not all work creates equal outcomes. Learn to identify where small changes create disproportionate
+                impact - and where effort vanishes without leverage.
+            </p>
+            <footer class="meta">
+                <span class="status">Planned</span>
+                <a href="/concepts/leverage.html" class="link">Explore →</a>
+            </footer>
+        </article>
 
-    <article class="concept-card">
-        <header class="concept-header">
-            <h2 class="concept-title">
-                <a href="/concepts/feedback-loops.html">Feedback Loops</a>
-            </h2>
-            <span class="concept-category">Observability</span>
-        </header>
-        <p class="concept-description">
-            Systems without feedback are guessing machines. Design loops that surface reality fast enough to matter, before assumptions drift too far from truth.
-        </p>
-        <footer class="concept-meta">
-            <span class="concept-status">Planned</span>
-            <a href="/concepts/feedback-loops.html" class="concept-link">Explore →</a>
-        </footer>
-    </article>
+        <article class="card">
+            <header class="header">
+                <h2 class="title">
+                    <a href="/concepts/feedback-loops.html">Feedback Loops</a>
+                </h2>
+                <span class="category">Observability</span>
+            </header>
+            <p class="description">
+                Systems without feedback are guessing machines. Design loops that surface reality fast enough to matter,
+                before assumptions drift too far from truth.
+            </p>
+            <footer class="meta">
+                <span class="status">Planned</span>
+                <a href="/concepts/feedback-loops.html" class="link">Explore →</a>
+            </footer>
+        </article>
 
-    <article class="concept-card">
-        <header class="concept-header">
-            <h2 class="concept-title">
-                <a href="/concepts/coordination-complexity.html">Coordination Complexity</a>
-            </h2>
-            <span class="concept-category">Systems Thinking</span>
-        </header>
-        <p class="concept-description">
-            Most complexity isn't in the code - it's in the coordination between people, teams, and components. Recognize it, name it, and design around it.
-        </p>
-        <footer class="concept-meta">
-            <span class="concept-status">Planned</span>
-            <a href="/concepts/coordination-complexity.html" class="concept-link">Explore →</a>
-        </footer>
-    </article>
+        <article class="card">
+            <header class="header">
+                <h2 class="title">
+                    <a href="/concepts/coordination-complexity.html">Coordination Complexity</a>
+                </h2>
+                <span class="category">Systems Thinking</span>
+            </header>
+            <p class="description">
+                Most complexity isn't in the code - it's in the coordination between people, teams, and components.
+                Recognize it, name it, and design around it.
+            </p>
+            <footer class="meta">
+                <span class="status">Planned</span>
+                <a href="/concepts/coordination-complexity.html" class="link">Explore →</a>
+            </footer>
+        </article>
 
-    <article class="concept-card">
-        <header class="concept-header">
-            <h2 class="concept-title">
-                <a href="/concepts/contract-testing.html">Contract Testing</a>
-            </h2>
-            <span class="concept-category">Quality</span>
-        </header>
-        <p class="concept-description">
-            Interfaces are promises. Contract tests lock those promises, catch breakage before production, and give consumers confidence to integrate.
-        </p>
-        <footer class="concept-meta">
-            <span class="concept-status">Planned</span>
-            <a href="/concepts/contract-testing.html" class="concept-link">Explore →</a>
-        </footer>
-    </article>
+        <article class="card">
+            <header class="header">
+                <h2 class="title">
+                    <a href="/concepts/contract-testing.html">Contract Testing</a>
+                </h2>
+                <span class="category">Quality</span>
+            </header>
+            <p class="description">
+                Interfaces are promises. Contract tests lock those promises, catch breakage before production, and give
+                consumers confidence to integrate.
+            </p>
+            <footer class="meta">
+                <span class="status">Planned</span>
+                <a href="/concepts/contract-testing.html" class="link">Explore →</a>
+            </footer>
+        </article>
     </section>
 
-    <aside class="concepts-sidebar">
-    <section class="sidebar-section">
-        <h2>How to use these concepts</h2>
-        <ul class="sidebar-list">
-            <li>Pick a concept that aligns with a problem you're solving now</li>
-            <li>Use them as language to clarify conversations with your team</li>
-            <li>Reference them when designing new systems or refactoring old ones</li>
-            <li>Combine concepts - they're composable, not isolated</li>
-        </ul>
-    </section>
+    <aside class="sidebar">
+        <section class="sidebar-section">
+            <h2>How to use these concepts</h2>
+            <ul class="sidebar-list">
+                <li>Pick a concept that aligns with a problem you're solving now</li>
+                <li>Use them as language to clarify conversations with your team</li>
+                <li>Reference them when designing new systems or refactoring old ones</li>
+                <li>Combine concepts - they're composable, not isolated</li>
+            </ul>
+        </section>
 
-    <section class="sidebar-section">
-        <h2>Related</h2>
-        <nav class="sidebar-nav">
-            <a href="/missions/" class="sidebar-link">Missions</a>
-            <a href="/blog/mission-log.html" class="sidebar-link">Mission Log</a>
-            <a href="/blog/start.html" class="sidebar-link">Start Here</a>
-        </nav>
-    </section>
+        <section class="sidebar-section">
+            <h2>Related</h2>
+            <nav class="sidebar-nav">
+                <a href="/missions/" class="sidebar-link">Missions</a>
+                <a href="/blog/mission-log.html" class="sidebar-link">Mission Log</a>
+                <a href="/blog/start.html" class="sidebar-link">Start Here</a>
+            </nav>
+        </section>
     </aside>
 </div>

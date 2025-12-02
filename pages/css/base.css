@@ -46,6 +46,30 @@ a {
     text-decoration: none;
 }
 
+header h2 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.1;
+    margin: 0 0 var(--space-md) 0;
+}
+
+/* BREADCRUMB */
+
+.breadcrumb {
+    font-size: 0.8125rem;
+    color: var(--text-soft);
+    margin-bottom: var(--space-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.breadcrumb a { color: var(--text-soft); text-decoration: none }
+.breadcrumb a:hover { color: var(--accent) }
+.breadcrumb .separator { color: var(--text-soft); opacity: .5 }
+.breadcrumb .current { color: var(--text-main) }
+
+
 /* Page Shell */
 .page {
     min-height: 100vh;
@@ -190,5 +214,8 @@ a {
 @media (max-width: 720px) {
     .shell {
         padding: var(--space-lg);
+    }
+    .breadcrumb {
+        flex-wrap: wrap;
     }
 }

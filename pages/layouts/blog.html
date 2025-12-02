@@ -30,6 +30,7 @@
   <link rel="canonical" href="https://joeyguerra.com/blog/">
   <link rel="stylesheet" href="css/blog.css">
   <link rel="preload" href="HubotSans/Hubot-Sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/spotlight-search.css">
 </head>
 
 <body>
@@ -44,7 +45,7 @@
           <a class="nav-link" id="missionsLink" href="/missions/" title="List of missions">Missions</a>
           <a class="nav-link" id="conceptsLink" href="/concepts/" title="Concepts">Concepts</a>
           <a class="nav-link" id="missionLogLink" href="/blog/mission-log.html" title="Mission Log">Mission Log</a>
-          <a class="nav-link" id="aboutJoeyLink" href="/blog/about-joey.html" title="About Joey">About Joey</a>
+          <a class="nav-link" id="aboutJoeyLink" href="/about/" title="About Joey">About Joey</a>
           <a class="nav-icon" id="searchLink" href="/blog/search.html" title="Search">🔍</a>
         </nav>
       </header>
@@ -57,6 +58,8 @@
   </div>
   <button id="toTop" class="to-top" type="button" aria-label="Scroll back to top">To the top</button>
   <script type="module">
+    import { initSpotlightSearch } from '/js/spotlight-search.mjs'
+    initSpotlightSearch({ triggerSelector: '#searchLink' })
     const navLinks = Array.from(document.getElementById('mainNavigation').querySelectorAll('a'))
     navLinks.forEach(link => {
       link.classList.remove('is-active')
