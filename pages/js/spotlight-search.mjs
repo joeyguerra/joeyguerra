@@ -103,7 +103,7 @@ class SpotlightSearch {
 
   async #loadIndex () {
     try {
-      const res = await fetch('/search-index.json', { cache: 'no-store' })
+      const res = await fetch('/js/search-index.json', { cache: 'no-store' })
       if (!res.ok) throw new Error('no index')
       const json = await res.json()
       this.data = Array.isArray(json) ? json : defaultIndex
