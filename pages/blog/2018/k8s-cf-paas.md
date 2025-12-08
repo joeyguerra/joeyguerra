@@ -37,7 +37,7 @@ Ann [8:32 AM]
 From what I've seen, one big reason, sometimes the only reason, that people will opt for trying to manage their own k8s is just to avoid vendor lock-in from using a PaaS.
 
 Charlie [8:34 AM]
-I don't buy the vendor lock-in argument — moving from GKE to AEKS isn't hard, especially if you used Terraform to setup initially.
+I don't buy the vendor lock-in argument - moving from GKE to AEKS isn't hard, especially if you used Terraform to setup initially.
 
 Rolling your own k8s is only marginally smarter than building your own platform .
 
@@ -63,7 +63,7 @@ Jacob [9:23 AM]
 I think folks believe the costs of PCF aren't worth it because it *is* expensive.
 
 Charlie [9:25 AM]
-I'm kind of on the fence — I think it was worth it just for forcing organizational change, or at least attempting it.
+I'm kind of on the fence - I think it was worth it just for forcing organizational change, or at least attempting it.
 
 Jacob [9:30 AM]
 I don't want to build our own PaaS.

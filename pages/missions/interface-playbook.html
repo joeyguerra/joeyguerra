@@ -1,0 +1,177 @@
+<style>
+    @import url('/css/mission-detail.css');
+</style>
+
+<header class="mission-hero">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="separator">→</span>
+        <a href="/missions/">Missions</a>
+        <span class="separator">→</span>
+        <span class="current">Interface Design Playbook</span>
+    </nav>
+    <div class="mission-header">
+        <div class="mission-meta-top">
+            <span class="mission-category">Systems Design</span>
+            <span class="mission-status mission-status-background">Background</span>
+        </div>
+        <h1>Interface Design Playbook</h1>
+        <p class="mission-tagline">Patterns and anti-patterns for designing system interfaces that reduce integration pain.</p>
+        <div class="mission-stats">
+            <div class="stat">
+                <span class="stat-label">Progress</span>
+                <span class="stat-value">5%</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Status</span>
+                <span class="stat-value">Background</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Started</span>
+                <span class="stat-value">Mar 2024</span>
+            </div>
+        </div>
+        <div class="progress-track">
+            <div class="progress-bar" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" aria-label="Interface Design Playbook progress" style="width: 5%;"></div>
+        </div>
+    </div>
+</header>
+
+<div class="mission-layout">
+    <article class="mission-content">
+        <section class="content-section" id="problem">
+        <header>
+            <h2>The Problem</h2>
+        </header>
+        <p class="problem-statement">Most integration pain doesn't come from the code inside systems - it comes from the shape of their interfaces. Poorly designed interfaces create cascading failures, tight coupling, and endless debugging sessions.</p>
+        <h3>Pain Points</h3>
+        <ul class="pain-points-list">
+            <li>Interfaces that leak internal implementation details</li>
+            <li>Breaking changes disguised as minor updates</li>
+            <li>Unclear failure modes and error handling</li>
+            <li>Versioning chaos and migration nightmares</li>
+        </ul>
+    </section>
+
+    <section class="content-section" id="vision">
+        <header>
+            <h2>Vision</h2>
+        </header>
+        <p class="vision-statement">A practical playbook that helps teams design interfaces that are stable, clear, and easy to integrate with - reducing the hidden costs of system boundaries.</p>
+        <h3>Guiding Principles</h3>
+        <ul class="principles-list">
+            <li>Interfaces should clarify, not obscure, failure modes</li>
+            <li>Contracts are promises - breaking them has costs</li>
+            <li>Good versioning is invisible until you need it</li>
+            <li>Test interfaces like you test code</li>
+        </ul>
+    </section>
+
+    <section class="content-section" id="objectives">
+        <header>
+            <h2>Objectives</h2>
+        </header>
+        <div class="objectives-grid">
+            <article class="objective-card objective-active">
+                <header class="objective-header">
+                    <h3 class="objective-title">Document interface failure modes</h3>
+                    <span class="objective-status">Active</span>
+                </header>
+                <p class="objective-description">Catalog common failure patterns and their root causes in interface design.</p>
+            </article>
+            <article class="objective-card objective-not-started">
+                <header class="objective-header">
+                    <h3 class="objective-title">Create contract design templates</h3>
+                    <span class="objective-status">Not Started</span>
+                </header>
+                <p class="objective-description">Reusable templates for defining clear, stable interface contracts.</p>
+            </article>
+            <article class="objective-card objective-not-started">
+                <header class="objective-header">
+                    <h3 class="objective-title">Build versioning strategies</h3>
+                    <span class="objective-status">Not Started</span>
+                </header>
+                <p class="objective-description">Practical approaches to evolving interfaces without breaking consumers.</p>
+            </article>
+            <article class="objective-card objective-not-started">
+                <header class="objective-header">
+                    <h3 class="objective-title">Develop testing frameworks</h3>
+                    <span class="objective-status">Not Started</span>
+                </header>
+                <p class="objective-description">Tools and patterns for validating interface contracts and compatibility.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="content-section" id="updates">
+        <header>
+            <h2>Mission Updates</h2>
+        </header>
+        <div class="timeline">
+            <article class="timeline-item timeline-update">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <header>
+                        <time class="update-date" datetime="2025-09-20">Sep 20, 2025</time>
+                        <h3 class="update-title">
+                            <a href="blog/2025/hidden-cost-of-interfaces.html" title="Published interface cost analysis">
+                                Published interface cost analysis
+                            </a>
+                    </header>
+                    <p class="update-summary">Wrote "The Hidden Cost of Interfaces in Your System" exploring how interface design drives integration complexity.</p>
+                </div>
+            </article>
+            <article class="timeline-item timeline-update">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <header>
+                        <time class="update-date" datetime="2024-03-10">Mar 10, 2024</time>
+                        <h3 class="update-title">Mission kickoff</h3>
+                    </header>
+                    <p class="update-summary">Started collecting patterns and failure modes from real-world integration projects.</p>
+                </div>
+            </article>
+        </div>
+    </section>
+    </article>
+
+    <aside class="mission-sidebar">
+    <section class="sidebar-section">
+        <h2>Related Reading</h2>
+        <nav class="related-posts">
+            <article class="related-post">
+                <time class="post-date">TBD</time>
+                <h3 class="post-title">
+                    The Hidden Cost of Interfaces in Your System
+                </h3>
+                <p class="post-excerpt">Why integration pain isn't accidental - and how most of it lives in the shape of your interfaces.</p>
+            </article>
+            <article class="related-post">
+                <time class="post-date">TBD</time>
+                <h3 class="post-title">
+                    Contract-First Design: Promises You Can Keep
+                </h3>
+                <p class="post-excerpt">How defining interfaces before implementation changes the way systems evolve.</p>
+            </article>
+        </nav>
+    </section>
+
+    <section class="sidebar-section">
+        <h2>Quick Links</h2>
+        <nav class="quick-links">
+            <a href="/missions/interface-playbook.html#problem" class="quick-link">The Problem</a>
+            <a href="/missions/interface-playbook.html#vision" class="quick-link">Vision</a>
+            <a href="/missions/interface-playbook.html#objectives" class="quick-link">Objectives</a>
+            <a href="/missions/interface-playbook.html#updates" class="quick-link">Updates</a>
+        </nav>
+    </section>
+
+    <section class="sidebar-section">
+        <h2>Get Involved</h2>
+        <p class="sidebar-text">
+            Have interface design patterns or horror stories to share?
+        </p>
+        <a href="https://github.com/joeyguerra/joeyguerra/discussions" class="sidebar-link" target="_blank" rel="noopener">Join the discussion →</a>
+    </section>
+    </aside>
+</div>

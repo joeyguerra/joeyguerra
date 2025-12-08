@@ -1,10 +1,10 @@
 ---
 layout: './pages/layouts/post.html'
 title: 'Ensuring Scalability: How Event Modeling Future-Proofs Your Software'
-excerpt: "You've probably heard someone say, “We just need to get through this version—then we'll rebuild it the right way”. That sentence is the death knell of scalability."
+excerpt: "You've probably heard someone say, “We just need to get through this version-then we'll rebuild it the right way”. That sentence is the death knell of scalability."
 published: 2025-10-22T09:31:00Z
 uri: '/blog/2025/future-proof-with-event-modeling.html'
-tags: ['event', 'modeling', 'future', 'proof', 'scalability']
+tags: ['event', 'modeling', 'future', 'proof', 'scalability', 'businesses']
 ---
 
 **Blog Series: Making Software Work for Growing Businesses**
@@ -23,7 +23,7 @@ It's called [Event Modeling](https://eventmodeling.org/posts/what-is-event-model
 
 ## What Is Event Modeling (In Plain English)?
 
-Event Modeling is a way of designing software based on how information flows through your business—step by step, event by event, over time.
+Event Modeling is a way of designing software based on how information flows through your business-step by step, event by event, over time.
 
 Think of it like storyboarding your operations. Instead of talking about databases, APIs, or "user stories", you map out what actually happens in the business:
 

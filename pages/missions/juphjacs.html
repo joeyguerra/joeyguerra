@@ -1,0 +1,152 @@
+<style>
+    @import url('/css/mission-detail.css');
+</style>
+
+<header class="mission-hero">
+    <nav class="breadcrumb">
+        <a href="/blog/">Home</a>
+        <span class="separator">→</span>
+        <a href="/missions/">Missions</a>
+        <span class="separator">→</span>
+        <span class="current">${mission.title}</span>
+    </nav>
+    
+    <div class="mission-header">
+        <div class="mission-meta-top">
+            <span class="mission-category">${mission.category}</span>
+            <span class="mission-status mission-status-${mission.status}">${mission.status}</span>
+        </div>
+        <h1>${mission.title}</h1>
+        <p class="mission-tagline">${mission.description}</p>
+        
+        <div class="mission-stats">
+            <div class="stat">
+                <span class="stat-label">Progress</span>
+                <span class="stat-value">${mission.progress}%</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Status</span>
+                <span class="stat-value">${mission.status}</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Started</span>
+                <span class="stat-value">${new Date(mission.started).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>
+            </div>
+        </div>
+
+        <div class="progress-track">
+            <div class="progress-bar" 
+                 role="progressbar" 
+                 aria-valuenow="${mission.progress}" 
+                 aria-valuemin="0" 
+                 aria-valuemax="100" 
+                 aria-label="Mission progress"
+                 style="width: ${mission.progress}%;"></div>
+        </div>
+    </div>
+</header>
+
+<div class="mission-layout">
+    <article class="mission-content">
+        <section id="problem" class="content-section">
+        <header>
+            <h2>The Problem</h2>
+        </header>
+        <p class="problem-statement">${mission.problem.statement}</p>
+        
+        <h3>Key Pain Points</h3>
+        <ul class="pain-points-list">
+            ${mission.problem.painPoints.map(point => `<li>${point}</li>`).join('')}
+        </ul>
+    </section>
+
+    <section id="vision" class="content-section">
+        <header>
+            <h2>The Vision</h2>
+        </header>
+        <p class="vision-statement">${mission.vision}</p>
+        
+        <h3>Guiding Principles</h3>
+        <ul class="principles-list">
+            ${mission.principles.map(principle => `<li>${principle}</li>`).join('')}
+        </ul>
+    </section>
+
+    <section id="objectives" class="content-section">
+        <header>
+            <h2>Mission Objectives</h2>
+        </header>
+        
+        <div class="objectives-grid">
+            ${mission.objectives.map(obj => `
+            <article class="objective-card objective-${obj.status}">
+                <header>
+                    <div class="objective-header">
+                        <h3 class="objective-title">${obj.title}</h3>
+                        <span class="objective-status">${obj.status.replace('-', ' ')}</span>
+                    </div>
+                </header>
+                <p class="objective-description">${obj.description}</p>
+            </article>
+            `).join('\n')}
+        </div>
+    </section>
+
+    <section id="updates" class="content-section">
+        <header>
+            <h2>Mission Updates</h2>
+            <p class="section-intro">A chronological log of progress, decisions, and learnings.</p>
+        </header>
+        
+        <div class="timeline">
+            ${mission.updates.map((update, index) => `
+            <article class="timeline-item timeline-${update.type}">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <header>
+                        <time class="update-date" datetime="${update.date}">${new Date(update.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</time>
+                        <h3 class="update-title">${update.title}</h3>
+                    </header>
+                    <p class="update-summary">${update.summary}</p>
+                </div>
+            </article>
+            `).join('\n')}
+        </div>
+    </section>
+    </article>
+
+    <aside class="mission-sidebar">
+    <section class="sidebar-section">
+        <h2>Related Reading</h2>
+        <nav class="related-posts">
+            ${mission.relatedPosts.map(post => `
+            <article class="related-post">
+                <time class="post-date" datetime="${post.date}">${new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}</time>
+                <h3 class="post-title">
+                    <a href="${post.link}">${post.title}</a>
+                </h3>
+                <p class="post-excerpt">${post.excerpt}</p>
+            </article>
+            `).join('\n')}
+        </nav>
+    </section>
+
+    <section class="sidebar-section">
+        <h2>Quick Links</h2>
+        <nav class="quick-links">
+            <a href="/missions/juphjacs.html#problem" class="quick-link">The Problem</a>
+            <a href="/missions/juphjacs.html#vision" class="quick-link">Vision</a>
+            <a href="/missions/juphjacs.html#objectives" class="quick-link">Objectives</a>
+            <a href="/missions/juphjacs.html#updates" class="quick-link">Updates</a>
+        </nav>
+    </section>
+
+    <section class="sidebar-section">
+        <h2>Get Involved</h2>
+        <p class="sidebar-text">
+            This mission is being built in public. Follow along, share feedback, or contribute ideas.
+        </p>
+        <a href="https://github.com/joeyguerra/juphjacs" class="sidebar-link">View on GitHub →</a>
+    </section>
+    </aside>
+</div>

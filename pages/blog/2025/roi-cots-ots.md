@@ -4,7 +4,7 @@ title: 'The ROI of Custom Software vs. Off-the-Shelf Tools'
 excerpt: "Every growing business hits this crossroads; Do we buy software that already exists, or do we build something tailored to how we actually work?"
 published: 2025-10-29T09:54:00Z
 uri: '/blog/2025/roi-cots-ots.html'
-tags: ['making', 'software', 'series', 'custom', 'otss', 'buy', 'vs', 'build']
+tags: ['making', 'software', 'series', 'custom', 'otss', 'buy', 'vs', 'build', 'businesses']
 ---
 
 **Blog Series: Making Software Work for Growing Businesses**
@@ -20,7 +20,7 @@ At first glance, buying off-the-shelf tools feels like the obvious choice - fast
 
 ## The Hidden Costs of "Ready-Made"
 
-Off-the-shelf software (OTSS) is built for the average company, that may or may not be yours. Either way, and you don't realize this until it's too late, you're adopting that software companies business process design. And if you don't adopt it, you'll be making compromises — lots of them - to shoe horn the OTSS into your process.
+Off-the-shelf software (OTSS) is built for the average company, that may or may not be yours. Either way, and you don't realize this until it's too late, you're adopting that software companies business process design. And if you don't adopt it, you'll be making compromises - lots of them - to shoe horn the OTSS into your process.
 
 Here's how those compromises show up:
 
@@ -45,7 +45,7 @@ Custom software is an investment, not an expense. When done right, it creates co
 Here's why:
 
 **It fits how you already operate.**
-> Your workflows, approvals, and data structures aren't bent out of shape—they're codified.
+> Your workflows, approvals, and data structures aren't bent out of shape-they're codified.
 
 **It scales naturally.**
 > You add new features as your business evolves instead of stacking new tools on top.
@@ -75,4 +75,4 @@ The closer a system touches your competitive advantage, the stronger the case fo
 
 OTS tools are great for getting started. But once you know who you are and how you operate, custom software becomes a force multiplier. It's a growth strategy.
 
-It's how you reduce friction, preserve institutional knowledge, and scale efficiently — without losing control to someone else's roadmap.
+It's how you reduce friction, preserve institutional knowledge, and scale efficiently - without losing control to someone else's roadmap.

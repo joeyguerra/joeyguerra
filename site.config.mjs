@@ -7,6 +7,9 @@ export default {
         exclude: ['.html', '.xml', '.md', '.mjs', '.js'],
         include: ['.html', '.xml', '.md']
     },
+    server: {
+        
+    },
     build: {
         source: './pages',
         output: './_site',

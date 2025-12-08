@@ -1,0 +1,39 @@
+@import './base.css';
+
+/* LAYOUT */
+
+.about-layout { display: grid; grid-template-columns: 1fr 320px; gap: var(--space-xxl); align-items: start }
+.about-content { max-width: 900px }
+
+/* SECTIONS */
+
+.content-section { margin-bottom: var(--space-xxl) }
+.content-section header h2 { font-size: 1.75rem; font-weight: 600; margin: 0 0 var(--space-md) }
+.bullets { list-style: none; padding: 0; margin: 0; font-size: .9375rem; color: var(--text-muted) }
+.bullets li { margin-bottom: var(--space-sm); padding-left: 24px; position: relative; line-height: 1.6 }
+.bullets li::before { content: '→'; position: absolute; left: 0; top: 0; color: var(--accent); font-weight: 600 }
+
+.links { list-style: none; padding: 0; margin: 0 }
+.links li { margin-bottom: .5rem }
+.links a { color: var(--accent); text-decoration: none }
+.links a:hover { text-decoration: underline }
+
+/* SIDEBAR */
+
+.about-sidebar { position: sticky; top: var(--space-lg) }
+.sidebar-section { margin-bottom: var(--space-lg); padding: var(--space-lg); background: var(--panel-alt); border-radius: var(--radius-md) }
+.sidebar-section h2 { font-size: .9375rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin: 0 0 var(--space-md) }
+.sidebar-nav { display: flex; flex-direction: column; gap: var(--space-xs) }
+.sidebar-link { font-size: .875rem; color: var(--text-muted); text-decoration: none; padding: 6px 0; border-left: 2px solid transparent; padding-left: 12px; transition: all .2s ease }
+.sidebar-link:hover { color: var(--accent); border-left-color: var(--accent) }
+
+.quick-links { display: flex; flex-direction: column; gap: 8px }
+.quick-link { font-size: .875rem; color: var(--text-muted); text-decoration: none; padding: 6px 0; border-left: 2px solid transparent; padding-left: 12px; transition: all .2s ease }
+.quick-link:hover { color: var(--accent); border-left-color: var(--accent) }
+
+/* RESPONSIVE */
+
+@media (max-width: 1024px) {
+  .about-layout { grid-template-columns: 1fr; gap: var(--space-xl) }
+  .about-sidebar { position: static }
+}

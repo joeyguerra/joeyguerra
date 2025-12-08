@@ -1,0 +1,158 @@
+<style>
+    @import url('/css/mission-detail.css');
+</style>
+
+<header class="mission-hero">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="separator">→</span>
+        <a href="/missions/">Missions</a>
+        <span class="separator">→</span>
+        <span class="current">Hubot Data Plane</span>
+    </nav>
+    <div class="mission-header">
+        <div class="mission-meta-top">
+            <span class="mission-category">Distributed Systems</span>
+            <span class="mission-status mission-status-active">Active</span>
+        </div>
+        <h1>Hubot Data Plane</h1>
+        <p class="mission-tagline">Building a data orchestration layer for distributed systems that need reliable state management.</p>
+        <p>This all started when I built <a href="https://github.com/hubot-friends/hubot-redis-backplane" title="hubot-redis-backplane GitHub link">hubot-redis-backplane</a> to scale Hubot instances horizontally.</p>
+        <div class="mission-stats">
+            <div class="stat">
+                <span class="stat-label">Progress</span>
+                <span class="stat-value">20%</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Status</span>
+                <span class="stat-value">Active</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Started</span>
+                <span class="stat-value">Sep 2025</span>
+            </div>
+        </div>
+        <div class="progress-track">
+            <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" aria-label="Hubot Data Plane progress" style="width: 20%;"></div>
+        </div>
+    </div>
+</header>
+
+<div class="mission-layout">
+    <article class="mission-content">
+        <section class="content-section" id="problem">
+        <header>
+            <h2>The Problem</h2>
+        </header>
+        <p class="problem-statement">Distributed systems need a reliable way to manage state, coordinate data flows, and recover from failures. Most existing solutions are either too heavyweight or too brittle for real-world operations.</p>
+        <h3>Pain Points</h3>
+        <ul class="pain-points-list">
+            <li>State drift and inconsistency across nodes</li>
+            <li>Complex recovery from partial failures</li>
+            <li>Operational overhead of managing distributed state</li>
+            <li>Lack of observability into data flows</li>
+        </ul>
+    </section>
+
+    <section class="content-section" id="vision">
+        <header>
+            <h2>Vision</h2>
+        </header>
+        <p class="vision-statement">A simple, robust data plane for distributed systems that makes state management, coordination, and recovery predictable and observable. Leverage <a href="https://hubotio.github.io/hubot/" title="Hubot">Hubot's</a> ChatOps User Interface for seamless interaction and control.</p>
+        <h3>Guiding Principles</h3>
+        <ul class="principles-list">
+            <li>Idempotent flows for stability</li>
+            <li>Interfaces that clarify failure modes</li>
+            <li>Observability as a first-class feature</li>
+            <li>Minimal operational overhead</li>
+        </ul>
+    </section>
+
+    <section id="objectives" class="content-section">
+        <header>
+            <h2>Mission Objectives</h2>
+        </header>
+        <div class="objectives-grid">
+            <article class="objective-card objective-in-progress">
+                <header class="objective-header">
+                    <h3 class="objective-title">Design core data orchestration primitives</h3>
+                    <span class="objective-status">In Progress</span>
+                </header>
+                <p class="objective-description">Define the essential building blocks for reliable state management and coordination.</p>
+            </article>
+            <article class="objective-card objective-planned">
+                <header class="objective-header">
+                    <h3 class="objective-title">Implement idempotent flow engine</h3>
+                    <span class="objective-status">Planned</span>
+                </header>
+                <p class="objective-description">Build a flow engine that ensures operations are safe to repeat and recover.</p>
+            </article>
+            <article class="objective-card objective-planned">
+                <header class="objective-header">
+                    <h3 class="objective-title">Integrate observability tools</h3>
+                    <span class="objective-status">Planned</span>
+                </header>
+                <p class="objective-description">Provide visibility into data flows, state transitions, and failure recovery.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="content-section" id="updates">
+        <header>
+            <h2>Mission Updates</h2>
+        </header>
+        <div class="timeline">
+            <article class="timeline-item timeline-update">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <header>
+                        <time class="update-date" datetime="2025-09-14">Sep 14, 2025</time>
+                        <h3 class="update-title">Mission kickoff</h3>
+                    </header>
+                    <p class="update-summary">Started design of core orchestration primitives and outlined initial pain points.</p>
+                </div>
+            </article>
+        </div>
+    </section>
+    </article>
+
+    <aside class="mission-sidebar">
+    <section class="sidebar-section">
+        <h2>Planned Posts</h2>
+        <nav class="related-posts">
+            <article class="related-post">
+                <time class="post-date">TBD</time>
+                <h3 class="post-title">
+                    Idempotent Flows Are the Real Source of Stability
+                </h3>
+                <p class="post-excerpt">How making operations safe to repeat changes everything about how you design, deploy, and recover.</p>
+            </article>
+            <article class="related-post">
+                <time class="post-date">TBD</time>
+                <h3 class="post-title">
+                    The Hidden Cost of Interfaces in Your System
+                </h3>
+                <p class="post-excerpt">Why integration pain isn't accidental - and how most of it lives in the shape of your interfaces.</p>
+            </article>
+        </nav>
+    </section>
+
+    <section class="sidebar-section">
+        <h2>Quick Links</h2>
+        <nav class="quick-links">
+            <a href="/missions/hubot-data-plane.html#problem" class="quick-link">The Problem</a>
+            <a href="/missions/hubot-data-plane.html#vision" class="quick-link">Vision</a>
+            <a href="/missions/hubot-data-plane.html#objectives" class="quick-link">Objectives</a>
+            <a href="/missions/hubot-data-plane.html#updates" class="quick-link">Updates</a>
+        </nav>
+    </section>
+
+    <section class="sidebar-section">
+        <h2>Get Involved</h2>
+        <p class="sidebar-text">
+            Interested in distributed systems or have a similar challenge?
+        </p>
+        <a href="https://github.com/hubotio/hubot" class="sidebar-link" target="_blank" rel="noopener">Join the discussion →</a>
+    </section>
+    </aside>
+</div>
