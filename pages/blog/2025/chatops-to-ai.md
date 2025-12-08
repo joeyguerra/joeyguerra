@@ -19,11 +19,11 @@ But here's the catch:
 The real first step toward AI readiness isn't choosing a model.  
 It's this:
 
-> **Start by letting your business people interact with your business systems — in plain language — through Chat.**
+> **Start by letting your business people interact with your business systems - in plain language - through Chat.**
 
 That's not a future-state vision. It's something you can do *right now*, and it's already got a name:
 
-## ChatOps — for Business Teams.
+## ChatOps - for Business Teams.
 
 ## Step 1: ChatOps Isn't Just for DevOps Anymore
 
@@ -40,7 +40,7 @@ But imagine this instead:
 - A **CFO** asks:  
   > “How many invoices are overdue more than 30 days by region?”
 
-And the bot answers, instantly, in your company's shared chat tool—Slack, Teams, whatever you use.
+And the bot answers, instantly, in your company's shared chat tool-Slack, Teams, whatever you use.
 
 No ticket. No BI dashboard. No waiting on someone with SQL access.
 
@@ -76,7 +76,7 @@ And it can't answer. Maybe it doesn't know what “slipped” means. Maybe close
 
 Good.
 
-Now you've exposed a gap — in your systems, your process, or your definitions.
+Now you've exposed a gap - in your systems, your process, or your definitions.
 
 That feedback loop is gold. It helps you:
 
@@ -88,7 +88,7 @@ That feedback loop is gold. It helps you:
 
 ## Step 4: Let Natural Language Become the Interface to Your Business
 
-Once your team is in the habit of asking questions in chat—and getting real answers—you're ready for the next layer:
+Once your team is in the habit of asking questions in chat-and getting real answers-you're ready for the next layer:
 
 > **AI that doesn't just *respond* to questions, but *understands* your context and *suggests* actions.**
 
@@ -102,7 +102,7 @@ But none of that is possible if your team still relies on pulling spreadsheets o
 
 ## Step 5: Create Institutional Awareness in Real Time
 
-When a conversation happens in a shared channel—where the bot provides the data and the team discusses it—you build:
+When a conversation happens in a shared channel-where the bot provides the data and the team discusses it-you build:
 
 - Shared understanding  
 - Real-time alignment  
@@ -110,19 +110,19 @@ When a conversation happens in a shared channel—where the bot provides the dat
 
 You're turning your chat tool into a **business command center**.
 
-That's where AI thrives—not hidden behind portals or buried in dashboards, but in the middle of your team's day-to-day conversations.
+That's where AI thrives-not hidden behind portals or buried in dashboards, but in the middle of your team's day-to-day conversations.
 
 ## Final Thought:  
 **If your business doesn't talk to itself, AI won't help it think.**
 
-The best companies don't just *use* data—they **converse with it**.
+The best companies don't just *use* data-they **converse with it**.
 
 They ask questions in plain language.  
 They get answers where they already work.  
 They make decisions *together*, with data and tools in the room.
 
 You don't need to “adopt AI.”  
-You need to **teach your business to ask better questions — and build systems that can answer them.**
+You need to **teach your business to ask better questions - and build systems that can answer them.**
 
 Start there.  
 Start with chat.  

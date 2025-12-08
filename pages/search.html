@@ -1,0 +1,11 @@
+<ol>
+    ${results.map(result => {
+        return `<li class="spotlight-item">
+            <header>
+                <a href="${result.link}" class="title">${result.title}</a>
+                <p class="desc">${result.excerpt}</p>
+            </header>
+            <span class='badge'>${result.type || 'page'}</span>
+        </li>`;
+    }).join('')}
+</ol>

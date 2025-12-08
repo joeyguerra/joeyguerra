@@ -707,7 +707,7 @@
                     const div = document.createElement('div')
                     div.className = 'question' + (q.resolved ? ' resolved' : '')
                     const span = document.createElement('span')
-                    span.textContent = q.text + ' — ' + new Date(q.created).toLocaleString()
+                    span.textContent = q.text + ' - ' + new Date(q.created).toLocaleString()
                     const resolveBtn = document.createElement('button')
                     resolveBtn.textContent = q.resolved ? 'Unresolve' : 'Resolve'
                     resolveBtn.addEventListener('click', () => this.toggleResolved(this.questions.indexOf(q)))

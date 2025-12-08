@@ -1,20 +1,20 @@
 ---
 layout: './pages/layouts/post.html'
-title: "Agile Is Pull-Based — Waterfall Is Batch-Based — And That Makes All The Difference"
-excerpt: "In manufacturing, there’s a world of difference between a batch-and-queue process and a pull-based flow like the [Toyota Production System](https://global.toyota/en/company/vision-and-philosophy/production-system/). The same is true in software development."
+title: "Agile Is Pull-Based - Waterfall Is Batch-Based - And That Makes All The Difference"
+excerpt: "In manufacturing, there's a world of difference between a batch-and-queue process and a pull-based flow like the [Toyota Production System](https://global.toyota/en/company/vision-and-philosophy/production-system/). The same is true in software development."
 published: 2025-08-11
 uri: '/blog/2025/agile-vs-waterfall-architecture.html'
 image: '/images/iterative-steps-with-value.jpg'
 tags: ['Agile', 'Software Engineering', 'Project Management', 'Waterfall']
 ---
 
-# Agile Is Pull-Based — Waterfall Is Batch-Based — And That Makes All The Difference
+# Agile Is Pull-Based - Waterfall Is Batch-Based - And That Makes All The Difference
 
 <figure>
     <img class="full-width" src="images/iterative-steps-with-value.jpg" alt="Four quadrant drawing of a man by a well with a pail of water. 2nd quadrant is the same man at a water pump, pumping water into the pail. 3rd quadrant is the same man pumping water into the pai, but now there's a filter attached to the pump. 4th quadrant is the man standing next to the pump and the pump automatically filling the pail." />
 </figure>
 
-In manufacturing, there’s a world of difference between a batch-and-queue process and a pull-based flow like the [Toyota Production System](https://global.toyota/en/company/vision-and-philosophy/production-system/).
+In manufacturing, there's a world of difference between a batch-and-queue process and a pull-based flow like the [Toyota Production System](https://global.toyota/en/company/vision-and-philosophy/production-system/).
 The same is true in software development.
 
 When you strip away the jargon, Agile (especially when practiced through Scrum or Kanban) is a pull-based, demand-responsive approach to delivering value, while Waterfall is a batch-based, queue-heavy approach that tries to deliver the entire solution all at once.
@@ -28,7 +28,7 @@ Waterfall projects follow a fixed sequence:
             4.	Test →
                 5.	Deploy.
 
-In this model, teams decide up front what the **full** solution should be — based on estimates, projections, and assumptions about the future — and then work to deliver it as one large release.
+In this model, teams decide up front what the **full** solution should be - based on estimates, projections, and assumptions about the future - and then work to deliver it as one large release.
 
 This means:
 * You commit to solving the **entire** estimated problem before you even know if parts of it are needed.
@@ -36,7 +36,7 @@ This means:
 * Risk **piles** up because any wrong assumption affects the entire build.
 * Feedback arrives **too late** to change course without major rework.
 
-It’s the equivalent of manufacturing an entire car model before finding out if anyone likes the design.
+It's the equivalent of manufacturing an entire car model before finding out if anyone likes the design.
 
 ## Agile: The "Solve the Next Bottleneck" Model
 
@@ -57,18 +57,18 @@ Because decisions happen closer to the point of **need**, Agile teams **adapt** 
 
 ## Vision Still Matters
 
-Being pull-based doesn’t mean you’re wandering aimlessly from bottleneck to bottleneck. Vision is still required.
+Being pull-based doesn't mean you're wandering aimlessly from bottleneck to bottleneck. Vision is still required.
 
 A clear overall vision is still essential:
-* You need to know the **big** problem you’re trying to address.
+* You need to know the **big** problem you're trying to address.
 * That problem must **align** closely with your business strategy.
-* And that strategy? It’s also a **hypothesis** — an informed guess that needs validation through **real-world** results.
+* And that strategy? It's also a **hypothesis** - an informed guess that needs validation through **real-world** results.
 
 > Agile simply means you validate that vision in smaller, safer steps instead of betting everything on one massive, untested plan.
 
 ## Why This Matters for Responsiveness
 
-The real difference isn’t just batch size — it’s **how** you decide **what** to build next:
+The real difference isn't just batch size - it's **how** you decide **what** to build next:
 
 |  | Waterfall | Agile (Scrum / Kanban) |
 | ----- | --------- | ---------------------- |
@@ -81,7 +81,7 @@ The real difference isn’t just batch size — it’s **how** you decide **what
 
 ### Waterfall ERP Rollout
 
-A company wants to modernize its operations. In Waterfall style, they gather requirements from every department — finance, HR, operations, sales — and plan a full ERP implementation to replace everything at once.
+A company wants to modernize its operations. In Waterfall style, they gather requirements from every department - finance, HR, operations, sales - and plan a full ERP implementation to replace everything at once.
 
 Two years later, the system goes live... but:
 
@@ -91,18 +91,18 @@ Two years later, the system goes live... but:
 
 ### Agile Product Approach
 
-Same company, different method. Instead of tackling the whole ERP at once, the team starts with the most painful current bottleneck — say, slow purchase order approvals. They deliver a small workflow app in Excel (what they're currently using) that fixes just that.
+Same company, different method. Instead of tackling the whole ERP at once, the team starts with the most painful current bottleneck - say, slow purchase order approvals. They deliver a small workflow app in Excel (what they're currently using) that fixes just that.
 
 Next, – after observing, reassessing, and learning – they tackle inventory tracking. Then payroll integration. Each release is based on current demand, informed by real-world usage of the previous step.
 
-In 18 months, the company has a fully modernized system — but every part has been tested, adapted, and tuned along the way.
+In 18 months, the company has a fully modernized system - but every part has been tested, adapted, and tuned along the way.
 
 ## Pull Beats Push for Business Agility
 
-Pull-based systems — like Scrum and Kanban — are inherently more customer-focused and market-aware:
+Pull-based systems - like Scrum and Kanban - are inherently more customer-focused and market-aware:
 
-* You only build what’s needed right now, not everything you guessed months ago.
-* Lead time is shorter — small wins ship faster.
+* You only build what's needed right now, not everything you guessed months ago.
+* Lead time is shorter - small wins ship faster.
 * Feedback arrives sooner, so course corrections cost less.
 * Risk is spread out instead of concentrated in a single launch.
 
@@ -112,15 +112,15 @@ This keeps your business aligned with reality instead of a static plan.
 
 Manufacturing learned long ago that massive batches slow everything down and hide problems. Software development is no different.
 
-If you want to be responsive to demand, flow value quickly, and adjust to the market, you can’t just shrink your batches — you have to change how you decide **what** to build and ensure every step stays **aligned** with your larger vision and strategy.
+If you want to be responsive to demand, flow value quickly, and adjust to the market, you can't just shrink your batches - you have to change how you decide **what** to build and ensure every step stays **aligned** with your larger vision and strategy.
 
-That’s the **true** difference between Waterfall and Agile.
+That's the **true** difference between Waterfall and Agile.
 
 # Slicing
 
-When you’re dealing with a big, cross-system, multi-team, multi-location rollout like a big Quick-service Restaurant switching labor management software across all stores, the key is to define "small" not in terms of the entire project, but in terms of a measurable, testable slice of the end-to-end outcome.
+When you're dealing with a big, cross-system, multi-team, multi-location rollout like a big Quick-service Restaurant switching labor management software across all stores, the key is to define "small" not in terms of the entire project, but in terms of a measurable, testable slice of the end-to-end outcome.
 
-Most people get stuck because they think small batch means "cut the project into technical pieces" (e.g., database, middleware, front-end) — but that’s still just partial work-in-progress. The right way is to slice by value and learning:
+Most people get stuck because they think small batch means "cut the project into technical pieces" (e.g., database, middleware, front-end) - but that's still just partial work-in-progress. The right way is to slice by value and learning:
 
 ## What "Small Batch" Could Look Like in This Case
 
@@ -159,13 +159,13 @@ Most people get stuck because they think small batch means "cut the project into
         - It can be rolled back without derailing the rest of the program.
 
 ## Why this works
-- Risk containment — Problems are found before the whole network is impacted.
-- Learning speed — Feedback from live use guides the rollout.
-- Adaptability — You can change your plan mid-rollout without rewriting everything.
+- Risk containment - Problems are found before the whole network is impacted.
+- Learning speed - Feedback from live use guides the rollout.
+- Adaptability - You can change your plan mid-rollout without rewriting everything.
 
 # Our Slicing Dimension
 
-Using a single store as the slice would usually be classified along the deployment dimension — sometimes called a geographic rollout or location-based slice.
+Using a single store as the slice would usually be classified along the deployment dimension - sometimes called a geographic rollout or location-based slice.
 
 Here are some common ways to frame that dimension:
 1. Geographic Slice – Rolling out by physical location (city, region, or store).
@@ -179,7 +179,7 @@ If we were building a taxonomy for small batches in large rollouts, "single stor
     Dimension: Deployment / Geography
     Subtype: Pilot location (representative or strategically chosen)
 
-The "slice" is not a partial feature or technical layer — it’s a complete vertical implementation limited by scope of deployment.
+The "slice" is not a partial feature or technical layer - it's a complete vertical implementation limited by scope of deployment.
 
 # Small Batch Slicing Dimensions
 

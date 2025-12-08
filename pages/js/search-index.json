@@ -1,0 +1,9 @@
+[
+  { "title": "Start Here", "url": "/blog/start.html", "type": "page", "desc": "Suggested first stop" },
+  { "title": "About Joey", "url": "/about/", "type": "page", "desc": "About Joey Guerra" },
+  { "title": "Mission Log", "url": "/blog/mission-log.html", "type": "blog", "desc": "All posts and tags" },
+  { "title": "Missions", "url": "/missions/", "type": "page", "desc": "Active and past missions" },
+  { "title": "Concepts", "url": "/concepts/", "type": "page", "desc": "Core ideas and patterns" },
+  { "title": "Guide to Software Success", "url": "/guide-software-success/", "type": "guide", "desc": "Playbooks to ship well" },
+  { "title": "The Hidden Cost of Interfaces", "url": "/blog/2025/hidden-cost-of-interfaces.html", "type": "post", "desc": "Failure modes and a playbook" }
+]

@@ -47,4 +47,4 @@ In practice, this means that even when a team completes a product feature before
 
 Embracing flow-based work and small batches is a powerful strategy for improving efficiency and flexibility in software development. By reducing lead times, eliminating bottlenecks, and balancing flow with necessary batch processes, teams can create a more responsive and adaptable environment. This approach not only benefits the development team but also aligns with the broader goals of the business, enabling faster delivery of valuable features and a more seamless experience for stakeholders.
 
-This article is based on a conversation we had on our Discord server. The reader will not that the journey towards flow-based work is ongoing, with continuous learning and adaptation. But the results — faster delivery, fewer disruptions, and a more agile team — are well worth the effort.
+This article is based on a conversation we had on our Discord server. The reader will not that the journey towards flow-based work is ongoing, with continuous learning and adaptation. But the results - faster delivery, fewer disruptions, and a more agile team - are well worth the effort.

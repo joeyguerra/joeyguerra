@@ -1,0 +1,57 @@
+<style>
+  @import url('/css/blog.css');
+</style>
+
+<header class="page-hero">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="separator">→</span>
+      <a href="/blog/">Kaizen Ops</a>
+      <span class="separator">→</span>
+      <span class="current">Mission Log</span>
+  </nav>
+
+  <div class="hero-header">
+    <h1>Mission Log</h1>
+    <p>
+      A chronological log of mission updates and milestones. Follow ongoing work across frameworks, systems, and long-lived projects.
+    </p>
+  </div>
+</header>
+
+<article class="logs-section">
+  <header>
+    <h2 class="section-title">Latest Updates</h2>
+    ${selectedTag ? `
+    <p class="section-sub">
+      Filtering by <strong>#${selectedTag}</strong> 
+      <a href="/blog/mission-log.html" style="margin-left: 8px; color: var(--accent); text-decoration: none; font-size: 0.875rem;">Clear filter →</a>
+    </p>
+    ` : `
+    <p class="section-sub">Links jump to the relevant mission or post.</p>
+    `}
+  </header>
+
+  <nav class="logs-card">
+    ${entries.map(e => `
+    <a class="log-item" href="${e.link}">
+      <time class="log-date" datetime="${e.date}">
+        ${new Date(e.date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+      </time>
+      <div class="log-content">
+        <strong class="log-title">${e.title}</strong>
+        <span class="log-mission">${e.mission}</span>
+        <p class="log-summary">${e.summary}</p>
+      </div>
+    </a>
+    `).join('')}
+  </nav>
+</article>
+
+<aside class="mission-info">
+  <h2 class="section-title">Explore Missions</h2>
+  <div class="info-card">
+    <p>Want the broader context? Visit the missions index:</p>
+    <p><a href="/missions/">Missions Index →</a></p>
+  </div>
+</aside>

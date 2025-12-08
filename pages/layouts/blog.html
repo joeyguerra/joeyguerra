@@ -1,84 +1,100 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8"/>
-    <base href="../"/>
-    <!--<meta http-equiv="Content-Security-Policy" content="default-src https:"/>-->
-    <title>Joey Guerra's Software Engineering Blog</title>
-    <meta name="author" content="Joey Guerra"/>
-    <meta name="description" content="Blog about software engineering, agile, leadership, strategy and organizations."/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <link rel="apple-touch-icon" href="favicon_package_v0/apple-touch-icon.png"/>
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon_package_v0/apple-touch-icon.png"/>
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon_package_v0/favicon-32x32.png"/>
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon_package_v0/favicon-16x16.png"/>
-    <link rel="manifest" href="favicon_package_v0/site.webmanifest"/>
-    <link rel="mask-icon" href="favicon_package_v0/safari-pinned-tab.svg" color="#5bbad5"/>
-    <meta name="msapplication-TileColor" content="#da532c"/>
-    <meta name="theme-color" content="#ffffff"/>
+<head>
+  <meta charset="utf-8" />
+  <base href="../" />
+  <!--<meta http-equiv="Content-Security-Policy" content="default-src https:"/>-->
+  <title>Joey Guerra's Software Engineering Blog</title>
+  <meta name="author" content="Joey Guerra" />
+  <meta name="description" content="Blog about software engineering, agile, leadership, strategy and organizations." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="shortcut icon" href="favicon.ico"/>
+  <link rel="apple-touch-icon" href="favicon_package_v0/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon_package_v0/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon_package_v0/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon_package_v0/favicon-16x16.png" />
+  <link rel="manifest" href="favicon_package_v0/site.webmanifest" />
+  <link rel="mask-icon" href="favicon_package_v0/safari-pinned-tab.svg" color="#5bbad5" />
+  <meta name="msapplication-TileColor" content="#da532c" />
+  <meta name="theme-color" content="#ffffff" />
 
-    <link rel="apple-touch-startup-image" href="images/me.jpg"/>
-    <meta name="apple-mobile-web-app-title" content="Joey Guerra"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <script src="/socket.io/socket.io.js"></script>
-    <script type="module" id="HotReloader">
-        import { HotReloader } from '/__juphjacs__/HotReloader.mjs'
-        const hotReloader = new HotReloader(window, io('/hot-reload'))
-    </script>
-    <script type="module">
-      import App from "../webapp/App.mjs"
-      const io = options => {
-        return {
-          emit(event, message){console.log("socket.emit", event, message)},
-          on(event, callback){console.log("socket.on", event, callback)}
-        }
-      }
-      function main(){
-        window.addEventListener("load", e => {
-          window.app = new App(window, io({
-            reconnectionAttempts: 5
-          }), {}, {})
-        }, true)
-      }
-      if('io' in window) main()
-    </script>    
-    <link rel="canonical" href="https://joeyguerra.com/blog/">
-    <link rel="stylesheet" href="css/blog.css">
-    <link rel="preload" href="HubotSans/Hubot-Sans.woff2" as="font" type="font/woff2" crossorigin>
-    <style>
-      @font-face {
-        font-family: 'Hubot Sans';
-        src:
-          url('HubotSans/Hubot-Sans.woff2') format('woff2 supports variations'),
-          url('HubotSans/Hubot-Sans.woff2') format('woff2-variations');
-        font-weight: 200 900;
-        font-stretch: 75% 125%;
-      }
-      html, body {
-        font-family: "Hubot Sans","Hubot Sans Header Fallback",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <a title="Go to Joey's home page" href="./">
-        <span>Joey's home page</span>
-      </a>
-    </header>
-    <main role="main">
-        <section>
-        ${body}
-        </section>
-    </main>
-    <footer>
-        <small>This is my personal blog. It's a playground I use to explore my own opinions and they are very dynamic. Please keep it in mind as you read through. I hope this site makes you smile.</small>
-        <a href="" title="Go to Joey's home page">
-          <img src="images/joeysgotwings.jpeg" width="50%" alt="Joey's got wings" />
-        </a>
-        <a id="repo-link" href="https://github.com/joeyguerra/joeyguerra" title="Blog Repo">https://github.com/joeyguerra/joeyguerra</a>
-    </footer>
-  </body>
+  <link rel="shortcut icon" href="favicon.ico" />
+
+  <link rel="apple-touch-startup-image" href="images/me.jpg" />
+  <meta name="apple-mobile-web-app-title" content="Joey Guerra" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="canonical" href="https://joeyguerra.com/blog/">
+  <link rel="stylesheet" href="css/blog.css">
+  <link rel="preload" href="HubotSans/Hubot-Sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/spotlight-search.css">
+</head>
+
+<body>
+  <div class="page">
+    <div class="shell">
+
+      <!-- NAV -->
+      <header class="nav">
+        <div class="nav-left"><a href="/blog/" title="Kaizen Ops Home">KAIZEN OPS</a></div>
+        <nav class="nav-right" id="mainNavigation">
+          <a class="nav-link" id="startLink" href="/blog/start.html" title="Start here">Start</a>
+          <a class="nav-link" id="missionsLink" href="/missions/" title="List of missions">Missions</a>
+          <a class="nav-link" id="conceptsLink" href="/concepts/" title="Concepts">Concepts</a>
+          <a class="nav-link" id="missionLogLink" href="/blog/mission-log.html" title="Mission Log">Mission Log</a>
+          <a class="nav-link" id="aboutJoeyLink" href="/about/" title="About Joey">About Joey</a>
+          <a class="nav-icon" id="searchLink" href="/blog/search.html" title="Search">🔍</a>
+        </nav>
+      </header>
+      ${body}
+      <footer class="footer">
+        <span>© <span id="year">2025</span> Kaizen Ops - Mission-driven systems thinking.</span>
+        <span>Part of: Mission - Modern Systems Thinking</span>
+      </footer>
+    </div>
+  </div>
+  <button id="toTop" class="to-top" type="button" aria-label="Scroll back to top">To the top</button>
+  
+  <!-- Spotlight Search Dialog -->
+  <dialog class="spotlight-dialog" id="spotlight">
+    <form method="dialog" class="spotlight-panel">
+      <div class="spotlight-input-wrap">
+        <span class="icon">🔍</span>
+        <input 
+          name="q" 
+          type="search" 
+          placeholder="Search…" 
+          aria-label="Search"
+          autocomplete="off"
+        />
+        <span class="spotlight-kbd-hint">⌘K or /</span>
+      </div>
+      <div class="spotlight-results"></div>
+    </form>
+  </dialog>
+  <script type="module">
+    import { initSpotlightSearch } from '/js/spotlight-search.mjs'
+    initSpotlightSearch({ triggerSelector: '#searchLink' })
+    const navLinks = Array.from(document.getElementById('mainNavigation').querySelectorAll('a'))
+    navLinks.forEach(link => {
+      link.classList.remove('is-active')
+    })
+    const activeLink = navLinks.find(link => new URL(link.href).pathname === window.location.pathname)
+    if (activeLink) {
+      activeLink.classList.add('is-active')
+    }
+
+    // Scroll-to-top button logic
+    const toTopBtn = document.getElementById('toTop')
+    window.addEventListener('scroll', () => {
+      toTopBtn.style.display = window.scrollY > 240 ? 'block' : 'none'
+    })
+    toTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    })
+  </script>
+</body>
 </html>

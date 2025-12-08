@@ -2,7 +2,7 @@
   "name": "Joey Guerra",
   "title": "Software Engineering Consultant",
   "profileUrl": "https://joeyguerra.com/images/headshot.jpeg",
-  "summary": "Joey is a seasoned software engineer and integration specialist with over 25 years of experience designing and building scalable, adaptable systems. He partners with growth-minded businesses to streamline operations, integrate systems, and develop custom software that evolves with their needs. From aerospace engineering at NASA to modern SaaS platforms, Joey brings a builder’s mindset—valuing simplicity, pragmatism, and tangible results. His recent work includes field operations software for construction, lab management systems for orthodontic manufacturers, and a cloud-native billing platform for an E&S insurance startup.",
+  "summary": "Joey is a seasoned software engineer and integration specialist with over 25 years of experience designing and building scalable, adaptable systems. He partners with growth-minded businesses to streamline operations, integrate systems, and develop custom software that evolves with their needs. From aerospace engineering at NASA to modern SaaS platforms, Joey brings a builder's mindset-valuing simplicity, pragmatism, and tangible results. His recent work includes field operations software for construction, lab management systems for orthodontic manufacturers, and a cloud-native billing platform for an E&S insurance startup.",
   "email": "joey.guerra@aftermansoftware.com",
   "githubUrl": "https://github.com/joeyguerra",
   "linkedInUrl": "https://linkedin.com/in/joeyguerra",
@@ -10,7 +10,7 @@
     {
       "companyName": "Jack in the Box",
       "title": "Software Engineering Consultant",
-      "description": "Served as a consultant enhancing Jack in the Box’s existing .NET and NServiceBus-based integration platform to support ingestion of inventory, product transfers, waste, and invoice data from vendor APIs. Wrote C# and SQL to extend system capabilities and integrate with the company’s financial and analytics systems. Conducted system analysis and vendor API evaluation to design robust integration solutions. Proactively identified gaps in requirements and facilitated alignment through thoughtful questions and clear communication in stakeholder meetings. Collaborated with teams building the next-generation architecture to ensure continuity and smooth integration with legacy systems. Built tooling to facilitate development as the vendors built out their API capabilities.",
+      "description": "Served as a consultant enhancing Jack in the Box's existing .NET and NServiceBus-based integration platform to support ingestion of inventory, product transfers, waste, and invoice data from vendor APIs. Wrote C# and SQL to extend system capabilities and integrate with the company's financial and analytics systems. Conducted system analysis and vendor API evaluation to design robust integration solutions. Proactively identified gaps in requirements and facilitated alignment through thoughtful questions and clear communication in stakeholder meetings. Collaborated with teams building the next-generation architecture to ensure continuity and smooth integration with legacy systems. Built tooling to facilitate development as the vendors built out their API capabilities.",
       "companyLogoUrl": "https://www.jackintheboxfranchising.com/hs-fs/hubfs/JIB_Logo_Red_Text-a.png?width=74&height=77&name=JIB_Logo_Red_Text-a.png",
       "beginDate": "2024",
       "endDate": "present",
