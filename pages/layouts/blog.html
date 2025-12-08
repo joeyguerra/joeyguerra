@@ -57,6 +57,24 @@
     </div>
   </div>
   <button id="toTop" class="to-top" type="button" aria-label="Scroll back to top">To the top</button>
+  
+  <!-- Spotlight Search Dialog -->
+  <dialog class="spotlight-dialog" id="spotlight">
+    <form method="dialog" class="spotlight-panel">
+      <div class="spotlight-input-wrap">
+        <span class="icon">🔍</span>
+        <input 
+          name="q" 
+          type="search" 
+          placeholder="Search…" 
+          aria-label="Search"
+          autocomplete="off"
+        />
+        <span class="spotlight-kbd-hint">⌘K or /</span>
+      </div>
+      <div class="spotlight-results"></div>
+    </form>
+  </dialog>
   <script type="module">
     import { initSpotlightSearch } from '/js/spotlight-search.mjs'
     initSpotlightSearch({ triggerSelector: '#searchLink' })
