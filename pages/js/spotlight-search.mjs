@@ -31,7 +31,6 @@ class SpotlightSearch {
     this.activeIndex = -1
     this.backdrop = this.#render()
     this.#attach()
-    this.#loadIndex()
   }
 
   #render () {
@@ -46,11 +45,11 @@ class SpotlightSearch {
         <div class='spotlight-input-wrap'>
           <span class='icon'>🔍</span>
           <input class='spotlight-input' type='search' placeholder='Search…' aria-label='Search' />
-          <span class='spotlight-kbd-hint'>⌘ K</span>
+          <span class='spotlight-kbd-hint'>⌘ k</span>
         </div>
         <div class='spotlight-results'>
           <div class='spotlight-loading'>Type to search…</div>
-          <ul class='spotlight-list' hidden></ul>
+          <div class='spotlight-list' hidden></div>
         </div>
       </div>
     `
@@ -89,31 +88,23 @@ class SpotlightSearch {
     this.input.addEventListener('input', () => {
       clearTimeout(t)
       const q = this.input.value
-      t = setTimeout(() => this.#search(q), 100)
+      t = setTimeout(() => this.#search(q), 200)
     })
 
     document.addEventListener('keydown', e => {
       const isTyping = ['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)
       if ((e.metaKey && e.key.toLowerCase() === 'k') || (!isTyping && e.key === '/')) {
         e.preventDefault()
+        if (this.backdrop.classList.contains('is-open')) {
+          this.close()
+          return
+        }
         this.open()
       }
     })
   }
 
-  async #loadIndex () {
-    try {
-      const res = await fetch('/js/search-index.json', { cache: 'no-store' })
-      if (!res.ok) throw new Error('no index')
-      const json = await res.json()
-      this.data = Array.isArray(json) ? json : defaultIndex
-    } catch {
-      this.data = defaultIndex
-    }
-  }
-
   open () {
-    this.backdrop.hidden = false
     this.backdrop.setAttribute('aria-hidden', 'false')
     this.backdrop.classList.add('is-open')
     this.input.value = ''
@@ -137,15 +128,31 @@ class SpotlightSearch {
     this.resultsWrap.prepend(d)
   }
 
-  #search (q) {
+  #highlightMatches (doc, searchTerm) {
+    const query = searchTerm.trim().toLowerCase()
+    if (!query) return doc
+    const regex = new RegExp(`(${query})`, 'gi')
+    Array.from(doc.querySelectorAll('.title, .desc')).forEach(el => {
+      el.innerHTML = el.textContent.replace(regex, '<mark>$1</mark>')
+    })
+    return doc
+  }
+  async #search (q) {
     const trimmed = q.trim()
     if (!trimmed) return this.#renderEmpty('Type to search…')
-    const results = this.data
-      .map(r => ({ ...r, score: score(q, r) }))
-      .filter(r => r.score > 0)
-      .sort(byScore)
-      .slice(0, 20)
-    this.#renderResults(results)
+    const res = await fetch('/search.html?q=' + encodeURIComponent(trimmed))
+    if (!res.ok) return this.#renderEmpty(`Error fetching results: ${res.status}`)
+    this.data = await res.text()
+    this.#renderResultsHtml(this.data, trimmed)
+  }
+  #renderResultsHtml (html, searchTerm) {
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(html, 'text/html')
+    this.resultsWrap.querySelector('.spotlight-loading')?.remove()
+    this.#highlightMatches(doc, searchTerm)
+    this.list.innerHTML = doc.body.innerHTML
+    this.list.hidden = false
+    const items = Array.from(this.list.querySelectorAll('li'))
   }
 
   #renderResults (items) {
@@ -201,6 +208,7 @@ class SpotlightSearch {
     if (!el) return
     const url = el.getAttribute('data-url')
     if (url) window.location.assign(url)
+      this.close()
   }
 }
 
@@ -218,8 +226,7 @@ export const initSpotlightSearch = (opts = {}) => {
 
   const spotlight = new SpotlightSearch()
   window.__spotlightInstance = spotlight
-  const triggerSel = opts.triggerSelector || '#searchLink'
-  const trigger = document.querySelector(triggerSel)
+  const trigger = document.querySelector(opts.triggerSelector ?? '#searchLink')
   if (trigger) {
     trigger.addEventListener('click', e => {
       e.preventDefault()

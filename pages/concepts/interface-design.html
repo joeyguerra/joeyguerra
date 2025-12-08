@@ -1,0 +1,159 @@
+<style>
+    @import url('/css/concept.css');
+</style>
+
+<section class='section'>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="separator">→</span>
+        <a href="/blog/">Kaizen Ops</a>
+        <span class="separator">→</span>
+        <span class="current">Interface Design</span>
+    </nav>
+    <h1>Interface Design</h1>
+    <div class='hero'>
+        <div>
+            <p class='intro'>An interface is the boundary where two systems meet—a contract that defines how they
+                communicate, what they expect, and how they handle failure. Interface design is the practice of shaping
+                these boundaries to be explicit, safe, and easy to reason about. It's not just about user interfaces;
+                it's about any interaction point between components, services, or teams.</p>
+            <p class='intro'>Good interface design reduces coordination cost, makes failure modes explicit, and enables
+                operations teams to safely retry and recover. It's the difference between integrations that quietly
+                break and systems that fail loudly and recover gracefully.</p>
+        </div>
+        <aside class='hero-aside'>
+            <h3>When to use this concept</h3>
+            <ul class='aside-list'>
+                <li>You're integrating with a vendor or internal platform</li>
+                <li>Teams are tripping over each other's assumptions</li>
+                <li>Operations need safe retries and clear receipts</li>
+                <li>Legacy rewrites keep failing due to coordination</li>
+                <li>You need to reduce failure modes as you scale</li>
+            </ul>
+        </aside>
+    </div>
+</section>
+
+<section class='two-col'>
+    <div class='card'>
+        <h3>Patterns</h3>
+        <ul class='bullets'>
+            <li><span
+                    title="Idempotent - Describing an action which, when performed multiple times, has no further effect on its subject after the first time it is performed.">Idempotent</span>
+                operations with durable receipts</li>
+            <li>Explicit failure types and recovery paths</li>
+            <li>Versioned contracts with compatibility windows</li>
+            <li>Small surface area, precise semantics</li>
+            <li>Observability at the boundary</li>
+        </ul>
+    </div>
+    <div class='card'>
+        <h3>Anti-patterns</h3>
+        <ul class='bullets'>
+            <li>Implicit side effects and hidden coupling</li>
+            <li>Retry-unfriendly commands</li>
+            <li>Ambiguous error responses</li>
+            <li>Version churn without migration paths</li>
+            <li>Leaky internal models</li>
+        </ul>
+    </div>
+</section>
+
+<section class='section'>
+    <h2>Interface Design Fault Tree</h2>
+    <p>Recognize an interface design problem by its downstream symptoms.</p>
+    <div class='diagram'>
+        <div style='text-align: center; margin-bottom: 2rem;'>
+            <div style='font-weight: 600; margin-bottom: 1rem;'>When interface design is wrong, you don't see it right away.</div>
+            <div style='color: var(--text-soft);'>↓</div>
+        </div>
+        
+        <div style='display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem;'>
+            <div style='text-align: center;'>
+                <div style='font-weight: 600; margin-bottom: 0.5rem;'>In Code & Systems</div>
+                <ul style='list-style: none; padding: 0; margin: 0; text-align: left; font-size: 0.9em;'>
+                    <li>→ Hard to retry safely</li>
+                    <li>→ Fragile glue code</li>
+                    <li>→ Hidden coupling everywhere</li>
+                </ul>
+            </div>
+            <div style='text-align: center;'>
+                <div style='font-weight: 600; margin-bottom: 0.5rem;'>In Operations</div>
+                <ul style='list-style: none; padding: 0; margin: 0; text-align: left; font-size: 0.9em;'>
+                    <li>→ Same incident returns</li>
+                    <li>→ Work gets stuck</li>
+                    <li>→ Must shepherd changes</li>
+                </ul>
+            </div>
+            <div style='text-align: center;'>
+                <div style='font-weight: 600; margin-bottom: 0.5rem;'>In People & Teams</div>
+                <ul style='list-style: none; padding: 0; margin: 0; text-align: left; font-size: 0.9em;'>
+                    <li>→ "Ask Alice" tribal knowledge</li>
+                    <li>→ Hand-offs are slow & painful</li>
+                    <li>→ Constant mismatch of expectations</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style='text-align: center; font-style: italic; color: var(--text-muted);'>
+            If you see these symptoms, pause and ask: "Is this an interface design problem?"
+        </div>
+    </div>
+</section>
+
+<section class='section'>
+    <h2>Start here with Interface Design</h2>
+    <div class='articles'>
+        <article class='article-card'>
+            <div class='article-tag'>Concepts</div>
+            <a href='/posts/interface-boundaries.html'>Designing Interface Boundaries That Don’t Surprise Ops</a>
+            <div class='article-meta'>10 min read · reasoning path included</div>
+            <p class='article-desc'>A practical walkthrough of contracts, failure modes, and receipts.</p>
+        </article>
+        <article class='article-card'>
+            <div class='article-tag'>Playbook</div>
+            <a href='/posts/idempotent-ops.html'>Idempotent Operations You Can Repeat Without Fear</a>
+            <div class='article-meta'>8 min read · examples and checklists</div>
+            <p class='article-desc'>Patterns for retries, receipts, and durable state references.</p>
+        </article>
+        <article class='article-card'>
+            <div class='article-tag'>Field Notes</div>
+            <a href='/posts/integration-failure-modes.html'>Integration Failure Modes You Can Actually Manage</a>
+            <div class='article-meta'>12 min read · lessons from migrations</div>
+            <p class='article-desc'>Common smells, how to surface them, and reduce coordination cost.</p>
+        </article>
+    </div>
+</section>
+
+<section class='section'>
+    <h2>Recent logs using this concept</h2>
+    <div class='logs'>
+        <div class='log-row'>
+            <div class='log-date'>Nov 18, 2025</div>
+            <a href='/blog/mission-log.html#log-1'>Migrating a fragile integration without downtime</a>
+        </div>
+        <div class='log-row'>
+            <div class='log-date'>Nov 11, 2025</div>
+            <a href='/blog/mission-log.html#log-2'>Adding idempotent receipts to a legacy workflow</a>
+        </div>
+        <div class='log-row'>
+            <div class='log-date'>Nov 03, 2025</div>
+            <a href='/blog/mission-log.html#log-3'>Making failure modes explicit in a vendor API</a>
+        </div>
+    </div>
+</section>
+
+<section class='section'>
+    <h2>Related missions</h2>
+    <div class='two-col'>
+        <div class='card'>
+            <h3>Juphjacs Web Framework</h3>
+            <p class='serif'>Interface-first page framework used to make contracts explicit.</p>
+        </div>
+        <div class='card'>
+            <h3>Interface Design Playbook</h3>
+            <p class='serif'>A mission focused on shaping boundaries and failure modes.</p>
+        </div>
+    </div>
+</section>
+<section class='section'>

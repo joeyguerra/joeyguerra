@@ -82,19 +82,13 @@
 }
 
 .spotlight-list {
-  list-style: none;
   padding: 6px 6px 8px;
   margin: 0;
 }
 
 .spotlight-item {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 12px;
-  align-items: center;
   padding: 10px 10px;
   border-radius: 8px;
-  cursor: pointer;
 }
 
 .spotlight-item:hover,
@@ -109,7 +103,7 @@
 
 .spotlight-item .desc {
   color: var(--spot-muted);
-  font-size: 13px;
+  font-size: .9rem;
 }
 
 .spotlight-item .badge {
