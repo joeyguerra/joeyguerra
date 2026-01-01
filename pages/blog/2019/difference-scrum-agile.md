@@ -22,9 +22,9 @@ On the other hand, the term Scrum as it relates to Agile, was developed by [Hiro
 - Scrum embodies the idea of coming together as a cross-functional team, progressing to a common goal as a team, just like a scrum in rugby.
 - Agile (Software Development) embodies a set of values that was prioritized based on the experiences of that group in Utah.
 
-The idea of using Scrum as a strategy for product development came out from observing “companies both in Japan and in the United States that have taken a new approach to managing the product development process. Interviewing organization members from the CEO to young engineers”.
+The idea of using Scrum as a strategy for product development came out from observing "companies both in Japan and in the United States that have taken a new approach to managing the product development process. Interviewing organization members from the CEO to young engineers".
 
-The idea of using Agile as a strategy for software development came out from a group of software developers “uncovering better ways of developing software by doing it and helping others do it”.
+The idea of using Agile as a strategy for software development came out from a group of software developers "uncovering better ways of developing software by doing it and helping others do it".
 
 At some point, a Scrum Framework was developed and iterated on within the Software Development industry. The methodology effort lead to the frequent use of [Scrum](https://en.wikipedia.org/wiki/Scrum_(software_development) as a term and method within the Software Development practice. I believe the people involved were collaborating with each other which then resulted in the Agile Manifesto.
 

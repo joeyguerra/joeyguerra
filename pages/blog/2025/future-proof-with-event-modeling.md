@@ -1,7 +1,7 @@
 ---
 layout: './pages/layouts/post.html'
 title: 'Ensuring Scalability: How Event Modeling Future-Proofs Your Software'
-excerpt: "You've probably heard someone say, “We just need to get through this version-then we'll rebuild it the right way”. That sentence is the death knell of scalability."
+excerpt: "You've probably heard someone say, \"We just need to get through this version-then we'll rebuild it the right way\". That sentence is the death knell of scalability."
 published: 2025-10-22T09:31:00Z
 uri: '/blog/2025/future-proof-with-event-modeling.html'
 tags: ['event', 'modeling', 'future', 'proof', 'scalability', 'businesses']

@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GO-LIVE NOW — Field Manual for Incremental Launches</title>
+  <style>
+    :root{
+      --vintage-bg: #d4c4a8;
+      --vintage-dark: #2d2d2d;
+      --vintage-border: #3a3a3a;
+      --vintage-accent: #4a4a4a;
+      --vintage-light: #f0e6d2;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body { height: 100%; }
+    
+    body {
+      background: var(--vintage-bg);
+      color: var(--vintage-dark);
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .page {
+      width: min(900px, 100%);
+      background: var(--vintage-bg);
+      border: 8px solid var(--vintage-border);
+      padding: 30px;
+      box-shadow: 
+        inset 0 0 0 2px var(--vintage-bg),
+        0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .header {
+      border-bottom: 3px solid var(--vintage-dark);
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .mission-brief {
+      font-size: 16px;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .version-info {
+      text-align: right;
+      font-size: 11px;
+      font-weight: bold;
+      line-height: 1.4;
+    }
+
+    h1 {
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      margin: 10px 0;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .logo-box {
+      border: 3px solid var(--vintage-dark);
+      padding: 50px 30px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      border-bottom: 3px solid var(--vintage-dark);
+      padding-bottom: 8px;
+    }
+
+    .subsection-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .objective-title {
+      font-size: 14px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    .checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--vintage-dark);
+      flex-shrink: 0;
+      margin-top: 2px;
+      background: rgba(255,255,255,0.3);
+    }
+
+    .right-column {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .rocket-container {
+      position: relative;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .rocket {
+      width: 200px;
+      height: 380px;
+      position: relative;
+    }
+
+    /* Simplified rocket using CSS */
+    .rocket-body {
+      position: absolute;
+      width: 80px;
+      height: 300px;
+      background: linear-gradient(to right, #555 0%, #444 20%, #333 50%, #222 80%, #111 100%);
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 0;
+      clip-path: polygon(50% 0%, 100% 15%, 100% 100%, 0% 100%, 0% 15%);
+    }
+
+    .rocket-window {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: radial-gradient(circle, #ddd 0%, #888 100%);
+      border: 2px solid #222;
+      border-radius: 50%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .window-1 { top: 60px; }
+    .window-2 { top: 120px; }
+    .window-3 { top: 180px; }
+
+    .rocket-fin {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-style: solid;
+    }
+
+    .fin-left {
+      border-width: 0 30px 60px 0;
+      border-color: transparent #333 transparent transparent;
+      left: -25px;
+      bottom: 20px;
+    }
+
+    .fin-right {
+      border-width: 0 0 60px 30px;
+      border-color: transparent transparent transparent #222;
+      right: -25px;
+      bottom: 20px;
+    }
+
+    .stage-labels {
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .stage-label {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stage-label::before {
+      content: '';
+      width: 30px;
+      height: 1px;
+      background: var(--vintage-dark);
+    }
+
+    .label-prototype { top: 40px; }
+    .label-beta { top: 100px; }
+    .label-orbit { top: 160px; }
+    .label-scale { top: 260px; }
+
+    .planet {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle at 30% 30%, #c8b89a 0%, #8a7a6a 100%);
+      border-radius: 50%;
+      right: -40px;
+      top: 50px;
+      z-index: -1;
+    }
+
+    .planet::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 60% 40%, transparent 30%, rgba(0,0,0,0.3) 100%);
+    }
+
+    .metrics-table {
+      border: 3px solid var(--vintage-dark);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .metric-row {
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid var(--vintage-dark);
+      padding: 12px 15px;
+    }
+
+    .metric-row:last-child {
+      border-bottom: none;
+    }
+
+    .metric-label {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .metric-gauge {
+      width: 100px;
+      height: 20px;
+      background: rgba(255,255,255,0.3);
+      border: 2px solid var(--vintage-dark);
+      position: relative;
+      display: flex;
+      gap: 2px;
+      padding: 2px;
+    }
+
+    .gauge-bar {
+      flex: 1;
+      background: repeating-linear-gradient(
+        45deg,
+        var(--vintage-dark),
+        var(--vintage-dark) 2px,
+        transparent 2px,
+        transparent 4px
+      );
+    }
+
+    .bottom-section {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 3px solid var(--vintage-dark);
+    }
+
+    .bottom-content {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+
+    .bottom-left {
+      flex: 1;
+    }
+
+    .bottom-right {
+      flex: 0 0 280px;
+    }
+
+    .horizontal-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .h-metric-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .h-metric-label {
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      min-width: 100px;
+    }
+
+    .h-metric-line {
+      flex: 1;
+      height: 3px;
+      background: var(--vintage-dark);
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .stage-labels {
+        position: relative;
+        right: 0;
+        margin-top: 20px;
+      }
+
+      .stage-label {
+        position: relative;
+        margin-bottom: 8px;
+      }
+
+      .bottom-content {
+        flex-direction: column;
+      }
+
+      .bottom-right {
+        flex: 1;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-top">
+        <div class="mission-brief">MISSION BRIEF</div>
+        <div class="version-info">
+          Version 1.0<br/>
+          For Founders Who Ship While<br/>
+          Orbiting Chaos
+        </div>
+      </div>
+      <h1>GO-LIVE NOW</h1>
+      <div class="subtitle">A / FIELD MANUAL FOR<br/>INCREMENTAL LAUNCHES</div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="main-content">
+      <!-- Left Column -->
+      <div class="left-column">
+        <div class="logo-box">[YOUR LOGO]</div>
+
+        <div class="mission-control">
+          <h2 class="section-title">MISSION CONTROL<br/>SETUP</h2>
+          
+          <div class="subsection-title">Define your Minimum<br/>Viable Launch window</div>
+          
+          <div class="objective-title">OBJECTIVE</div>
+          
+          <ul class="checklist">
+            <li>
+              <div class="checkbox"></div>
+              <span>Identify one feature that delivers customer value.</span>
+            </li>
+            <li>
+              <div class="checkbox"></div>
+              <span>Define success telemetry (metrics).</span>
+            </li>
+            <li>
+              <div class="checkbox"></div>
+              <span>Establish rollback plan.</span>
+            </li>
+            <li>
+              <div class="checkbox"></div>
+              <span>Announce launch window internally.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-column">
+        <div class="rocket-container">
+          <div class="rocket">
+            <div class="rocket-body">
+              <div class="rocket-window window-1"></div>
+              <div class="rocket-window window-2"></div>
+              <div class="rocket-window window-3"></div>
+              <div class="rocket-fin fin-left"></div>
+              <div class="rocket-fin fin-right"></div>
+            </div>
+          </div>
+          
+          <div class="stage-labels">
+            <div class="stage-label label-prototype">PROTOTYPE</div>
+            <div class="stage-label label-beta">BETA</div>
+            <div class="stage-label label-orbit">ORBIT</div>
+            <div class="stage-label label-scale">SCALE</div>
+          </div>
+          
+          <div class="planet"></div>
+        </div>
+
+        <div class="metrics-table">
+          <div class="metric-row">
+            <div class="metric-label">CONFIDENCE</div>
+            <div class="metric-gauge">
+              <div class="gauge-bar"></div>
+              <div class="gauge-bar"></div>
+              <div class="gauge-bar"></div>
+            </div>
+          </div>
+          <div class="metric-row">
+            <div class="metric-label">RISK</div>
+            <div class="metric-gauge">
+              <div class="gauge-bar"></div>
+              <div class="gauge-bar"></div>
+              <div class="gauge-bar"></div>
+            </div>
+          </div>
+          <div class="metric-row">
+            <div class="metric-label">ROI</div>
+            <div class="metric-gauge">
+              <div class="gauge-bar"></div>
+              <div class="gauge-bar"></div>
+              <div class="gauge-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Section -->
+    <div class="bottom-section">
+      <div class="bottom-content">
+        <div class="bottom-left">
+          <h2 class="section-title">MISSION CONTROL<br/>SETUP</h2>
+          <div class="subsection-title">Define your Minimum Viable<br/>Launch window.</div>
+        </div>
+        
+        <div class="bottom-right">
+          <div class="horizontal-metrics">
+            <div class="h-metric-row">
+              <div class="h-metric-label">CONFIDENCE</div>
+              <div class="h-metric-line"></div>
+            </div>
+            <div class="h-metric-row">
+              <div class="h-metric-label">RISK</div>
+              <div class="h-metric-line"></div>
+            </div>
+            <div class="h-metric-row">
+              <div class="h-metric-label">ROI</div>
+              <div class="h-metric-line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

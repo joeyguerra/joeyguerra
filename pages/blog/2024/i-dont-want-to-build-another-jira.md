@@ -17,13 +17,13 @@ Let me explain. Here are some of my observations about where Jira, despite all i
 
 ## The Trouble with User Stories and Rigid Scrum in Jira
 
-When teams first start using Jira, they often approach it as if they're required to use Scrum, complete with user stories, task boards, and sprints. But here's where it goes wrong: teams can end up forcing tasks into “user stories,” even if the context or problem isn't yet fully understood. This practice leads to a pattern where developers feel they're doing work “for the sake of project management” instead of contributing directly to meaningful outcomes. Suddenly, team members aren't just doing Agile-they're performing Agile.
+When teams first start using Jira, they often approach it as if they're required to use Scrum, complete with user stories, task boards, and sprints. But here's where it goes wrong: teams can end up forcing tasks into "user stories," even if the context or problem isn't yet fully understood. This practice leads to a pattern where developers feel they're doing work "for the sake of project management" instead of contributing directly to meaningful outcomes. Suddenly, team members aren't just doing Agile-they're performing Agile.
 
 The result? Frustration with Scrum, Jira, and the work itself. I've seen this happen too often, and it raises an important question: what if this forced structure is more of a hindrance than a help?
 
-## Knowledge Gaps and the “Done” Column Dilemma
+## Knowledge Gaps and the "Done" Column Dilemma
 
-In Jira, user stories get tracked, assigned, and moved across the board until they eventually hit “done.” But what happens to all the knowledge accumulated along the way? Too often, that valuable information is lost when a story is completed, buried under piles of “done” tickets. When new team members join, they're left with out-of-date Confluence pages (if anything was documented at all) and are forced to rely on “tribal knowledge” from the team-an increasingly scarce resource as team members inevitably come and go.
+In Jira, user stories get tracked, assigned, and moved across the board until they eventually hit "done." But what happens to all the knowledge accumulated along the way? Too often, that valuable information is lost when a story is completed, buried under piles of "done" tickets. When new team members join, they're left with out-of-date Confluence pages (if anything was documented at all) and are forced to rely on "tribal knowledge" from the team-an increasingly scarce resource as team members inevitably come and go.
 
 This workflow turns knowledge into an ephemeral resource, disappearing as soon as the sprint ends. Critical insights and understanding that could help the next team member or the next project vanish, leading to inefficiency, redundancy, and ultimately, frustration.
 

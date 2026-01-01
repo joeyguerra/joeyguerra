@@ -11,7 +11,7 @@ tags: ['review', 'code']
 
 In order to reuse code, it must pass the teams measurement of readability and discoverability.
 
-If it is determined that a particular module or code is not reusable, it must be refactored into a “legacy code” area in preparation for deprecation so that it is decoupled from the rest of the codebase.
+If it is determined that a particular module or code is not reusable, it must be refactored into a "legacy code" area in preparation for deprecation so that it is decoupled from the rest of the codebase.
 
 If you're making changes to an existing function, you must make a concerted effort to make it testable with a unit test case.
 

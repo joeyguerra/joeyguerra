@@ -16,9 +16,9 @@ If you're running a mid-sized business, chances are you've had at least one bad 
 Sound familiar? You're not alone.
 
 I hear this story again and again from business owners:
-- “We spent six months waiting for updates, only to find out nothing worked.”
-- “They kept telling me it was almost done, but every week there was another excuse. That turned into 4 years, $500k spent, and still nothing useable.”
-- “We finally launched, and it broke on day one. Not to mention it was expensive to run.”
+- "We spent six months waiting for updates, only to find out nothing worked."
+- "They kept telling me it was almost done, but every week there was another excuse. That turned into 4 years, $500k spent, and still nothing useable."
+- "We finally launched, and it broke on day one. Not to mention it was expensive to run."
 
 The truth is, most software project failures don't happen because of bad code. They happen because of bad management, bad communication, and mis-alignment.
 

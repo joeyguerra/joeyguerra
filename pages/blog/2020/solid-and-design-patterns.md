@@ -24,7 +24,7 @@ KW: The key insight on design patterns is that they are emergent. The authors di
 
 JG: Use patterns as a tool to solve the problems that they have been known to solve.
 
-JG: Principles are more for creating “aspects”, characteristics that you want your software to exhibit.
+JG: Principles are more for creating "aspects", characteristics that you want your software to exhibit.
 
 KW: On [SOLID](https://en.wikipedia.org/wiki/SOLID), [Single Responsibility](https://en.wikipedia.org/wiki/Single-responsibility_principle) is more vague than say Liskov Substitution. I'd say that gives it more power, but more ability to be abused. Peter Parker and so forth... 
 
@@ -32,7 +32,7 @@ JG: So always be on the look out for when the software doesn't have those charac
 
 KW: Yeah. For instance, once you understand [Liskov](https://en.wikipedia.org/wiki/Liskov_substitution_principle) abuses, you start seeing them all over the place and realize people are just blindly coding to "get stuff done" without recognizing the "future bugs" they are creating.
 
-JG: or the actual “structure” (e.g. communication strategies amongst the objects) that's created in the software.
+JG: or the actual "structure" (e.g. communication strategies amongst the objects) that's created in the software.
 
 KW: e.g. in a derived class, `override Whatever....{ throw new NotImplementedException() }` If you substitute this implementation, your app goes BOOM. Bad design.
 

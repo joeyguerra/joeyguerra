@@ -5,7 +5,7 @@ class GuidePage extends Page {
     constructor (pagesFolder, filePath, template, delegate) {
         super(pagesFolder, filePath, template)
         this.layout = './pages/guide-software-success/layout.html'
-        this.title = 'The Mid-Sized Business Owner's Guide to Software Success'
+        this.title = "The Mid-Sized Business Owner's Guide to Software Success"
         this.canonical = 'https://joeyguerra.com/guide-software-success/guide.html'
         this.uri = '/guide-software-success/guide.html'
         this.excerpt = 'Go Live Now, scale with confidence, and get real ROI from your software investments.'

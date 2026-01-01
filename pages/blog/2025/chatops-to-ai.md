@@ -32,13 +32,13 @@ In tech circles, ChatOps once meant typing `/deploy` to push code or asking a bo
 But imagine this instead:
 
 - A **sales manager** types:  
-  > “Show me the top 10 deals stuck in legal review.”
+  > "Show me the top 10 deals stuck in legal review."
 
 - A **marketing lead** says:  
-  > “What's our average lead response time over the past 7 days?”
+  > "What's our average lead response time over the past 7 days?"
 
 - A **CFO** asks:  
-  > “How many invoices are overdue more than 30 days by region?”
+  > "How many invoices are overdue more than 30 days by region?"
 
 And the bot answers, instantly, in your company's shared chat tool-Slack, Teams, whatever you use.
 
@@ -70,9 +70,9 @@ The goal is to make business data **conversational and visible.**
 
 Let's say your bot gets this question:
 
-> “How many deals have slipped out of Q2?”
+> "How many deals have slipped out of Q2?"
 
-And it can't answer. Maybe it doesn't know what “slipped” means. Maybe close dates aren't always updated.
+And it can't answer. Maybe it doesn't know what "slipped" means. Maybe close dates aren't always updated.
 
 Good.
 
@@ -98,7 +98,7 @@ For example:
 - It could summarize top objections from lost deals over the past month.
 - It might alert you that a critical invoice is 15 days overdue and the client hasn't replied.
 
-But none of that is possible if your team still relies on pulling spreadsheets or emailing operations to “get the numbers.”
+But none of that is possible if your team still relies on pulling spreadsheets or emailing operations to "get the numbers."
 
 ## Step 5: Create Institutional Awareness in Real Time
 
@@ -121,7 +121,7 @@ They ask questions in plain language.
 They get answers where they already work.  
 They make decisions *together*, with data and tools in the room.
 
-You don't need to “adopt AI.”  
+You don't need to "adopt AI."  
 You need to **teach your business to ask better questions - and build systems that can answer them.**
 
 Start there.  

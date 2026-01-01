@@ -26,7 +26,7 @@ tags: []
 - Specific knowledge is often highly technical or creative. It cannot be outsourced or automated.
 - Embrace accountability, and take business risks under your own name. Society will reward you with responsibility, equity, and leverage.
 - The most accountable people have singular, public, and risky brands: Oprah, Trump, Kanye, Elon.
-- “Give me a lever long enough, and a place to stand, and I will move the earth.”  - Archimedes
+- "Give me a lever long enough, and a place to stand, and I will move the earth."  - Archimedes
 - Fortunes require leverage. Business leverage comes from capital, people, and products with no marginal cost of replication (code and media).
 - Capital means money. To raise money, apply your specific knowledge, with accountability, and show resulting good judgment.
 - Labor means people working for you. It's the oldest and most fought-over form of leverage. Labor leverage will impress your parents, but don't - waste your life chasing it.
@@ -36,10 +36,10 @@ tags: []
 - If you can't code, write books and blogs, record videos and podcasts.
 - Leverage is a force multiplier for your judgement.
 - Judgement requires experience, but can be built faster by learning foundational skills.
-- There is no skill called “business.” Avoid business magazines and business classes.
+- There is no skill called "business." Avoid business magazines and business classes.
 - Study microeconomics, game theory, psychology, persuasion, ethics, mathematics, and computers.
 - Reading is faster than listening. Doing is faster than watching.
-- You should be too busy to “do coffee," while still keeping an uncluttered calendar.
+- You should be too busy to "do coffee," while still keeping an uncluttered calendar.
 - Set and enforce an aspirational personal hourly rate. If fixing a problem will save less than your hourly rate, ignore it. If outsourcing a task will cost less than your hourly rate, outsource it.
 - Work as hard as you can. Even though who you work with and what you work on are more important than how hard you work.
 - Become the best in the world at what you do. Keep redefining what you do until this is true.

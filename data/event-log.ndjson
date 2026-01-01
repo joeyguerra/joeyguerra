@@ -1,0 +1,4 @@
+{"type":"user.created","user":{"id":"u1","name":"Alice"},"ts":"2025-12-15T04:08:32.956Z"}
+{"type":"client.created","client":{"id":"c1","name":"Acme"},"ts":"2025-12-15T04:08:32.958Z"}
+{"type":"project.created","project":{"id":"p1","clientId":"c1","name":"Website"},"ts":"2025-12-15T04:08:32.960Z"}
+{"type":"time.logged","entry":{"id":"t1","userId":"u1","projectId":"p1","minutes":60},"ts":"2025-12-15T04:08:32.960Z"}
