@@ -7,13 +7,18 @@
 import { JuphjacWebServer } from 'juphjacs'
 
 const CHANNEL_ID = '1239325514133667931'
+const eventNames = {
+    'yesterday-today-feedback': 'New Yesterday/Today Feedback',
+    'guide-software-success-signup': 'New Guide Signup'
+}
 export default async robot => {
+    robot.eventNames = eventNames
     function createDatabase () {
         return {
             addEvent(eventType, data) {
                 console.debug(`Database event logged: ${eventType}`, data)
                 try {
-                robot.messageRoom(CHANNEL_ID, `# New guide signup:
+                robot.messageRoom(CHANNEL_ID, `# ${robot.eventNames[eventType]}:
 \`\`\`json
 ${JSON.stringify(data, null, 2)}
 \`\`\``)

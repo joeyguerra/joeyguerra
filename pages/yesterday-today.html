@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yesterday / Today</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .date-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .date-controls button {
+            background: #e8e8e8;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .date-controls button:hover {
+            background: #d8d8d8;
+        }
+
+        input[type="date"] {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .reset-btn {
+            background: #888;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .reset-btn:hover {
+            background: #666;
+        }
+
+        .feedback-btn {
+            background: transparent;
+            color: #555;
+            border: 1px solid #ccc;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .feedback-btn:hover {
+            background: #f5f5f5;
+            border-color: #999;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        .feedback-type-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .feedback-type-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #666;
+            transition: all 0.2s;
+        }
+
+        .feedback-type-btn:hover {
+            border-color: #999;
+            background: #f9f9f9;
+        }
+
+        .feedback-type-btn.active {
+            background: #555;
+            color: white;
+            border-color: #555;
+        }
+
+        .feedback-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            margin-bottom: 12px;
+        }
+
+        .feedback-textarea:focus {
+            outline: none;
+            border-color: #999;
+        }
+
+        .feedback-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .feedback-send-btn {
+            background: #555;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .feedback-send-btn:hover {
+            background: #333;
+        }
+
+        .feedback-send-btn:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        .feedback-cancel-btn {
+            background: #e8e8e8;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .feedback-cancel-btn:hover {
+            background: #d8d8d8;
+        }
+
+        .feedback-status {
+            font-size: 13px;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .feedback-status.success {
+            color: #0a6;
+        }
+
+        .feedback-status.error {
+            color: #c33;
+        }
+
+        .panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .panels {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .panel-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .panel-subtitle {
+            font-size: 13px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .task-count {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .task-group {
+            margin-bottom: 20px;
+        }
+
+        .task-group-header {
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 8px;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .task-group-header:hover {
+            color: #444;
+        }
+
+        .collapse-icon {
+            font-size: 12px;
+        }
+
+        .task-list {
+            list-style: none;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            background: #fafafa;
+            transition: background 0.2s;
+        }
+
+        .task-item:hover {
+            background: #f0f0f0;
+        }
+
+        .task-item.done {
+            opacity: 0.6;
+        }
+
+        .task-checkbox {
+            margin-top: 2px;
+            cursor: pointer;
+        }
+
+        .task-checkbox:disabled {
+            cursor: not-allowed;
+        }
+
+        .task-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .task-text {
+            word-wrap: break-word;
+            font-size: 14px;
+        }
+
+        .task-text.done {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .task-meta {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 4px;
+        }
+
+        .task-btn {
+            background: transparent;
+            border: 1px solid #ddd;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #666;
+            transition: all 0.2s;
+        }
+
+        .task-btn:hover {
+            background: #e8e8e8;
+            border-color: #ccc;
+        }
+
+        .task-btn.carry {
+            color: #0066cc;
+            border-color: #0066cc;
+        }
+
+        .task-btn.carry:hover {
+            background: #e6f0ff;
+        }
+
+        .add-task-form {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .add-task-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .add-task-input:focus {
+            outline: none;
+            border-color: #999;
+        }
+
+        .add-task-btn {
+            background: #555;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .add-task-btn:hover {
+            background: #333;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .checkin-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .checkin-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        .checkin-textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .checkin-textarea:focus {
+            outline: none;
+            border-color: #999;
+        }
+
+        .checkin-readonly {
+            background: #fafafa;
+            padding: 12px;
+            border-radius: 4px;
+            border: 1px solid #eee;
+            font-size: 14px;
+            color: #666;
+            white-space: pre-wrap;
+        }
+
+        .edit-task-form {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .edit-task-input {
+            flex: 1;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .edit-task-input:focus {
+            outline: none;
+            border-color: #999;
+        }
+
+        .reorder-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .reorder-btn {
+            background: transparent;
+            border: 1px solid #ddd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 10px;
+            color: #666;
+            line-height: 1;
+        }
+
+        .reorder-btn:hover {
+            background: #e8e8e8;
+        }
+
+        .reorder-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .mission-section {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .mission-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .mission-display {
+            font-size: 16px;
+            color: #222;
+            line-height: 1.5;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .mission-display:hover {
+            background: #f9f9f9;
+        }
+
+        .mission-display.empty {
+            color: #999;
+            font-style: italic;
+        }
+
+        .mission-timestamp {
+            font-size: 11px;
+            color: #bbb;
+            margin-top: 4px;
+        }
+
+        .mission-edit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mission-textarea {
+            width: 100%;
+            min-height: 60px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .mission-textarea:focus {
+            outline: none;
+            border-color: #999;
+        }
+
+        .mission-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .mission-save-btn {
+            background: #555;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .mission-save-btn:hover {
+            background: #333;
+        }
+
+        .mission-cancel-btn {
+            background: #e8e8e8;
+            color: #333;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .mission-cancel-btn:hover {
+            background: #d8d8d8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Yesterday / Today</h1>
+                <div class="date-controls">
+                    <button id="prevDay">← Prev</button>
+                    <input type="date" id="todayDatePicker" />
+                    <button id="nextDay">Next →</button>
+                </div>
+                <button class="feedback-btn" id="feedbackBtn">💭 Ideas or feedback?</button>
+                <button class="reset-btn" id="resetBtn">Reset Demo Data</button>
+            </div>
+            <div class="mission-section" id="missionSection"></div>
+        </header>
+
+        <div class="panels">
+            <div class="panel">
+                <div class="panel-header">
+                    <div>
+                        <div class="panel-title">Yesterday</div>
+                        <div class="panel-subtitle" id="yesterdayDate"></div>
+                    </div>
+                </div>
+                <div id="yesterdayContent"></div>
+                <div id="yesterdayCheckin"></div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <div>
+                        <div class="panel-title">Today</div>
+                        <div class="panel-subtitle" id="todayDate"></div>
+                    </div>
+                    <div class="task-count" id="todayCount"></div>
+                </div>
+                <form class="add-task-form" id="addTaskForm">
+                    <input 
+                        type="text" 
+                        class="add-task-input" 
+                        id="addTaskInput" 
+                        placeholder="Add a new task..."
+                        autocomplete="off"
+                    />
+                    <button type="submit" class="add-task-btn">Add</button>
+                </form>
+                <div id="todayContent"></div>
+            </div>
+        </div>
+
+        <div class="checkin-section">
+            <div class="checkin-title">Daily Check-in</div>
+            <textarea 
+                class="checkin-textarea" 
+                id="checkinTextarea" 
+                placeholder="What went well? What got in the way?"
+            ></textarea>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="feedbackModal">
+        <div class="modal-content">
+            <div class="modal-header">Ideas or feedback?</div>
+            <form id="feedbackForm">
+                <div class="feedback-type-buttons">
+                    <button type="button" class="feedback-type-btn active" data-type="idea">💡 Idea</button>
+                    <button type="button" class="feedback-type-btn" data-type="bug">🐛 Bug</button>
+                    <button type="button" class="feedback-type-btn" data-type="general">💬 General</button>
+                </div>
+                <textarea 
+                    class="feedback-textarea" 
+                    id="feedbackText" 
+                    placeholder="Tell me what's on your mind..."
+                    required
+                ></textarea>
+                <input 
+                    type="text" 
+                    class="add-task-input" 
+                    id="feedbackName" 
+                    placeholder="Your name (optional)"
+                    style="margin-bottom: 8px;"
+                />
+                <input 
+                    type="email" 
+                    class="add-task-input" 
+                    id="feedbackEmail" 
+                    placeholder="Your email (optional)"
+                    style="margin-bottom: 12px;"
+                />
+                <div class="feedback-actions">
+                    <button type="button" class="feedback-cancel-btn" id="closeFeedbackBtn">Cancel</button>
+                    <button type="submit" class="feedback-send-btn">Send Feedback</button>
+                </div>
+                <div class="feedback-status" id="feedbackStatus"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // DATA MODEL & STATE MANAGEMENT
+        // ============================================
+        
+        const STORAGE_KEY = 'yt_tasks_v1'
+        const LAST_LOADED_DATE_KEY = 'yt_last_loaded_date'
+        
+        // Global state
+        let state = {
+            data: {}, // { 'YYYY-MM-DD': { tasks: [], checkin: '', mission: '', missionUpdatedAt: '' }, ... }
+            todayDate: null,
+            yesterdayDate: null,
+            editingTaskId: null,
+            editingMission: false,
+            feedbackModalOpen: false,
+            feedbackType: 'idea',
+            collapsedGroups: {} // { 'YYYY-MM-DD_completed': true, ... }
+        }
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+
+        function getDateKey(date) {
+            return date.toISOString().split('T')[0]
+        }
+
+        function parseDate(dateString) {
+            const [year, month, day] = dateString.split('-').map(Number)
+            return new Date(year, month - 1, day)
+        }
+
+        function addDays(date, days) {
+            const result = new Date(date)
+            result.setDate(result.getDate() + days)
+            return result
+        }
+
+        function formatDateDisplay(date) {
+            return date.toLocaleDateString('en-US', { 
+                weekday: 'short', 
+                month: 'short', 
+                day: 'numeric' 
+            })
+        }
+
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2)
+        }
+
+        // ============================================
+        // STATE PERSISTENCE
+        // ============================================
+
+        function loadState() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY)
+                if (stored) {
+                    state.data = JSON.parse(stored)
+                }
+            } catch (e) {
+                console.error('Failed to load state:', e)
+                if (confirm('Failed to load saved data. Reset?')) {
+                    resetData()
+                }
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data))
+            } catch (e) {
+                console.error('Failed to save state:', e)
+            }
+        }
+
+        // ============================================
+        // DATA ACCESS & MANIPULATION
+        // ============================================
+
+        function ensureDateData(dateKey) {
+            if (!state.data[dateKey]) {
+                state.data[dateKey] = {
+                    tasks: [],
+                    checkin: ''
+                }
+            }
+        }
+
+        function getTasks(dateKey) {
+            ensureDateData(dateKey)
+            return state.data[dateKey].tasks
+        }
+
+        function getCheckin(dateKey) {
+            ensureDateData(dateKey)
+            return state.data[dateKey].checkin || ''
+        }
+
+        function getMission(dateKey) {
+            ensureDateData(dateKey)
+            return state.data[dateKey].mission || ''
+        }
+
+        function getMissionUpdatedAt(dateKey) {
+            ensureDateData(dateKey)
+            return state.data[dateKey].missionUpdatedAt || ''
+        }
+
+        function setMission(dateKey, text) {
+            ensureDateData(dateKey)
+            state.data[dateKey].mission = text
+            state.data[dateKey].missionUpdatedAt = new Date().toISOString()
+            saveState()
+        }
+
+        function addTask(dateKey, text) {
+            ensureDateData(dateKey)
+            const id = generateId()
+            const task = {
+                id,
+                lineageId: id, // New tasks get their own lineage
+                text,
+                done: false,
+                createdAt: new Date().toISOString()
+            }
+            state.data[dateKey].tasks.push(task)
+            saveState()
+        }
+
+        function toggleTask(dateKey, taskId) {
+            const tasks = getTasks(dateKey)
+            const task = tasks.find(t => t.id === taskId)
+            if (task) {
+                task.done = !task.done
+                task.completedAt = task.done ? new Date().toISOString() : null
+                saveState()
+            }
+        }
+
+        function updateTaskText(dateKey, taskId, newText) {
+            const tasks = getTasks(dateKey)
+            const task = tasks.find(t => t.id === taskId)
+            if (task) {
+                task.text = newText
+                saveState()
+            }
+        }
+
+        function deleteTask(dateKey, taskId) {
+            ensureDateData(dateKey)
+            state.data[dateKey].tasks = state.data[dateKey].tasks.filter(t => t.id !== taskId)
+            saveState()
+        }
+
+        function carryTask(fromDateKey, toDateKey, taskId) {
+            const sourceTasks = getTasks(fromDateKey)
+            const sourceTask = sourceTasks.find(t => t.id === taskId)
+            
+            if (!sourceTask) return
+
+            const targetTasks = getTasks(toDateKey)
+            
+            // Check for duplicate (same text and not done)
+            const duplicate = targetTasks.find(t => 
+                t.text === sourceTask.text && !t.done
+            )
+            
+            if (duplicate) {
+                if (!confirm('A similar incomplete task already exists in Today. Carry anyway?')) {
+                    return
+                }
+            }
+
+            // Create new task in target date with same lineage
+            const newTask = {
+                id: generateId(),
+                lineageId: sourceTask.lineageId,
+                text: sourceTask.text,
+                done: false,
+                createdAt: new Date().toISOString()
+            }
+            
+            state.data[toDateKey].tasks.push(newTask)
+            saveState()
+        }
+
+        function autoCarryUndoneTasks(fromDateKey, toDateKey) {
+            const sourceTasks = getTasks(fromDateKey)
+            const targetTasks = getTasks(toDateKey)
+            
+            // Get all incomplete tasks from source date
+            const undoneTasks = sourceTasks.filter(t => !t.done)
+            
+            undoneTasks.forEach(sourceTask => {
+                // Check if an identical incomplete task already exists in target
+                const duplicate = targetTasks.find(t => 
+                    t.text === sourceTask.text && !t.done
+                )
+                
+                // Auto-carry if no duplicate exists
+                if (!duplicate) {
+                    const newTask = {
+                        id: generateId(),
+                        lineageId: sourceTask.lineageId,
+                        text: sourceTask.text,
+                        done: false,
+                        createdAt: new Date().toISOString()
+                    }
+                    targetTasks.push(newTask)
+                }
+            })
+            
+            if (undoneTasks.length > 0) {
+                saveState()
+            }
+        }
+
+        function reorderTask(dateKey, taskId, direction) {
+            const tasks = getTasks(dateKey)
+            const index = tasks.findIndex(t => t.id === taskId)
+            
+            if (index === -1) return
+            
+            const newIndex = direction === 'up' ? index - 1 : index + 1
+            
+            if (newIndex < 0 || newIndex >= tasks.length) return
+            
+            // Swap tasks
+            [tasks[index], tasks[newIndex]] = [tasks[newIndex], tasks[index]]
+            saveState()
+        }
+
+        function setCheckin(dateKey, text) {
+            ensureDateData(dateKey)
+            state.data[dateKey].checkin = text
+            saveState()
+        }
+
+        // ============================================
+        // COMPUTED VALUES
+        // ============================================
+
+        function getCarryCount(lineageId) {
+            // Count how many different dates this lineage appears on
+            let count = 0
+            for (const dateKey in state.data) {
+                const tasks = state.data[dateKey].tasks
+                if (tasks.some(t => t.lineageId === lineageId)) {
+                    count++
+                }
+            }
+            return count
+        }
+
+        // ============================================
+        // RENDER FUNCTIONS
+        // ============================================
+
+        function renderYesterday() {
+            const container = document.getElementById('yesterdayContent')
+            const dateDisplay = document.getElementById('yesterdayDate')
+            const checkinContainer = document.getElementById('yesterdayCheckin')
+            
+            const dateKey = getDateKey(state.yesterdayDate)
+            dateDisplay.textContent = formatDateDisplay(state.yesterdayDate)
+            
+            const tasks = getTasks(dateKey)
+            
+            if (tasks.length === 0) {
+                container.innerHTML = '<div class="empty-state">No tasks recorded for yesterday.</div>'
+                checkinContainer.innerHTML = ''
+                return
+            }
+
+            const doneTasks = tasks.filter(t => t.done)
+            const notDoneTasks = tasks.filter(t => !t.done)
+            
+            const completedCollapsed = state.collapsedGroups[`${dateKey}_completed`] || false
+            
+            let html = ''
+            
+            // Not done group
+            if (notDoneTasks.length > 0) {
+                html += '<div class="task-group">'
+                html += '<div class="task-group-header">Not Done</div>'
+                html += '<ul class="task-list">'
+                notDoneTasks.forEach(task => {
+                    const carryCount = getCarryCount(task.lineageId)
+                    html += `
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" disabled />
+                            <div class="task-content">
+                                <div class="task-text">${escapeHtml(task.text)}</div>
+                                ${carryCount >= 2 ? `<div class="task-meta">Carried ${carryCount} times</div>` : ''}
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-btn carry" data-action="carry" data-task-id="${task.id}">
+                                    Carry to Today
+                                </button>
+                            </div>
+                        </li>
+                    `
+                })
+                html += '</ul></div>'
+            }
+            
+            // Completed group
+            if (doneTasks.length > 0) {
+                html += '<div class="task-group">'
+                html += `
+                    <div class="task-group-header" data-toggle-group="${dateKey}_completed">
+                        <span class="collapse-icon">${completedCollapsed ? '▶' : '▼'}</span>
+                        Completed (${doneTasks.length})
+                    </div>
+                `
+                if (!completedCollapsed) {
+                    html += '<ul class="task-list">'
+                    doneTasks.forEach(task => {
+                        html += `
+                            <li class="task-item done">
+                                <input type="checkbox" class="task-checkbox" checked disabled />
+                                <div class="task-content">
+                                    <div class="task-text done">${escapeHtml(task.text)}</div>
+                                </div>
+                            </li>
+                        `
+                    })
+                    html += '</ul>'
+                }
+                html += '</div>'
+            }
+            
+            container.innerHTML = html
+            
+            // Render yesterday's checkin if exists
+            const checkin = getCheckin(dateKey)
+            if (checkin) {
+                checkinContainer.innerHTML = `
+                    <div style="margin-top: 20px;">
+                        <div class="task-group-header" style="margin-bottom: 8px;">Yesterday's Check-in</div>
+                        <div class="checkin-readonly">${escapeHtml(checkin)}</div>
+                    </div>
+                `
+            } else {
+                checkinContainer.innerHTML = ''
+            }
+        }
+
+        function renderToday() {
+            const container = document.getElementById('todayContent')
+            const dateDisplay = document.getElementById('todayDate')
+            const countDisplay = document.getElementById('todayCount')
+            
+            const dateKey = getDateKey(state.todayDate)
+            dateDisplay.textContent = formatDateDisplay(state.todayDate)
+            
+            const tasks = getTasks(dateKey)
+            
+            const doneCount = tasks.filter(t => t.done).length
+            countDisplay.textContent = `Done ${doneCount} / Total ${tasks.length}`
+            
+            if (tasks.length === 0) {
+                container.innerHTML = '<div class="empty-state">No tasks for today. Add one above!</div>'
+                return
+            }
+
+            let html = '<ul class="task-list">'
+            
+            tasks.forEach((task, index) => {
+                const isEditing = state.editingTaskId === task.id
+                
+                html += `
+                    <li class="task-item ${task.done ? 'done' : ''}">
+                        <input 
+                            type="checkbox" 
+                            class="task-checkbox" 
+                            ${task.done ? 'checked' : ''}
+                            data-action="toggle"
+                            data-task-id="${task.id}"
+                        />
+                        <div class="task-content">
+                `
+                
+                if (isEditing) {
+                    html += `
+                        <form class="edit-task-form" data-task-id="${task.id}">
+                            <input 
+                                type="text" 
+                                class="edit-task-input" 
+                                value="${escapeHtml(task.text)}"
+                                data-task-id="${task.id}"
+                            />
+                            <button type="submit" class="task-btn">Save</button>
+                            <button type="button" class="task-btn" data-action="cancel-edit">Cancel</button>
+                        </form>
+                    `
+                } else {
+                    html += `<div class="task-text ${task.done ? 'done' : ''}">${escapeHtml(task.text)}</div>`
+                }
+                
+                html += `
+                        </div>
+                `
+                
+                if (!isEditing) {
+                    html += `
+                        <div class="reorder-buttons">
+                            <button 
+                                class="reorder-btn" 
+                                data-action="reorder" 
+                                data-task-id="${task.id}" 
+                                data-direction="up"
+                                ${index === 0 ? 'disabled' : ''}
+                            >▲</button>
+                            <button 
+                                class="reorder-btn" 
+                                data-action="reorder" 
+                                data-task-id="${task.id}" 
+                                data-direction="down"
+                                ${index === tasks.length - 1 ? 'disabled' : ''}
+                            >▼</button>
+                        </div>
+                        <div class="task-actions">
+                            <button class="task-btn" data-action="edit" data-task-id="${task.id}">Edit</button>
+                            <button class="task-btn" data-action="delete" data-task-id="${task.id}">Delete</button>
+                        </div>
+                    `
+                }
+                
+                html += '</li>'
+            })
+            
+            html += '</ul>'
+            container.innerHTML = html
+        }
+
+        function renderCheckin() {
+            const textarea = document.getElementById('checkinTextarea')
+            const dateKey = getDateKey(state.todayDate)
+            textarea.value = getCheckin(dateKey)
+        }
+
+        function renderMission() {
+            const section = document.getElementById('missionSection')
+            const dateKey = getDateKey(state.todayDate)
+            const mission = getMission(dateKey)
+            const updatedAt = getMissionUpdatedAt(dateKey)
+            
+            if (state.editingMission) {
+                section.innerHTML = `
+                    <div class="mission-label">Mission</div>
+                    <form class="mission-edit-form" id="missionEditForm">
+                        <textarea 
+                            class="mission-textarea" 
+                            id="missionInput"
+                            placeholder="What is the mission for today?"
+                        >${escapeHtml(mission)}</textarea>
+                        <div class="mission-actions">
+                            <button type="submit" class="mission-save-btn">Save Mission</button>
+                            <button type="button" class="mission-cancel-btn" id="cancelMissionBtn">Cancel</button>
+                        </div>
+                    </form>
+                `
+                setTimeout(() => {
+                    const input = document.getElementById('missionInput')
+                    if (input) input.focus()
+                }, 0)
+            } else {
+                const timestamp = updatedAt ? new Date(updatedAt).toLocaleString() : ''
+                section.innerHTML = `
+                    <div class="mission-label">Mission</div>
+                    <div class="mission-display ${!mission ? 'empty' : ''}" id="missionDisplay">
+                        ${mission || 'Click to add a mission for today'}
+                    </div>
+                    ${updatedAt ? `<div class="mission-timestamp">Updated ${timestamp}</div>` : ''}
+                `
+            }
+        }
+
+        function render() {
+            renderMission()
+            renderYesterday()
+            renderToday()
+            renderCheckin()
+        }
+
+        // ============================================
+        // EVENT HANDLERS
+        // ============================================
+
+        function handleAddTask(e) {
+            e.preventDefault()
+            const input = document.getElementById('addTaskInput')
+            const text = input.value.trim()
+            
+            if (!text) return
+            
+            const dateKey = getDateKey(state.todayDate)
+            addTask(dateKey, text)
+            input.value = ''
+            render()
+        }
+
+        function handleDateChange() {
+            const picker = document.getElementById('todayDatePicker')
+            const oldDate = state.todayDate
+            const oldDateKey = getDateKey(oldDate)
+            const oldMission = getMission(oldDateKey)
+            
+            state.todayDate = parseDate(picker.value)
+            state.yesterdayDate = addDays(state.todayDate, -1)
+            
+            const newDateKey = getDateKey(state.todayDate)
+            
+            // Carry mission to new date if old date has a mission and new date doesn't
+            if (oldMission && state.todayDate > oldDate) {
+                const newMission = getMission(newDateKey)
+                if (!newMission) {
+                    setMission(newDateKey, oldMission)
+                }
+            }
+            
+            // Auto-carry all undone tasks when moving to a future date
+            if (state.todayDate > oldDate) {
+                autoCarryUndoneTasks(oldDateKey, newDateKey)
+            }
+            
+            render()
+        }
+
+        function handlePrevDay() {
+            state.todayDate = addDays(state.todayDate, -1)
+            state.yesterdayDate = addDays(state.yesterdayDate, -1)
+            updateDatePicker()
+            render()
+        }
+
+        function handleNextDay() {
+            const currentDateKey = getDateKey(state.todayDate)
+            const currentMission = getMission(currentDateKey)
+            
+            state.todayDate = addDays(state.todayDate, 1)
+            state.yesterdayDate = addDays(state.yesterdayDate, 1)
+            
+            const nextDateKey = getDateKey(state.todayDate)
+            
+            // Carry mission to next day if current day has a mission and next day doesn't
+            if (currentMission) {
+                const nextMission = getMission(nextDateKey)
+                if (!nextMission) {
+                    setMission(nextDateKey, currentMission)
+                }
+            }
+            
+            // Auto-carry all undone tasks from today (which becomes yesterday)
+            autoCarryUndoneTasks(currentDateKey, nextDateKey)
+            
+            updateDatePicker()
+            render()
+        }
+
+        function handleClick(e) {
+            const target = e.target
+            const action = target.dataset.action
+            const taskId = target.dataset.taskId
+            
+            if (!action) return
+            
+            if (action === 'toggle') {
+                const dateKey = getDateKey(state.todayDate)
+                toggleTask(dateKey, taskId)
+                render()
+            } else if (action === 'edit') {
+                state.editingTaskId = taskId
+                render()
+                // Focus the edit input
+                setTimeout(() => {
+                    const input = document.querySelector(`input.edit-task-input[data-task-id="${taskId}"]`)
+                    if (input) {
+                        input.focus()
+                        input.select()
+                    }
+                }, 0)
+            } else if (action === 'cancel-edit') {
+                state.editingTaskId = null
+                render()
+            } else if (action === 'delete') {
+                if (confirm('Delete this task?')) {
+                    const dateKey = getDateKey(state.todayDate)
+                    deleteTask(dateKey, taskId)
+                    render()
+                }
+            } else if (action === 'carry') {
+                const fromDateKey = getDateKey(state.yesterdayDate)
+                const toDateKey = getDateKey(state.todayDate)
+                carryTask(fromDateKey, toDateKey, taskId)
+                render()
+            } else if (action === 'reorder') {
+                const direction = target.dataset.direction
+                const dateKey = getDateKey(state.todayDate)
+                reorderTask(dateKey, taskId, direction)
+                render()
+            }
+        }
+
+        function handleEditSubmit(e) {
+            e.preventDefault()
+            const form = e.target
+            const taskId = form.dataset.taskId
+            const input = form.querySelector('.edit-task-input')
+            const newText = input.value.trim()
+            
+            if (!newText) return
+            
+            const dateKey = getDateKey(state.todayDate)
+            updateTaskText(dateKey, taskId, newText)
+            state.editingTaskId = null
+            render()
+        }
+
+        function handleCheckinChange(e) {
+            const dateKey = getDateKey(state.todayDate)
+            setCheckin(dateKey, e.target.value)
+        }
+
+        function handleToggleGroup(e) {
+            const groupKey = e.target.dataset.toggleGroup
+            if (!groupKey) return
+            
+            state.collapsedGroups[groupKey] = !state.collapsedGroups[groupKey]
+            render()
+        }
+
+        function handleMissionDisplay(e) {
+            if (e.target.id === 'missionDisplay') {
+                state.editingMission = true
+                render()
+            }
+        }
+
+        function handleMissionSubmit(e) {
+            e.preventDefault()
+            const input = document.getElementById('missionInput')
+            const text = input.value.trim()
+            const dateKey = getDateKey(state.todayDate)
+            setMission(dateKey, text)
+            state.editingMission = false
+            render()
+        }
+
+        function handleMissionCancel() {
+            state.editingMission = false
+            render()
+        }
+
+        function openFeedbackModal() {
+            state.feedbackModalOpen = true
+            state.feedbackType = 'idea'
+            const modal = document.getElementById('feedbackModal')
+            modal.classList.add('active')
+            setTimeout(() => {
+                document.getElementById('feedbackText').focus()
+            }, 0)
+        }
+
+        function closeFeedbackModal() {
+            state.feedbackModalOpen = false
+            const modal = document.getElementById('feedbackModal')
+            modal.classList.remove('active')
+            document.getElementById('feedbackForm').reset()
+            document.getElementById('feedbackStatus').textContent = ''
+            // Re-enable submit button
+            const submitBtn = document.querySelector('#feedbackForm [type="submit"]')
+            if (submitBtn) {
+                submitBtn.disabled = false
+            }
+            // Reset type buttons
+            document.querySelectorAll('.feedback-type-btn').forEach(btn => {
+                btn.classList.remove('active')
+            })
+            document.querySelector('[data-type="idea"]').classList.add('active')
+        }
+
+        function handleFeedbackTypeClick(e) {
+            if (e.target.classList.contains('feedback-type-btn')) {
+                document.querySelectorAll('.feedback-type-btn').forEach(btn => {
+                    btn.classList.remove('active')
+                })
+                e.target.classList.add('active')
+                state.feedbackType = e.target.dataset.type
+            }
+        }
+
+        async function handleFeedbackSubmit(e) {
+            e.preventDefault()
+            
+            const feedbackText = document.getElementById('feedbackText').value.trim()
+            if (!feedbackText) return
+            
+            const feedbackName = document.getElementById('feedbackName').value.trim()
+            const feedbackEmail = document.getElementById('feedbackEmail').value.trim()
+            
+            const statusEl = document.getElementById('feedbackStatus')
+            const submitBtn = e.target.querySelector('[type="submit"]')
+            
+            try {
+                submitBtn.disabled = true
+                statusEl.textContent = 'Sending...'
+                statusEl.classList.remove('success', 'error')
+                
+                const payload = {
+                    type: state.feedbackType,
+                    message: feedbackText,
+                    url: window.location.href,
+                    timestamp: new Date().toISOString()
+                }
+                
+                if (feedbackName) payload.name = feedbackName
+                if (feedbackEmail) payload.email = feedbackEmail
+                
+                const response = await fetch('/api/feedback.html', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                })
+                
+                if (response.ok) {
+                    statusEl.textContent = '✓ Feedback sent! Thank you.'
+                    statusEl.classList.add('success')
+                    setTimeout(() => {
+                        closeFeedbackModal()
+                    }, 1500)
+                } else {
+                    statusEl.textContent = '✗ Error sending feedback. Please try again.'
+                    statusEl.classList.add('error')
+                    submitBtn.disabled = false
+                }
+            } catch (error) {
+                statusEl.textContent = '✗ Connection error. Please try again.'
+                statusEl.classList.add('error')
+                submitBtn.disabled = false
+            }
+        }
+
+        function resetData() {
+            if (!confirm('This will delete all data. Are you sure?')) return
+            
+            localStorage.removeItem(STORAGE_KEY)
+            state.data = {}
+            
+            // Add some demo data
+            const today = getDateKey(state.todayDate)
+            const yesterday = getDateKey(state.yesterdayDate)
+            
+            addTask(yesterday, 'Review pull requests')
+            toggleTask(yesterday, getTasks(yesterday)[0].id)
+            
+            addTask(yesterday, 'Write documentation')
+            addTask(yesterday, 'Fix bug in login flow')
+            
+            addTask(today, 'Plan sprint')
+            
+            setCheckin(yesterday, 'Made good progress on the main feature. Got blocked by API issues in the afternoon.')
+            setMission(today, 'Launch feature release and gather user feedback')
+            
+            render()
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+
+        function updateDatePicker() {
+            const picker = document.getElementById('todayDatePicker')
+            picker.value = getDateKey(state.todayDate)
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div')
+            div.textContent = text
+            return div.innerHTML
+        }
+
+        function init() {
+            // Initialize dates
+            state.todayDate = new Date()
+            state.yesterdayDate = addDays(state.todayDate, -1)
+            
+            // Load saved data
+            loadState()
+            
+            // Check if it's a new day and auto-carry incomplete tasks
+            const todayKey = getDateKey(state.todayDate)
+            const lastLoadedDate = localStorage.getItem(LAST_LOADED_DATE_KEY)
+            
+            if (lastLoadedDate && lastLoadedDate !== todayKey) {
+                // New day detected, auto-carry undone tasks from yesterday
+                const yesterdayKey = getDateKey(state.yesterdayDate)
+                autoCarryUndoneTasks(yesterdayKey, todayKey)
+            }
+            
+            // Update the last loaded date
+            localStorage.setItem(LAST_LOADED_DATE_KEY, todayKey)
+            
+            // Set up date picker
+            updateDatePicker()
+            
+            // Attach event listeners
+            document.getElementById('addTaskForm').addEventListener('submit', handleAddTask)
+            document.getElementById('todayDatePicker').addEventListener('change', handleDateChange)
+            document.getElementById('prevDay').addEventListener('click', handlePrevDay)
+            document.getElementById('nextDay').addEventListener('click', handleNextDay)
+            document.getElementById('feedbackBtn').addEventListener('click', openFeedbackModal)
+            document.getElementById('closeFeedbackBtn').addEventListener('click', closeFeedbackModal)
+            document.getElementById('resetBtn').addEventListener('click', resetData)
+            document.getElementById('checkinTextarea').addEventListener('input', handleCheckinChange)
+            
+            // Feedback modal events
+            document.getElementById('feedbackForm').addEventListener('submit', handleFeedbackSubmit)
+            document.getElementById('feedbackModal').addEventListener('click', (e) => {
+                if (e.target.id === 'feedbackModal') {
+                    closeFeedbackModal()
+                }
+            })
+            document.addEventListener('click', handleFeedbackTypeClick)
+            
+            // Delegate click events
+            document.addEventListener('click', handleClick)
+            document.addEventListener('click', handleToggleGroup)
+            document.addEventListener('click', handleMissionDisplay)
+            
+            // Delegate form submit for edit forms
+            document.addEventListener('submit', (e) => {
+                if (e.target.classList.contains('edit-task-form')) {
+                    handleEditSubmit(e)
+                } else if (e.target.id === 'missionEditForm') {
+                    handleMissionSubmit(e)
+                }
+            })
+            
+            // Mission cancel button
+            document.addEventListener('click', (e) => {
+                if (e.target.id === 'cancelMissionBtn') {
+                    handleMissionCancel()
+                }
+            })
+            
+            // Initial render
+            render()
+        }
+
+        // Start the app
+        init()
+    </script>
+</body>
+</html>

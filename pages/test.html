@@ -1,0 +1,29 @@
+<button onclick="post('/test.html', document.querySelector('div'))">Test Page</button>
+<div>
+    This is the test page.
+</div>
+
+<script>
+    async function post(url, element) {
+        const response = await fetch(url, { method: 'POST' })
+        const text = await response.text()
+        console.log(text, element)
+        element.innerHTML = text
+    }
+
+    window.addEventListener('load', e => {
+        const socket = io('/test', {
+            reconnection: true,
+            reconnectionAttempts: Infinity,
+            reconnectionDelay: 500,
+            reconnectionDelayMax: 2000,
+            timeout: 10000
+        })
+        socket.on('page-loaded', data => {
+            console.log('Page loaded:', data.url)
+        })
+        setTimeout(() => {
+            socket.emit('page-loaded', { url: window.location.pathname })
+        }, 5000)
+    })
+</script>
