@@ -1513,9 +1513,15 @@
             const lastLoadedDate = localStorage.getItem(LAST_LOADED_DATE_KEY)
             
             if (lastLoadedDate && lastLoadedDate !== todayKey) {
-                // New day detected, auto-carry undone tasks from yesterday
-                const yesterdayKey = getDateKey(state.yesterdayDate)
-                autoCarryUndoneTasks(yesterdayKey, todayKey)
+                // New day(s) detected, auto-carry undone tasks from all days since last load
+                let currentDate = parseDate(lastLoadedDate)
+                while (currentDate < state.todayDate) {
+                    const nextDate = addDays(currentDate, 1)
+                    const currentKey = getDateKey(currentDate)
+                    const nextKey = getDateKey(nextDate)
+                    autoCarryUndoneTasks(currentKey, nextKey)
+                    currentDate = nextDate
+                }
             }
             
             // Update the last loaded date

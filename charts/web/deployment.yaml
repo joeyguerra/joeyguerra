@@ -14,13 +14,18 @@ spec:
     spec:
       containers:
       - name: jbot-website
-        image: local/jbot-website:3.0.41
+        image: local/jbot-website:3.0.42
         imagePullPolicy: IfNotPresent
         env:
         - name: PORT
           value: "8080"
         - name: NODE_ENV
           value: "production"
+        - name: FRED_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: fred-api-key
+              key: FRED_API_KEY
         - name: HUBOT_DISCORD_TOKEN
           valueFrom:
             secretKeyRef:

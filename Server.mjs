@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { JuphjacWebServer } from 'juphjacs'
+import NatoFractureDB from './lib/NatoFractureDB.mjs'
 
 
 function createDatabase () {
@@ -32,6 +33,10 @@ const myAppConfig = {
     apiBaseUrl: 'https://joeyguerra.com'
 }
 
+const natoFractureDB = new NatoFractureDB(process.env.DB_PATH)
+// Seed sample data only if enabled and DB is empty
+natoFractureDB.seedIfEmpty()
+
 const server = new JuphjacWebServer({
     rootDir: process.cwd(),
     logLevel: process.env.LOG_LEVEL || 'info',
@@ -39,6 +44,7 @@ const server = new JuphjacWebServer({
         db,
         cache,
         config: myAppConfig,
+        natoFractureDB
     }
 })
 
