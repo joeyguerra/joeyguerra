@@ -173,6 +173,45 @@
             color: #00c896;
         }
 
+        .link-cards {
+            display: grid;
+            gap: 1rem;
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .link-card {
+            display: block;
+            padding: 0 1.25rem;
+            border-radius: 0.5rem;
+            background: #1a1d23;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            text-decoration: none;
+            color: inherit;
+            transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+        }
+
+        .link-card:hover {
+            transform: translateY(-2px);
+            background: #1f242b;
+            border-color: rgba(0, 200, 150, 0.35);
+        }
+
+        .link-card h3 {
+            margin: 0 0 0.25rem 0;
+            color: #00c896;
+        }
+
+        .link-card p {
+            margin: 0;
+            color: #cbd5e1;
+        }
+
+        .link-card::before {
+            content: none;
+        }
+
         a {
             position: relative;
             text-decoration: none;
@@ -234,6 +273,10 @@
             }
 
             .case-studies {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+
+            .link-cards {
                 grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             }
         }

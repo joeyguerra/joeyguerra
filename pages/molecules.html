@@ -41,28 +41,27 @@
     .planning { background: #4169E1; }
     .implementation { background: #DAA520; }
     .release { background: #DC143C; }
-    .legend {
-      margin-top: 2rem;
-      display: flex;
-      gap: 2rem;
-      align-items: center;
-    }
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .legend-box {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
     .controls {
       margin-top: 2rem;
     }
     .controls label {
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
       margin-bottom: 0.5rem;
+    }
+    .control-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 160px;
+    }
+    .control-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      flex: 0 0 12px;
     }
     #upload {
       margin-top: 2rem;
@@ -70,29 +69,52 @@
   </style>
 </head>
 <body>
-  <h1>What's the Status of the Project?</h1>
-  <p>Different aspects of the software development dynamically interplay over time, all in service of accomplishing a customer's job-to-be-done</p>
+  <h1>What's the Status of your Jira Project?</h1>
+  <p>Different aspects of the software development dynamically interplay with each other over time, all in service of accomplishing a customer's job-to-be-done</p>
   <div class="summary">
-    <p><strong>Overview:</strong> This snapshot represents the current distribution of energy and focus across different modes of work in the project: planning, implementation, and release. Each dot is like a molecule representing one unit of effort or attention.</p>
-
+    <p><strong>Overview:</strong> The following represents the current distribution of energy and focus across different modes of work in the project: planning, implementation, and release. Each dot is like a molecule representing one unit of effort or attention.</p>
+    <p>You can upload a Jira JSON or XML export to see the distribution of work over time.</p>
+    <p>Or you can see an example of the interplay by moving the sliders below.</p>
     <div class="controls">
-      <label>Planning: <input type="range" id="planningRange" min="0" max="100" value="25"></label>
-      <label>Implementation: <input type="range" id="implementationRange" min="0" max="100" value="50"></label>
-      <label>Code/Release: <input type="range" id="releaseRange" min="0" max="100" value="25" readonly></label>
+      <label>
+        <span class="control-label">
+          <span class="control-dot planning"></span>
+          Planning
+        </span>
+        <input type="range" id="planningRange" min="0" max="100" value="25">
+      </label>
+      <label>
+        <span class="control-label">
+          <span class="control-dot implementation"></span>
+          Implementation
+        </span>
+        <input type="range" id="implementationRange" min="0" max="100" value="50">
+      </label>
+      <label>
+        <span class="control-label">
+          <span class="control-dot release"></span>
+          Code/Release
+        </span>
+        <input type="range" id="releaseRange" min="0" max="100" value="25" readonly>
+      </label>
+    </div>
+
+    <div class="classification terms">
+      <h3>Classification Terms:</h3>
+      <ul>
+        <li><strong>Planning & Designing:</strong> design|plan|requirement</li>
+        <li><strong>Implementation:</strong> implement|develop|feature|build</li>
+        <li><strong>Code/Release:</strong> test|release|deploy|merge|qa|bug</li>
+      </ul>
     </div>
 
     <div id="upload">
-      <label for="jiraFile">Upload JIRA JSON Export:</label>
-      <input type="file" id="jiraFile" accept=".json" />
+      <label for="jiraFile">Upload Jira JSON or XML Export:</label>
+      <input type="file" id="jiraFile" accept=".json,.xml" />
     </div>
 
     <div class="molecule-visual" id="moleculeGrid"></div>
 
-    <div class="legend">
-      <div class="legend-item"><div class="legend-box planning"></div>Planning & Designing</div>
-      <div class="legend-item"><div class="legend-box implementation"></div>Implementation</div>
-      <div class="legend-item"><div class="legend-box release"></div>Code/Release</div>
-    </div>
   </div>
 
   <script>
@@ -175,6 +197,34 @@
       return null;
     }
 
+    function parseXmlIssues(xmlText) {
+      const parser = new DOMParser()
+      const xmlDoc = parser.parseFromString(xmlText, 'application/xml')
+      const parseError = xmlDoc.querySelector('parsererror')
+      if (parseError) {
+        throw new Error('Invalid XML')
+      }
+
+      const items = Array.from(xmlDoc.querySelectorAll('item'))
+      return items.map((item) => {
+        const summary = item.querySelector('summary')?.textContent || ''
+        const description = item.querySelector('description')?.textContent || ''
+        const created = item.querySelector('created')?.textContent || ''
+        const updated = item.querySelector('updated')?.textContent || ''
+        const status = item.querySelector('status')?.textContent || ''
+        return {
+          timestamp: created || updated || '',
+          start: created || '',
+          completed: updated || created || '',
+          fields: {
+            summary,
+            description,
+            status
+          }
+        }
+      })
+    }
+
     jiraFile.addEventListener("change", (event) => {
       const file = event.target.files[0];
       if (!file) return;
@@ -182,13 +232,18 @@
       const reader = new FileReader();
       reader.onload = function (e) {
         try {
-          const data = JSON.parse(e.target.result, function (key, value) {
-            if (['timestamp', 'start', 'completed'].includes(key)) {
-              return new Date(value);
-            }
-            return value;
-          });
-          const issues = data.issues || [];
+          let issues = []
+          if (file.name.toLowerCase().endsWith('.xml')) {
+            issues = parseXmlIssues(e.target.result)
+          } else {
+            const data = JSON.parse(e.target.result, function (key, value) {
+              if (['timestamp', 'start', 'completed'].includes(key)) {
+                return new Date(value);
+              }
+              return value;
+            });
+            issues = data.issues || []
+          }
           let planning = 0, implementation = 0, release = 0;
 
           issues.forEach(issue => {
@@ -210,7 +265,7 @@
           sortedIssues = issues.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
           updateMolecules();
         } catch (err) {
-          alert("Invalid JSON file. Please upload a valid JIRA JSON export.");
+          alert("Invalid file. Please upload a valid Jira JSON or XML (RSS) export.");
         }
         jiraFile.value = ""; // clear file field after handling
       };

@@ -236,3 +236,183 @@ The check-in history and carry count ("This task has been here 5 days") help you
 *Add reflections, sketches, and discussions here as we iterate on the design.*
 
 ---
+
+# Prompt from Temporal Accountability Problem feedbck
+
+Prompt: Evolve the Yesterday / Today App UI (No LLM Runtime)
+
+You are working inside an existing web application called Yesterday / Today.
+
+The app already:
+	•	Tracks daily task lists
+	•	Shows Yesterday vs Today
+	•	Allows tasks to be carried forward
+	•	Tracks carry counts
+	•	Displays a “Today’s Mission” header
+
+Do NOT redesign the app from scratch.
+
+Do NOT introduce any backend or runtime LLM calls.
+
+Your task is to evolve the existing UI and interaction rules to better surface long-range accountability and repeated task deferral, while preserving the current structure and simplicity.
+
+⸻
+
+High-Level Goal
+
+Shift the app from:
+
+“A neutral task list that records what happened”
+
+to:
+
+“A reflective surface that makes repeated avoidance visible and harder to ignore.”
+
+This is a UI and behavior change, not an architectural rewrite.
+
+⸻
+
+Required Changes (Implement All)
+
+1. Elevate “Today’s Mission” from Header → Commitment
+
+Current state:
+	•	“Today’s Mission” is displayed as plain text at the top.
+
+Change:
+	•	Visually separate “Today’s Mission” into its own distinct container.
+	•	Add a subtle subtitle indicating why it exists, for example:
+	•	“Selected from repeatedly deferred work”
+	•	Treat it as a daily commitment, not just another task.
+
+Rules:
+	•	Today’s Mission must reference an existing task.
+	•	Only one mission per day.
+	•	It is allowed to remain unchanged across days.
+
+Do not:
+	•	Auto-generate missions
+	•	Add motivational language
+	•	Add gamification
+
+⸻
+
+2. Introduce a New Category: “Avoided”
+
+Current state:
+	•	Yesterday has a single “Not Done” section.
+
+Change:
+	•	Split Yesterday’s tasks into:
+	•	Not Done → tasks missed once or twice
+	•	Avoided → tasks carried repeatedly
+
+Rules:
+	•	A task becomes “Avoided” after a configurable threshold (default: 3 carries).
+	•	Avoided tasks should be visually distinct (e.g., muted warning tone, icon, or emphasis on carry count).
+	•	Carry count should be more prominent than checkbox state in this section.
+
+Purpose:
+	•	This section exists to surface patterns, not shame.
+
+⸻
+
+3. Change “Carry to Today” Behavior for Avoided Tasks
+
+Current state:
+	•	Clicking “Carry to Today” always moves the task forward.
+
+Change:
+	•	When a task is in the Avoided category, clicking “Carry to Today” must require a micro-decision.
+
+Allowed options (pick one UI pattern):
+	•	Inline confirmation
+	•	Small modal
+	•	Dropdown action
+
+Required choices:
+	•	Still important → carry forward
+	•	Not important → archive
+	•	Rewrite → edit task text before carrying
+
+Rules:
+	•	This interaction must be lightweight (1 click / short text).
+	•	No free-text reflection prompts.
+	•	No blocking confirmations for non-avoided tasks.
+
+⸻
+
+4. Visually Distinguish “Work” vs “Consumption” Tasks
+
+Current state:
+	•	All tasks are visually identical.
+
+Change:
+	•	Introduce a visual cue to distinguish:
+	•	Work / Output (build, decide, communicate, fix)
+	•	Consumption / Input (read, watch, explore)
+
+Rules:
+	•	Do NOT introduce tagging UI yet.
+	•	Do NOT add filters.
+	•	This can be inferred heuristically (e.g., verbs like “read”, “watch”, “think”).
+	•	Use subtle indicators only (icon, label, tone).
+
+Purpose:
+	•	Reduce cognitive drag
+	•	Make responsibility stand out from optional learning
+
+⸻
+
+5. Add a “Suggested Mission” (Non-Authoritative)
+
+Current state:
+	•	Mission is fully manual.
+
+Change:
+	•	Add a Suggested Mission section beneath Today’s Mission.
+
+Rules:
+	•	Suggested Mission is derived deterministically:
+	•	Highest carry count
+	•	Recent deferral
+	•	Exclude consumption-only tasks
+	•	It must not override the current mission.
+	•	The user can promote it to Today’s Mission with one click.
+
+Tone:
+	•	Informational, not directive.
+	•	No judgment.
+	•	No language like “should” or “must”.
+
+⸻
+
+Constraints (Very Important)
+	•	Preserve the existing layout and mental model
+	•	Do not introduce accounts, roles, or personas
+	•	Do not introduce scoring systems
+	•	Do not add productivity jargon
+	•	Do not introduce LLM calls, background jobs, or analytics
+
+This app should still feel:
+	•	Calm
+	•	Document-like
+	•	Honest under pressure
+
+⸻
+
+Acceptance Criteria
+
+After these changes:
+	•	Repeatedly deferred tasks become visually harder to ignore
+	•	Carrying forward avoidance requires conscious intent
+	•	“Today’s Mission” feels meaningful, not decorative
+	•	The app gently resists short-range novelty without moralizing
+
+⸻
+
+Final Instruction
+
+Make the smallest possible set of changes that accomplish the above.
+Favor interpretation and hierarchy over new features.
+

@@ -46,6 +46,12 @@
             color: #444;
         }
 
+        .header-tagline {
+            font-size: 14px;
+            color: #777;
+            margin-top: 4px;
+        }
+
         .date-controls {
             display: flex;
             align-items: center;
@@ -238,6 +244,65 @@
             color: #c33;
         }
 
+        .avoidance-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avoidance-modal.active {
+            display: flex;
+        }
+
+        .avoidance-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .avoidance-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .avoidance-option-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            background: #fafafa;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .avoidance-option-btn:hover {
+            border-color: #bbb;
+            background: #f0f0f0;
+        }
+
+        .avoidance-rewrite {
+            margin-top: 10px;
+            display: none;
+        }
+
+        .avoidance-rewrite.active {
+            display: block;
+        }
+
         .panels {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -331,6 +396,11 @@
             opacity: 0.6;
         }
 
+        .task-item.avoided {
+            border: 1px solid #f2c291;
+            background: #fff7ef;
+        }
+
         .task-checkbox {
             margin-top: 2px;
             cursor: pointer;
@@ -353,6 +423,37 @@
         .task-text.done {
             text-decoration: line-through;
             color: #999;
+        }
+
+        .task-badges {
+            margin-top: 4px;
+            display: flex;
+            gap: 6px;
+            font-size: 11px;
+        }
+
+        .task-badge {
+            padding: 2px 6px;
+            border-radius: 999px;
+            background: #f0f0f0;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .task-badge.work {
+            background: #e3f2fd;
+            color: #1a73e8;
+        }
+
+        .task-badge.consumption {
+            background: #fbe9e7;
+            color: #d84315;
+        }
+
+        .carry-count-badge {
+            font-weight: 600;
+            color: #b35a00;
         }
 
         .task-meta {
@@ -403,6 +504,12 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 14px;
+            transition: opacity 0.2s, border-color 0.2s;
+        }
+
+        .add-task-input.faded {
+            opacity: 0.6;
+            border-color: #e4b68d;
         }
 
         .add-task-input:focus {
@@ -523,27 +630,39 @@
             border-top: 2px solid #f0f0f0;
         }
 
+        .mission-card {
+            margin-top: 12px;
+            padding: 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .mission-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+        }
+
         .mission-label {
             font-size: 12px;
             font-weight: 600;
             color: #999;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 8px;
+        }
+
+        .mission-subtitle {
+            font-size: 12px;
+            color: #777;
+            margin-top: 4px;
         }
 
         .mission-display {
-            font-size: 16px;
+            font-size: 18px;
             color: #222;
-            line-height: 1.5;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-
-        .mission-display:hover {
-            background: #f9f9f9;
+            line-height: 1.6;
         }
 
         .mission-display.empty {
@@ -557,61 +676,61 @@
             margin-top: 4px;
         }
 
-        .mission-edit-form {
+        .mission-actions {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .mission-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: #336;
+            background: #e8ecff;
+            padding: 2px 8px;
+            border-radius: 999px;
+        }
+
+        .mission-change-option {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 4px;
         }
 
-        .mission-textarea {
-            width: 100%;
-            min-height: 60px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            font-family: inherit;
-            resize: vertical;
+        .mission-change-btn {
+            border-color: #ddd;
+            color: #666;
+            background: #fdfdfd;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .mission-textarea:focus {
-            outline: none;
-            border-color: #999;
+        .mission-change-btn:hover:not(:disabled) {
+            background: #f4f4f4;
+            border-color: #ccc;
         }
 
-        .mission-actions {
-            display: flex;
-            gap: 8px;
+        .mission-change-hint {
+            font-size: 11px;
+            color: #999;
         }
 
-        .mission-save-btn {
-            background: #555;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
+        .suggested-mission {
+            margin-top: 12px;
+            padding: 12px;
+            border: 1px dashed #d0d0d0;
+            border-radius: 6px;
+            background: #fff;
+        }
+
+        .suggested-mission-title {
             font-size: 13px;
-            transition: background 0.2s;
-        }
-
-        .mission-save-btn:hover {
-            background: #333;
-        }
-
-        .mission-cancel-btn {
-            background: #e8e8e8;
-            color: #333;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: background 0.2s;
-        }
-
-        .mission-cancel-btn:hover {
-            background: #d8d8d8;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 6px;
         }
     </style>
 </head>
@@ -619,7 +738,10 @@
     <div class="container">
         <header>
             <div class="header-content">
-                <h1>Yesterday / Today</h1>
+                <div>
+                    <h1>Yesterday / Today</h1>
+                    <div class="header-tagline">Implements a Deferred Accountability Pattern.</div>
+                </div>
                 <div class="date-controls">
                     <button id="prevDay">← Prev</button>
                     <input type="date" id="todayDatePicker" />
@@ -670,7 +792,7 @@
             <textarea 
                 class="checkin-textarea" 
                 id="checkinTextarea" 
-                placeholder="What went well? What got in the way?"
+                placeholder="What changed? What did I avoid again? What became clear?"
             ></textarea>
         </div>
     </div>
@@ -713,6 +835,23 @@
         </div>
     </div>
 
+    <div class="avoidance-modal" id="avoidanceModal">
+        <div class="avoidance-content">
+            <div class="modal-header" id="avoidanceModalTitle" style="margin-bottom: 8px;">This task has been deferred repeatedly</div>
+            <div id="avoidanceTaskText" style="font-size:14px;color:#555;"></div>
+            <div class="avoidance-options">
+                <button type="button" class="avoidance-option-btn" data-avoidance-action="carry">Still important <span>Carry forward</span></button>
+                <button type="button" class="avoidance-option-btn" data-avoidance-action="archive">Not a priority <span>Archive</span></button>
+                <button type="button" class="avoidance-option-btn" data-avoidance-action="rewrite">Rewrite <span>Refresh wording</span></button>
+            </div>
+            <div class="avoidance-rewrite" id="avoidanceRewrite">
+                <input type="text" class="add-task-input" id="avoidanceRewriteInput" placeholder="Rewrite task before carrying" />
+                <button type="button" class="add-task-btn" id="avoidanceRewriteSubmit" style="margin-top:8px;">Carry rewritten task</button>
+            </div>
+            <div class="feedback-status" id="avoidanceStatus"></div>
+        </div>
+    </div>
+
     <script>
         // ============================================
         // DATA MODEL & STATE MANAGEMENT
@@ -720,17 +859,19 @@
         
         const STORAGE_KEY = 'yt_tasks_v1'
         const LAST_LOADED_DATE_KEY = 'yt_last_loaded_date'
+        const AVOIDED_THRESHOLD = 3
+        const CONSUMPTION_KEYWORDS = ['read', 'watch', 'listen', 'study', 'research', 'explore', 'review', 'scan', 'learn', 'observe', 'think', 'plan', 'browse']
         
         // Global state
         let state = {
-            data: {}, // { 'YYYY-MM-DD': { tasks: [], checkin: '', mission: '', missionUpdatedAt: '' }, ... }
+            data: {}, // { 'YYYY-MM-DD': { tasks: [], checkin: '', missionTaskId: '', missionUpdatedAt: '' }, ... }
             todayDate: null,
             yesterdayDate: null,
             editingTaskId: null,
-            editingMission: false,
             feedbackModalOpen: false,
             feedbackType: 'idea',
-            collapsedGroups: {} // { 'YYYY-MM-DD_completed': true, ... }
+            collapsedGroups: {}, // { 'YYYY-MM-DD_completed': true, ... }
+            avoidanceModal: null
         }
 
         // ============================================
@@ -738,7 +879,10 @@
         // ============================================
 
         function getDateKey(date) {
-            return date.toISOString().split('T')[0]
+            const year = date.getFullYear()
+            const month = String(date.getMonth() + 1).padStart(2, '0')
+            const day = String(date.getDate()).padStart(2, '0')
+            return `${year}-${month}-${day}`
         }
 
         function parseDate(dateString) {
@@ -798,7 +942,16 @@
             if (!state.data[dateKey]) {
                 state.data[dateKey] = {
                     tasks: [],
-                    checkin: ''
+                    checkin: '',
+                    missionTaskId: null,
+                    missionUpdatedAt: null
+                }
+            } else {
+                if (typeof state.data[dateKey].missionTaskId === 'undefined') {
+                    state.data[dateKey].missionTaskId = null
+                }
+                if (typeof state.data[dateKey].missionUpdatedAt === 'undefined') {
+                    state.data[dateKey].missionUpdatedAt = null
                 }
             }
         }
@@ -813,9 +966,18 @@
             return state.data[dateKey].checkin || ''
         }
 
-        function getMission(dateKey) {
+        function getMissionTask(dateKey) {
             ensureDateData(dateKey)
-            return state.data[dateKey].mission || ''
+            const missionTaskId = state.data[dateKey].missionTaskId
+            if (!missionTaskId) return null
+            const tasks = getTasks(dateKey)
+            const task = tasks.find(t => t.id === missionTaskId && !t.archived)
+            if (!task) {
+                state.data[dateKey].missionTaskId = null
+                saveState()
+                return null
+            }
+            return task
         }
 
         function getMissionUpdatedAt(dateKey) {
@@ -823,11 +985,36 @@
             return state.data[dateKey].missionUpdatedAt || ''
         }
 
-        function setMission(dateKey, text) {
+        function setMissionTask(dateKey, taskId) {
             ensureDateData(dateKey)
-            state.data[dateKey].mission = text
+            const tasks = getTasks(dateKey)
+            const index = tasks.findIndex(t => t.id === taskId && !t.archived && !t.done)
+            if (index === -1) return
+            const [task] = tasks.splice(index, 1)
+            tasks.unshift(task)
+            state.data[dateKey].missionTaskId = task.id
             state.data[dateKey].missionUpdatedAt = new Date().toISOString()
             saveState()
+        }
+
+        function clearMissionTask(dateKey) {
+            ensureDateData(dateKey)
+            state.data[dateKey].missionTaskId = null
+            state.data[dateKey].missionUpdatedAt = new Date().toISOString()
+            saveState()
+        }
+
+        function ensureMissionPriority(dateKey) {
+            ensureDateData(dateKey)
+            const missionTaskId = state.data[dateKey].missionTaskId
+            if (!missionTaskId) return
+            const tasks = state.data[dateKey].tasks
+            const index = tasks.findIndex(t => t.id === missionTaskId)
+            if (index > 0) {
+                const [task] = tasks.splice(index, 1)
+                tasks.unshift(task)
+                saveState()
+            }
         }
 
         function addTask(dateKey, text) {
@@ -873,18 +1060,18 @@
             const sourceTasks = getTasks(fromDateKey)
             const sourceTask = sourceTasks.find(t => t.id === taskId)
             
-            if (!sourceTask) return
+            if (!sourceTask) return false
 
             const targetTasks = getTasks(toDateKey)
             
             // Check for duplicate (same text and not done)
             const duplicate = targetTasks.find(t => 
-                t.text === sourceTask.text && !t.done
+                t.text === sourceTask.text && !t.done && !t.archived
             )
             
             if (duplicate) {
                 if (!confirm('A similar incomplete task already exists in Today. Carry anyway?')) {
-                    return
+                    return false
                 }
             }
 
@@ -899,6 +1086,7 @@
             
             state.data[toDateKey].tasks.push(newTask)
             saveState()
+            return true
         }
 
         function autoCarryUndoneTasks(fromDateKey, toDateKey) {
@@ -906,12 +1094,12 @@
             const targetTasks = getTasks(toDateKey)
             
             // Get all incomplete tasks from source date
-            const undoneTasks = sourceTasks.filter(t => !t.done)
+            const undoneTasks = sourceTasks.filter(t => !t.done && !t.archived)
             
             undoneTasks.forEach(sourceTask => {
                 // Check if an identical incomplete task already exists in target
                 const duplicate = targetTasks.find(t => 
-                    t.text === sourceTask.text && !t.done
+                    t.text === sourceTask.text && !t.done && !t.archived
                 )
                 
                 // Auto-carry if no duplicate exists
@@ -953,6 +1141,61 @@
             saveState()
         }
 
+        function archiveTask(dateKey, taskId) {
+            const tasks = getTasks(dateKey)
+            const task = tasks.find(t => t.id === taskId)
+            if (task) {
+                task.archived = true
+                task.archivedAt = new Date().toISOString()
+                saveState()
+            }
+        }
+
+        function carryTaskWithRewrite(fromDateKey, toDateKey, taskId, newText) {
+            const sourceTasks = getTasks(fromDateKey)
+            const sourceTask = sourceTasks.find(t => t.id === taskId)
+            if (!sourceTask) return false
+            const sanitizedText = newText.trim()
+            if (!sanitizedText) return false
+            const targetTasks = getTasks(toDateKey)
+            const duplicate = targetTasks.find(t => t.text === sanitizedText && !t.done && !t.archived)
+            if (duplicate) return false
+            const newTask = {
+                id: generateId(),
+                lineageId: sourceTask.lineageId,
+                text: sanitizedText,
+                done: false,
+                createdAt: new Date().toISOString()
+            }
+            targetTasks.push(newTask)
+            sourceTask.archived = true
+            sourceTask.archivedAt = new Date().toISOString()
+            saveState()
+            return true
+        }
+
+        function getTaskType(task) {
+            const text = (task.text || '').toLowerCase()
+            const isConsumption = CONSUMPTION_KEYWORDS.some(keyword => text.startsWith(keyword + ' ') || text === keyword || text.includes(' ' + keyword + ' '))
+            return isConsumption ? 'consumption' : 'work'
+        }
+
+        function getSuggestedMissionTask(dateKey) {
+            const tasks = getTasks(dateKey)
+            const candidates = tasks.filter(t => !t.done && !t.archived && getTaskType(t) === 'work')
+            if (!candidates.length) return null
+            const ranked = candidates
+                .map(task => ({ task, carry: getCarryCount(task.lineageId) }))
+                .filter(entry => entry.carry > 1)
+                .sort((a, b) => {
+                    if (b.carry !== a.carry) return b.carry - a.carry
+                    const aAge = new Date(a.task.createdAt).getTime()
+                    const bAge = new Date(b.task.createdAt).getTime()
+                    return aAge - bAge
+                })
+            return ranked.length ? ranked[0].task : null
+        }
+
         // ============================================
         // COMPUTED VALUES
         // ============================================
@@ -981,7 +1224,7 @@
             const dateKey = getDateKey(state.yesterdayDate)
             dateDisplay.textContent = formatDateDisplay(state.yesterdayDate)
             
-            const tasks = getTasks(dateKey)
+            const tasks = getTasks(dateKey).filter(t => !t.archived)
             
             if (tasks.length === 0) {
                 container.innerHTML = '<div class="empty-state">No tasks recorded for yesterday.</div>'
@@ -990,30 +1233,68 @@
             }
 
             const doneTasks = tasks.filter(t => t.done)
-            const notDoneTasks = tasks.filter(t => !t.done)
+            const undoneTasks = tasks.filter(t => !t.done)
+            const avoidedTasks = []
+            const notDoneTasks = []
+
+            undoneTasks.forEach(task => {
+                const carryCount = getCarryCount(task.lineageId)
+                const taskType = getTaskType(task)
+                const groupEntry = { task, carryCount, taskType }
+                if (carryCount >= AVOIDED_THRESHOLD) {
+                    avoidedTasks.push(groupEntry)
+                } else {
+                    notDoneTasks.push(groupEntry)
+                }
+            })
             
             const completedCollapsed = state.collapsedGroups[`${dateKey}_completed`] || false
-            
             let html = ''
-            
-            // Not done group
+
             if (notDoneTasks.length > 0) {
                 html += '<div class="task-group">'
                 html += '<div class="task-group-header">Not Done</div>'
                 html += '<ul class="task-list">'
-                notDoneTasks.forEach(task => {
-                    const carryCount = getCarryCount(task.lineageId)
+                notDoneTasks.forEach(entry => {
+                    const { task, carryCount, taskType } = entry
                     html += `
                         <li class="task-item">
                             <input type="checkbox" class="task-checkbox" disabled />
                             <div class="task-content">
                                 <div class="task-text">${escapeHtml(task.text)}</div>
-                                ${carryCount >= 2 ? `<div class="task-meta">Carried ${carryCount} times</div>` : ''}
+                                <div class="task-badges">
+                                    <span class="task-badge ${taskType}">${taskType === 'work' ? 'Work' : 'Consumption'}</span>
+                                    ${carryCount > 1 ? `<span class="task-badge">Carried ${carryCount}</span>` : ''}
+                                </div>
                             </div>
                             <div class="task-actions">
-                                <button class="task-btn carry" data-action="carry" data-task-id="${task.id}">
-                                    Carry to Today
-                                </button>
+                                <button class="task-btn carry" data-action="carry" data-task-id="${task.id}">Carry to Today</button>
+                            </div>
+                        </li>
+                    `
+                })
+                html += '</ul></div>'
+            }
+
+            if (avoidedTasks.length > 0) {
+                html += '<div class="task-group">'
+                html += '<div class="task-group-header">Avoided</div>'
+                html += '<div class="panel-subtitle" style="margin-bottom:8px;">These tasks have been repeatedly deferred.</div>'
+                html += '<ul class="task-list">'
+                avoidedTasks.forEach(entry => {
+                    const { task, carryCount, taskType } = entry
+                    html += `
+                        <li class="task-item avoided">
+                            <input type="checkbox" class="task-checkbox" disabled />
+                            <div class="task-content">
+                                <div class="task-text">${escapeHtml(task.text)}</div>
+                                <div class="task-badges">
+                                    <span class="task-badge ${taskType}">${taskType === 'work' ? 'Work' : 'Consumption'}</span>
+                                    <span class="task-badge carry-count-badge">Carried ${carryCount}</span>
+                                </div>
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-btn carry" data-action="carry" data-task-id="${task.id}" data-avoidance="true">Recommit</button>
                             </div>
                         </li>
                     `
@@ -1021,7 +1302,6 @@
                 html += '</ul></div>'
             }
             
-            // Completed group
             if (doneTasks.length > 0) {
                 html += '<div class="task-group">'
                 html += `
@@ -1033,11 +1313,15 @@
                 if (!completedCollapsed) {
                     html += '<ul class="task-list">'
                     doneTasks.forEach(task => {
+                        const taskType = getTaskType(task)
                         html += `
                             <li class="task-item done">
                                 <input type="checkbox" class="task-checkbox" checked disabled />
                                 <div class="task-content">
                                     <div class="task-text done">${escapeHtml(task.text)}</div>
+                                    <div class="task-badges">
+                                        <span class="task-badge ${taskType}">${taskType === 'work' ? 'Work' : 'Consumption'}</span>
+                                    </div>
                                 </div>
                             </li>
                         `
@@ -1048,8 +1332,16 @@
             }
             
             container.innerHTML = html
-            
-            // Render yesterday's checkin if exists
+
+            const addInput = document.getElementById('addTaskInput')
+            if (addInput) {
+                if (avoidedTasks.length > 0) {
+                    addInput.classList.add('faded')
+                } else {
+                    addInput.classList.remove('faded')
+                }
+            }
+
             const checkin = getCheckin(dateKey)
             if (checkin) {
                 checkinContainer.innerHTML = `
@@ -1071,7 +1363,10 @@
             const dateKey = getDateKey(state.todayDate)
             dateDisplay.textContent = formatDateDisplay(state.todayDate)
             
-            const tasks = getTasks(dateKey)
+            ensureMissionPriority(dateKey)
+            const tasks = getTasks(dateKey).filter(t => !t.archived)
+            const missionTask = getMissionTask(dateKey)
+            const hasMission = Boolean(missionTask)
             
             const doneCount = tasks.filter(t => t.done).length
             countDisplay.textContent = `Done ${doneCount} / Total ${tasks.length}`
@@ -1085,6 +1380,9 @@
             
             tasks.forEach((task, index) => {
                 const isEditing = state.editingTaskId === task.id
+                const carryCount = getCarryCount(task.lineageId)
+                const taskType = getTaskType(task)
+                const isMission = missionTask && missionTask.id === task.id
                 
                 html += `
                     <li class="task-item ${task.done ? 'done' : ''}">
@@ -1113,6 +1411,13 @@
                     `
                 } else {
                     html += `<div class="task-text ${task.done ? 'done' : ''}">${escapeHtml(task.text)}</div>`
+                    html += `
+                        <div class="task-badges">
+                            <span class="task-badge ${taskType}">${taskType === 'work' ? 'Work' : 'Consumption'}</span>
+                            ${carryCount > 1 ? `<span class="task-badge">Carried ${carryCount}</span>` : ''}
+                            ${isMission ? '<span class="mission-badge">Today\'s mission</span>' : ''}
+                        </div>
+                    `
                 }
                 
                 html += `
@@ -1120,6 +1425,19 @@
                 `
                 
                 if (!isEditing) {
+                    let missionControl = ''
+                    if (!hasMission) {
+                        missionControl = `<button class="task-btn" data-action="set-mission" data-task-id="${task.id}" ${task.done ? 'disabled' : ''}>Set mission</button>`
+                    } else if (isMission) {
+                        missionControl = `<button class="task-btn" data-action="set-mission" data-task-id="${task.id}" disabled>Selected mission</button>`
+                    } else {
+                        missionControl = `
+                            <div class="mission-change-option">
+                                <button class="task-btn mission-change-btn" data-action="set-mission" data-task-id="${task.id}" ${task.done ? 'disabled' : ''}>Set today's focus</button>
+                                <div class="mission-change-hint">This will reset today's focus</div>
+                            </div>
+                        `
+                    }
                     html += `
                         <div class="reorder-buttons">
                             <button 
@@ -1140,6 +1458,7 @@
                         <div class="task-actions">
                             <button class="task-btn" data-action="edit" data-task-id="${task.id}">Edit</button>
                             <button class="task-btn" data-action="delete" data-task-id="${task.id}">Delete</button>
+                            ${missionControl}
                         </div>
                     `
                 }
@@ -1160,38 +1479,65 @@
         function renderMission() {
             const section = document.getElementById('missionSection')
             const dateKey = getDateKey(state.todayDate)
-            const mission = getMission(dateKey)
+            const missionTask = getMissionTask(dateKey)
+            const suggestedTask = getSuggestedMissionTask(dateKey)
             const updatedAt = getMissionUpdatedAt(dateKey)
-            
-            if (state.editingMission) {
-                section.innerHTML = `
-                    <div class="mission-label">Mission</div>
-                    <form class="mission-edit-form" id="missionEditForm">
-                        <textarea 
-                            class="mission-textarea" 
-                            id="missionInput"
-                            placeholder="What is the mission for today?"
-                        >${escapeHtml(mission)}</textarea>
-                        <div class="mission-actions">
-                            <button type="submit" class="mission-save-btn">Save Mission</button>
-                            <button type="button" class="mission-cancel-btn" id="cancelMissionBtn">Cancel</button>
-                        </div>
-                    </form>
-                `
-                setTimeout(() => {
-                    const input = document.getElementById('missionInput')
-                    if (input) input.focus()
-                }, 0)
-            } else {
-                const timestamp = updatedAt ? new Date(updatedAt).toLocaleString() : ''
-                section.innerHTML = `
-                    <div class="mission-label">Mission</div>
-                    <div class="mission-display ${!mission ? 'empty' : ''}" id="missionDisplay">
-                        ${mission || 'Click to add a mission for today'}
+            const missionSubtitle = 'Pick one carried work task and give it focus today.'
+
+            let missionContent = ''
+            if (missionTask) {
+                const carryCount = getCarryCount(missionTask.lineageId)
+                const carryLabel = carryCount === 1 ? 'Carried once' : `Carried ${carryCount} times`
+                const missionType = getTaskType(missionTask)
+                missionContent = `
+                    <div class="mission-display">${escapeHtml(missionTask.text)}</div>
+                    <div class="task-badges">
+                        <span class="task-badge ${missionType}">${missionType === 'work' ? 'Work' : 'Consumption'}</span>
+                        <span class="task-badge carry-count-badge">${carryLabel}</span>
                     </div>
-                    ${updatedAt ? `<div class="mission-timestamp">Updated ${timestamp}</div>` : ''}
+                    <div class="mission-subtitle">${missionSubtitle}</div>
+                    <div class="mission-actions">
+                        <button class="task-btn" data-action="clear-mission">Clear mission</button>
+                    </div>
+                    ${updatedAt ? `<div class="mission-timestamp">Updated ${new Date(updatedAt).toLocaleString()}</div>` : ''}
+                `
+            } else {
+                missionContent = `
+                    <div class="mission-display empty">No mission selected</div>
+                    <div class="mission-subtitle">${missionSubtitle}</div>
                 `
             }
+
+            let suggestedContent = ''
+            if (suggestedTask && (!missionTask || missionTask.id !== suggestedTask.id)) {
+                const carryCount = getCarryCount(suggestedTask.lineageId)
+                const carryLabel = carryCount === 1 ? 'Carried once' : `Carried ${carryCount} times`
+                const suggestedType = getTaskType(suggestedTask)
+                suggestedContent = `
+                    <div class="suggested-mission">
+                        <div class="suggested-mission-title">Suggested mission</div>
+                        <div class="task-text">${escapeHtml(suggestedTask.text)}</div>
+                        <div class="task-badges">
+                            <span class="task-badge ${suggestedType}">${suggestedType === 'work' ? 'Work' : 'Consumption'}</span>
+                            <span class="task-badge">${carryLabel}</span>
+                        </div>
+                        <button class="task-btn" data-action="promote-mission" data-task-id="${suggestedTask.id}">Promote to mission</button>
+                    </div>
+                `
+            }
+
+            section.innerHTML = `
+                <div class="mission-card">
+                    <div class="mission-title-row">
+                        <div>
+                            <div class="mission-label">Today's Mission</div>
+                            <div class="mission-subtitle">Selected from work you’ve been recommitting to.</div>
+                        </div>
+                    </div>
+                    ${missionContent}
+                    ${suggestedContent}
+                </div>
+            `
         }
 
         function render() {
@@ -1222,20 +1568,11 @@
             const picker = document.getElementById('todayDatePicker')
             const oldDate = state.todayDate
             const oldDateKey = getDateKey(oldDate)
-            const oldMission = getMission(oldDateKey)
             
             state.todayDate = parseDate(picker.value)
             state.yesterdayDate = addDays(state.todayDate, -1)
             
             const newDateKey = getDateKey(state.todayDate)
-            
-            // Carry mission to new date if old date has a mission and new date doesn't
-            if (oldMission && state.todayDate > oldDate) {
-                const newMission = getMission(newDateKey)
-                if (!newMission) {
-                    setMission(newDateKey, oldMission)
-                }
-            }
             
             // Auto-carry all undone tasks when moving to a future date
             if (state.todayDate > oldDate) {
@@ -1254,20 +1591,11 @@
 
         function handleNextDay() {
             const currentDateKey = getDateKey(state.todayDate)
-            const currentMission = getMission(currentDateKey)
             
             state.todayDate = addDays(state.todayDate, 1)
             state.yesterdayDate = addDays(state.yesterdayDate, 1)
             
             const nextDateKey = getDateKey(state.todayDate)
-            
-            // Carry mission to next day if current day has a mission and next day doesn't
-            if (currentMission) {
-                const nextMission = getMission(nextDateKey)
-                if (!nextMission) {
-                    setMission(nextDateKey, currentMission)
-                }
-            }
             
             // Auto-carry all undone tasks from today (which becomes yesterday)
             autoCarryUndoneTasks(currentDateKey, nextDateKey)
@@ -1277,11 +1605,10 @@
         }
 
         function handleClick(e) {
-            const target = e.target
+            const target = e.target.closest('[data-action]')
+            if (!target) return
             const action = target.dataset.action
             const taskId = target.dataset.taskId
-            
-            if (!action) return
             
             if (action === 'toggle') {
                 const dateKey = getDateKey(state.todayDate)
@@ -1310,13 +1637,108 @@
             } else if (action === 'carry') {
                 const fromDateKey = getDateKey(state.yesterdayDate)
                 const toDateKey = getDateKey(state.todayDate)
-                carryTask(fromDateKey, toDateKey, taskId)
-                render()
+                const isAvoided = target.dataset.avoidance === 'true'
+                if (isAvoided) {
+                    beginAvoidanceFlow(taskId)
+                } else {
+                    carryTask(fromDateKey, toDateKey, taskId)
+                    render()
+                }
             } else if (action === 'reorder') {
                 const direction = target.dataset.direction
                 const dateKey = getDateKey(state.todayDate)
                 reorderTask(dateKey, taskId, direction)
                 render()
+            } else if (action === 'set-mission') {
+                const dateKey = getDateKey(state.todayDate)
+                setMissionTask(dateKey, taskId)
+                render()
+            } else if (action === 'clear-mission') {
+                const dateKey = getDateKey(state.todayDate)
+                clearMissionTask(dateKey)
+                render()
+            } else if (action === 'promote-mission') {
+                const dateKey = getDateKey(state.todayDate)
+                setMissionTask(dateKey, taskId)
+                render()
+            }
+        }
+
+        function beginAvoidanceFlow(taskId) {
+            const fromDateKey = getDateKey(state.yesterdayDate)
+            const task = getTasks(fromDateKey).find(t => t.id === taskId)
+            if (!task) return
+            const carryCount = getCarryCount(task.lineageId)
+            const deferralCount = Math.max(carryCount - 1, 1)
+            state.avoidanceModal = {
+                taskId,
+                fromDateKey,
+                toDateKey: getDateKey(state.todayDate)
+            }
+            const title = document.getElementById('avoidanceModalTitle')
+            if (title) {
+                title.textContent = `This task has been deferred ${deferralCount} ${deferralCount === 1 ? 'time' : 'times'}`
+            }
+            document.getElementById('avoidanceTaskText').textContent = task.text
+            document.getElementById('avoidanceStatus').textContent = ''
+            const rewrite = document.getElementById('avoidanceRewrite')
+            rewrite.classList.remove('active')
+            document.getElementById('avoidanceRewriteInput').value = ''
+            document.getElementById('avoidanceModal').classList.add('active')
+        }
+
+        function closeAvoidanceModal() {
+            const modal = document.getElementById('avoidanceModal')
+            modal.classList.remove('active')
+            state.avoidanceModal = null
+            document.getElementById('avoidanceRewrite').classList.remove('active')
+            document.getElementById('avoidanceRewriteInput').value = ''
+            document.getElementById('avoidanceStatus').textContent = ''
+        }
+
+        function handleAvoidanceOptionClick(e) {
+            const button = e.target.closest('[data-avoidance-action]')
+            if (!button || !state.avoidanceModal) return
+            const action = button.dataset.avoidanceAction
+            const { fromDateKey, toDateKey, taskId } = state.avoidanceModal
+            const statusEl = document.getElementById('avoidanceStatus')
+            statusEl.textContent = ''
+            if (action === 'carry') {
+                const success = carryTask(fromDateKey, toDateKey, taskId)
+                if (success) {
+                    closeAvoidanceModal()
+                    render()
+                } else {
+                    statusEl.textContent = 'Carry canceled.'
+                }
+            } else if (action === 'archive') {
+                archiveTask(fromDateKey, taskId)
+                closeAvoidanceModal()
+                render()
+            } else if (action === 'rewrite') {
+                document.getElementById('avoidanceRewrite').classList.add('active')
+                const input = document.getElementById('avoidanceRewriteInput')
+                input.focus()
+            }
+        }
+
+        function handleAvoidanceRewriteSubmit() {
+            if (!state.avoidanceModal) return
+            const input = document.getElementById('avoidanceRewriteInput')
+            const newText = input.value.trim()
+            const statusEl = document.getElementById('avoidanceStatus')
+            statusEl.textContent = ''
+            if (!newText) {
+                statusEl.textContent = 'Rewrite the task before carrying.'
+                return
+            }
+            const { fromDateKey, toDateKey, taskId } = state.avoidanceModal
+            const success = carryTaskWithRewrite(fromDateKey, toDateKey, taskId, newText)
+            if (success) {
+                closeAvoidanceModal()
+                render()
+            } else {
+                statusEl.textContent = 'Unable to carry rewritten task.'
             }
         }
 
@@ -1341,34 +1763,14 @@
         }
 
         function handleToggleGroup(e) {
-            const groupKey = e.target.dataset.toggleGroup
-            if (!groupKey) return
+            const header = e.target.closest('[data-toggle-group]')
+            if (!header) return
+            const groupKey = header.dataset.toggleGroup
             
             state.collapsedGroups[groupKey] = !state.collapsedGroups[groupKey]
             render()
         }
 
-        function handleMissionDisplay(e) {
-            if (e.target.id === 'missionDisplay') {
-                state.editingMission = true
-                render()
-            }
-        }
-
-        function handleMissionSubmit(e) {
-            e.preventDefault()
-            const input = document.getElementById('missionInput')
-            const text = input.value.trim()
-            const dateKey = getDateKey(state.todayDate)
-            setMission(dateKey, text)
-            state.editingMission = false
-            render()
-        }
-
-        function handleMissionCancel() {
-            state.editingMission = false
-            render()
-        }
 
         function openFeedbackModal() {
             state.feedbackModalOpen = true
@@ -1480,7 +1882,10 @@
             addTask(today, 'Plan sprint')
             
             setCheckin(yesterday, 'Made good progress on the main feature. Got blocked by API issues in the afternoon.')
-            setMission(today, 'Launch feature release and gather user feedback')
+            const todaysTasks = getTasks(today)
+            if (todaysTasks.length) {
+                setMissionTask(today, todaysTasks[todaysTasks.length - 1].id)
+            }
             
             render()
         }
@@ -1552,23 +1957,23 @@
             // Delegate click events
             document.addEventListener('click', handleClick)
             document.addEventListener('click', handleToggleGroup)
-            document.addEventListener('click', handleMissionDisplay)
             
             // Delegate form submit for edit forms
             document.addEventListener('submit', (e) => {
                 if (e.target.classList.contains('edit-task-form')) {
                     handleEditSubmit(e)
-                } else if (e.target.id === 'missionEditForm') {
-                    handleMissionSubmit(e)
                 }
             })
-            
-            // Mission cancel button
-            document.addEventListener('click', (e) => {
-                if (e.target.id === 'cancelMissionBtn') {
-                    handleMissionCancel()
+
+            const avoidanceModal = document.getElementById('avoidanceModal')
+            avoidanceModal.addEventListener('click', (e) => {
+                if (e.target.id === 'avoidanceModal') {
+                    closeAvoidanceModal()
+                    return
                 }
+                handleAvoidanceOptionClick(e)
             })
+            document.getElementById('avoidanceRewriteSubmit').addEventListener('click', handleAvoidanceRewriteSubmit)
             
             // Initial render
             render()
