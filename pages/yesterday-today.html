@@ -1033,12 +1033,20 @@
 
         function toggleTask(dateKey, taskId) {
             const tasks = getTasks(dateKey)
-            const task = tasks.find(t => t.id === taskId)
-            if (task) {
-                task.done = !task.done
-                task.completedAt = task.done ? new Date().toISOString() : null
-                saveState()
+            const taskIndex = tasks.findIndex(t => t.id === taskId)
+            if (taskIndex === -1) return
+            const task = tasks[taskIndex]
+            task.done = !task.done
+            task.completedAt = task.done ? new Date().toISOString() : null
+            if (task.done && state.data[dateKey].missionTaskId === task.id) {
+                state.data[dateKey].missionTaskId = null
+                state.data[dateKey].missionUpdatedAt = new Date().toISOString()
             }
+            if (task.done) {
+                tasks.splice(taskIndex, 1)
+                tasks.push(task)
+            }
+            saveState()
         }
 
         function updateTaskText(dateKey, taskId, newText) {
