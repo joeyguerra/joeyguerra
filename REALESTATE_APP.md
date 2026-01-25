@@ -247,7 +247,7 @@ We've missed the mark.
 # LLM Prompt
 
 ```text
-You are a senior product architect helping design a transaction-centric SaaS platform for real estate brokers.
+You are a senior product minded engineer (architect from tenure) helping design a transaction-centric SaaS platform for real estate brokers.
 
 The product’s goal is to reduce transaction friction between offer acceptance and closing, while preserving post-close referral value.
 

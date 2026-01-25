@@ -483,6 +483,15 @@
             border-color: #ccc;
         }
 
+        .task-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .task-btn:disabled:hover {
+            background: transparent;
+            border-color: #ddd;
+        }
+
         .task-btn.carry {
             color: #0066cc;
             border-color: #0066cc;
@@ -1435,16 +1444,14 @@
                 if (!isEditing) {
                     let missionControl = ''
                     if (!hasMission) {
-                        missionControl = `<button class="task-btn" data-action="set-mission" data-task-id="${task.id}" ${task.done ? 'disabled' : ''}>Set mission</button>`
-                    } else if (isMission) {
-                        missionControl = `<button class="task-btn" data-action="set-mission" data-task-id="${task.id}" disabled>Selected mission</button>`
-                    } else {
                         missionControl = `
                             <div class="mission-change-option">
                                 <button class="task-btn mission-change-btn" data-action="set-mission" data-task-id="${task.id}" ${task.done ? 'disabled' : ''}>Set today's focus</button>
                                 <div class="mission-change-hint">This will reset today's focus</div>
                             </div>
                         `
+                    } else if (isMission) {
+                        missionControl = `<button class="task-btn" data-action="set-mission" data-task-id="${task.id}" disabled>Selected mission</button>`
                     }
                     html += `
                         <div class="reorder-buttons">
