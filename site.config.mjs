@@ -3,18 +3,18 @@ export default {
     sourceFolder: './pages',
     buildFolder: './_site',
     resources: ['css', 'js', 'images', 'HubotSans', 'favicon_package_v0', '.well-known', 'guide-software-success/assets', 'webapp'],
+    dist: [
+        {
+            from: './node_modules/markdown-it/dist/markdown-it.min.js',
+            to: './js/markdown-it.min.js'
+        }
+    ],
     fileExtensions: {
         exclude: ['.html', '.xml', '.md', '.mjs', '.js'],
         include: ['.html', '.xml', '.md']
     },
     server: {
         
-    },
-    build: {
-        source: './pages',
-        output: './_site',
-        assets: ['css', 'js', 'images', 'HubotSans', 'favicon_package_v0', '.well-known'],
-        layouts: './pages/layouts'
     },
     plugins: [{
             name: 'blog',

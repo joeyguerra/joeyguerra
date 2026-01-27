@@ -514,6 +514,9 @@
             border-radius: 4px;
             font-size: 14px;
             transition: opacity 0.2s, border-color 0.2s;
+            font-family: inherit;
+            min-height: 38px;
+            resize: vertical;
         }
 
         .add-task-input.faded {
@@ -783,13 +786,14 @@
                     <div class="task-count" id="todayCount"></div>
                 </div>
                 <form class="add-task-form" id="addTaskForm">
-                    <input 
-                        type="text" 
+                    <textarea 
                         class="add-task-input" 
                         id="addTaskInput" 
-                        placeholder="Add a new task..."
+                        placeholder="Add a new task... (Markdown supported)"
                         autocomplete="off"
-                    />
+                        rows="2"
+                        style="resize:vertical;min-height:38px;"
+                    ></textarea>
                     <button type="submit" class="add-task-btn">Add</button>
                 </form>
                 <div id="todayContent"></div>
@@ -854,23 +858,45 @@
                 <button type="button" class="avoidance-option-btn" data-avoidance-action="rewrite">Rewrite <span>Refresh wording</span></button>
             </div>
             <div class="avoidance-rewrite" id="avoidanceRewrite">
-                <input type="text" class="add-task-input" id="avoidanceRewriteInput" placeholder="Rewrite task before carrying" />
+                <textarea class="add-task-input" id="avoidanceRewriteInput" placeholder="Rewrite task before carrying" rows="2" style="resize:vertical;min-height:38px;"></textarea>
                 <button type="button" class="add-task-btn" id="avoidanceRewriteSubmit" style="margin-top:8px;">Carry rewritten task</button>
             </div>
             <div class="feedback-status" id="avoidanceStatus"></div>
         </div>
     </div>
-
+    <script src="/js/markdown-it.min.js"></script>
     <script>
+        // ============================================
+        // MARKDOWN MODULE LOADING (top-level, before init)
+        // ============================================
+        let markdownToHtml = (x) => {
+            const md = markdownit({
+                html: false,
+                linkify: true,
+                typographer: true
+            })
+            return md.render(x)
+        }
+
+        let htmlToMarkdown = (x) => {
+            return x
+                .replace(/<br\s*\/?>(\n)?/gi, '\n')
+                .replace(/<[^>]+>/g, '')
+                .replace(/&amp;/g, '&')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, "'")
+        }
+
         // ============================================
         // DATA MODEL & STATE MANAGEMENT
         // ============================================
-        
         const STORAGE_KEY = 'yt_tasks_v1'
         const LAST_LOADED_DATE_KEY = 'yt_last_loaded_date'
-        const AVOIDED_THRESHOLD = 3
+        const AVOIDED_THRESHOLD = 14
         const CONSUMPTION_KEYWORDS = ['read', 'watch', 'listen', 'study', 'research', 'explore', 'review', 'scan', 'learn', 'observe', 'think', 'plan', 'browse']
-        
+
         // Global state
         let state = {
             data: {}, // { 'YYYY-MM-DD': { tasks: [], checkin: '', missionTaskId: '', missionUpdatedAt: '' }, ... }
@@ -1083,7 +1109,7 @@
             
             // Check for duplicate (same text and not done)
             const duplicate = targetTasks.find(t => 
-                t.text === sourceTask.text && !t.done && !t.archived
+                t.lineageId === sourceTask.lineageId && !t.done && !t.archived
             )
             
             if (duplicate) {
@@ -1116,7 +1142,7 @@
             undoneTasks.forEach(sourceTask => {
                 // Check if an identical incomplete task already exists in target
                 const duplicate = targetTasks.find(t => 
-                    t.text === sourceTask.text && !t.done && !t.archived
+                    t.lineageId === sourceTask.lineageId && !t.done && !t.archived
                 )
                 
                 // Auto-carry if no duplicate exists
@@ -1175,7 +1201,7 @@
             const sanitizedText = newText.trim()
             if (!sanitizedText) return false
             const targetTasks = getTasks(toDateKey)
-            const duplicate = targetTasks.find(t => t.text === sanitizedText && !t.done && !t.archived)
+            const duplicate = targetTasks.find(t => t.lineageId === sourceTask.lineageId && !t.done && !t.archived)
             if (duplicate) return false
             const newTask = {
                 id: generateId(),
@@ -1276,16 +1302,15 @@
                     const { task, carryCount, taskType } = entry
                     html += `
                         <li class="task-item">
-                            <input type="checkbox" class="task-checkbox" disabled />
                             <div class="task-content">
-                                <div class="task-text">${escapeHtml(task.text)}</div>
+                                <div class="task-text" style="white-space:normal;">${markdownToHtml(task.text)}</div>
                                 <div class="task-badges">
                                     <span class="task-badge ${taskType}">${taskType === 'work' ? 'Work' : 'Consumption'}</span>
                                     ${carryCount > 1 ? `<span class="task-badge">Carried ${carryCount}</span>` : ''}
                                 </div>
                             </div>
                             <div class="task-actions">
-                                <button class="task-btn carry" data-action="carry" data-task-id="${task.id}">Carry to Today</button>
+                                <button class="task-btn carry" data-action="carry" data-task-id="${task.id}">Recommit</button>
                             </div>
                         </li>
                     `
@@ -1302,9 +1327,8 @@
                     const { task, carryCount, taskType } = entry
                     html += `
                         <li class="task-item avoided">
-                            <input type="checkbox" class="task-checkbox" disabled />
                             <div class="task-content">
-                                <div class="task-text">${escapeHtml(task.text)}</div>
+                                <div class="task-text" style="white-space:normal;">${markdownToHtml(task.text)}</div>
                                 <div class="task-badges">
                                     <span class="task-badge ${taskType}">${taskType === 'work' ? 'Work' : 'Consumption'}</span>
                                     <span class="task-badge carry-count-badge">Carried ${carryCount}</span>
@@ -1333,9 +1357,8 @@
                         const taskType = getTaskType(task)
                         html += `
                             <li class="task-item done">
-                                <input type="checkbox" class="task-checkbox" checked disabled />
                                 <div class="task-content">
-                                    <div class="task-text done">${escapeHtml(task.text)}</div>
+                                    <div class="task-text done" style="white-space:normal;">${markdownToHtml(task.text)}</div>
                                     <div class="task-badges">
                                         <span class="task-badge ${taskType}">${taskType === 'work' ? 'Work' : 'Consumption'}</span>
                                     </div>
@@ -1364,7 +1387,7 @@
                 checkinContainer.innerHTML = `
                     <div style="margin-top: 20px;">
                         <div class="task-group-header" style="margin-bottom: 8px;">Yesterday's Check-in</div>
-                        <div class="checkin-readonly">${escapeHtml(checkin)}</div>
+                        <div class="checkin-readonly">${markdownToHtml(checkin)}</div>
                     </div>
                 `
             } else {
@@ -1416,18 +1439,18 @@
                 if (isEditing) {
                     html += `
                         <form class="edit-task-form" data-task-id="${task.id}">
-                            <input 
-                                type="text" 
+                            <textarea 
                                 class="edit-task-input" 
-                                value="${escapeHtml(task.text)}"
                                 data-task-id="${task.id}"
-                            />
+                                rows="2"
+                                style="resize:vertical;min-height:38px;"
+                            >${htmlToMarkdown(task.text)}</textarea>
                             <button type="submit" class="task-btn">Save</button>
                             <button type="button" class="task-btn" data-action="cancel-edit">Cancel</button>
                         </form>
                     `
                 } else {
-                    html += `<div class="task-text ${task.done ? 'done' : ''}">${escapeHtml(task.text)}</div>`
+                    html += `<div class="task-text ${task.done ? 'done' : ''}" style="white-space:normal;">${markdownToHtml(task.text)}</div>`
                     html += `
                         <div class="task-badges">
                             <span class="task-badge ${taskType}">${taskType === 'work' ? 'Work' : 'Consumption'}</span>
@@ -1505,7 +1528,7 @@
                 const carryLabel = carryCount === 1 ? 'Carried once' : `Carried ${carryCount} times`
                 const missionType = getTaskType(missionTask)
                 missionContent = `
-                    <div class="mission-display">${escapeHtml(missionTask.text)}</div>
+                    <div class="mission-display">${markdownToHtml(missionTask.text)}</div>
                     <div class="task-badges">
                         <span class="task-badge ${missionType}">${missionType === 'work' ? 'Work' : 'Consumption'}</span>
                         <span class="task-badge carry-count-badge">${carryLabel}</span>
@@ -1531,7 +1554,7 @@
                 suggestedContent = `
                     <div class="suggested-mission">
                         <div class="suggested-mission-title">Suggested mission</div>
-                        <div class="task-text">${escapeHtml(suggestedTask.text)}</div>
+                        <div class="task-text">${markdownToHtml(suggestedTask.text)}</div>
                         <div class="task-badges">
                             <span class="task-badge ${suggestedType}">${suggestedType === 'work' ? 'Work' : 'Consumption'}</span>
                             <span class="task-badge">${carryLabel}</span>
@@ -1634,7 +1657,7 @@
                 render()
                 // Focus the edit input
                 setTimeout(() => {
-                    const input = document.querySelector(`input.edit-task-input[data-task-id="${taskId}"]`)
+                    const input = document.querySelector(`textarea.edit-task-input[data-task-id="${taskId}"]`)
                     if (input) {
                         input.focus()
                         input.select()
@@ -1694,7 +1717,14 @@
             if (title) {
                 title.textContent = `This task has been deferred ${deferralCount} ${deferralCount === 1 ? 'time' : 'times'}`
             }
-            document.getElementById('avoidanceTaskText').textContent = task.text
+            // Render markdown for avoidance modal task text
+            document.getElementById('avoidanceTaskText').innerHTML = markdownToHtml(task.text)
+            // Set rewrite input to markdown source if rewriting
+            const rewriteInput = document.getElementById('avoidanceRewriteInput')
+            if (rewriteInput) {
+                rewriteInput.value = htmlToMarkdown(task.text)
+            }
+            // ...existing code...
             document.getElementById('avoidanceStatus').textContent = ''
             const rewrite = document.getElementById('avoidanceRewrite')
             rewrite.classList.remove('active')
@@ -1959,6 +1989,10 @@
             document.getElementById('closeFeedbackBtn').addEventListener('click', closeFeedbackModal)
             document.getElementById('resetBtn').addEventListener('click', resetData)
             document.getElementById('checkinTextarea').addEventListener('input', handleCheckinChange)
+            document.getElementById('addTaskForm').addEventListener('keydown', e => {
+                if (e.key !== 'Enter' || e.shiftKey) return
+                handleAddTask(e)
+            })
             
             // Feedback modal events
             document.getElementById('feedbackForm').addEventListener('submit', handleFeedbackSubmit)
