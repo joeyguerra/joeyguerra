@@ -1453,9 +1453,9 @@
                     html += `<div class="task-text ${task.done ? 'done' : ''}" style="white-space:normal;">${markdownToHtml(task.text)}</div>`
                     html += `
                         <div class="task-badges">
-                            <span class="task-badge ${taskType}">${taskType === 'work' ? 'Work' : 'Consumption'}</span>
+                            <span class="task-badge ${taskType}">${taskType}</span>
                             ${carryCount > 1 ? `<span class="task-badge">Carried ${carryCount}</span>` : ''}
-                            ${isMission ? '<span class="mission-badge">Today\'s mission</span>' : ''}
+                            ${isMission ? '<span class="mission-badge">Today\'s focus</span>' : ''}
                         </div>
                     `
                 }
@@ -1466,16 +1466,17 @@
                 
                 if (!isEditing) {
                     let missionControl = ''
-                    if (!hasMission) {
+                    if (isMission) {
+                        missionControl = `<button class="task-btn" data-action="set-mission" data-task-id="${task.id}" disabled>Today's focus</button>`
+                    } else {
                         missionControl = `
                             <div class="mission-change-option">
                                 <button class="task-btn mission-change-btn" data-action="set-mission" data-task-id="${task.id}" ${task.done ? 'disabled' : ''}>Set today's focus</button>
-                                <div class="mission-change-hint">This will reset today's focus</div>
+                                <div class="mission-change-hint">This will set today's focus</div>
                             </div>
                         `
-                    } else if (isMission) {
-                        missionControl = `<button class="task-btn" data-action="set-mission" data-task-id="${task.id}" disabled>Selected mission</button>`
                     }
+
                     html += `
                         <div class="reorder-buttons">
                             <button 
@@ -1568,7 +1569,7 @@
                 <div class="mission-card">
                     <div class="mission-title-row">
                         <div>
-                            <div class="mission-label">Today's Mission</div>
+                            <div class="mission-label">Today's Focus</div>
                             <div class="mission-subtitle">Selected from work you’ve been recommitting to.</div>
                         </div>
                     </div>
