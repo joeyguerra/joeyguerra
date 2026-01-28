@@ -1062,7 +1062,19 @@
                 done: false,
                 createdAt: new Date().toISOString()
             }
-            state.data[dateKey].tasks.push(task)
+            const tasks = state.data[dateKey].tasks
+            const missionTaskId = state.data[dateKey].missionTaskId
+            if (missionTaskId) {
+                // Find the mission task index
+                const missionIdx = tasks.findIndex(t => t.id === missionTaskId)
+                if (missionIdx !== -1) {
+                    tasks.splice(missionIdx + 1, 0, task)
+                } else {
+                    tasks.unshift(task)
+                }
+            } else {
+                tasks.unshift(task)
+            }
             saveState()
         }
 
@@ -1132,33 +1144,26 @@
             return true
         }
 
+        // Scenarios to auto carry:
+        // 1. Yesterday's undone tasks to Today when loading Today for the first time
+        // 2. Today's undone tasks to Tomorrow when moving to the next day
         function autoCarryUndoneTasks(fromDateKey, toDateKey) {
-            const sourceTasks = getTasks(fromDateKey)
-            const targetTasks = getTasks(toDateKey)
-            
-            // Get all incomplete tasks from source date
-            const undoneTasks = sourceTasks.filter(t => !t.done && !t.archived)
-            
-            undoneTasks.forEach(sourceTask => {
-                // Check if an identical incomplete task already exists in target
-                const duplicate = targetTasks.find(t => 
-                    t.lineageId === sourceTask.lineageId && !t.done && !t.archived
-                )
-                
-                // Auto-carry if no duplicate exists
-                if (!duplicate) {
-                    const newTask = {
-                        id: generateId(),
-                        lineageId: sourceTask.lineageId,
-                        text: sourceTask.text,
-                        done: false,
-                        createdAt: new Date().toISOString()
-                    }
-                    targetTasks.push(newTask)
-                }
+            const yesterdaysTasks = getTasks(fromDateKey)
+            const todaysTasks = getTasks(toDateKey)
+            const tasksToCarryOver = yesterdaysTasks.filter(t => !t.done && !t.archived &&
+                !todaysTasks.some(tt => tt.lineageId === t.lineageId)
+            )
+            tasksToCarryOver.forEach(sourceTask => {
+                todaysTasks.push({
+                    id: generateId(),
+                    lineageId: sourceTask.lineageId,
+                    text: sourceTask.text,
+                    done: false,
+                    createdAt: new Date().toISOString()
+                })
             })
             
-            if (undoneTasks.length > 0) {
+            if (tasksToCarryOver.length > 0) {
                 saveState()
             }
         }
