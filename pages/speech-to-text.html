@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>Speech to Text</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #f2f2f7;
+      min-height: 100dvh;
+      display: block;
+      padding: 0;
+      overflow-x: hidden;
+      color: #111;
+      -webkit-font-smoothing: antialiased;
+      --app-height: 100dvh;
+    }
+
+    .container {
+      background: white;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 0;
+      width: 100%;
+      height: var(--app-height);
+      max-height: none;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 85%;
+      max-width: 320px;
+      height: 100dvh;
+      z-index: 1000;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      border-right: 1px solid #e5e5ea;
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+      overflow-y: auto;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar.open {
+      transform: translateX(0);
+    }
+
+    .sidebar-header {
+      padding: 16px;
+      border-bottom: 1px solid #e5e5ea;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f9f9fb;
+    }
+
+    .sidebar-header h2 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+    }
+
+    .sidebar-close {
+      display: none;
+      background: #f2f2f7;
+      border: 1px solid #e5e5ea;
+      font-size: 20px;
+      cursor: pointer;
+      color: #999;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border-radius: 999px;
+      align-items: center;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .sidebar-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0;
+    }
+
+    .transcript-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid #f2f2f7;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .transcript-item:active {
+      background-color: #e8e8ed;
+    }
+
+    .transcript-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    .transcript-item.active {
+      background-color: #eaf2ff;
+      border-left: 3px solid #0a84ff;
+    }
+
+    .transcript-item-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .transcript-item-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .transcript-item-date {
+      font-size: 11px;
+      color: #999;
+    }
+
+    .transcript-item-delete {
+      background: #f2f2f7;
+      border: 1px solid #e5e5ea;
+      color: #999;
+      cursor: pointer;
+      font-size: 16px;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .transcript-item-delete:hover {
+      color: #f44236;
+      border-color: #ffd7d5;
+      background: #fff5f5;
+    }
+
+    .transcript-item-delete:active {
+      transform: scale(0.95);
+      background: #ffe9e8;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));
+      gap: 12px;
+    }
+
+    h1 {
+      text-align: left;
+      margin: 0;
+      color: #111;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      padding: 6px 4px 0;
+    }
+
+    .app-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      margin-top: 4px;
+    }
+
+    button {
+      padding: 9px 14px;
+      font-size: 13px;
+      border: 1px solid #d1d1d6;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      min-width: auto;
+      background: #ffffff;
+      color: #111;
+    }
+
+    #startBtn {
+      background: #0a84ff;
+      color: white;
+      border-color: #0a84ff;
+    }
+
+    #startBtn:hover:not(:disabled) {
+      background: #007aff;
+    }
+
+    #stopBtn {
+      background: #ff3b30;
+      color: white;
+      border-color: #ff3b30;
+    }
+
+    #stopBtn:hover:not(:disabled) {
+      background: #ff2d55;
+    }
+
+    #revertBtn {
+      background: #ff9500;
+      color: white;
+      border-color: #ff9500;
+    }
+
+    #revertBtn:hover:not(:disabled) {
+      background: #e68800;
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .status {
+      text-align: left;
+      margin-bottom: 0;
+      font-size: 12px;
+      height: auto;
+    }
+
+    .status.listening {
+      color: #4caf50;
+      font-weight: 600;
+    }
+
+    .status.error {
+      color: #f44236;
+      font-weight: 600;
+    }
+
+    .audio-level {
+      margin: 0;
+      padding: 10px;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e5e5ea;
+      display: none;
+    }
+
+    .audio-level.active {
+      display: block;
+    }
+
+    .level-label {
+      font-size: 11px;
+      color: #8e8e93;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .level-bar {
+      width: 100%;
+      height: 12px;
+      background: #e5e5ea;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .level-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #34c759, #ffd60a, #ff3b30);
+      width: 0%;
+      transition: width 0.08s ease-out;
+    }
+
+    .footer {
+      padding-top: 8px;
+      border-top: 1px solid #e5e5ea;
+    }
+
+    .confidence {
+      font-size: 12px;
+      color: #8e8e93;
+      margin-top: 8px;
+    }
+
+    .dictation-hint {
+      display: none;
+      font-size: 12px;
+      color: #111;
+      background: #f2f2f7;
+      border: 1px solid #e5e5ea;
+      padding: 10px 12px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .ios-safari .speech-controls {
+      display: none;
+    }
+
+    .ios-safari .audio-level {
+      display: none;
+    }
+
+    .ios-safari .dictation-hint {
+      display: block;
+    }
+
+    .menu-toggle {
+      display: block;
+      background: #f2f2f7;
+      border: 1px solid #e5e5ea;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 6px 10px;
+      color: #111;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .menu-toggle:active {
+      background: #e5e5ea;
+      transform: scale(0.95);
+    }
+
+    .transcript-box {
+      background: #ffffff;
+      border: 1px solid #d1d1d6;
+      border-radius: 14px;
+      padding: 16px;
+      overflow-y: auto;
+      flex: 1;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-size: 16px;
+      outline: none;
+      color: #111;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
+    .transcript-box:focus {
+      border-color: #0a84ff;
+      box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.15);
+    }
+
+    .transcript-box:empty::before {
+      content: 'Transcript will appear here... (editable)';
+      color: #8e8e93;
+      font-style: italic;
+    }
+
+    .debug-overlay {
+      position: fixed;
+      left: 10px;
+      bottom: 10px;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.75);
+      color: #ffffff;
+      font-size: 11px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      line-height: 1.4;
+      max-width: 90vw;
+      display: none;
+      white-space: pre-line;
+    }
+
+    .debug-overlay.visible {
+      display: block;
+    }
+
+    .sidebar-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 999;
+    }
+
+    .sidebar-backdrop.open {
+      display: block;
+    }
+
+    .sidebar-close {
+      display: flex;
+    }
+
+    @media (min-width: 900px) {
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .container {
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        max-width: 1200px;
+        height: 90vh;
+        max-height: 800px;
+        flex-direction: row;
+      }
+
+      .sidebar {
+        position: static;
+        transform: none;
+        height: auto;
+        width: 260px;
+        max-width: 260px;
+        box-shadow: none;
+        border-right: 1px solid #e5e5ea;
+      }
+
+      .sidebar-backdrop {
+        display: none;
+      }
+
+      .sidebar-close {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: none;
+      }
+
+      .main-content {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .header {
+        gap: 12px;
+      }
+
+      .button-group {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class='container'>
+    <div class='sidebar-backdrop' id='sidebarBackdrop' onclick='toggleSidebar()'></div>
+    <div class='sidebar' id='sidebar'>
+      <div class='sidebar-header'>
+        <h2>Transcripts</h2>
+        <button class='sidebar-close' onclick='toggleSidebar()'>×</button>
+      </div>
+      <div class='sidebar-content' id='sidebarContent'>
+        <div style='padding: 15px; text-align: center; color: #999; font-size: 12px;'>No transcripts yet</div>
+      </div>
+    </div>
+
+    <div class='main-content'>
+      <div class='header'>
+        <div class='app-bar'>
+          <button class='menu-toggle' id='menuToggle' onclick='toggleSidebar()'>☰</button>
+          <h1>Speech to Text</h1>
+        </div>
+        <div class='button-group'>
+          <button id='startBtn' class='speech-controls'>Start Listening</button>
+          <button id='stopBtn' class='speech-controls' disabled>Stop Listening</button>
+          <button id='newBtn'>New</button>
+          <button id='revertBtn' style='display: none;'>Revert Changes</button>
+          <button id='copyBtn'>Copy</button>
+          <button id='exportBtn'>Export</button>
+        </div>
+        <div class='dictation-hint' id='dictationHint'>
+          🎤 On iPhone Safari, tap the microphone on your keyboard to dictate directly into the editor
+        </div>
+        <div class='confidence' id='confidence'></div>
+        <div class='status' id='status'></div>
+        <div class='audio-level' id='audioLevel'>
+          <div class='level-label'>Audio Level</div>
+          <div class='level-bar'>
+            <div class='level-fill' id='levelFill'></div>
+          </div>
+        </div>
+      </div>
+
+      <div class='transcript-box' id='transcriptBox' contenteditable='true'></div>
+
+      <div class='footer'>
+        <div class='confidence' id='wordCount' style='text-align: right;'></div>
+      </div>
+    </div>
+  </div>
+
+  <div class='debug-overlay' id='debugOverlay'></div>
+
+  <script>
+    const startBtn = document.getElementById('startBtn')
+    const stopBtn = document.getElementById('stopBtn')
+    const newBtn = document.getElementById('newBtn')
+    const revertBtn = document.getElementById('revertBtn')
+    const copyBtn = document.getElementById('copyBtn')
+    const exportBtn = document.getElementById('exportBtn')
+    const status = document.getElementById('status')
+    const transcriptBox = document.getElementById('transcriptBox')
+    const confidenceDisplay = document.getElementById('confidence')
+    const wordCountDisplay = document.getElementById('wordCount')
+    const audioLevel = document.getElementById('audioLevel')
+    const levelFill = document.getElementById('levelFill')
+    const sidebarContent = document.getElementById('sidebarContent')
+    const sidebar = document.getElementById('sidebar')
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop')
+    const debugOverlay = document.getElementById('debugOverlay')
+    let isKeyboardActive = false
+
+    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+    if (isIos && isSafari) {
+      document.body.classList.add('ios-safari')
+    }
+
+    function updateDebugOverlay(label) {
+      const vv = window.visualViewport
+      const appHeight = getComputedStyle(document.documentElement).getPropertyValue('--app-height').trim()
+      const lines = [
+        `event: ${label}`,
+        `innerHeight: ${window.innerHeight}`,
+        `visualViewport.height: ${vv ? vv.height : 'n/a'}`,
+        `visualViewport.offsetTop: ${vv ? vv.offsetTop : 'n/a'}`,
+        `app-height: ${appHeight}`
+      ]
+      debugOverlay.textContent = lines.join('\n')
+    }
+
+    function setAppHeight() {
+      let viewportHeight = window.innerHeight
+      if (window.visualViewport) {
+        const vvHeight = window.visualViewport.height + window.visualViewport.offsetTop
+        viewportHeight = isKeyboardActive ? vvHeight : Math.max(window.innerHeight, vvHeight)
+      }
+      document.documentElement.style.setProperty('--app-height', `${viewportHeight}px`)
+      document.body.style.setProperty('--app-height', `${viewportHeight}px`)
+      updateDebugOverlay('setAppHeight')
+    }
+
+    setAppHeight()
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', () => {
+        setAppHeight()
+        updateDebugOverlay('visualViewport.resize')
+      })
+      window.visualViewport.addEventListener('scroll', () => {
+        setAppHeight()
+        updateDebugOverlay('visualViewport.scroll')
+      })
+    } else {
+      window.addEventListener('resize', () => {
+        setAppHeight()
+        updateDebugOverlay('window.resize')
+      })
+    }
+
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => {
+        setAppHeight()
+        updateDebugOverlay('orientationchange')
+      }, 300)
+    })
+
+    document.addEventListener('visibilitychange', () => {
+      setTimeout(() => {
+        setAppHeight()
+        updateDebugOverlay('visibilitychange')
+      }, 300)
+    })
+
+    transcriptBox.addEventListener('focus', () => {
+      isKeyboardActive = true
+      setTimeout(() => {
+        setAppHeight()
+        updateDebugOverlay('focus')
+      }, 300)
+    })
+
+    transcriptBox.addEventListener('blur', () => {
+      isKeyboardActive = false
+      setTimeout(() => {
+        setAppHeight()
+        updateDebugOverlay('blur')
+      }, 300)
+      setTimeout(() => {
+        setAppHeight()
+        updateDebugOverlay('blur-delayed')
+      }, 800)
+    })
+
+    // Mobile Menu Toggle
+    function toggleSidebar() {
+      sidebar.classList.toggle('open')
+      sidebarBackdrop.classList.toggle('open')
+    }
+
+    // Close sidebar when clicking on a transcript
+    function closeSidebarOnMobile() {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove('open')
+        sidebarBackdrop.classList.remove('open')
+      }
+    }
+
+    // Local Storage Management
+    const STORAGE_KEY = 'speech_transcripts'
+    let currentTranscriptId = null
+    let textWhenLoaded = ''
+    let autoSaveTimer = null
+
+    function getTranscripts() {
+      const data = localStorage.getItem(STORAGE_KEY)
+      return data ? JSON.parse(data) : []
+    }
+
+    function updateRevertButtonState() {
+      const currentText = transcriptBox.textContent
+      const hasChanges = currentText !== textWhenLoaded
+      revertBtn.style.display = hasChanges ? 'block' : 'none'
+      
+      // Show unsaved indicator in status area
+      if (hasChanges && currentTranscriptId) {
+        if (!status.textContent.includes('•')) {
+          status.textContent = '• Unsaved changes'
+          status.style.color = '#ff9500'
+        }
+      }
+    }
+
+    function saveTranscript(id, text, confidence) {
+      const transcripts = getTranscripts()
+      const index = transcripts.findIndex(t => t.id === id)
+      const transcript = {
+        id: id || Date.now().toString(),
+        text: text,
+        confidence: confidence || '',
+        timestamp: new Date().toISOString(),
+        date: new Date().toLocaleDateString()
+      }
+
+      if (index >= 0) {
+        transcripts[index] = transcript
+      } else {
+        transcripts.push(transcript)
+      }
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(transcripts))
+      currentTranscriptId = transcript.id
+      renderSidebar()
+      return transcript.id
+    }
+
+    function autoSave() {
+      clearTimeout(autoSaveTimer)
+      const text = transcriptBox.textContent
+      const confidence = confidenceDisplay.textContent
+      
+      // Only auto-save if there's content
+      if (text.trim()) {
+        autoSaveTimer = setTimeout(() => {
+          const id = saveTranscript(currentTranscriptId, text, confidence)
+          status.textContent = 'Saved'
+          status.style.color = '#34c759'
+          setTimeout(() => {
+            if (!status.textContent.includes('•')) {
+              status.textContent = ''
+            }
+          }, 1500)
+        }, 500)
+      }
+    }
+
+    function deleteTranscript(id) {
+      const transcripts = getTranscripts()
+      const filtered = transcripts.filter(t => t.id !== id)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered))
+      if (currentTranscriptId === id) {
+        currentTranscriptId = null
+        transcriptBox.textContent = ''
+      }
+      renderSidebar()
+    }
+
+    function loadTranscript(id) {
+      const transcripts = getTranscripts()
+      const transcript = transcripts.find(t => t.id === id)
+      if (transcript) {
+        currentTranscriptId = transcript.id
+        transcriptBox.textContent = transcript.text
+        textWhenLoaded = transcript.text
+        confidenceDisplay.textContent = transcript.confidence
+        renderSidebar()
+        updateWordCount()
+        updateRevertButtonState()
+        // Always close sidebar when loading a transcript
+        sidebar.classList.remove('open')
+        sidebarBackdrop.classList.remove('open')
+      }
+    }
+
+    function renderSidebar() {
+      const transcripts = getTranscripts()
+      if (transcripts.length === 0) {
+        sidebarContent.innerHTML = '<div style=\'padding: 15px; text-align: center; color: #999; font-size: 12px;\'>No transcripts yet</div>'
+        return
+      }
+
+      sidebarContent.innerHTML = transcripts.map(t => `
+        <div class='transcript-item ${t.id === currentTranscriptId ? 'active' : ''}' onclick='loadTranscript("${t.id}"); closeSidebarOnMobile()'>
+          <div class='transcript-item-text'>
+            <div class='transcript-item-title'>${t.text.substring(0, 30)}...</div>
+            <div class='transcript-item-date'>${t.date}</div>
+          </div>
+          <button class='transcript-item-delete' onclick='event.stopPropagation(); deleteTranscript("${t.id}")'>×</button>
+        </div>
+      `).join('')
+    }
+
+    function updateWordCount() {
+      const text = transcriptBox.textContent
+      const words = text.trim().split(/\s+/).filter(w => w.length > 0).length
+      const chars = text.length
+      wordCountDisplay.textContent = `Words: ${words} | Characters: ${chars}`
+    }
+
+    // Check browser support
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    if (!SpeechRecognition) {
+      startBtn.disabled = true
+      status.textContent = (isIos && isSafari)
+        ? ''
+        : 'Speech Recognition not supported in this browser'
+      status.classList.add('error')
+    }
+
+    let recognition
+    let isListening = false
+    let audioContext = null
+    let analyser = null
+    let dataArray = null
+    let animationId = null
+    let finalTranscript = ''
+
+    function resetTranscript() {
+      finalTranscript = ''
+    }
+
+    function initRecognition() {
+      recognition = new SpeechRecognition()
+      recognition.lang = 'en-US'
+      recognition.interimResults = true
+      recognition.continuous = true
+      recognition.maxAlternatives = 1
+
+      recognition.onstart = () => {
+        isListening = true
+        startBtn.disabled = true
+        stopBtn.disabled = false
+        status.textContent = '🎤 Listening...'
+        status.classList.remove('error')
+        status.classList.add('listening')
+        transcriptBox.classList.remove('empty')
+        audioLevel.classList.add('active')
+
+        // Initialize Web Audio API for real microphone level visualization
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)()
+          analyser = audioContext.createAnalyser()
+          analyser.fftSize = 256
+          analyser.smoothingTimeConstant = 0.8
+          const microphone = audioContext.createMediaStreamSource(stream)
+          microphone.connect(analyser)
+          dataArray = new Uint8Array(analyser.frequencyBinCount)
+          updateLevel()
+        }).catch(err => {
+          console.log('Microphone access denied:', err)
+        })
+      }
+
+      recognition.onresult = (event) => {
+        let interimTranscript = ''
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript
+          const isFinal = event.results[i].isFinal
+          const confidence = Math.round(event.results[i][0].confidence * 100)
+
+          if (isFinal) {
+            finalTranscript += transcript + ' '
+          } else {
+            interimTranscript += transcript
+          }
+
+          if (isFinal) {
+            confidenceDisplay.textContent = `Confidence: ${confidence}%`
+          }
+        }
+
+        transcriptBox.textContent = finalTranscript
+        if (interimTranscript) {
+          const span = document.createElement('span')
+          span.style.color = '#999'
+          span.style.fontStyle = 'italic'
+          span.textContent = interimTranscript
+          transcriptBox.appendChild(span)
+        }
+        updateWordCount()
+      }
+
+      recognition.onerror = (event) => {
+        status.textContent = `Error: ${event.error}`
+        status.classList.add('error')
+      }
+
+      recognition.onend = () => {
+        isListening = false
+        startBtn.disabled = false
+        stopBtn.disabled = true
+        audioLevel.classList.remove('active')
+        levelFill.style.width = '0%'
+        if (animationId) {
+          cancelAnimationFrame(animationId)
+        }
+        if (audioContext) {
+          audioContext.close()
+        }
+        // Auto-save final transcript after listening
+        const text = transcriptBox.textContent
+        const confidence = confidenceDisplay.textContent
+        if (text.trim() && text !== textWhenLoaded) {
+          autoSave()
+        }
+        if (!status.classList.contains('error')) {
+          status.textContent = 'Stopped listening'
+          status.classList.remove('listening')
+        }
+      }
+    }
+
+    startBtn.addEventListener('click', () => {
+      if (!recognition) {
+        initRecognition()
+      }
+      // Preserve current state as baseline for revert before new recording
+      textWhenLoaded = transcriptBox.textContent
+      resetTranscript()
+      recognition.start()
+    })
+
+    stopBtn.addEventListener('click', () => {
+      recognition.stop()
+    })
+
+    newBtn.addEventListener('click', () => {
+      currentTranscriptId = null
+      transcriptBox.textContent = ''
+      textWhenLoaded = ''
+      confidenceDisplay.textContent = ''
+      wordCountDisplay.textContent = ''
+      status.textContent = ''
+      status.style.color = ''
+      renderSidebar()
+      updateRevertButtonState()
+    })
+
+    revertBtn.addEventListener('click', () => {
+      if (confirm('Discard changes to this transcript?')) {
+        transcriptBox.textContent = textWhenLoaded
+        updateWordCount()
+        updateRevertButtonState()
+        status.textContent = 'Changes discarded'
+        status.style.color = '#8e8e93'
+        setTimeout(() => {
+          status.textContent = ''
+          status.style.color = ''
+        }, 1500)
+      }
+    })
+
+    copyBtn.addEventListener('click', async () => {
+      const text = transcriptBox.textContent
+      if (!text.trim()) {
+        status.textContent = 'Nothing to copy'
+        status.style.color = '#ff9500'
+        setTimeout(() => {
+          status.textContent = ''
+          status.style.color = ''
+        }, 1500)
+        return
+      }
+
+      try {
+        await navigator.clipboard.writeText(text)
+        status.textContent = 'Copied to clipboard'
+        status.style.color = '#34c759'
+        setTimeout(() => {
+          status.textContent = ''
+          status.style.color = ''
+        }, 1500)
+      } catch (err) {
+        status.textContent = 'Failed to copy'
+        status.style.color = '#ff3b30'
+        setTimeout(() => {
+          status.textContent = ''
+          status.style.color = ''
+        }, 1500)
+      }
+    })
+
+    exportBtn.addEventListener('click', () => {
+      const text = transcriptBox.textContent
+      if (!text.trim()) {
+        status.textContent = 'Nothing to export'
+        status.style.color = '#ff9500'
+        setTimeout(() => {
+          status.textContent = ''
+          status.style.color = ''
+        }, 1500)
+        return
+      }
+
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5)
+      const filename = `transcript-${timestamp}.txt`
+      const blob = new Blob([text], { type: 'text/plain' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+
+      status.textContent = 'Exported'
+      status.style.color = '#34c759'
+      setTimeout(() => {
+        status.textContent = ''
+        status.style.color = ''
+      }, 1500)
+    })
+
+    transcriptBox.addEventListener('input', () => {
+      updateWordCount()
+      updateRevertButtonState()
+      autoSave()
+    })
+
+    renderSidebar()
+
+    function updateLevel() {
+      if (!isListening || !analyser) return
+
+      analyser.getByteFrequencyData(dataArray)
+      
+      // Calculate RMS (root mean square) for better audio level representation
+      let sum = 0
+      for (let i = 0; i < dataArray.length; i++) {
+        sum += dataArray[i] * dataArray[i]
+      }
+      const rms = Math.sqrt(sum / dataArray.length)
+      
+      // Normalize and apply logarithmic scaling for human perception
+      let percentage = (rms / 255) * 100
+      
+      // Apply more aggressive logarithmic scaling for better full-range utilization
+      percentage = Math.log10(percentage + 1) * 50
+      percentage = Math.min(Math.max(percentage, 0), 100)
+
+      levelFill.style.width = percentage + '%'
+
+      animationId = requestAnimationFrame(updateLevel)
+    }
+  </script>
+</body>
+</html>

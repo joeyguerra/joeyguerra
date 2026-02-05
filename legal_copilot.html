@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Copilot - Courtroom AI Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .glow { box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+        .impeachment { border-left-color: #ef4444 !important; background-color: rgba(239, 68, 68, 0.1); }
+        .followup { border-left-color: #f59e0b !important; background-color: rgba(245, 158, 11, 0.1); }
+        .clarify { border-left-color: #3b82f6 !important; background-color: rgba(59, 130, 246, 0.1); }
+    </style>
+</head>
+<body class="bg-slate-900 text-white font-sans">
+    <div class="max-w-6xl mx-auto p-8">
+        <header class="flex justify-between items-center mb-12">
+            <div>
+                <h1 class="text-3xl font-bold text-red-400">LEGAL COPILOT <span class="text-xs bg-red-600 text-white px-2 py-1 rounded ml-2">PROTOTYPE</span></h1>
+                <p class="text-slate-400 text-sm mt-1">Real-Time Courtroom Intelligence</p>
+            </div>
+            <div class="text-slate-400 text-sm">Status: <span class="text-green-400">● Connected</span></div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Left Side: Deposition Library -->
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                <h2 class="text-xl font-semibold mb-4 text-red-400">📚 Deposition Library</h2>
+                <p class="text-slate-400 text-sm mb-4">Upload deposition transcripts, witness statements, or prior testimony.</p>
+                <input type="file" id="depositionUpload" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-600 file:text-white hover:file:bg-red-700 mb-4 cursor-pointer"/>
+
+                <div class="mt-6 space-y-2">
+                    <h3 class="text-sm font-semibold text-slate-300 mb-2">Loaded Documents:</h3>
+                    <div class="p-3 bg-slate-700 rounded text-xs">
+                        <div class="flex justify-between items-center">
+                            <span>📄 Smith_Deposition.pdf</span>
+                            <span class="text-green-400">✓ Indexed</span>
+                        </div>
+                        <p class="text-slate-400 mt-1">47 pages • 3 key topics</p>
+                    </div>
+                    <div class="p-3 bg-slate-700 rounded text-xs opacity-50">
+                        <span>📄 No additional documents</span>
+                    </div>
+                </div>
+
+                <button id="startBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-lg transition duration-200 glow mt-6">
+                    START LISTENING
+                </button>
+            </div>
+
+            <!-- Middle: Live Transcript -->
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 flex flex-col h-[600px]">
+                <h2 class="text-xl font-semibold mb-4 text-blue-400">🎤 Live Testimony</h2>
+                <div id="transcript" class="flex-grow overflow-y-auto space-y-3 text-sm">
+                    <div class="p-3 bg-slate-700 rounded">
+                        <p class="text-slate-300 italic">Waiting for testimony...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: AI Suggestions -->
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 flex flex-col h-[600px]">
+                <h2 class="text-xl font-semibold mb-4 text-red-400">⚡ AI Suggestions</h2>
+                <div class="mb-3 flex gap-2 text-xs">
+                    <span class="px-2 py-1 bg-red-900/30 border border-red-600 rounded">🔴 Impeachment</span>
+                    <span class="px-2 py-1 bg-amber-900/30 border border-amber-600 rounded">🟡 Follow-up</span>
+                    <span class="px-2 py-1 bg-blue-900/30 border border-blue-600 rounded">🔵 Clarify</span>
+                </div>
+                <div id="suggestions" class="flex-grow overflow-y-auto space-y-3 text-sm">
+                    <div class="p-3 bg-slate-700 rounded border-l-4 border-slate-500">
+                        <p class="text-slate-300 italic">AI will suggest questions as witness testifies...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const startBtn = document.getElementById('startBtn');
+        const transcript = document.getElementById('transcript');
+        const suggestions = document.getElementById('suggestions');
+        let isListening = false;
+
+        startBtn.onclick = () => {
+            isListening = !isListening;
+            if(isListening) {
+                startBtn.innerText = "STOP LISTENING";
+                startBtn.classList.replace('bg-red-600', 'bg-gray-600');
+                simulateCourtroom();
+            } else {
+                startBtn.innerText = "START LISTENING";
+                startBtn.classList.replace('bg-gray-600', 'bg-red-600');
+            }
+        };
+
+        const testimonyExamples = [
+            { text: "I don't recall the exact time of the accident.", type: "witness" },
+            { text: "It was sometime in the afternoon, I think.", type: "witness" },
+            { text: "I may have said that, but I'm not sure now.", type: "witness" },
+            { text: "The light was green when I entered the intersection.", type: "witness" },
+            { text: "I didn't see the other vehicle until impact.", type: "witness" },
+            { text: "I had been driving for about 2 hours that day.", type: "witness" }
+        ];
+
+        const aiSuggestions = [
+            { 
+                type: "impeachment",
+                text: "🔴 IMPEACHMENT OPPORTUNITY: In deposition (Page 23, Line 14), witness stated 'I clearly remember it was 2:47 PM.' Ask: 'Mr. Smith, do you recall your deposition testimony regarding the exact time?'"
+            },
+            { 
+                type: "followup",
+                text: "🟡 FOLLOW-UP: Witness is uncertain. Ask: 'Mr. Smith, when you gave your deposition 6 months ago, was your memory clearer than it is today?'"
+            },
+            { 
+                type: "impeachment",
+                text: "🔴 IMPEACHMENT OPPORTUNITY: In deposition (Page 31, Line 8), witness stated 'The light was red.' This contradicts current testimony. Reference the specific page and line."
+            },
+            { 
+                type: "clarify",
+                text: "🔵 CLARIFICATION: Witness claims not to have seen the vehicle. In deposition (Page 18), witness described the other vehicle's color and make. Ask about this inconsistency."
+            },
+            { 
+                type: "followup",
+                text: "🟡 FOLLOW-UP: Witness mentioned 2 hours of driving. In deposition (Page 12), witness stated 'I had just left home 15 minutes prior.' Explore this discrepancy."
+            },
+            { 
+                type: "clarify",
+                text: "🔵 CLARIFICATION: Ask witness to explain the difference between their current testimony and their sworn statement from the deposition."
+            }
+        ];
+
+        let testimonySuggestionIndex = 0;
+
+        function simulateCourtroom() {
+            if(!isListening) return;
+
+            // Add testimony to transcript
+            if(testimonySuggestionIndex < testimonyExamples.length) {
+                const testimony = testimonyExamples[testimonySuggestionIndex];
+                const transcriptDiv = document.createElement('div');
+                transcriptDiv.className = "p-3 bg-slate-700 rounded";
+                transcriptDiv.innerHTML = `<strong class="text-blue-300">Witness:</strong> "${testimony.text}"`;
+                transcript.prepend(transcriptDiv);
+
+                // Add corresponding AI suggestion
+                const suggestion = aiSuggestions[testimonySuggestionIndex];
+                const suggestionDiv = document.createElement('div');
+                suggestionDiv.className = `p-3 rounded border-l-4 ${suggestion.type} animate-pulse`;
+                suggestionDiv.innerHTML = `<strong>AI Suggestion:</strong><br>${suggestion.text}`;
+                suggestions.prepend(suggestionDiv);
+
+                testimonySuggestionIndex++;
+                setTimeout(simulateCourtroom, 6000);
+            } else {
+                // Reset and loop
+                testimonySuggestionIndex = 0;
+                setTimeout(simulateCourtroom, 6000);
+            }
+        }
+    </script>
+</body>
+</html>

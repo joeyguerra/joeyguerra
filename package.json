@@ -1,6 +1,6 @@
 {
   "name": "jbot-website",
-  "version": "3.0.58",
+  "version": "3.0.65",
   "description": "Personal website for Joey Guerra",
   "main": "server.mjs",
   "dependencies": {
@@ -9,7 +9,7 @@
     "dijkstrajs": "^1.0.3",
     "discord.js": "^14.22.1",
     "html-to-pdfmake": "^2.5.31",
-    "hubot": "^13.2.0",
+    "hubot": "^14.0.0",
     "jimp": "^1.6.0",
     "jose": "^6.1.0",
     "jsdom": "^27.0.0",
@@ -19,6 +19,7 @@
     "morphdom": "^2.7.7",
     "openai": "^6.1.0",
     "pdfmake": "^0.2.20",
+    "pino": "^10.3.0",
     "pino-pretty": "^13.1.1",
     "pngjs": "^7.0.0",
     "socket.io": "^4.8.1",

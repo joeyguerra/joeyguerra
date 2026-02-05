@@ -756,6 +756,7 @@
                 </div>
                 <div class="date-controls">
                     <button id="prevDay">← Prev</button>
+                    <button id="todayBtn">Today</button>
                     <input type="date" id="todayDatePicker" />
                     <button id="nextDay">Next →</button>
                 </div>
@@ -893,7 +894,6 @@
         // DATA MODEL & STATE MANAGEMENT
         // ============================================
         const STORAGE_KEY = 'yt_tasks_v1'
-        const LAST_LOADED_DATE_KEY = 'yt_last_loaded_date'
         const AVOIDED_THRESHOLD = 14
         const CONSUMPTION_KEYWORDS = ['read', 'watch', 'listen', 'study', 'research', 'explore', 'review', 'scan', 'learn', 'observe', 'think', 'plan', 'browse']
 
@@ -1107,7 +1107,16 @@
 
         function deleteTask(dateKey, taskId) {
             ensureDateData(dateKey)
-            state.data[dateKey].tasks = state.data[dateKey].tasks.filter(t => t.id !== taskId)
+            console.log('deleteTask called with dateKey:', dateKey, 'taskId:', taskId)
+            console.log('Tasks in dateKey before filtering:', state.data[dateKey].tasks)
+            state.data[dateKey].tasks = state.data[dateKey].tasks.filter(t => {
+                const shouldKeep = t.id !== taskId
+                if (!shouldKeep) {
+                    console.log('Removing task:', t)
+                }
+                return shouldKeep
+            })
+            console.log('Tasks after filtering:', state.data[dateKey].tasks)
             saveState()
         }
 
@@ -1144,42 +1153,27 @@
             return true
         }
 
-        // Scenarios to auto carry:
-        // 1. Yesterday's undone tasks to Today when loading Today for the first time
-        // 2. Today's undone tasks to Tomorrow when moving to the next day
-        function autoCarryUndoneTasks(fromDateKey, toDateKey) {
-            const yesterdaysTasks = getTasks(fromDateKey)
-            const todaysTasks = getTasks(toDateKey)
-            const tasksToCarryOver = yesterdaysTasks.filter(t => !t.done && !t.archived &&
-                !todaysTasks.some(tt => tt.lineageId === t.lineageId)
-            )
-            tasksToCarryOver.forEach(sourceTask => {
-                todaysTasks.push({
-                    id: generateId(),
-                    lineageId: sourceTask.lineageId,
-                    text: sourceTask.text,
-                    done: false,
-                    createdAt: new Date().toISOString()
-                })
-            })
-            
-            if (tasksToCarryOver.length > 0) {
-                saveState()
-            }
-        }
+
 
         function reorderTask(dateKey, taskId, direction) {
             const tasks = getTasks(dateKey)
-            const index = tasks.findIndex(t => t.id === taskId)
+            const undoneTasks = tasks.filter(t => !t.done)
+            const doneTasks = tasks.filter(t => t.done)
             
-            if (index === -1) return
+            const undoneIndex = undoneTasks.findIndex(t => t.id === taskId)
+            if (undoneIndex === -1) return
             
-            const newIndex = direction === 'up' ? index - 1 : index + 1
+            const newIndex = direction === 'up' ? undoneIndex - 1 : undoneIndex + 1
             
-            if (newIndex < 0 || newIndex >= tasks.length) return
+            if (newIndex < 0 || newIndex >= undoneTasks.length) return
             
-            // Swap tasks
-            [tasks[index], tasks[newIndex]] = [tasks[newIndex], tasks[index]]
+            // Remove task from current position
+            const [task] = undoneTasks.splice(undoneIndex, 1)
+            // Insert at new position
+            undoneTasks.splice(newIndex, 0, task)
+            
+            // Rebuild tasks array with new order
+            state.data[dateKey].tasks = [...undoneTasks, ...doneTasks]
             saveState()
         }
 
@@ -1195,6 +1189,36 @@
             if (task) {
                 task.archived = true
                 task.archivedAt = new Date().toISOString()
+                saveState()
+            }
+        }
+
+        function autoCarryUndoneTasks() {
+            const yesterdayKey = getDateKey(state.yesterdayDate)
+            const todayKey = getDateKey(state.todayDate)
+            
+            const yesterdayTasks = getTasks(yesterdayKey)
+            const todayTasks = getTasks(todayKey)
+            
+            const todayLineages = new Set(todayTasks.map(t => t.lineageId || t.id))
+            
+            const undoneYesterdayTasks = yesterdayTasks.filter(t => !t.done && !t.archived)
+            
+            undoneYesterdayTasks.forEach(sourceTask => {
+                const lineageId = sourceTask.lineageId || sourceTask.id
+                if (!todayLineages.has(lineageId)) {
+                    const newTask = {
+                        id: generateId(),
+                        lineageId: lineageId,
+                        text: sourceTask.text,
+                        done: false,
+                        createdAt: new Date().toISOString()
+                    }
+                    todayTasks.push(newTask)
+                }
+            })
+            
+            if (undoneYesterdayTasks.length > 0) {
                 saveState()
             }
         }
@@ -1314,9 +1338,6 @@
                                     ${carryCount > 1 ? `<span class="task-badge">Carried ${carryCount}</span>` : ''}
                                 </div>
                             </div>
-                            <div class="task-actions">
-                                <button class="task-btn carry" data-action="carry" data-task-id="${task.id}">Recommit</button>
-                            </div>
                         </li>
                     `
                 })
@@ -1338,9 +1359,6 @@
                                     <span class="task-badge ${taskType}">${taskType === 'work' ? 'Work' : 'Consumption'}</span>
                                     <span class="task-badge carry-count-badge">Carried ${carryCount}</span>
                                 </div>
-                            </div>
-                            <div class="task-actions">
-                                <button class="task-btn carry" data-action="carry" data-task-id="${task.id}" data-avoidance="true">Recommit</button>
                             </div>
                         </li>
                     `
@@ -1411,23 +1429,41 @@
             ensureMissionPriority(dateKey)
             const tasks = getTasks(dateKey).filter(t => !t.archived)
             const missionTask = getMissionTask(dateKey)
-            const hasMission = Boolean(missionTask)
             
             const doneCount = tasks.filter(t => t.done).length
-            countDisplay.textContent = `Done ${doneCount} / Total ${tasks.length}`
+            const totalCount = tasks.length
+            countDisplay.textContent = `Done ${doneCount} / Total ${totalCount}`
             
             if (tasks.length === 0) {
                 container.innerHTML = '<div class="empty-state">No tasks for today. Add one above!</div>'
                 return
             }
 
+            const sortedTasks = [...tasks].sort((a, b) => {
+                if (a.done === b.done) return 0
+                return a.done ? 1 : -1
+            })
+
+            const undoneTasks = tasks.filter(t => !t.done)
+            const reorderableTaskIds = undoneTasks.map(t => t.id)
+
             let html = '<ul class="task-list">'
-            
-            tasks.forEach((task, index) => {
+
+            sortedTasks.forEach((task, sortedIndex) => {
                 const isEditing = state.editingTaskId === task.id
-                const carryCount = getCarryCount(task.lineageId)
+                const carryCount = getCarryCount(task.lineageId || task.id)
                 const taskType = getTaskType(task)
                 const isMission = missionTask && missionTask.id === task.id
+                
+                const isReorderDisabled = task.done
+                let isUpDisabled = isReorderDisabled
+                let isDownDisabled = isReorderDisabled
+                
+                if (!isReorderDisabled) {
+                    const positionInReorderable = reorderableTaskIds.indexOf(task.id)
+                    isUpDisabled = positionInReorderable === 0
+                    isDownDisabled = positionInReorderable === reorderableTaskIds.length - 1
+                }
                 
                 html += `
                     <li class="task-item ${task.done ? 'done' : ''}">
@@ -1489,18 +1525,18 @@
                                 data-action="reorder" 
                                 data-task-id="${task.id}" 
                                 data-direction="up"
-                                ${index === 0 || task.done ? 'disabled' : ''}
+                                ${isUpDisabled ? 'disabled' : ''}
                             >▲</button>
                             <button 
                                 class="reorder-btn" 
                                 data-action="reorder" 
                                 data-task-id="${task.id}" 
                                 data-direction="down"
-                                ${index === tasks.length - 1 || task.done ? 'disabled' : ''}
+                                ${isDownDisabled ? 'disabled' : ''}
                             >▼</button>
                         </div>
                         <div class="task-actions">
-                            <button class="task-btn" data-action="edit" data-task-id="${task.id}"${task.done ? 'disabled' : ''}>Edit</button>
+                            <button class="task-btn" data-action="edit" data-task-id="${task.id}" ${task.done ? 'disabled' : ''}>Edit</button>
                             <button class="task-btn" data-action="delete" data-task-id="${task.id}" ${task.done ? 'disabled' : ''}>Delete</button>
                             ${missionControl}
                         </div>
@@ -1610,18 +1646,10 @@
 
         function handleDateChange() {
             const picker = document.getElementById('todayDatePicker')
-            const oldDate = state.todayDate
-            const oldDateKey = getDateKey(oldDate)
             
             state.todayDate = parseDate(picker.value)
             state.yesterdayDate = addDays(state.todayDate, -1)
-            
-            const newDateKey = getDateKey(state.todayDate)
-            
-            // Auto-carry all undone tasks when moving to a future date
-            if (state.todayDate > oldDate) {
-                autoCarryUndoneTasks(oldDateKey, newDateKey)
-            }
+            autoCarryUndoneTasks()
             
             render()
         }
@@ -1630,21 +1658,24 @@
             state.todayDate = addDays(state.todayDate, -1)
             state.yesterdayDate = addDays(state.yesterdayDate, -1)
             updateDatePicker()
+            autoCarryUndoneTasks()
             render()
         }
 
         function handleNextDay() {
-            const currentDateKey = getDateKey(state.todayDate)
-            
             state.todayDate = addDays(state.todayDate, 1)
             state.yesterdayDate = addDays(state.yesterdayDate, 1)
             
-            const nextDateKey = getDateKey(state.todayDate)
-            
-            // Auto-carry all undone tasks from today (which becomes yesterday)
-            autoCarryUndoneTasks(currentDateKey, nextDateKey)
-            
             updateDatePicker()
+            autoCarryUndoneTasks()
+            render()
+        }
+
+        function handleToday() {
+            state.todayDate = new Date()
+            state.yesterdayDate = addDays(state.todayDate, -1)
+            updateDatePicker()
+            autoCarryUndoneTasks()
             render()
         }
 
@@ -1674,12 +1705,16 @@
                 render()
             } else if (action === 'delete') {
                 if (confirm('Delete this task?')) {
+                    console.log('Delete action triggered for taskId:', taskId)
                     const dateKey = getDateKey(state.todayDate)
+                    console.log('Current dateKey:', dateKey)
+                    console.log('Tasks before delete:', getTasks(dateKey))
                     deleteTask(dateKey, taskId)
+                    console.log('Tasks after delete:', getTasks(dateKey))
                     render()
                 }
             } else if (action === 'carry') {
-                const fromDateKey = getDateKey(state.yesterdayDate)
+                const fromDateKey = target.dataset.sourceDateKey || getDateKey(state.yesterdayDate)
                 const toDateKey = getDateKey(state.todayDate)
                 const isAvoided = target.dataset.avoidance === 'true'
                 if (isAvoided) {
@@ -1964,24 +1999,8 @@
             // Load saved data
             loadState()
             
-            // Check if it's a new day and auto-carry incomplete tasks
-            const todayKey = getDateKey(state.todayDate)
-            const lastLoadedDate = localStorage.getItem(LAST_LOADED_DATE_KEY)
-            
-            if (lastLoadedDate && lastLoadedDate !== todayKey) {
-                // New day(s) detected, auto-carry undone tasks from all days since last load
-                let currentDate = parseDate(lastLoadedDate)
-                while (currentDate < state.todayDate) {
-                    const nextDate = addDays(currentDate, 1)
-                    const currentKey = getDateKey(currentDate)
-                    const nextKey = getDateKey(nextDate)
-                    autoCarryUndoneTasks(currentKey, nextKey)
-                    currentDate = nextDate
-                }
-            }
-            
-            // Update the last loaded date
-            localStorage.setItem(LAST_LOADED_DATE_KEY, todayKey)
+            // Carry over undone tasks from yesterday
+            autoCarryUndoneTasks()
             
             // Set up date picker
             updateDatePicker()
@@ -1991,6 +2010,7 @@
             document.getElementById('todayDatePicker').addEventListener('change', handleDateChange)
             document.getElementById('prevDay').addEventListener('click', handlePrevDay)
             document.getElementById('nextDay').addEventListener('click', handleNextDay)
+            document.getElementById('todayBtn').addEventListener('click', handleToday)
             document.getElementById('feedbackBtn').addEventListener('click', openFeedbackModal)
             document.getElementById('closeFeedbackBtn').addEventListener('click', closeFeedbackModal)
             document.getElementById('resetBtn').addEventListener('click', resetData)
