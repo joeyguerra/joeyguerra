@@ -1194,31 +1194,58 @@
         }
 
         function autoCarryUndoneTasks() {
-            const yesterdayKey = getDateKey(state.yesterdayDate)
             const todayKey = getDateKey(state.todayDate)
-            
-            const yesterdayTasks = getTasks(yesterdayKey)
             const todayTasks = getTasks(todayKey)
-            
             const todayLineages = new Set(todayTasks.map(t => t.lineageId || t.id))
             
-            const undoneYesterdayTasks = yesterdayTasks.filter(t => !t.done && !t.archived)
+            // Get all date keys from state.data that are before today
+            const allPreviousDates = Object.keys(state.data)
+                .filter(dateKey => dateKey < todayKey)
+                .sort() // Sort chronologically
             
-            undoneYesterdayTasks.forEach(sourceTask => {
-                const lineageId = sourceTask.lineageId || sourceTask.id
-                if (!todayLineages.has(lineageId)) {
+            // Build a map of lineageId -> most recent task occurrence
+            const lineageMap = new Map()
+            
+            for (const dateKey of allPreviousDates) {
+                const tasks = getTasks(dateKey)
+                tasks.forEach(task => {
+                    const lineageId = task.lineageId || task.id
+                    const existingEntry = lineageMap.get(lineageId)
+                    
+                    // Keep the task from the most recent date
+                    if (!existingEntry || dateKey > existingEntry.dateKey) {
+                        lineageMap.set(lineageId, {
+                            task,
+                            dateKey
+                        })
+                    }
+                })
+            }
+            
+            let tasksAdded = false
+            
+            // Carry over tasks whose most recent occurrence is undone
+            for (const [lineageId, entry] of lineageMap) {
+                const { task } = entry
+                
+                // Only carry if:
+                // 1. Most recent occurrence is not done and not archived
+                // 2. Doesn't already exist in today
+                if (!task.done && !task.archived && !todayLineages.has(lineageId)) {
                     const newTask = {
                         id: generateId(),
                         lineageId: lineageId,
-                        text: sourceTask.text,
+                        text: task.text,
                         done: false,
                         createdAt: new Date().toISOString()
                     }
                     todayTasks.push(newTask)
+                    todayLineages.add(lineageId)
+                    tasksAdded = true
                 }
-            })
+            }
             
-            if (undoneYesterdayTasks.length > 0) {
+            if (tasksAdded) {
                 saveState()
             }
         }
