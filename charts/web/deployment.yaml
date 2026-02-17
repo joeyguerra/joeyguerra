@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: jbot-website
-        image: local/jbot-website:3.0.66
+        image: local/jbot-website:3.0.72
         imagePullPolicy: IfNotPresent
         env:
         - name: PORT
@@ -36,6 +36,17 @@ spec:
             secretKeyRef:
               name: cookie-secret
               key: COOKIE_SECRET
+        - name: HUBOT_DISCOVERY_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: hubot-discovery-token
+              key: HUBOT_DISCOVERY_TOKEN
+        - name: HUBOT_ALLOWED_ORIGINS
+          value: "http://oplog-website:8080"
+        - name: HUBOT_DISCOVERY_URL
+          value: "ws://jbot-website-service:8080/discovery"
+        - name: HUBOT_DISCOVERY_STORAGE
+          value: ".data"
         ports:
         - containerPort: 8080
 ---

@@ -40,6 +40,13 @@
             justify-content: space-between;
         }
 
+        .header-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+
         h1 {
             font-size: 24px;
             font-weight: 600;
@@ -760,8 +767,12 @@
                     <input type="date" id="todayDatePicker" />
                     <button id="nextDay">Next →</button>
                 </div>
-                <button class="feedback-btn" id="feedbackBtn">💭 Ideas or feedback?</button>
-                <button class="reset-btn" id="resetBtn">Reset Demo Data</button>
+                <div class="header-actions">
+                    <button class="feedback-btn" id="exportBtn">Export Data</button>
+                    <button class="feedback-btn" id="importBtn">Import Data</button>
+                    <button class="feedback-btn" id="feedbackBtn">💭 Ideas or feedback?</button>
+                    <button class="reset-btn" id="resetBtn">Reset Demo Data</button>
+                </div>
             </div>
             <div class="mission-section" id="missionSection"></div>
         </header>
@@ -848,6 +859,7 @@
             </form>
         </div>
     </div>
+    <input type="file" id="importFileInput" accept="application/json,.json" style="display:none;" />
 
     <div class="avoidance-modal" id="avoidanceModal">
         <div class="avoidance-content">
@@ -896,6 +908,8 @@
         const STORAGE_KEY = 'yt_tasks_v1'
         const AVOIDED_THRESHOLD = 14
         const CONSUMPTION_KEYWORDS = ['read', 'watch', 'listen', 'study', 'research', 'explore', 'review', 'scan', 'learn', 'observe', 'think', 'plan', 'browse']
+        const EXPORT_VERSION = 'yt_tasks_export_v1'
+        const DATE_KEY_REGEX = /^\d{4}-\d{2}-\d{2}$/
 
         // Global state
         let state = {
@@ -967,6 +981,144 @@
             } catch (e) {
                 console.error('Failed to save state:', e)
             }
+        }
+
+        function buildExportPayload() {
+            return {
+                version: EXPORT_VERSION,
+                exportedAt: new Date().toISOString(),
+                data: state.data
+            }
+        }
+
+        function downloadJsonFile(filename, payload) {
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
+            const url = URL.createObjectURL(blob)
+            const link = document.createElement('a')
+            link.href = url
+            link.download = filename
+            document.body.appendChild(link)
+            link.click()
+            link.remove()
+            URL.revokeObjectURL(url)
+        }
+
+        function handleExportData() {
+            const dateStamp = getDateKey(new Date())
+            const filename = `yesterday-today-${dateStamp}.json`
+            downloadJsonFile(filename, buildExportPayload())
+        }
+
+        function sanitizeImportedTask(task) {
+            if (!task || typeof task !== 'object') return null
+            const rawText = typeof task.text === 'string' ? task.text.trim() : ''
+            if (!rawText) return null
+            const id = typeof task.id === 'string' ? task.id : generateId()
+            const lineageId = typeof task.lineageId === 'string' ? task.lineageId : id
+            const done = task.done === true
+            const archived = task.archived === true
+            return {
+                id,
+                lineageId,
+                text: rawText,
+                done,
+                createdAt: typeof task.createdAt === 'string' ? task.createdAt : new Date().toISOString(),
+                completedAt: typeof task.completedAt === 'string' ? task.completedAt : null,
+                archived,
+                archivedAt: typeof task.archivedAt === 'string' ? task.archivedAt : null
+            }
+        }
+
+        function normalizeImportedData(rawData) {
+            if (!rawData || typeof rawData !== 'object' || Array.isArray(rawData)) return null
+            const normalized = {}
+            Object.entries(rawData).forEach(([dateKey, entry]) => {
+                if (!DATE_KEY_REGEX.test(dateKey)) return
+                if (!entry || typeof entry !== 'object') return
+                const tasks = Array.isArray(entry.tasks) ? entry.tasks : []
+                const cleanTasks = tasks
+                    .map(sanitizeImportedTask)
+                    .filter(Boolean)
+                normalized[dateKey] = {
+                    tasks: cleanTasks,
+                    checkin: typeof entry.checkin === 'string' ? entry.checkin : '',
+                    missionTaskId: typeof entry.missionTaskId === 'string' ? entry.missionTaskId : null,
+                    missionUpdatedAt: typeof entry.missionUpdatedAt === 'string' ? entry.missionUpdatedAt : null
+                }
+            })
+            return normalized
+        }
+
+        function mergeImportedData(existingData, importedData) {
+            const merged = { ...existingData }
+            Object.entries(importedData).forEach(([dateKey, entry]) => {
+                if (!merged[dateKey]) {
+                    merged[dateKey] = entry
+                    return
+                }
+                const existingEntry = merged[dateKey]
+                const taskMap = new Map()
+                existingEntry.tasks.forEach(task => taskMap.set(task.id, task))
+                entry.tasks.forEach(task => {
+                    if (!taskMap.has(task.id)) {
+                        taskMap.set(task.id, task)
+                    }
+                })
+                merged[dateKey] = {
+                    tasks: Array.from(taskMap.values()),
+                    checkin: existingEntry.checkin || entry.checkin,
+                    missionTaskId: existingEntry.missionTaskId || entry.missionTaskId,
+                    missionUpdatedAt: existingEntry.missionUpdatedAt || entry.missionUpdatedAt
+                }
+            })
+            return merged
+        }
+
+        function extractImportedData(payload) {
+            if (payload && typeof payload === 'object' && payload.data && typeof payload.data === 'object') {
+                return payload.data
+            }
+            return payload
+        }
+
+        function handleImportFile(file) {
+            if (!file) return
+            const reader = new FileReader()
+            reader.onload = () => {
+                try {
+                    const parsed = JSON.parse(reader.result)
+                    const extracted = extractImportedData(parsed)
+                    const normalized = normalizeImportedData(extracted)
+                    if (!normalized || Object.keys(normalized).length === 0) {
+                        alert('No valid data found in this file.')
+                        return
+                    }
+                    const shouldReplace = confirm('Replace existing data? Click OK to replace, Cancel to merge.')
+                    if (shouldReplace) {
+                        state.data = normalized
+                    } else {
+                        state.data = mergeImportedData(state.data, normalized)
+                    }
+                    saveState()
+                    render()
+                    alert('Import complete.')
+                } catch (error) {
+                    console.error('Import failed:', error)
+                    alert('Unable to import this file. Please check the format.')
+                }
+            }
+            reader.readAsText(file)
+        }
+
+        function handleImportClick() {
+            const input = document.getElementById('importFileInput')
+            input.value = ''
+            input.click()
+        }
+
+        function handleImportFileChange(e) {
+            const file = e.target.files && e.target.files[0]
+            handleImportFile(file)
         }
 
         // ============================================
@@ -2041,6 +2193,9 @@
             document.getElementById('feedbackBtn').addEventListener('click', openFeedbackModal)
             document.getElementById('closeFeedbackBtn').addEventListener('click', closeFeedbackModal)
             document.getElementById('resetBtn').addEventListener('click', resetData)
+            document.getElementById('exportBtn').addEventListener('click', handleExportData)
+            document.getElementById('importBtn').addEventListener('click', handleImportClick)
+            document.getElementById('importFileInput').addEventListener('change', handleImportFileChange)
             document.getElementById('checkinTextarea').addEventListener('input', handleCheckinChange)
             document.getElementById('addTaskForm').addEventListener('keydown', e => {
                 if (e.key !== 'Enter' || e.shiftKey) return

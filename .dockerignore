@@ -10,8 +10,10 @@ mocks
 .env
 .gitignore
 .gitlab-ci.yml
+.data
 .hubot_history
 ChatCompletionRequestMessageRoleEnum
 Dockerfile
 text2image.mjs
 node_modules
+data

@@ -1,15 +1,16 @@
 {
   "name": "jbot-website",
-  "version": "3.0.66",
+  "version": "3.0.72",
   "description": "Personal website for Joey Guerra",
   "main": "server.mjs",
   "dependencies": {
     "@hubot-friends/hubot-discord": "^4.1.0",
+    "@hubot-friends/hubot-service-discovery": "^2.0.2",
     "body-parser": "^2.2.1",
     "dijkstrajs": "^1.0.3",
     "discord.js": "^14.22.1",
     "html-to-pdfmake": "^2.5.31",
-    "hubot": "^14.0.0",
+    "hubot": "^14.0.1",
     "jimp": "^1.6.0",
     "jose": "^6.1.0",
     "jsdom": "^27.0.0",

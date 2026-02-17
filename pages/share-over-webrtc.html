@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+	<meta charset='UTF-8'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+	<title>WebRTC Peer-to-Peer Data Share</title>
+	<style>
+		body {
+			font-family: sans-serif;
+			max-width: 600px;
+			margin: 2em auto;
+		}
+
+		textarea {
+			width: 100%;
+			min-height: 60px;
+		}
+
+		input,
+		button {
+			margin: 0.5em 0;
+		}
+
+		.section {
+			margin-bottom: 2em;
+		}
+
+		.log {
+			background: #f0f0f0;
+			padding: 0.5em;
+			min-height: 2em;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>WebRTC Peer-to-Peer Data Share</h1>
+	   <div class='section'>
+		   <label>Local Video:</label><br>
+		   <video id='localVideo' autoplay playsinline muted style='width: 100%; max-width: 320px; background: #222'></video>
+	   </div>
+	   <div class='section'>
+		   <label>Remote Video:</label><br>
+		   <video id='remoteVideo' autoplay playsinline style='width: 100%; max-width: 320px; background: #222'></video>
+	   </div>
+	   <div class='section'>
+		   <label for='dataToSend'>Text to send:</label><br>
+		   <textarea id='dataToSend'></textarea><br>
+		   <button id='sendBtn' disabled>Send</button>
+	   </div>
+	   <div class='section'>
+		   <strong>Received data:</strong>
+		   <div id='receivedData' class='log'></div>
+	   </div>
+	<div class='section'>
+		<h2>Connection Setup</h2>
+		<button id='createOfferBtn'>Create Offer</button>
+		<button id='createAnswerBtn'>Create Answer</button><br>
+		<label>Local SDP:</label><br>
+		<textarea id='localSdp' readonly></textarea><br>
+		<label>Remote SDP:</label><br>
+		<textarea id='remoteSdp'></textarea><br>
+		<button id='setRemoteSdpBtn'>Set Remote SDP</button>
+	</div>
+	<div class='section'>
+		<h2>ICE Candidates</h2>
+		<label>Local ICE:</label><br>
+		<textarea id='localIce' readonly></textarea><br>
+		<label>Remote ICE:</label><br>
+		<textarea id='remoteIce'></textarea><br>
+		<button id='addRemoteIceBtn'>Add Remote ICE</button>
+	</div>
+	<script type="module">
+
+		   // Actor Model-inspired design
+		   class ConnectionState {
+			   constructor() {
+				   this.signalingState = 'new' // new, have-local-offer, have-remote-offer, stable
+				   this.dataChannelState = 'closed' // open, closed
+				   this.connectionState = 'new' // new, connecting, connected, disconnected, failed, closed
+				   this.localSDP = null
+				   this.remoteSDP = null
+				   this.localICECandidates = []
+				   this.remoteICECandidates = []
+				   this.messageHistory = []
+			   }
+		   }
+
+
+
+		   class PeerConnectionActor {
+			   constructor(callbacks = {}) {
+				   this.state = new ConnectionState()
+				   this.pc = new RTCPeerConnection()
+				   this.dataChannel = null
+				   this.localStream = null
+				   this.remoteStream = null
+				   this.callbacks = callbacks // { onStateChange, onMessage, onIceCandidate, onDataChannelState, onRemoteStream }
+			   }
+
+			   async setLocalStream(stream) {
+				   this.localStream = stream
+				   for (const track of stream.getTracks()) {
+					   this.pc.addTrack(track, stream)
+				   }
+			   }
+
+			   setupCommon() {
+				   this.pc.onicecandidate = e => {
+					   if (e.candidate) {
+						   this.state.localICECandidates.push(e.candidate)
+						   if (this.callbacks.onIceCandidate) {
+							   this.callbacks.onIceCandidate(e.candidate)
+						   }
+					   }
+				   }
+				   this.pc.onconnectionstatechange = () => {
+					   this.state.connectionState = this.pc.connectionState
+					   if (this.callbacks.onStateChange) {
+						   this.callbacks.onStateChange(this.state)
+					   }
+				   }
+				   this.pc.ontrack = e => {
+					   if (!this.remoteStream) {
+						   this.remoteStream = new MediaStream()
+						   if (this.callbacks.onRemoteStream) {
+							   this.callbacks.onRemoteStream(this.remoteStream)
+						   }
+					   }
+					   this.remoteStream.addTrack(e.track)
+				   }
+			   }
+
+			   setupDataChannel(dc) {
+				   dc.onopen = () => {
+					   this.state.dataChannelState = 'open'
+					   if (this.callbacks.onDataChannelState) {
+						   this.callbacks.onDataChannelState('open')
+					   }
+				   }
+				   dc.onclose = () => {
+					   this.state.dataChannelState = 'closed'
+					   if (this.callbacks.onDataChannelState) {
+						   this.callbacks.onDataChannelState('closed')
+					   }
+				   }
+				   dc.onmessage = e => {
+					   this.state.messageHistory.push({ direction: 'in', data: e.data })
+					   if (this.callbacks.onMessage) {
+						   this.callbacks.onMessage(e.data)
+					   }
+				   }
+			   }
+
+			   async handle(message) {
+				   switch (message.type) {
+					   case 'add-remote-ice':
+						   await this.addRemoteIce(message.candidate)
+						   break
+					   case 'send-data':
+						   this.sendData(message.data)
+						   break
+					   case 'set-local-stream':
+						   await this.setLocalStream(message.stream)
+						   break
+				   }
+			   }
+
+			   async addRemoteIce(candidate) {
+				   await this.pc.addIceCandidate(new RTCIceCandidate(candidate))
+				   this.state.remoteICECandidates.push(candidate)
+				   if (this.callbacks.onStateChange) {
+					   this.callbacks.onStateChange(this.state)
+				   }
+			   }
+
+			   sendData(data) {
+				   if (this.dataChannel && this.dataChannel.readyState === 'open') {
+					   this.dataChannel.send(data)
+					   this.state.messageHistory.push({ direction: 'out', data })
+					   if (this.callbacks.onMessage) {
+						   this.callbacks.onMessage(data)
+					   }
+				   }
+			   }
+		   }
+
+		   class OffererConnectionActor extends PeerConnectionActor {
+			   constructor(callbacks = {}) {
+				   super(callbacks)
+				   this.setupCommon()
+				   this.dataChannel = this.pc.createDataChannel('data')
+				   this.setupDataChannel(this.dataChannel)
+			   }
+
+			   async handle(message) {
+				   switch (message.type) {
+					   case 'create-offer':
+						   await this.createOffer()
+						   break
+					   case 'set-remote-answer':
+						   await this.setRemoteAnswer(message.sdp)
+						   break
+					   case 'set-local-stream':
+						   await this.setLocalStream(message.stream)
+						   break
+					   default:
+						   await super.handle(message)
+				   }
+			   }
+
+			   async createOffer() {
+				   const offer = await this.pc.createOffer()
+				   await this.pc.setLocalDescription(offer)
+				   this.state.localSDP = this.pc.localDescription
+				   this.state.signalingState = 'have-local-offer'
+				   if (this.callbacks.onStateChange) {
+					   this.callbacks.onStateChange(this.state)
+				   }
+			   }
+
+			   async setRemoteAnswer(sdp) {
+				   await this.pc.setRemoteDescription(new RTCSessionDescription(sdp))
+				   this.state.remoteSDP = sdp
+				   this.state.signalingState = 'stable'
+				   if (this.callbacks.onStateChange) {
+					   this.callbacks.onStateChange(this.state)
+				   }
+			   }
+		   }
+
+		   class AnswererConnectionActor extends PeerConnectionActor {
+			   constructor(callbacks = {}) {
+				   super(callbacks)
+				   this.setupCommon()
+				   this.pc.ondatachannel = e => {
+					   this.dataChannel = e.channel
+					   this.setupDataChannel(this.dataChannel)
+				   }
+			   }
+
+			   async handle(message) {
+				   switch (message.type) {
+					   case 'set-remote-offer':
+						   await this.setRemoteOffer(message.sdp)
+						   break
+					   case 'create-answer':
+						   await this.createAnswer()
+						   break
+					   case 'set-local-stream':
+						   await this.setLocalStream(message.stream)
+						   break
+					   default:
+						   await super.handle(message)
+				   }
+			   }
+
+			   async setRemoteOffer(sdp) {
+				   await this.pc.setRemoteDescription(new RTCSessionDescription(sdp))
+				   this.state.remoteSDP = sdp
+				   this.state.signalingState = 'have-remote-offer'
+				   if (this.callbacks.onStateChange) {
+					   this.callbacks.onStateChange(this.state)
+				   }
+			   }
+
+			   async createAnswer() {
+				   const answer = await this.pc.createAnswer()
+				   await this.pc.setLocalDescription(answer)
+				   this.state.localSDP = this.pc.localDescription
+				   this.state.signalingState = 'stable'
+				   if (this.callbacks.onStateChange) {
+					   this.callbacks.onStateChange(this.state)
+				   }
+			   }
+		   }
+
+
+		   let actor = null
+		   let localStream = null
+
+		   // UI update helpers
+		   function updateLocalSdp(sdp) {
+			   document.getElementById('localSdp').value = sdp ? JSON.stringify(sdp) : ''
+		   }
+		   function updateSendBtn(enabled) {
+			   document.getElementById('sendBtn').disabled = !enabled
+		   }
+		   function updateReceivedData(data) {
+			   document.getElementById('receivedData').textContent = data
+		   }
+		   function appendLocalIce(candidate) {
+			   document.getElementById('localIce').value += JSON.stringify(candidate) + '\n'
+		   }
+		   function setLocalVideo(stream) {
+			   const video = document.getElementById('localVideo')
+			   video.srcObject = stream
+		   }
+		   function setRemoteVideo(stream) {
+			   const video = document.getElementById('remoteVideo')
+			   video.srcObject = stream
+		   }
+
+		   async function startLocalVideo() {
+			   localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+			   setLocalVideo(localStream)
+		   }
+
+		   document.getElementById('createOfferBtn').onclick = async () => {
+			   await startLocalVideo()
+			   actor = new OffererConnectionActor({
+				   onStateChange: state => updateLocalSdp(state.localSDP),
+				   onMessage: data => updateReceivedData(data),
+				   onIceCandidate: candidate => appendLocalIce(candidate),
+				   onDataChannelState: state => updateSendBtn(state === 'open'),
+				   onRemoteStream: stream => setRemoteVideo(stream)
+			   })
+			   await actor.handle({ type: 'set-local-stream', stream: localStream })
+			   await actor.handle({ type: 'create-offer' })
+		   }
+
+		   document.getElementById('createAnswerBtn').onclick = async () => {
+			   await startLocalVideo()
+			   actor = new AnswererConnectionActor({
+				   onStateChange: state => updateLocalSdp(state.localSDP),
+				   onMessage: data => updateReceivedData(data),
+				   onIceCandidate: candidate => appendLocalIce(candidate),
+				   onDataChannelState: state => updateSendBtn(state === 'open'),
+				   onRemoteStream: stream => setRemoteVideo(stream)
+			   })
+			   await actor.handle({ type: 'set-local-stream', stream: localStream })
+			   const offer = JSON.parse(document.getElementById('remoteSdp').value)
+			   await actor.handle({ type: 'set-remote-offer', sdp: offer })
+			   await actor.handle({ type: 'create-answer' })
+		   }
+
+		   document.getElementById('setRemoteSdpBtn').onclick = () => {
+			   const desc = JSON.parse(document.getElementById('remoteSdp').value)
+			   if (actor) {
+				   if (actor instanceof OffererConnectionActor) {
+					   actor.handle({ type: 'set-remote-answer', sdp: desc })
+				   } else if (actor instanceof AnswererConnectionActor) {
+					   actor.handle({ type: 'set-remote-offer', sdp: desc })
+				   }
+			   }
+		   }
+
+		   document.getElementById('sendBtn').onclick = () => {
+			   const dataToSend = document.getElementById('dataToSend').value
+			   if (actor) {
+				   actor.handle({ type: 'send-data', data: dataToSend })
+			   }
+		   }
+
+		   document.getElementById('addRemoteIceBtn').onclick = () => {
+			   const candidateStr = document.getElementById('remoteIce').value.trim()
+			   if (candidateStr && actor) {
+				   const candidate = JSON.parse(candidateStr)
+				   actor.handle({ type: 'add-remote-ice', candidate })
+				   document.getElementById('remoteIce').value = ''
+			   }
+		   }
+
+	</script>
+</body>
+
+</html>

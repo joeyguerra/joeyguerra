@@ -5,7 +5,6 @@
 //   Joey Guerra
 
 import { JuphjacWebServer } from 'juphjacs'
-import NatoFractureDB from '../lib/NatoFractureDB.mjs'
 
 const CHANNEL_ID = '1239325514133667931'
 const eventNames = {
@@ -52,10 +51,6 @@ ${JSON.stringify(data, null, 2)}
         apiBaseUrl: 'https://joeyguerra.com'
     }
 
-    const natoFractureDB = new NatoFractureDB(process.env.DB_PATH, robot.logger)
-    // Seed only when enabled and DB empty
-    natoFractureDB.seedIfEmpty()
-
     const server = new JuphjacWebServer({
         rootDir: process.cwd(),
         logLevel: process.env.LOG_LEVEL || 'info',
@@ -64,13 +59,13 @@ ${JSON.stringify(data, null, 2)}
             db,
             cache,
             config: myAppConfig,
-            robot,
-            natoFractureDB
+            robot
         }
     })
 
     await server.initialize()
     await server.start(process.env.PORT || 3000)
+    robot.server = server.httpServer
 
     process.on('SIGINT', async () => {
         console.log('Shutting down server...')
