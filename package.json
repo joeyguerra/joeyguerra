@@ -15,7 +15,7 @@
     "jose": "^6.1.0",
     "jsdom": "^27.0.0",
     "juphjacs": "github:joeyguerra/juphjacs",
-    "markdown-it": "^14.1.0",
+    "markdown-it": "^14.1.1",
     "markdown-it-meta": "^0.0.1",
     "morphdom": "^2.7.7",
     "openai": "^6.1.0",
