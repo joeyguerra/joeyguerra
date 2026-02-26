@@ -1,10 +1,10 @@
 {
   "name": "jbot-website",
-  "version": "3.0.72",
+  "version": "3.0.75",
   "description": "Personal website for Joey Guerra",
   "main": "server.mjs",
   "dependencies": {
-    "@hubot-friends/hubot-discord": "^4.1.0",
+    "@hubot-friends/hubot-discord": "^4.2.0",
     "@hubot-friends/hubot-service-discovery": "^2.0.2",
     "body-parser": "^2.2.1",
     "dijkstrajs": "^1.0.3",
@@ -15,7 +15,7 @@
     "jose": "^6.1.0",
     "jsdom": "^27.0.0",
     "juphjacs": "github:joeyguerra/juphjacs",
-    "markdown-it": "^14.1.0",
+    "markdown-it": "^14.1.1",
     "markdown-it-meta": "^0.0.1",
     "morphdom": "^2.7.7",
     "openai": "^6.1.0",
