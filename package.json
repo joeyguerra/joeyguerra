@@ -1,6 +1,6 @@
 {
   "name": "jbot-website",
-  "version": "3.0.75",
+  "version": "3.0.78",
   "description": "Personal website for Joey Guerra",
   "main": "server.mjs",
   "dependencies": {
@@ -36,7 +36,8 @@
     "local-deploy": "kubectl config use-context ${KUBE_CONTEXT:-k3d-local} && kubectl apply -f charts/web/deployment.yaml -n ${KUBE_NAMESPACE:-default}",
     "push": "node --run docker-build && node --run local-deploy",
     "signal:check": "node tools/signal-check.mjs --staged",
-    "signal:check:strict": "node tools/signal-check.mjs --staged --strict=85 --warn=90"
+    "signal:check:strict": "node tools/signal-check.mjs --staged --strict=85 --warn=90",
+    "index97": "index97"
   },
   "repository": {
     "type": "git",

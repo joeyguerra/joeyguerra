@@ -1,17 +1,17 @@
 export default async () => {
 
     return async (req, res) => {
-
+        
         if (req.url !== '/access-token') {
             return
         }
-
+        
         if(!req.params.code) {
             res.statusCode = 400
             res.write('Bad Request')
             return res.end()
         }
-
+        
         let userFromDiscord = Buffer.from(req.params.state, 'base64').toString('ascii').split(';').reduce((acc, current, i)=>{
             if(i == 0) acc.redirectUrl = current
             if(i == 1) acc.state = current
