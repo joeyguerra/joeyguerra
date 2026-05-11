@@ -3,7 +3,7 @@ layout: './pages/layouts/post.html'
 title: 'What Mid-Sized Businesses Should Demand From Their Software Partners'
 excerpt: "If you've ever hired a software team that ghosted you, missed every deadline, or delivered something that \"technically works\" but doesn't actually solve your problem-you already know how costly the wrong partner can be."
 published: 2025-11-06T17:16:00Z
-uri: '/blog/2025/demand-from-software-partners.html'
+uri: '/blog/2025/demand-from-software-partners'
 tags: ['demand', 'software', 'partners', 'blog', 'series', 'software', 'work', 'growing', 'businesses']
 ---
 

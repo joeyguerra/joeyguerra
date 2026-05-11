@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Definition of Quality in Software"
 excerpt: "Has your boss ever asked you to increase your code quality? How did you do that?"
-published: 2014-02-01
-uri: '/blog/2014/quality-software.html'
+published: 2014-02-01T00:00:00Z
+uri: '/blog/2014/quality-software'
 tags: ['quality', 'software']
 ---
 # Definition of Quality in Software

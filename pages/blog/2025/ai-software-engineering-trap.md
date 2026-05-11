@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "AI Is Boosting Senior Dev Productivity - But What's the Long Game?"
 excerpt: "It's no secret that AI is making software engineers faster. Tools like GitHub Copilot, ChatGPT, and countless other code assistants are already supercharging productivity, especially for experienced developers who know how to wield them well."
-published: 2025-03-30
-uri: '/blog/2025/ai-software-engineering-trap.html'
+published: 2025-03-30T00:00:00Z
+uri: '/blog/2025/ai-software-engineering-trap'
 tags: ['AI', 'Software Engineering', 'Productivity', 'Mentorship', 'Team Building', 'CTO Insights']
 ---
 

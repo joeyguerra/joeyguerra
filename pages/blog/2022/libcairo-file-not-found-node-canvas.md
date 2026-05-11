@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Error loading shared library libcairo. No such file or directory"
 excerpt: "Building alpine Docker image for NodeJS app using node canvas and getting error from libcairo. The lesson learned is libcairo depends on the installed packages still being in the image and I wasn't including them."
-published: 2022-09-11
-uri: '/blog/2022/libcairo-file-not-found-node-canvas.html'
+published: 2022-09-11T00:00:00Z
+uri: '/blog/2022/libcairo-file-not-found-node-canvas'
 tags: ['whyprogrammingissohard']
 ---
 # Error loading shared library libcairo.so.2: No such file or directory

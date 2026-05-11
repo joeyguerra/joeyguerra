@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "What is Architecture"
 excerpt: "Domain boundaries, Component responsibilities ..."
-published: 2019-07-01
-uri: '/blog/2019/what-is-architecture.html'
+published: 2019-07-01T00:00:00Z
+uri: '/blog/2019/what-is-architecture'
 tags: ['architecture']
 ---
 # What is Architecture

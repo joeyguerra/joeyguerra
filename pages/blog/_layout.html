@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{slot:title || Weblog }}</title>
+  <link rel="stylesheet" href="/css/blog.css">
+  {{slot:head}}
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="/" class="site-name">Joey Guerra</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/blog" class="is-active">Weblog</a>
+      </div>
+    </nav>
+  </header>
+  <main class="main-content">
+    {{content}}
+  </main>
+  <footer class="site-footer">
+    <p>Words by Joey Guerra &mdash; <a href="https://github.com/joeyguerra/joeyguerra">source</a></p>
+  </footer>
+</body>
+</html>

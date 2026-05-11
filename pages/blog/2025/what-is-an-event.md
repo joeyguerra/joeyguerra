@@ -3,7 +3,7 @@ layout: './pages/layouts/post.html'
 title: 'What is an event?'
 excerpt: "Not the kind with finger food and name tags. I mean the kind that runs your business - quietly, relentlessly, behind every invoice, every click and every \"oops\"."
 published: 2025-10-13T21:12:00Z
-uri: '/blog/2025/what-is-an-event.html'
+uri: '/blog/2025/what-is-an-event'
 tags: ['event', 'software', 'modeling']
 ---
 

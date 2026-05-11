@@ -3,7 +3,7 @@ layout: './pages/layouts/post.html'
 title: 'The ROI of Custom Software vs. Off-the-Shelf Tools'
 excerpt: "Every growing business hits this crossroads; Do we buy software that already exists, or do we build something tailored to how we actually work?"
 published: 2025-10-29T09:54:00Z
-uri: '/blog/2025/roi-cots-ots.html'
+uri: '/blog/2025/roi-cots-ots'
 tags: ['making', 'software', 'series', 'custom', 'otss', 'buy', 'vs', 'build', 'businesses']
 ---
 

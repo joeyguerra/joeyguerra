@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Come Along My Weblog Design Journey"
 excerpt: "I want you to hire my weblog. Come on my journey re-designing my weblog so that you read it; often."
-published: '2025-11-27T18:00:00Z' 
-uri: '/blog/2025/weblog-design-journey.html'
+published: 2025-11-27T18:00:00Z
+uri: '/blog/2025/weblog-design-journey'
 image: '/images/Pablo-Picasso-The-Bull-1945-2-2025675686.jpg'
 tags: ['weblog', 'design', 'journey']
 ---

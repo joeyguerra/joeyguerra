@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "The Difference Between SOLID and Design Patterns"
 excerpt: "So with the talk of learning a design pattern and not trying to shoehorn it into everything, is SOLID one of those things where its use case is specific to a task or is it generally just something to follow?"
-published: 2020-04-08
-uri: '/blog/2020/solid-and-design-patterns.html'
+published: 2020-04-08T00:00:00Z
+uri: '/blog/2020/solid-and-design-patterns'
 tags: ['solid', 'design', 'software']
 ---
 # The Difference Between SOLID and Design Patterns

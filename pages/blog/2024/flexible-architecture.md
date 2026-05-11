@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Everybody wants a flexible system"
 excerpt: "A system that is easy to change over time. Maximize ROI. Be responsive. Competitive. Adapt to a changing environment."
-published: 2024-05-06
-uri: '/blog/2024/flexible-architecture.html'
+published: 2024-05-06T00:00:00Z
+uri: '/blog/2024/flexible-architecture'
 image: '/images/head-of-it.webp'
 tags: ['architecture', 'software', 'flexible']
 ---

@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Stop Trying to Scale Agile"
 excerpt: "STOP. TRYING. TO. SCALE. AGILE."
-published: 2019-07-01
-uri: '/blog/2019/stop-trying-to-scale-agile.html'
+published: 2019-07-01T00:00:00Z
+uri: '/blog/2019/stop-trying-to-scale-agile'
 tags: ['agile', 'scale', 'organizational']
 ---
 # Stop trying to scale Agile

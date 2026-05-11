@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "I take everyone who says AI is replacing software engineering jobs seriously"
 excerpt: "I'm taking everyone who says AI is replacing software engineering jobs seriously. Which means that every interaction I have, every task I accomplish, I take a step back and think through what would have to be in place in order for AI to do this?"
-published: 2025-03-29
-uri: '/blog/2025/take-ai-seriously.html'
+published: 2025-03-29T00:00:00Z
+uri: '/blog/2025/take-ai-seriously'
 tags: ['AI', 'DataEngineering', 'SystemsDesign', 'Integration', 'FridayNightDebugging', 'Leadership', 'Compliance', 'Observability', 'HumanInTheLoop', 'yesimtalkingtoyou']
 ---
 

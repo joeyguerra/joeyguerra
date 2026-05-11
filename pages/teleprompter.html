@@ -1,4 +1,65 @@
-<style>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <base href="./"/>
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src https:"/>-->
+    <title>Teleprompter</title>
+    <meta name="author" content="Joey Guerra"/>
+    <meta name="description" content="Web teleprompter."/>
+    <meta property="og:title" content="Teleprompter"/>
+    <meta property="og:description" content="Web teleprompter."/>
+    <meta property="og:image" content="/images/joey-g-boss-pic.jpg"/>
+    <meta property="og:site_name" content="Teleprompter"/>
+    <meta property="og:published" content="2024-11-08" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="apple-touch-icon" href="/favicon_package_v0/apple-touch-icon.png"/>
+    <meta name="msapplication-TileColor" content="#da532c"/>
+    <meta name="theme-color" content="#ffffff"/>
+    <meta name="apple-mobile-web-app-title" content="Teleprompter"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_package_v0/apple-touch-icon.png"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon_package_v0/favicon-32x32.png"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon_package_v0/favicon-16x16.png"/>
+    <link rel="manifest" href="/favicon_package_v0/site.webmanifest"/>
+    <link rel="mask-icon" href="/favicon_package_v0/safari-pinned-tab.svg" color="#5bbad5"/>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <link rel="apple-touch-startup-image" href="/images/me.jpg"/>
+    <link rel="canonical" href="https://joeyguerra.com/teleprompter.html"/>
+    <link rel="preload" href="/HubotSans/Hubot-Sans.woff2" as="font" type="font/woff2" crossorigin>
+  </head>
+  <style>
+    @font-face {
+      font-family: 'Hubot Sans';
+      src:
+        url('/HubotSans/Hubot-Sans.woff2') format('woff2 supports variations'),
+        url('/HubotSans/Hubot-Sans.woff2') format('woff2-variations');
+      font-weight: 200 900;
+      font-stretch: 75% 125%;
+    }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    html, body {
+      font-family: "Hubot Sans","Hubot Sans Header Fallback",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    }
+
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body>header {
+      margin-bottom: 10px;
+    }
+  </style>
+  <body>
+    <style>
     body {
         background: black;
         padding: 60px;
@@ -39,7 +100,7 @@
     <p>The progress of our arms, upon which all else chiefly depends, is as well known to the public as to myself and it is, I trust, reasonably satisfactory and encouraging to all. With high hope for the future, no prediction in regard to it is ventured.</p>
     <p>On the occasion corresponding to this four years ago, all thoughts were anxiously directed to an impending civil war. All dreaded it, all sought to avert it. While the inaugural address was being delivered from this place, devoted altogether to saving the Union without war, insurgent agents were in the city seeking to destroy it without war—seeking to dissolve the Union, and divide effects, by negotiation. Both parties deprecated war, but one of them would make war rather than let the nation survive, and the other would accept war rather than let it perish. And the war came.</p>
     <p>One eighth of the whole population were colored slaves, not distributed generally over the Union, but localized in the southern part of it. These slaves constituted a peculiar and powerful interest. All knew that this interest was, somehow, the cause of the war.</p>
-    <p>With malice toward none, with charity for all, with firmness in the right as God gives us to see the right, let us strive on to finish the work we are in, to bind up the nation’s wounds, to care for him who shall have borne the battle and for his widow and his orphan—to do all which may achieve and cherish a just and lasting peace among ourselves and with all nations.</p>
+    <p>With malice toward none, with charity for all, with firmness in the right as God gives us to see the right, let us strive on to finish the work we are in, to bind up the nation's wounds, to care for him who shall have borne the battle and for his widow and his orphan—to do all which may achieve and cherish a just and lasting peace among ourselves and with all nations.</p>
 </div>
 <p>END</p>
 
@@ -96,3 +157,27 @@
     document.addEventListener('keydown', keyDownTextField, false)
 
 </script>
+  </body>
+
+  <script type="module">
+    import App from "./webapp/App.mjs"
+    const io = options => {
+      return {
+        emit(event, message){
+          console.log("socket.emit", event, message)
+        },
+        on(event, callback){
+          console.log("socket.on", event, callback)
+        }
+      }
+    }
+    function main(){
+      window.addEventListener("load", e => {
+        window.app = new App(window, io({
+          reconnectionAttempts: 5
+        }), {}, {})
+      }, true)
+    }
+    if('io' in window) main()
+  </script>
+</html>
