@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Steps to Creating a DevOps Culture in an Organization"
 excerpt: "I started out writing a verbose post about how to create a DevOps culture in an enterprise. After sleeping on it, I realized that people really need tactical suggestions on how to create a DevOps culture, not just a description. So here's a DevOps Culture todo list."
-published: 2014-05-01
-uri: '/blog/2014/devops.html'
+published: 2014-05-01T00:00:00Z
+uri: '/blog/2014/devops'
 tags: ['devops', 'team', 'leadership', 'agile']
 ---
 # Steps to Creating a DevOps Culture in an Organization

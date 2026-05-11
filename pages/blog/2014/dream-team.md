@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Dream Team"
 excerpt: "I want to work on a team who's culture has these characteristics."
-published: 2014-04-01
-uri: '/blog/2014/dream-team.html'
+published: 2014-04-01T00:00:00Z
+uri: '/blog/2014/dream-team'
 tags: ['team']
 ---
 # Dream Team

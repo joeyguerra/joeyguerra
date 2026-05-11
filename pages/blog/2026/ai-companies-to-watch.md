@@ -3,7 +3,7 @@ layout: './pages/layouts/post.html'
 title: 'AI companies to watch.'
 excerpt: "I'm paying attention to AI. So when I run into an interesting one, I've been taking notes."
 published: 2026-02-21T10:22:00Z
-uri: '/blog/2026/ai-companies-to-watch.html'
+uri: '/blog/2026/ai-companies-to-watch'
 tags: ['interesting', 'ai', 'companies']
 ---
 

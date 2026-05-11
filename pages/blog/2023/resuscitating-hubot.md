@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Resuscitating Hubot"
 excerpt: "According to GitHub stats, Hubot development stalled after 2015. There was a little bit of activity in 2017 and 2019, but not enough to consider the codebase under active development. I'm resuscitating Hubot."
-published: 2023-06-13
-uri: '/blog/2023/resuscitating-hubot.html'
+published: 2023-06-13T00:00:00Z
+uri: '/blog/2023/resuscitating-hubot'
 image: '/meandhubot.jpg'
 tags: ['hubot', 'chatbot', '2014']
 ---

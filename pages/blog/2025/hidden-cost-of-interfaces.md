@@ -4,8 +4,10 @@ layout: './pages/layouts/post.html'
 published: 2025-09-20T14:00:00Z
 tag: 'Systems & Interfaces'
 readingTime: '12 min read'
-canonical: '/blog/2025/hidden-cost-of-interfaces.html'
+uri: '/blog/2025/hidden-cost-of-interfaces'
 tags: ['interfaces', 'systems design', 'integration', 'idempotency', 'api design', 'failure modes']
+excerpt: |
+  Most operational pain in software systems isn’t caused by algorithms or frameworks. It’s caused by the shape of the interfaces between components: what they expose, what they hide, and what they promise. Bad interfaces create coordination complexity, propagate ambiguous failure modes, and make every change risky.
 ---
 
 Most operational pain in software systems isn’t caused by algorithms or frameworks. It’s caused by the shape of the interfaces between components: what they expose, what they hide, and what they promise. Bad interfaces create coordination complexity, propagate ambiguous failure modes, and make every change risky.

@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Process"
 excerpt: "I never considered myself a process oriented person"
-published: 2020-03-15
-uri: '/blog/2020/process.html'
+published: 2020-03-15T00:00:00Z
+uri: '/blog/2020/process'
 tags: ['process']
 ---
 # Process

@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Want to Leverage AI? Teach Your Business to Talk to Itself First"
 excerpt: "Every company wants to harness AI. Dashboards aren't enough. Everyone wants real-time answers, recommendations, forecasts, and action. Start your journey with ChatOps."
-published: 2025-07-17
-uri: '/blog/2025/chatops-to-ai.html'
+published: 2025-07-17T00:00:00Z
+uri: '/blog/2025/chatops-to-ai'
 tags: ['AI', 'chatops', 'journey', 'CTO Insights']
 ---
 
@@ -55,7 +55,7 @@ Here's what happens when you let your team query data conversationally:
 - You uncover the *gaps in your data model.*
 - You learn *how people think about their work.*
 
-All of this becomes foundational training data for future AI copilots.
+All of this becomes foundational training data for future AI chatbots.
 
 **Do this:**
 

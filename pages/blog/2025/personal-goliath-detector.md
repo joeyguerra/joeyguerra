@@ -3,7 +3,7 @@ layout: './pages/layouts/post.html'
 title: "The Personal Goliath Detector: How to Spot Career Traps Disguised as Opportunities"
 excerpt: "Not every impressive opportunity is right for you. Learn the 8-phase test to distinguish between real growth paths and Goliaths - comfortable, prestigious, and slowly misaligned."
 published: 2025-12-13T18:46:00Z
-uri: '/blog/2025/personal-goliath-detector.html'
+uri: '/blog/2025/personal-goliath-detector'
 tags: ['career', 'decision making', 'life direction', 'mentorship', 'advice']
 ---
 

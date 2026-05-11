@@ -1,9 +1,8 @@
 ---
-layout: './pages/layouts/post.html'
 title: "I'm a programmer, I'm coding my own blog engine"
 excerpt: "This has been a long time coming. I've preached about blogging for years and yet, have never done it myself. Well, I have but back in 1997 and I didn't keep it up and I don't have proof. And I'm a big believer programmers should write code and if you're a programmer AND gonna write a blog, you should write the blog engine yourself. It shows off your talents, or lack there of, and you'll learn something along the way."
-published: 2014-01-01
-uri: '/blog/2014/content-negotiation.html'
+published: 2014-01-01T06:00:00Z
+uri: '/blog/2014/blog-engine'
 tags: ['coding']
 image: ''
 ---
@@ -14,4 +13,4 @@ This has been a long time coming. I've preached about blogging for years and yet
 
 What got me to start writing a blog again, was when my friend and colleague Kijana started his own and [coded it himself](http://kijanawoodard.com/building-a-blog-engine) and Zach, one of my old co-workers from my time at Gamestop, picked up Moonscript and [built a blog engine](http://www.throw-up.com/building-openresty); so it's about time I try it for myself.
 
-I decided to use Javascript. [So I've built a static site generator in Javascript using Node JS](https://github.com/joeyguerra/joeyguerra). Now enough exposition, let's begin.
+I decided to use Javascript. [So I've built a static site generator in Javascript using ~Node JS~ Bun](https://github.com/joeyguerra/joeyguerra). Now enough exposition, let's begin.

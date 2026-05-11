@@ -1,0 +1,381 @@
+@import './base.css';
+
+/* ──────────────────────────────────────
+   BASE OVERRIDES
+   ────────────────────────────────────── */
+
+html {
+    font-size: 18px;
+}
+
+/* ──────────────────────────────────────
+   PAGE CHROME
+   ────────────────────────────────────── */
+
+.site-header {
+    border-bottom: 1px solid var(--border-subtle);
+    padding: var(--space-md) var(--space-xl);
+}
+
+.site-nav {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.site-name {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: 0.01em;
+    color: var(--text-main);
+}
+
+.site-name:hover {
+    color: var(--accent);
+}
+
+.nav-links {
+    display: flex;
+    gap: var(--space-lg);
+    font-size: 0.9375rem;
+}
+
+.nav-links a {
+    color: var(--text-muted);
+    transition: color 0.15s;
+}
+
+.nav-links a:hover,
+.nav-links a.is-active {
+    color: var(--text-main);
+}
+
+/* Main content column */
+main.main-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--space-xxl) var(--space-xl);
+}
+
+/* Site footer */
+.site-footer {
+    border-top: 1px solid var(--border-subtle);
+    padding: var(--space-lg) var(--space-xl);
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--text-soft);
+    margin-top: var(--space-xxl);
+}
+
+.site-footer a {
+    color: var(--text-muted);
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.site-footer a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+/* ──────────────────────────────────────
+   BLOG INDEX — post list
+   ────────────────────────────────────── */
+
+.post-list-header {
+    margin-bottom: var(--space-xxl);
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.post-list-header h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin: 0 0 var(--space-xs) 0;
+    line-height: 1.2;
+}
+
+.post-list-header p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.post-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-item {
+    padding: var(--space-lg) 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.post-item:last-child {
+    border-bottom: none;
+}
+
+.post-date {
+    display: block;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-soft);
+    margin-bottom: 6px;
+}
+
+.post-title {
+    margin: 0 0 var(--space-xs) 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.post-title a {
+    color: var(--text-main);
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.post-title a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+.post-excerpt {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0;
+}
+
+.empty-state {
+    color: var(--text-soft);
+    font-style: italic;
+}
+
+/* ──────────────────────────────────────
+   BLOG POST — typography for markdown content
+   These target raw HTML elements rendered from markdown
+   ────────────────────────────────────── */
+
+main.main-content h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 var(--space-lg) 0;
+    letter-spacing: -0.01em;
+}
+
+main.main-content h2 {
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: var(--space-xxl) 0 var(--space-md) 0;
+    letter-spacing: -0.005em;
+}
+
+main.main-content h2:first-child {
+    margin-top: 0;
+}
+
+main.main-content h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin: var(--space-xl) 0 var(--space-sm) 0;
+}
+
+main.main-content h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: var(--space-lg) 0 var(--space-xs) 0;
+}
+
+main.main-content p {
+    font-size: 1rem;
+    line-height: 1.8;
+    margin: 0 0 var(--space-lg) 0;
+    color: var(--text-main);
+}
+
+main.main-content > p:first-child,
+main.main-content > h1 + p {
+    font-size: 1.0625rem;
+    color: var(--text-muted);
+}
+
+main.main-content a {
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-subtle);
+    transition: color 0.15s, border-color 0.15s;
+}
+
+main.main-content a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+/* Don't re-style post list links inside main */
+main.main-content .post-title a,
+main.main-content .nav-links a,
+main.main-content .site-name {
+    border-bottom: none;
+}
+
+main.main-content ul,
+main.main-content ol {
+    font-size: 1rem;
+    line-height: 1.8;
+    margin: 0 0 var(--space-lg) 0;
+    padding-left: var(--space-xl);
+    color: var(--text-main);
+}
+
+main.main-content li {
+    margin-bottom: var(--space-xs);
+}
+
+main.main-content li + li {
+    margin-top: 2px;
+}
+
+main.main-content blockquote {
+    margin: var(--space-xl) 0;
+    padding: var(--space-sm) var(--space-lg);
+    border-left: 3px solid var(--accent);
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+main.main-content blockquote p {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+main.main-content code {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.875em;
+    background: var(--panel-alt);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--text-main);
+}
+
+main.main-content pre {
+    background: #1a1d23;
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    overflow-x: auto;
+    margin: var(--space-lg) 0;
+    -webkit-overflow-scrolling: touch;
+}
+
+main.main-content pre code {
+    background: none;
+    padding: 0;
+    font-size: 0.875rem;
+    color: #e2e8f0;
+    line-height: 1.65;
+}
+
+main.main-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    margin: var(--space-lg) 0;
+    display: block;
+}
+
+main.main-content hr {
+    border: none;
+    border-top: 1px solid var(--border-subtle);
+    margin: var(--space-xxl) 0;
+}
+
+main.main-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-lg) 0;
+    font-size: 0.9375rem;
+}
+
+main.main-content th,
+main.main-content td {
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--border-subtle);
+    text-align: left;
+    line-height: 1.5;
+}
+
+main.main-content th {
+    background: var(--panel-alt);
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+main.main-content tr:nth-child(even) td {
+    background: rgba(0, 0, 0, 0.015);
+}
+
+/* Strong/em within content */
+main.main-content strong {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* ──────────────────────────────────────
+   RESPONSIVE
+   ────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .site-header {
+        padding: var(--space-md);
+    }
+
+    main.main-content {
+        padding: var(--space-xl) var(--space-md);
+    }
+
+    .site-footer {
+        padding: var(--space-lg) var(--space-md);
+    }
+
+    main.main-content h1,
+    .post-list-header h1 {
+        font-size: 1.5rem;
+    }
+
+    main.main-content h2 {
+        font-size: 1.25rem;
+    }
+
+    main.main-content h3 {
+        font-size: 1.0625rem;
+    }
+
+    .post-title {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-links {
+        gap: var(--space-md);
+    }
+
+    main.main-content pre {
+        border-radius: 0;
+        margin-left: calc(-1 * var(--space-md));
+        margin-right: calc(-1 * var(--space-md));
+    }
+}

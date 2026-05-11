@@ -1,0 +1,26 @@
+<template data-slot="title">Weblog</template>
+
+<div class="post-list-header">
+  <h1>Weblog</h1>
+  <p>Notes on software engineering, leadership, and building things.</p>
+</div>
+
+<ol class="post-list" reversed>
+  {{#each posts}}
+  <li class="post-item">
+    <article>
+      <time class="post-date" datetime="{{page.data.published}}">{{page.data.displayDate}}</time>
+      <h2 class="post-title">
+        <a href="{{page.data.uri}}">{{page.data.title}}</a>
+      </h2>
+      {{#if page.data.excerpt}}
+      <p class="post-excerpt">{{{page.data.excerpt}}}</p>
+      {{/if}}
+    </article>
+  </li>
+  {{/each}}
+</ol>
+
+{{#unless posts}}
+<p class="empty-state">No posts yet.</p>
+{{/unless}}

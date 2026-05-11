@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Coding and Code Review Guidelines"
 excerpt: "In order to reuse code, it must pass the teams measurement of readability and discoverability."
-published: 2014-08-01
-uri: '/blog/2014/code-review-guidelines.html'
+published: 2014-08-01T00:00:00Z
+uri: '/blog/2014/code-review-guidelines'
 tags: ['review', 'code']
 ---
 

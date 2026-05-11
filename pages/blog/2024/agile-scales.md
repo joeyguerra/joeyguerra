@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Does Agile Software Development Scale?"
 excerpt: " Of course it does. But that's the wrong question. Because Agile Software Development is directly related to computing power and so it has similar scaling qualities."
-published: 2024-02-07
-uri: '/blog/2024/agile-scales.html'
+published: 2024-02-07T00:00:00Z
+uri: '/blog/2024/agile-scales'
 image: '/images/6958430407_12683c821f_w.jpg'
 tags: ['agile', 'scale']
 ---

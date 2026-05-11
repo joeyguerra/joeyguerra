@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Agile Is Pull-Based - Waterfall Is Batch-Based - And That Makes All The Difference"
 excerpt: "In manufacturing, there's a world of difference between a batch-and-queue process and a pull-based flow like the [Toyota Production System](https://global.toyota/en/company/vision-and-philosophy/production-system/). The same is true in software development."
-published: 2025-08-11
-uri: '/blog/2025/agile-vs-waterfall-architecture.html'
+published: 2025-08-11T00:00:00Z
+uri: '/blog/2025/agile-vs-waterfall-architecture'
 image: '/images/iterative-steps-with-value.jpg'
 tags: ['Agile', 'Software Engineering', 'Project Management', 'Waterfall']
 ---
@@ -11,7 +11,7 @@ tags: ['Agile', 'Software Engineering', 'Project Management', 'Waterfall']
 # Agile Is Pull-Based - Waterfall Is Batch-Based - And That Makes All The Difference
 
 <figure>
-    <img class="full-width" src="images/iterative-steps-with-value.jpg" alt="Four quadrant drawing of a man by a well with a pail of water. 2nd quadrant is the same man at a water pump, pumping water into the pail. 3rd quadrant is the same man pumping water into the pai, but now there's a filter attached to the pump. 4th quadrant is the man standing next to the pump and the pump automatically filling the pail." />
+    <img class="full-width" src="/images/iterative-steps-with-value.jpg" alt="Four quadrant drawing of a man by a well with a pail of water. 2nd quadrant is the same man at a water pump, pumping water into the pail. 3rd quadrant is the same man pumping water into the pai, but now there's a filter attached to the pump. 4th quadrant is the man standing next to the pump and the pump automatically filling the pail." />
 </figure>
 
 In manufacturing, there's a world of difference between a batch-and-queue process and a pull-based flow like the [Toyota Production System](https://global.toyota/en/company/vision-and-philosophy/production-system/).

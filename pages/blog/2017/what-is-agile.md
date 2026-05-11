@@ -1,9 +1,8 @@
 ---
-layout: './pages/layouts/post.html'
 title: "Agile"
 excerpt: "agile adj. - Characterized by quickness, lightness, and ease of movement; nimble."
-published: 2017-03-01
-uri: '/blog/2016/what-is-agile.html'
+published: 2017-03-01T00:00:00Z
+uri: '/blog/2017/what-is-agile'
 tags: ['agile']
 ---
 # Agile

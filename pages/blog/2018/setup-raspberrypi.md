@@ -1,9 +1,9 @@
 ---
 layout: './pages/layouts/post.html'
-title: "Setup a Raspberry Pi"
+title: "Raspberry Pis To Talk To Each Other"
 excerpt: "Ready to talk."
-published: 2018-03-01
-uri: '/blog/2018/setup-raspberrypi.html'
+published: 2018-03-01T00:00:00Z
+uri: '/blog/2018/setup-raspberrypi'
 tags: ['experimenting']
 ---
 # I want a Raspberry Pi ready to talk to other machines

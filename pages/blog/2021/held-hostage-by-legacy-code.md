@@ -2,14 +2,14 @@
 layout: './pages/layouts/post.html'
 title: "Stop Being Held Hostage By Legacy Code"
 excerpt: "Your developers and their code have an antibiosis relationship."
-published: 2021-09-21
-uri: '/blog/2021/held-hostage-by-legacy-code.html'
+published: 2021-09-21T00:00:00Z
+uri: '/blog/2021/held-hostage-by-legacy-code'
 image: '/iu-2.jpeg'
 tags: ['legacy', 'advice']
 ---
 # Stop Being Held Hostage By Legacy Code
 
-<img class="full-width" src="../../iu-2.jpeg" alt="Android" />
+<img class="full-width" src="/images/iu-2.jpeg" alt="Android" />
 
 You're about to learn the real reason why your organization is held hostage by legacy code.
 

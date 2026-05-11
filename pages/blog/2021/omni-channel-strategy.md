@@ -2,14 +2,14 @@
 layout: './pages/layouts/post.html'
 title: "An Omni-channel Technology Strategy"
 excerpt: "I went through an excercise to develop a technology strategy for a fictional retail company which merged 2 IT teams."
-published: 2021-07-24
-uri: '/blog/2021/omni-channel-strategy.html'
+published: 2021-07-24T00:00:00Z
+uri: '/blog/2021/omni-channel-strategy'
 image: '/desk.jpeg'
 tags: ['strategy', 'architecture']
 ---
 # An Omni-channel Technology Strategy
 
-<img class="full-width" src="https://joeyguerra.com/images/desk.jpeg" alt="My desk" />
+<img class="full-width" src="/images/desk.jpeg" alt="My desk" />
 
 ## Problem
 

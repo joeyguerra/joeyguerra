@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Kubernetes (k8s), Cloud Foundry (CF) and Platform as a Service (PaaS) - A Dialogue"
 excerpt: " A dialogue about using Kubernetes, Cloud Foundry and PaaS."
-published: 2018-04-01
-uri: '/blog/2018/k8s-cf-paas.html'
+published: 2018-04-01T00:00:00Z
+uri: '/blog/2018/k8s-cf-paas'
 tags: ['k8s']
 ---
 # Kubernetes (k8s), Cloud Foundry (CF) and Platform as a Service (PaaS) - A Dialogue

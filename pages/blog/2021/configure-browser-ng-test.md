@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Use Safari Instead of Chrome with Angular (ng test)"
 excerpt: "I don't use Chrome. I'm a rebel I guess. So when building Angular apps and practicing TDD, I wanted to configure Karma to use Safari instead of Chrome."
-published: 2021-03-27
-uri: '/blog/2021/configure-browser-ng-test.html'
+published: 2021-03-27T00:00:00Z
+uri: '/blog/2021/configure-browser-ng-test'
 tags: ['programming is hard']
 ---
 # Use Safari Instead of Chrome with Angular (ng test)

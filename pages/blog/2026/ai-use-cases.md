@@ -3,7 +3,7 @@ layout: './pages/layouts/post.html'
 title: 'How I use AI'
 excerpt: "I use AI."
 published: 2026-03-14T20:49:00Z
-uri: '/blog/2026/ai-use-cases.html'
+uri: '/blog/2026/ai-use-cases'
 tags: ['ai', 'use cases']
 ---
 

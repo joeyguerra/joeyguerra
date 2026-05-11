@@ -3,7 +3,7 @@ layout: './pages/layouts/post.html'
 title: 'Mission Briefing: An LLM-Operated Application Platform'
 excerpt: "Design a platform where a user can reshape a live application to match their mental model — in plain English — and the system can safely execute, deploy, and verify those changes without tutorials, manual setup, or infrastructure wrangling."
 published: 2026-01-12T20:00:00Z
-uri: '/blog/2026/mission-briefing-llm-operated-application-platform.html'
+uri: '/blog/2026/mission-briefing-llm-operated-application-platform'
 tags: ['mission briefing', 'llm', 'guardrails', 'design', 'architecture']
 ---
 
@@ -37,8 +37,8 @@ This Mission Briefing describes an architecture where:
 
 This architecture is grounded in tools that already work well together:
 
-- [**Hubot**](https://github.com/hubotio/hubot) — command router, policy enforcement, audit log
-- [**Juphjacs**](https://github.com/joeyguerra/juphjacs) — server-rendered HTML with WebSocket hot reload (morphdom)
+- [**chatopsjs**](https://github.com/devchitchat/chatopsjs) — command router, policy enforcement, audit log
+- [**index97**](https://github.com/devchitchat/index97) — server-rendered HTML with WebSocket hot reload (morphdom)
 - **LLMs** — planning, diff generation, decision-making
 - [**Kubernetes**](https://kubernetes.io) — execution substrate the LLM can operate
 - [**Git**](https://git-scm.com) — source of truth, diff boundary, rollback mechanism
@@ -56,9 +56,9 @@ This architecture is grounded in tools that already work well together:
 Humans express *intent*.  
 They delegate perform mechanical steps.
 
-### 2. Hubot (Command & Policy Authority)
+### 2. chatopsjs (Command & Policy Authority)
 
-Hubot is the **control plane**.
+chatopsjs is the **control plane**.
 
 **Responsibilities**
 - Accept structured change requests
@@ -67,7 +67,7 @@ Hubot is the **control plane**.
 - Apply changes via tools
 - Record every action
 
-Hubot is the **authoritative** arm for the Human.
+chatopsjs is the **authoritative** arm for the Human.
 
 ### 3. LLM Operator (Planner + Patch Author)
 
@@ -87,11 +87,11 @@ The LLM acts as an **operator**, not a free-form coder.
 
 **Critical Constraint**
 The LLM proposes changes.  
-Hubot applies them.
+chatopsjs applies them.
 
-### 4. Juphjacs Runtime (Living Application Surface)
+### 4. index97 Runtime (Living Application Surface)
 
-Juphjacs provides a crucial capability:
+index97 provides a crucial capability:
 
 - Server-side rendering
 - Persistent WebSocket connection
@@ -103,6 +103,8 @@ Juphjacs provides a crucial capability:
 - The UI becomes a live preview environment
 
 This collapses feedback loops from minutes to seconds.
+
+index97 is the runtime the LLM is operating against.
 
 ### 5. Kubernetes Substrate (Owned Execution Environment)
 
@@ -117,7 +119,7 @@ It is part of the mission system.
 - Configuration changes
 
 The LLM does not guess how to deploy.  
-It operates the cluster through bounded actions codified in the Hubot framework.
+It operates the cluster through bounded actions codified in chatopsjs.
 
 ## The Paved Path Framework
 
@@ -177,7 +179,7 @@ The architecture exists to *contain* it.
 
 **Containment**
 - Diffs are visible before deployment.
-- Previews update live via Juphjacs.
+- Previews update live via index97.
 - Promotion requires explicit user approval.
 - Small diffs are encouraged; large diffs require confirmation.
 

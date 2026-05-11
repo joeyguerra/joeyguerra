@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Software Project Kickoff Checklist"
 excerpt: "Use this checklist before you start your next software project to avoid wasted time, money, and frustration."
-published: 2025-10-01
-uri: '/blog/2025/software-project-kickoff-checklist.html'
+published: 2025-10-01T00:00:00Z
+uri: '/blog/2025/software-project-kickoff-checklist'
 tags: ['software', 'project', 'checklist', 'kickoff', 'businesses']
 ---
 

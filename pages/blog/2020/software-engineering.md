@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "Software Engineering"
 excerpt: "What is Software Engineering"
-published: 2020-12-26
-uri: '/blog/2020/software-engineering.html'
+published: 2020-12-26T00:00:00Z
+uri: '/blog/2020/software-engineering'
 tags: ['software engineering']
 ---
 # Software Engineering

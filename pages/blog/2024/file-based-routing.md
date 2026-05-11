@@ -1,15 +1,15 @@
 ---
 title: 'File-Based Routing Without the Magic'
-excerpt: 'How Juphjacs maps URLs to files with zero configuration.'
+excerpt: 'How index97 maps URLs to files with zero configuration.'
 layout: './pages/layouts/post.html'
-canonical: 'https://joeyguerra.com/blog/2024/file-based-routing.html'
-published: '2024-10-14'
-tags: ['juphjacs', 'routing', 'architecture', 'dx']
+uri: '/blog/2024/file-based-routing'
+published: 2024-10-14T00:00:00Z
+tags: ['index97', 'routing', 'architecture', 'dx']
 ---
 
 # File-Based Routing Without the Magic
 
-Most frameworks hide their routing behind conventions and loaders you can't see. Juphjacs takes a different approach: what you see in your file tree is exactly what you get in your URLs. No magic. No surprises.
+Most frameworks hide their routing behind conventions and loaders you can't see. index97 takes a different approach: what you see in your file tree is exactly what you get in your URLs. No magic. No surprises.
 
 ## The Problem with Convention-Based Routing
 
@@ -22,137 +22,220 @@ Modern frameworks come with routing systems that feel convenient - until they do
 
 The cognitive load sneaks up on you. You spend more time remembering the framework's conventions than solving your actual problem. I want to make these more visible.
 
-## How Juphjacs Does It
+## How index97 Does It
 
-Juphjacs routing is explicit and transparent:
+index97 routing is explicit and transparent. Every file in `pages/` is a route, determined entirely by its extension:
 
-1. **Files map directly to URLs**: `pages/blog/2024/post.html` serves `/blog/2024/post.html`
-2. **`.mjs` handlers define behavior**: `pages/blog/2024/post.mjs` exports a Page class with optional `get()`, `post()`, etc.
-3. **Layout composition is explicit**: Each page declares its own layout in the constructor
-4. **No hidden loaders**: The framework loads modules directly - you can read the source and see exactly what happens
+| Extension | Kind | What it does |
+|-----------|------|--------------|
+| `.html` | document | Served as-is — no processing |
+| `.phtml` | page | Template rendered with handler data |
+| `.js` | handler | Exports HTTP method functions (`GET`, `POST`, etc.) |
+| `.md` | markdown | Rendered from Markdown, front matter as slots |
+
+Files prefixed with `_` are **private** — they are never routes. That's how `_layout.html` and `_layout.js` stay out of the URL space.
 
 ### Example Structure
 
 ```
 pages/
+├── _layout.html            ← wraps every page (not a route)
+├── _layout.js              ← server-side data for the layout
 ├── index.html              → /
-├── index.mjs               → exports IndexPage
+├── about.html              → /about
 ├── blog/
-│   ├── index.html          → /blog/
-│   ├── index.mjs           → exports BlogIndexPage
+│   ├── index.html          → /blog
+│   ├── index.js            → /blog  (handler with data)
+│   ├── index.phtml         → template for the above
 │   ├── 2024/
-│   │   ├── post.html       → /blog/2024/post.html
-│   │   └── post.mjs        → exports PostPage
+│   │   └── post.md         → /blog/2024/post
+│   └── [slug].js           → /blog/:slug  (dynamic route)
+│   └── [slug].phtml        ← template for the dynamic route
+└── public/
+    └── style.css           ← static assets, never routed
 ```
 
-### Page Handler Pattern
+### Document Pages
 
-Every `.mjs` file follows the same pattern:
+An `.html` file with no `.js` sibling is served directly:
 
-```javascript
-import { Page } from 'juphjacs/src/domain/pages/Page.mjs'
+```html
+<!-- pages/about.html -->
+<template data-slot="title">About</template>
 
-class PostPage extends Page {
-  constructor(pagesFolder, filePath, template, delegate) {
-    super(pagesFolder, filePath, template, delegate)
-    this.title = 'My Post'
-    this.layout = './pages/layouts/post.html'
-    this.uri = '/blog/2024/post.html'
-    this.canonical = 'https://example.com/blog/2024/post.html'
-  }
+<h1>About</h1>
+<p>Just a file. No handler needed.</p>
+```
 
-  // Optional: handle GET requests with custom logic
-  async get(req, res) {
-    // Fetch data, set state, etc.
-    await this.render()
-    res.setHeader('Content-Type', 'text/html')
-    res.end(this.content)
-  }
-}
+### Handler + Template Pages
 
-export default async (pagesFolder, filePath, template, delegate) => {
-  return new PostPage(pagesFolder, filePath, template, delegate)
+When you need data, pair a `.js` handler with a `.phtml` template. The handler exports named HTTP method functions:
+
+```js
+// pages/blog/index.js
+import { renderMarkdown } from '@devchitchat/index97/markdown.js'
+
+export async function GET(req) {
+  const posts = await loadPosts()
+  return { posts }
 }
 ```
 
-**What's happening:**
-- The constructor sets metadata: title, layout, canonical URL, etc.
-- The optional `get()` method handles HTTP GET requests
-- `render()` composes the page with its layout
-- The default export is a factory function that returns an instance
+```html
+<!-- pages/blog/index.phtml -->
+<template data-slot="title">Blog</template>
 
-### Static vs. Dynamic Pages
+<h1>Blog</h1>
+<ul>
+  {{#each posts}}
+  <li><a href="{{page.uri}}">{{page.title}}</a></li>
+  {{/each}}
+</ul>
+```
 
-**Static pages** (no `.mjs` file):
-- Served directly from the `.html` file
-- No custom logic, just template rendering
+The handler returns a plain object. index97 passes it to the template. No class, no lifecycle hooks, no adapter layer.
 
-**Dynamic pages** (has `.mjs` file):
-- Page class controls rendering
-- Can fetch data, check auth, redirect, etc.
-- Full control over the request/response cycle
+### Dynamic Routes
 
-**Markdown pages** (no need for `.mjs` file):
-- Transformed to static `.html` pages
+Wrap a segment in brackets to make it a parameter:
+
+```
+pages/blog/[slug].js      → /blog/hello-world
+pages/blog/[slug].phtml   → template for the above
+```
+
+```js
+// pages/blog/[slug].js
+export async function GET(req) {
+  const post = await getPost(req.params.slug)
+  if (!post) return new Response('', { status: 404 })
+  return { post }
+}
+```
+
+```html
+<!-- pages/blog/[slug].phtml -->
+<h1>{{post.title}}</h1>
+<div>{{{post.body}}}</div>
+```
+
+### Markdown Pages
+
+Drop a `.md` file and it routes automatically. Front matter keys become layout slots:
+
+```markdown
+---
+title: 'My Post'
+published: 2024-10-14T00:00:00Z
+---
+
+# My Post
+
+Content goes here.
+```
+
+The framework renders the Markdown body and injects `title`, `published`, and any other front matter keys as `{{slot:title}}` etc. in the layout. No handler required.
+
+### Layouts
+
+`_layout.html` in a directory wraps every page below it. The framework walks up the tree to find the nearest one:
+
+```html
+<!-- pages/_layout.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{{slot:title || My Site}}</title>
+  {{slot:head}}
+</head>
+<body>
+  {{content}}
+</body>
+</html>
+```
+
+Pages inject into named slots with `<template data-slot="name">`. Everything else lands in `{{content}}`.
+
+To make data available across all pages — session state, nav items, feature flags — export a `data` function from `_layout.js`:
+
+```js
+// pages/_layout.js
+export function data(req) {
+  return { user: getSession(req) }
+}
+```
+
+```html
+<!-- pages/_layout.html -->
+{{#if user}}<a href="/signout">Sign out</a>{{/if}}
+```
+
+### Forms: PUT, PATCH, DELETE
+
+HTML forms only support GET and POST. index97 rewrites the others automatically — no JavaScript required:
+
+```html
+<form method="DELETE" action="/posts/42">
+  <button>Delete</button>
+</form>
+```
+
+```js
+export async function DELETE(req) {
+  await db.run('DELETE FROM posts WHERE id = ?', [req.params.id])
+  return Response.redirect('/posts', 303)
+}
+```
 
 ## Why This Matters
 
 ### 1. **Transparency**
-You can trace a request from URL to file in seconds. No guessing which framework convention applies.
+You can trace a request from URL to file in seconds. The extension tells you exactly how the file will be handled — no guessing which framework convention applies.
 
 ### 2. **Incremental Adoption**
-Start with static HTML files. Add a `.mjs` handler only when you need dynamic behavior. The framework doesn't force you into a pattern until you're ready.
+Start with `.html` files. Add a `.js` handler only when you need dynamic behavior. Swap to `.md` for content-heavy pages. The framework doesn't force a pattern until you're ready.
 
 ### 3. **Easy Debugging**
-When something breaks, you debug your code, not the framework's routing engine. The stack trace points directly to your page handler.
+When something breaks, you debug your code, not the framework's routing engine. Handlers are plain functions — the stack trace points directly to your export.
 
 ### 4. **No Lock-In**
-Pages are just JavaScript classes. You can extract the logic, test it independently, or port it to another system without fighting framework-specific abstractions.
+Handlers are plain async functions that return objects or `Response` instances. There's nothing framework-specific to unpick if you want to move the logic elsewhere.
 
 ## Trade-offs
 
 This approach isn't for everyone:
 
-- **Explicit file paths**: You manage the URL structure manually. No automatic slug generation. Although, in the page object, you can override its route to something custom.
-- **More files**: Every dynamic page needs both `.html` and `.mjs`. Some frameworks bundle these. More files to create visiblity.
-- **Explicit layout configuration**: You define the layout file explicitly, or not.
+- **Explicit file paths**: You manage the URL structure manually. No automatic slug generation from a title field.
+- **More files**: Dynamic pages need both a `.js` handler and a `.phtml` template alongside each other.
+- **Explicit layouts**: `_layout.html` is discovered by directory proximity, not a global config — which means you need to know where your nearest layout lives.
 
 These trade-offs favor **clarity over convenience**. If you prefer explicit control and transparent behavior, they're worth it.
 
-## Comparison to Other Frameworks Route Configuration
+## Comparison to Other Frameworks
 
-| Framework | File → URL Mapping | Configuration | Debugging |
-|-----------|-------------------|---------------|-----------|
-| **Next.js** | Convention-based, automatic | `next.config.js` + file structure | Framework stack traces |
-| **SvelteKit** | Convention-based, automatic | `svelte.config.js` + file structure | Framework stack traces |
-| **Astro** | Convention-based, automatic | `astro.config.mjs` + file structure | Framework stack traces |
-| **Juphjacs** | Explicit, 1:1 mapping | None (declared in page constructors) | Direct to your code |
+| Framework | File → URL Mapping | Handler pattern | Debugging |
+|-----------|-------------------|-----------------|-----------|
+| **Next.js** | Convention-based, automatic | React components + `getServerSideProps` | Framework stack traces |
+| **SvelteKit** | Convention-based, automatic | `+page.server.js` loader pattern | Framework stack traces |
+| **Astro** | Convention-based, automatic | Frontmatter scripts in `.astro` files | Framework stack traces |
+| **index97** | Explicit, extension-driven | Plain async functions, plain objects | Direct to your code |
 
 ## Try It Yourself
 
-Clone the repo and explore:
+```bash
+mkdir my-site && cd my-site
+bun init -y
+bun add @devchitchat/index97
+```
+
+```js
+// server.js
+import { createServer } from '@devchitchat/index97'
+createServer({ pagesDir: './pages' })
+```
 
 ```bash
-git clone https://github.com/joeyguerra/juphjacs.git
-cd juphjacs
-npm install
-npm run dev
+bun server.js
 ```
 
 Open `pages/` and match files to URLs at `http://localhost:3000`. The mapping is exactly what you see in the file tree.
-
-## What's Next
-
-This routing approach enables other patterns:
-
-- **Plugin hooks**: Intercept routing at specific points without framework magic
-- **Incremental builds**: Only rebuild what changed, skip the framework's internal cache
-- **Testing in isolation**: Import page classes directly in tests - no server required
-
-These are topics for future posts. For now, the takeaway is simple: **routing should be boring**. It should map files to URLs, nothing more.
-
----
-
-Follow the mission: [Juphjacs Web Framework](/missions/juphjacs.html)
-
-Back to the blog: [Mission Log](/blog/mission-log.html)

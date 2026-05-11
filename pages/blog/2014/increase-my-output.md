@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "I Want to Increase My Output by 10, 100, 1000"
 excerpt: "I want to capture and share my journey about how I increase my work output as a software engineer by multiples of 10, 100, 1000."
-published: 2014-01-01
-uri: '/blog/2014/increase-my-output.html'
+published: 2014-01-01T07:00:00Z
+uri: '/blog/2014/increase-my-output'
 tags: ['career']
 image: ''
 ---

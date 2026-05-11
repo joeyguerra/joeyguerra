@@ -2,8 +2,8 @@
 layout: './pages/layouts/post.html'
 title: "How can we all keep the kindergarten spirit [at work]?"
 excerpt: "I thought it would be interesting to post a version of Amber's article that changes the context from school to work."
-published: 2014-02-15
-uri: '/blog/2014/kindergarten.html'
+published: 2014-02-15T00:00:00Z
+uri: '/blog/2014/kindergarten'
 tags: ['psycology']
 ---
 # How can we all keep the kindergarten spirit [at work]
