@@ -1,6 +1,6 @@
 {
   "name": "jbot-website",
-  "version": "3.0.81",
+  "version": "3.0.82",
   "description": "Personal website for Joey Guerra",
   "main": "server.mjs",
   "dependencies": {
@@ -15,7 +15,7 @@
     "start": "bun Server.mjs",
     "dev": "bun --watch Server.mjs",
     "docker-build": "./docker-build-k3d.sh",
-    "local-deploy": "kubectl config use-context ${KUBE_CONTEXT:-k3d-local} && kubectl apply -f charts/web/deployment.yaml -n ${KUBE_NAMESPACE:-default}",
+    "local-deploy": "kubectl config use-context ${KUBE_CONTEXT:-k3s-local} && kubectl apply -f charts/web/deployment.yaml -n ${KUBE_NAMESPACE:-default}",
     "push": "bun run docker-build && bun run local-deploy"
   },
   "repository": {
