@@ -7,6 +7,7 @@ uri: '/blog/2026/ai-for-expanding-capital'
 tags: ['ai', 'layoffs', 'growth mindset', 'vs', 'cost-savings']
 ---
 
+# When electricity arrived, factories initially used it as a cheaper steam engine.
 
 What new kinds of work, markets, institutions, and human capabilities become viable because AI dramatically lowers the cost of cognition, coordination, and customization?
 

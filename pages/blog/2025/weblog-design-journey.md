@@ -301,7 +301,6 @@ Each job acts as it's own "playlist".
 *Missions (Narratives/Series): Examples:*
 
 - Mission: Build the Hubot Data Plane
-- Mission: Juphjacs Web Framework
 - Mission: Scaling Field Ops SaaS
 - Mission: Everday Systems Thinking
 - Mission: Kaizen Ops Blueprint

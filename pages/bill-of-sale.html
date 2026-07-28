@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bill of Sale</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      margin: 0;
+      padding: 32px 24px;
+      color: #111;
+      background: #f4f1eb;
+    }
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #c8bfa8;
+      padding: 24px 36px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    h1 {
+      font-size: 22px;
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 0 0 14px;
+      border-bottom: 2px solid #111;
+      padding-bottom: 8px;
+    }
+    .section { margin: 0 0 12px; }
+    .section-title {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-family: Arial, sans-serif;
+      color: #666;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 3px;
+      margin: 0 0 8px;
+    }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px 24px; }
+    .field { display: flex; flex-direction: column; }
+    label {
+      font-family: Arial, sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #777;
+      margin-bottom: 2px;
+    }
+    .blank-line {
+      border-bottom: 1px solid #333;
+      height: 22px;
+      width: 100%;
+    }
+    .sign-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 6px;
+    }
+    .sig-line {
+      border-bottom: 1px solid #111;
+      height: 36px;
+      margin-bottom: 4px;
+    }
+    .note {
+      font-size: 11px;
+      color: #666;
+      font-style: italic;
+      margin-top: 20px;
+      border-top: 1px solid #ddd;
+      padding-top: 12px;
+      font-family: Arial, sans-serif;
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .page { box-shadow: none; border: none; padding: 16px 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Bill of Sale</h1>
+
+    <div class="section">
+      <div class="section-title">1. Vehicle Information</div>
+      <div class="grid3">
+        <div class="field">
+          <label>Year</label>
+          <div class="blank-line"></div>
+        </div>
+        <div class="field">
+          <label>Make</label>
+          <div class="blank-line"></div>
+        </div>
+        <div class="field">
+          <label>Model</label>
+          <div class="blank-line"></div>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:8px;">
+        <div class="field">
+          <label>VIN (Vehicle Identification Number)</label>
+          <div class="blank-line"></div>
+        </div>
+        <div class="field">
+          <label>License Plate</label>
+          <div class="blank-line"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:8px;" class="field">
+        <label>Odometer Reading (miles)</label>
+        <div class="blank-line" style="max-width:260px;"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">2. Transfer Terms</div>
+      <div class="field" style="max-width:260px;">
+        <label>Purchase Price / Consideration</label>
+        <div class="blank-line"></div>
+      </div>
+
+      <div class="grid" style="margin-top:8px;">
+        <div class="field">
+          <label>Date of Transfer</label>
+          <div class="blank-line"></div>
+        </div>
+        <div class="field">
+          <label>County of Transfer</label>
+          <div class="blank-line"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:8px;" class="field">
+        <label>Notes</label>
+        <div class="blank-line" style="height:40px;"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">3. Parties</div>
+      <div class="grid">
+        <div class="field">
+          <label>Seller / Donor Name</label>
+          <div class="blank-line"></div>
+        </div>
+        <div class="field">
+          <label>Buyer / Recipient Name</label>
+          <div class="blank-line"></div>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:8px;">
+        <div class="field">
+          <label>Seller / Donor Address</label>
+          <div class="blank-line"></div>
+        </div>
+        <div class="field">
+          <label>Buyer / Recipient Address</label>
+          <div class="blank-line"></div>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:8px;">
+        <div class="field">
+          <label>Seller / Donor Phone</label>
+          <div class="blank-line"></div>
+        </div>
+        <div class="field">
+          <label>Buyer / Recipient Phone</label>
+          <div class="blank-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">4. Signatures</div>
+      <p style="font-size:11px; color:#555; margin:0 0 8px; font-family:Arial,sans-serif;">
+        By signing below, both parties confirm that the information provided is accurate and complete.
+      </p>
+
+      <div class="sign-grid">
+        <div>
+          <label>Seller / Donor Signature</label>
+          <div class="sig-line"></div>
+          <div class="field" style="margin-top:6px;">
+            <label>Printed Name</label>
+            <div class="blank-line"></div>
+          </div>
+          <div class="field" style="margin-top:6px;">
+            <label>Date</label>
+            <div class="blank-line"></div>
+          </div>
+        </div>
+
+        <div>
+          <label>Buyer / Recipient Signature</label>
+          <div class="sig-line"></div>
+          <div class="field" style="margin-top:6px;">
+            <label>Printed Name</label>
+            <div class="blank-line"></div>
+          </div>
+          <div class="field" style="margin-top:6px;">
+            <label>Date</label>
+            <div class="blank-line"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
