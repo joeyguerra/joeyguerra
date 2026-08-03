@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: jbot-website
-        image: local/jbot-website:3.0.84
+        image: local/jbot-website:11e09db
         imagePullPolicy: IfNotPresent
         env:
         - name: PORT
