@@ -1,0 +1,38 @@
+pipeline:
+  name: joeyguerra-website
+
+on:
+  push:
+    branches: [main]
+  manual: true
+
+runner:
+  labels: []
+  fallback: any
+
+jobs:
+  install:
+    mode: shell
+    commands:
+      - bun install --frozen-lockfile
+
+  test:
+    mode: shell
+    commands:
+      - bun test --pass-with-no-tests
+    depends_on: [install]
+
+  build:
+    mode: shell
+    commands:
+      - bun run docker-build
+    depends_on: [test]
+
+  deploy:
+    mode: shell
+    commands:
+      - bun push
+    depends_on: [build]
+    on:
+      push:
+        branches: [main]
