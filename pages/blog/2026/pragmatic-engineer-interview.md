@@ -84,4 +84,4 @@ What's funny is that at 25, I wasn't interested in coding or building software. 
 
 ---
 
-I went into this expecting a tidy narrative-arc post. What I got instead was two questions I had to push back on, an unresolved answer about what I want to be known for, and a formula for communication overhead I picked up from a director who tracked project status with a physical folder. That feels closer to the truth than the version with a clean origin story would have been.
+I went into this expecting a tidy narrative-arc post. What I got instead was yet more validation that we all have different stories (and their great!), an unresolved answer about what I want to be known for, and a formula for communication overhead I picked up from a director who tracked project status with a physical folder. That feels closer to the truth than the version with a clean origin story would have been.
