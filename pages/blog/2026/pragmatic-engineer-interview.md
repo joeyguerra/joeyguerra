@@ -78,7 +78,7 @@ I'm actually unsure what I'm known for *today*. The main public place with info 
 
 My step-father died when I was 24. My brother and I helped my mom sell his business so she could have income. I lived with my mom until I was about 28 to help her financially.
 
-My gut reaction is to tell that version of me to save as much money as I could have, because money means freedom, options, and I value that.
+My gut reaction is to tell that version of me to save as much money as I could have (and put it in an S&P tracked index fund), because money means freedom, options, and I value that.
 
 What's funny is that at 25, I wasn't interested in coding or building software. I didn't have any strong interests at all. So maybe that's the other thing I'd tell myself: discover some interests. The money advice doesn't mean much without something you're actually trying to buy freedom *for*.
 
