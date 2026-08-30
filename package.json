@@ -14,9 +14,8 @@
     "test": "bun test",
     "start": "bun Server.mjs",
     "dev": "bun --watch Server.mjs",
-    "docker-build": "./docker-build-k3s.sh",
-    "local-deploy": "kubectl config use-context ${KUBE_CONTEXT:-k3s-local} && kubectl apply -f charts/web/deployment.yaml -n ${KUBE_NAMESPACE:-default}",
-    "push": "bun run docker-build && bun run local-deploy"
+    "up": "infra up",
+    "push": "infra push"
   },
   "repository": {
     "type": "git",

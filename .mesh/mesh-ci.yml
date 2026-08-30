@@ -22,17 +22,11 @@ jobs:
       - bun test --pass-with-no-tests
     depends_on: [install]
 
-  build:
-    mode: shell
-    commands:
-      - bun run docker-build
-    depends_on: [test]
-
   deploy:
     mode: shell
     commands:
       - bun push
-    depends_on: [build]
+    depends_on: [test]
     on:
       push:
         branches: [main]

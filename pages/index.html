@@ -363,19 +363,10 @@
             z-index: 1000;
         }
     </style>
-    <script>
-      if (!['localhost', '127.0.0.1', ''].includes(location.hostname)) {
-        var s = document.createElement('script');
-        s.defer = true;
-        s.src = 'https://analytics.joeyguerra.com/tracker.js';
-        s.dataset.site = 'my-site';
-        s.dataset.endpoint = 'https://analytics.joeyguerra.com/collect';
-        document.currentScript.after(s);
-      }
-    </script>
+    <script defer src="{{analyticsUrl}}/tracker.js" data-site="joeyguerra-com"></script>
     <!-- No-JS fallback -->
     <noscript>
-      <img src="https://analytics.joeyguerra.com/pixel?s=joeyguerra_com&p=/"
+      <img src="{{analyticsUrl}}/pixel?s=joeyguerra-com&p=/"
            width="1" height="1" alt="">
     </noscript>
 </head>
