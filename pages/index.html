@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Joey Guerra | Software Engineering Consultant</title>
+    <title>Joey Guerra | A Private AI Engineering System for Your Business</title>
     <meta name="author" content="Joey Guerra"/>
-    <meta name="description" content="Software Engineer - I help growing companies replace fragile systems and integrate complex platforms-without the drama, delays,
-    or costly rewrites."/>
-    <meta property="og:title" content="Joey Guerra - Software Engineer"/>
-    <meta property="og:description" content="Software Engineer - I help growing companies replace fragile systems and integrate complex platforms-without the drama, delays,
-    or costly rewrites."/>
+    <meta name="description" content="I install a private, multi-agent AI engineering system inside your own AWS, Azure, or on-prem environment - authenticated through your identity provider, not mine. Your code never leaves your walls."/>
+    <meta property="og:title" content="A Private AI Engineering System for Your Business"/>
+    <meta property="og:description" content="I install a private, multi-agent AI engineering system inside your own AWS, Azure, or on-prem environment - authenticated through your identity provider, not mine. Your code never leaves your walls."/>
     <meta property="og:image" content="/images/headshot.jpeg">
-    <meta property="og:site_name" content="Joey Guerra - Software Engineer"/>
+    <meta property="og:site_name" content="Joey Guerra"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
@@ -349,6 +347,103 @@
             }
         }
 
+        .cite {
+            font-size: 0.7em;
+            color: #7a7d82;
+        }
+
+        .cite a {
+            padding-left: 0;
+            color: #7a7d82;
+        }
+
+        .cite a::before {
+            content: none;
+        }
+
+        section#contact {
+            background: #15191f;
+        }
+
+        .contact-card {
+            max-width: 560px;
+            width: 100%;
+            margin: 0 auto;
+            background: #0f1115;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .booking-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            margin-top: 1rem;
+        }
+
+        .booking-form label {
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #9ea1a6;
+            margin-top: 0.75rem;
+        }
+
+        .booking-form .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .booking-form .row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .booking-form input,
+        .booking-form textarea {
+            background: #1a1d23;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.4rem;
+            padding: 0.6rem 0.75rem;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 0.85em;
+        }
+
+        .booking-form textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .booking-form button {
+            margin-top: 1.25rem;
+            align-self: flex-start;
+            padding: 0.75rem 1.25rem;
+            background: #00c896;
+            color: #000;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            font-size: 0.9em;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .booking-form button:hover {
+            background: #00b284;
+        }
+
+        .response-iframe {
+            width: 100%;
+            height: 0;
+            border: none;
+            transition: height 0.2s ease;
+        }
+
         #toTop {
             position: fixed;
             bottom: 20px;
@@ -374,16 +469,16 @@
 <body>
     <header>
         <div class="hero">
-            <h1>Your System Is the Bottleneck. Let's Fix It.</h1>
-            <p>A focused 2–4 week sprint that finds and eliminates your #1 system constraint — with measurable before/after results.</p>
+            <h1>Your Own AI Engineering Team. Inside Your Infrastructure. Not Mine.</h1>
+            <p>I install a private, multi-agent AI system — the same one running this website — inside your AWS, Azure, or on-prem environment, authenticated through your own identity provider. Your code never leaves your walls.</p>
             <nav class="cta-buttons">
-                <a href="mailto:helo@joeyguerra.com?subject=Bottleneck%20Review&body=Hi%20Joey.%20I'd%20like%20to%20book%20a%20Bottleneck%20Review.">Book a Bottleneck Review</a>
+                <a href="#contact">Book a Discovery Call</a>
             </nav>
             <ul>
-                <li>300K+ transactions/day</li>
-                <li>99.999% uptime</li>
-                <li>$200K+ saved</li>
-                <li>800% efficiency gains</li>
+                <li>Runs in your cloud or on-prem</li>
+                <li>Authenticates via your Entra ID / SSO</li>
+                <li>Git-native — every change is a commit</li>
+                <li>Early access — small number of design partners</li>
             </ul>
         </div>
     </header>
@@ -392,78 +487,48 @@
 <section id="problem">
     <article>
         <span class="tag">The Problem</span>
-        <h3>You Know Something Is Broken. Your Team Feels It Every Day.</h3>
+        <h3>AI App Builders Are Fast. They're Also a Liability.</h3>
         <ul class="pill-list">
-            <li>Processes that should take minutes take days</li>
-            <li>Engineers are firefighting instead of shipping</li>
-            <li>Scaling is blocked by one fragile piece of the system</li>
-            <li>You've patched it three times — and it still breaks</li>
+            <li>Every popular AI app builder runs your code through someone else's cloud, someone else's session, someone else's security posture</li>
+            <li>They're built to produce a convincing demo, not to survive a security review</li>
+            <li>When you outgrow one, the usual answer is "rebuild from scratch" — not migrate</li>
+            <li>None of that works if you have real customer data or a compliance requirement</li>
         </ul>
-        <p>You don't need another audit deck. You need the bottleneck gone.</p>
+        <p>Independent security scans of production apps built this way have found the majority carrying real issues — exposed secrets, exposed customer data — because speed to demo and safety in production are different problems. <span class="cite">(<a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-ai-generated-code-security-vibe-coding-202/">Cloud Security Alliance research note</a>)</span></p>
     </article>
 </section>
 
 <section id="solution">
     <article>
         <span class="tag">The Fix</span>
-        <h3>The Bottleneck Breaker Sprint</h3>
-        <p>A fixed-scope, 2 - 4 week engagement. We come in, find the #1 thing slowing your system down, and fix it — with documented before/after metrics to prove it worked.</p>
+        <h3>A Private AI Engineering System, Not a Shared One</h3>
+        <p>Not a text box that generates a demo. A persistent team of AI agents that read, write, test, and deploy code across your own repos — installed inside your environment, not a vendor's.</p>
         <ol>
-            <li><strong>Diagnose</strong> — We go deep on your systems, data, and workflows to find the real constraint.</li>
-            <li><strong>Fix</strong> — We implement the solution. Code, architecture, integration — whatever it takes.</li>
-            <li><strong>Prove</strong> — Measurable results, documented. You see the difference before we leave.</li>
+            <li><strong>Multi-agent</strong> — more than one chat session. A standing system that can carry work across repos and over time.</li>
+            <li><strong>Git-native</strong> — every change is a real commit. Reviewable, revertible, not locked in a proprietary file format.</li>
+            <li><strong>Yours</strong> — runs in your AWS, Azure, or on-prem, authenticated through your own identity provider. Nothing leaves your perimeter.</li>
         </ol>
     </article>
 </section>
 
-<section id="case-studies">
+<section id="proof">
     <article>
-        <span class="tag">Results</span>
-        <h3>Real Systems. Real Outcomes.</h3>
-        <ul class="case-studies">
-            <li>
-                <h3>E&amp;S Insurance Platform</h3>
-                <p>Fragmented billing and policy workflows across multiple systems. Built an event-sourced billing platform with zero-downtime migration. <strong class="highlight">Processing time dropped from 5 days to 1 day.</strong></p>
-            </li>
-            <li>
-                <h3>Lab Workflow Software</h3>
-                <p>Manual, multi-system case tracking causing delays and errors. Unified data pipelines using Redis and PostgreSQL. <strong class="highlight">Workflows cut from 5 hours to 30 minutes.</strong></p>
-            </li>
-            <li>
-                <h3>MuleSoft Replacement</h3>
-                <p>150+ legacy APIs throttling performance and driving up cloud costs. Replaced with performant .NET + Redis services. <strong class="highlight">300%+ performance improvement. $200K+ in savings.</strong></p>
-            </li>
-            <li>
-                <h3>The Home Depot</h3>
-                <p>Product Information Page and APIs tied to aging infrastructure. Migrated to cloud with zero downtime. <strong class="highlight">Supporting 300K+ transactions/day at 99.999% uptime.</strong></p>
-            </li>
-            <li>
-                <h3>GameStop</h3>
-                <p>Warehouse Management disconnected from SAP, creating fulfillment delays. Integrated the two systems end-to-end. <strong class="highlight">800% improvement in operational efficiency.</strong></p>
-            </li>
-        </ul>
+        <span class="tag">Proof, Not a Pitch Deck</span>
+        <h3>This Isn't a Concept. It's Running Two Production Sites Right Now.</h3>
+        <p>This website and <a href="https://fieldmappings.com">fieldmappings.com</a> are both built, maintained, and deployed entirely through this exact system — multi-agent, git-native, running on my own infrastructure. When you talk to me, you're talking to someone using the thing he's selling, every day, not presenting a slide about it.</p>
+        <p>I'm not asking you to be the first company to try this idea. I'm asking you to be among the first to run it inside your own walls.</p>
     </article>
 </section>
 
 <section id="how">
     <article>
         <span class="tag">How It Works</span>
-        <h3>Three Steps. Weeks, Not Months.</h3>
+        <h3>Three Steps. No Long Discovery Phase.</h3>
         <ol>
-            <li><strong>Identify</strong> — We go and see (<a href="https://en.wikipedia.org/wiki/Gemba" title="Gemba walk">Gemba walk</a>). Firsthand review of your systems, code, and workflows to pinpoint the real constraint.</li>
-            <li><strong>Fix</strong> — We build the solution. No hand-offs, no "here's what you should do." We do the work.</li>
-            <li><strong>Prove</strong> — Documented before/after metrics so you know exactly what changed and why it matters.</li>
+            <li><strong>Discovery call</strong> — We look at your environment, your identity provider, and the first real problem worth solving.</li>
+            <li><strong>Install</strong> — The system goes into your AWS, Azure, or on-prem environment, wired to your git and your CI/CD.</li>
+            <li><strong>Build</strong> — Your team works with the agents directly, in the tools you already use, to ship real internal tools.</li>
         </ol>
-    </article>
-</section>
-
-<section id="pricing">
-    <article>
-        <span class="tag">Investment</span>
-        <h3>Fixed Scope. Predictable Cost. ROI in Weeks.</h3>
-        <p>The Bottleneck Breaker Sprint is a fixed-scope engagement — not an open-ended retainer. You know what you're getting, what it costs, and when it ends.</p>
-        <p>Designed to deliver measurable ROI within the engagement window. Most clients recover the cost in the first month after delivery.</p>
-        <a href="mailto:helo@joeyguerra.com?subject=Bottleneck%20Review&body=Hi%20Joey.%20I'd%20like%20to%20learn%20more%20about%20the%20Bottleneck%20Breaker%20Sprint.">Get Pricing Details</a>
     </article>
 </section>
 
@@ -474,19 +539,19 @@
             <div>
                 <h3>Good Fit</h3>
                 <ul class="pill-list">
-                    <li>You have a real system with real scale</li>
-                    <li>You feel the pain every day in production</li>
-                    <li>You've tried fixing it internally and it didn't stick</li>
-                    <li>You want results, not recommendations</li>
+                    <li>You have real production systems and real compliance/security requirements</li>
+                    <li>You've tried (or considered) an AI app builder and hit its limits</li>
+                    <li>You want your team building real internal tools, not just demos</li>
+                    <li>You're comfortable being an early design partner, not buying a mature category leader</li>
                 </ul>
             </div>
             <div>
                 <h3>Not a Fit</h3>
                 <ul class="pill-list no-list">
-                    <li>Early-stage, pre-product companies</li>
-                    <li>Teams still exploring what to build</li>
-                    <li>Looking for a long-term staff augmentation</li>
-                    <li>Need general advice, not a fix</li>
+                    <li>You want a public self-serve signup today, no conversation</li>
+                    <li>You need a battle-tested platform with a long reference list — not yet, that's coming</li>
+                    <li>You can't grant install access into your own cloud or on-prem environment</li>
+                    <li>You're looking for a no-code tool for a non-technical solo project</li>
                 </ul>
             </div>
         </div>
@@ -497,20 +562,52 @@
     <article>
         <span class="tag">Why This Exists</span>
         <h3>25 Years of Fixing What Others Said Was Too Complex</h3>
-        <p>From aerospace engineering at NASA to complex platform modernization across retail, insurance, healthcare, and logistics — I've seen what bad consulting looks like. Long engagements, vague deliverables, expensive decks that collect dust.</p>
-        <p>We're the opposite. Short engagements. Real work. Measurable outcomes. We don't advise. We fix.</p>
+        <p>From aerospace engineering at NASA to complex platform modernization across retail, insurance, healthcare, and logistics, I've spent my career replacing fragile systems for companies like The Home Depot and GameStop. This system is what I built for myself to do that work faster — and it's now what I run my own sites on.</p>
+        <p>I'm not a platform company with a sales team. I'm one engineer who will personally install this in your environment and work with your team directly.</p>
     </article>
     <aside>
         <img src="/images/headshot.jpeg" alt="Joey Guerra" />
     </aside>
 </section>
 
-<section id="cta-final">
-    <h2>If your system is slowing your business down, we should talk.</h2>
-    <p>One conversation is enough to know if this is the right fit.</p>
-    <nav class="cta-buttons">
-        <a href="mailto:helo@joeyguerra.com?subject=Bottleneck%20Review&body=Hi%20Joey.%20I'd%20like%20to%20book%20a%20Bottleneck%20Review.">Book a Bottleneck Review</a>
-    </nav>
+<section id="contact">
+    <div class="contact-card">
+        <span class="tag">Early Access</span>
+        <h3>Book a Discovery Call</h3>
+        <p>Pick a day and time that works for you. I'll confirm by email — no scheduling account, no third-party calendar tool holding your info.</p>
+        <iframe id="response-iframe" name="response-iframe" class="response-iframe" frameborder="0"></iframe>
+        <form method="POST" action="/api/book-call" class="booking-form" target="response-iframe">
+            <div class="row">
+                <div>
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="What's your name?" required>
+                </div>
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="We need this to confirm." required>
+                </div>
+            </div>
+            <label for="company">Company (optional)</label>
+            <input type="text" id="company" name="company" placeholder="Where do you work?">
+            <div class="row">
+                <div>
+                    <label for="preferredDate">Preferred date</label>
+                    <input type="date" id="preferredDate" name="preferredDate" required>
+                </div>
+                <div>
+                    <label for="preferredTime">Preferred time</label>
+                    <input type="time" id="preferredTime" name="preferredTime" required>
+                </div>
+            </div>
+            <input type="hidden" id="timezone" name="timezone">
+            <label for="notes">What's the problem you're trying to solve? (optional)</label>
+            <textarea id="notes" name="notes" placeholder="A sentence or two is plenty." maxlength="2000"></textarea>
+            <div style="display: none;">
+                <input type="text" name="website" autocomplete="off">
+            </div>
+            <button type="submit">Book the Call →</button>
+        </form>
+    </div>
 </section>
 
     </main>
@@ -519,7 +616,7 @@
         <nav>
             <a href="https://linkedin.com/in/joeyguerra" style="color:#00c896;">LinkedIn</a>
             <a href="https://github.com/joeyguerra" style="color:#00c896;">GitHub</a>
-            <a href="/blog" title="Kaizen Ops Weblog">Weblog</a>
+            <a href="/blog" title="Joey's Weblog">Weblog</a>
         </nav>
     </footer>
     <button id="toTop">To The Top</button>
@@ -541,6 +638,24 @@
                 }
             });
         });
+
+        const tzField = document.getElementById('timezone');
+        if (tzField) {
+            tzField.value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        }
+
+        const bookingIframe = document.querySelector('#response-iframe');
+        if (bookingIframe) {
+            bookingIframe.addEventListener('load', () => {
+                const iframeDoc = bookingIframe.contentDocument || bookingIframe.contentWindow.document;
+                if (iframeDoc.body && iframeDoc.body.innerHTML.trim()) {
+                    bookingIframe.style.height = '80px';
+                    bookingIframe.style.marginBottom = '1rem';
+                }
+                document.querySelector('.booking-form').reset();
+                if (tzField) tzField.value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            });
+        }
     </script>
 </body>
 
