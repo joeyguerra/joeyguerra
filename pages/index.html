@@ -24,7 +24,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes"/>
 
     <style>
-        @import url('/css/reset.css');
+        @import url('{{base}}/css/reset.css');
         :root {
             color-scheme: light dark;
         }
@@ -576,7 +576,7 @@
         <h3>Book a Discovery Call</h3>
         <p>Pick a day and time that works for you. I'll confirm by email — no scheduling account, no third-party calendar tool holding your info.</p>
         <iframe id="response-iframe" name="response-iframe" class="response-iframe" frameborder="0"></iframe>
-        <form method="POST" action="/api/book-call" class="booking-form" target="response-iframe">
+        <form method="POST" action="{{base}}/api/book-call" class="booking-form" target="response-iframe">
             <div class="row">
                 <div>
                     <label for="name">Name</label>
@@ -616,7 +616,7 @@
         <nav>
             <a href="https://linkedin.com/in/joeyguerra" style="color:#00c896;">LinkedIn</a>
             <a href="https://github.com/joeyguerra" style="color:#00c896;">GitHub</a>
-            <a href="/blog" title="Joey's Weblog">Weblog</a>
+            <a href="{{base}}/blog" title="Joey's Weblog">Weblog</a>
         </nav>
     </footer>
     <button id="toTop">To The Top</button>
