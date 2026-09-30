@@ -14,8 +14,8 @@
     "test": "bun test",
     "start": "bun Server.mjs",
     "dev": "bun --watch Server.mjs",
-    "up": "infra up",
-    "push": "infra push"
+    "logs": "kubectl logs -f deployment/jbot-website -n default",
+    "status": "kubectl get deployment/jbot-website -n default"
   },
   "repository": {
     "type": "git",

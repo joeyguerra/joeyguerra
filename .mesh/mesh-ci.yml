@@ -22,11 +22,33 @@ jobs:
       - bun test --pass-with-no-tests
     depends_on: [install]
 
-  deploy:
+  build:
     mode: shell
-    commands:
-      - bun push
     depends_on: [test]
     on:
       push:
         branches: [main]
+    commands:
+      - |
+        SHA=$(git rev-parse --short HEAD)
+        docker build -t ${REGISTRY_HOST}/jbot-website:${SHA} -t ${REGISTRY_HOST}/jbot-website:latest .
+        docker push ${REGISTRY_HOST}/jbot-website:${SHA}
+        docker push ${REGISTRY_HOST}/jbot-website:latest
+
+  update-gitops:
+    mode: shell
+    depends_on: [build]
+    on:
+      push:
+        branches: [main]
+    commands:
+      - |
+        SHA=$(git rev-parse --short HEAD)
+        git -c http.sslVerify=false clone ${GITOPS_REPO_URL} /tmp/mesh-gitops
+        cd /tmp/mesh-gitops
+        sed -i "s|registry.local:5000/jbot-website:.*|registry.local:5000/jbot-website:${SHA}|g" apps/joeyguerra/deployment.yaml
+        git config user.email "ci@mesh"
+        git config user.name "mesh-ci"
+        git add apps/joeyguerra/deployment.yaml
+        git diff --cached --quiet || git commit -m "ci: update jbot-website to ${SHA}"
+        git -c http.sslVerify=false push origin main
