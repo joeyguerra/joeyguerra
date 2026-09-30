@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{slot:title || Weblog }}</title>
-  <link rel="stylesheet" href="/css/blog.css">
+  <link rel="stylesheet" href="{{base}}/css/blog.css">
   {{slot:head}}
   <script defer src="{{analyticsUrl}}/tracker.js" data-site="joeyguerra-com"></script>
   <!-- No-JS fallback -->
@@ -16,10 +16,10 @@
 <body>
   <header class="site-header">
     <nav class="site-nav">
-      <a href="/" class="site-name">Joey Guerra</a>
+      <a href="{{base}}/" class="site-name">Joey Guerra</a>
       <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/blog" class="is-active">Weblog</a>
+        <a href="{{base}}/">Home</a>
+        <a href="{{base}}/blog" class="is-active">Weblog</a>
       </div>
     </nav>
   </header>

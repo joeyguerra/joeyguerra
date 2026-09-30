@@ -26,5 +26,5 @@ async function readAllBlogFiles (folder) {
 
 const posts = await readAllBlogFiles(BLOG_FOLDER)
 export async function GET(req) {
-  return { posts }
+  return { posts, base: process.env.BASE_PATH ?? '' }
 }

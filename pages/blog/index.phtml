@@ -11,7 +11,7 @@
     <article>
       <time class="post-date" datetime="{{page.data.published}}">{{page.data.displayDate}}</time>
       <h2 class="post-title">
-        <a href="{{page.data.uri}}">{{page.data.title}}</a>
+        <a href="{{base}}{{page.data.uri}}">{{page.data.title}}</a>
       </h2>
       {{#if page.data.excerpt}}
       <p class="post-excerpt">{{{page.data.excerpt}}}</p>
