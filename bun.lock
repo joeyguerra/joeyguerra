@@ -1,9 +1,9 @@
 {
-  "lockfileVersion": 1,
-  "configVersion": 0,
+  "lockfileVersion": 2,
+  "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "jbot-website",
+      "name": "joeyguerra",
       "dependencies": {
         "@devchitchat/index97": "^3.3.1",
         "dijkstrajs": "^1.0.3",
@@ -14,7 +14,7 @@
     },
   },
   "packages": {
-    "@devchitchat/index97": ["@devchitchat/index97@3.3.1", "", { "peerDependencies": { "typescript": "^5" }, "optionalPeers": ["typescript"], "bin": { "index97": "cli.js" } }, "sha512-m6SDGybbM9HiCRgzzxU8Qs+lq53qQ9EMfWib1yqAxYWvMaTH0jkBmBMvW/HYs6dIU/PrgIU/2pCCc14DSVzk3A=="],
+    "@devchitchat/index97": ["@devchitchat/index97@3.3.2", "", { "peerDependencies": { "typescript": "^5" }, "optionalPeers": ["typescript"], "bin": { "index97": "cli.js" } }, "sha512-up8+SeHakqyAw1jOv6R2zlmdoKoQx43aqvV7bfSSXAzOljM5aRK46EQrM2yXQWNqYfn2xo/uBNKMW+cYq3Cw/A=="],
 
     "@noble/ciphers": ["@noble/ciphers@1.3.0", "", {}, "sha512-2I0gnIVPtfnMw9ee9h1dJG7tp81+8Ob3OJb3Mv37rx5L40/b0i7djjCVvGOVqc9AEIQyvyu1i6ypKdFw8R8gQw=="],
 
@@ -38,7 +38,7 @@
 
     "fontkit": ["fontkit@2.0.4", "", { "dependencies": { "@swc/helpers": "^0.5.12", "brotli": "^1.3.2", "clone": "^2.1.2", "dfa": "^1.2.0", "fast-deep-equal": "^3.1.3", "restructure": "^3.0.0", "tiny-inflate": "^1.0.3", "unicode-properties": "^1.4.0", "unicode-trie": "^2.0.0" } }, "sha512-syetQadaUEDNdxdugga9CpEYVaQIxOwk7GlwZWWZ19//qW4zE5bknOKeMBDYAASwnpaSHKJITRLMF9m1fp3s6g=="],
 
-    "html-to-pdfmake": ["html-to-pdfmake@2.5.34", "", {}, "sha512-NCutnZWrOA2MJYiqXG8/x1g7gneZu4LlhzdExtKS1tVHyjxgn91gENV/RXP+avqRcSUYx9kMR3dUEfv8C5UW5Q=="],
+    "html-to-pdfmake": ["html-to-pdfmake@2.5.35", "", {}, "sha512-5TenwVyZm5Su74SHnS5eATQU9HcGecQYCnMkHNA7TxqR1gbbvH0LJH80ylx8kIdW6aifzcA7nMRFpFQqqsHEwg=="],
 
     "js-md5": ["js-md5@0.8.3", "", {}, "sha512-qR0HB5uP6wCuRMrWPTrkMaev7MJZwJuuw4fnwAzRgP4J4/F8RwtodOKpGp4XpqsLBFzzgqIO42efFAyz2Et6KQ=="],
 

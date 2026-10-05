@@ -1,5 +1,5 @@
 {
-  "name": "jbot-website",
+  "name": "joeyguerra",
   "version": "3.0.85",
   "description": "Personal website for Joey Guerra",
   "main": "server.mjs",
@@ -14,8 +14,8 @@
     "test": "bun test",
     "start": "bun Server.mjs",
     "dev": "bun --watch Server.mjs",
-    "logs": "kubectl logs -f deployment/jbot-website -n default",
-    "status": "kubectl get deployment/jbot-website -n default"
+    "logs": "kubectl logs -f deployment/joeyguerra -n default",
+    "status": "kubectl get deployment/joeyguerra -n default"
   },
   "repository": {
     "type": "git",

@@ -33,10 +33,10 @@ jobs:
         set -e
         export BUILDX_BUILDER=ci-builder
         SHA=$(git rev-parse --short HEAD)
-        docker buildx build --push -t ${REGISTRY_HOST}/jbot-website:${SHA} .
-        DIGEST=$(docker buildx imagetools inspect ${REGISTRY_HOST}/jbot-website:${SHA} | grep -o 'sha256:[a-f0-9]\{64\}' | head -1)
-        case "$DIGEST" in sha256:*) ;; *) echo "no digest for jbot-website:${SHA}"; exit 1;; esac
-        echo "${DIGEST}" > /tmp/digest-jbot-website
+        docker buildx build --push -t ${REGISTRY_HOST}/joeyguerra:${SHA} .
+        DIGEST=$(docker buildx imagetools inspect ${REGISTRY_HOST}/joeyguerra:${SHA} | grep -o 'sha256:[a-f0-9]\{64\}' | head -1)
+        case "$DIGEST" in sha256:*) ;; *) echo "no digest for joeyguerra:${SHA}"; exit 1;; esac
+        echo "${DIGEST}" > /tmp/digest-joeyguerra
 
   update-gitops:
     mode: shell
@@ -47,13 +47,13 @@ jobs:
     commands:
       - |
         set -e
-        DIGEST=$(cat /tmp/digest-jbot-website)
+        DIGEST=$(cat /tmp/digest-joeyguerra)
         rm -rf /tmp/mesh-gitops
         git -c http.sslVerify=false clone ${GITOPS_REPO_URL} /tmp/mesh-gitops
-        sed -i "s|registry.local:5000/jbot-website[@:].*|registry.local:5000/jbot-website@${DIGEST}|g" /tmp/mesh-gitops/apps/joeyguerra/deployment.yaml
+        sed -i "s|registry.local:5000/joeyguerra[@:].*|registry.local:5000/joeyguerra@${DIGEST}|g" /tmp/mesh-gitops/apps/joeyguerra/deployment.yaml
         git -C /tmp/mesh-gitops config user.email "ci@mesh"
         git -C /tmp/mesh-gitops config user.name "mesh-ci"
         git -C /tmp/mesh-gitops add apps/joeyguerra/deployment.yaml
-        git -C /tmp/mesh-gitops diff --cached --quiet || git -C /tmp/mesh-gitops commit -m "ci: update jbot-website to $(printf '%.12s' "${DIGEST}")"
+        git -C /tmp/mesh-gitops diff --cached --quiet || git -C /tmp/mesh-gitops commit -m "ci: update joeyguerra to $(printf '%.12s' "${DIGEST}")"
         git -C /tmp/mesh-gitops -c http.sslVerify=false pull --rebase origin main
         git -C /tmp/mesh-gitops -c http.sslVerify=false push origin main
