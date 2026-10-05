@@ -30,10 +30,12 @@ jobs:
         branches: [main]
     commands:
       - |
+        set -e
+        export BUILDX_BUILDER=ci-builder
         SHA=$(git rev-parse --short HEAD)
-        docker build -t ${REGISTRY_HOST}/jbot-website:${SHA} .
-        docker push ${REGISTRY_HOST}/jbot-website:${SHA}
-        DIGEST=$(docker image inspect --format '{{index .RepoDigests 0}}' "${REGISTRY_HOST}/jbot-website:${SHA}" | sed 's/.*@//')
+        docker buildx build --push -t ${REGISTRY_HOST}/jbot-website:${SHA} .
+        DIGEST=$(docker buildx imagetools inspect ${REGISTRY_HOST}/jbot-website:${SHA} | grep -o 'sha256:[a-f0-9]\{64\}' | head -1)
+        case "$DIGEST" in sha256:*) ;; *) echo "no digest for jbot-website:${SHA}"; exit 1;; esac
         echo "${DIGEST}" > /tmp/digest-jbot-website
 
   update-gitops:
